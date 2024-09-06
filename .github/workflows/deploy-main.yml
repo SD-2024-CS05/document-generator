@@ -19,7 +19,7 @@ jobs:
               AZUSER_EMAIL: ${{ secrets.AZUSER_EMAIL }}
               AZORG: ${{ secrets.AZORG }}
             run: |
-              git clone https://github.com/SD-2024-CS05/document-generator
+              git clone https://github.com/SD-2024-CS05/document-generator.git
               cd document-generator
               rm -rf .git
 
