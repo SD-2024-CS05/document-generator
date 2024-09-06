@@ -1,0 +1,43 @@
+name: Sync Repo
+
+on:
+    push:
+        branches:
+            - main
+jobs:
+    sync-repo:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+            - name: Sync Repo
+              env:
+                AZUREPAT: ${{ secrets.AZUREPAT }}
+                AZUSERNAME: ${{ secrets.AZUSERNAME }}
+                AZUSER_EMAIL: ${{ secrets.AZUSER_EMAIL }}
+                AZORG: ${{ secrets.AZORG }}
+              run: |
+                AZUREPAT=$AZUREPAT
+                AZUSERNAME=$AZUSERNAME
+                AZUSER_EMAIL=$AZUSER_EMAIL
+                AZORG=$AZORG
+                git clone https://github.com/SD-2024-CS05/document-generator
+                cd document-generator
+                rm -rf .git
+
+                cd ..
+
+                GIT_CMD_REPOSITORY="https://$AZUSERNAME:$AZUREPAT@dev.azure.com/$AZORG/Graphical%20Document%20Generator%20from%20Datasets/_git/GraphicalDocumentGenerator"
+                git clone $GIT_CMD_REPOSITORY
+
+                cp -r document-generator/* GraphicalDocumentGenerator/
+
+                cd GraphicalDocumentGenerator
+
+                git config --global user.email "$AZUSER_EMAIL"
+                git config --global user.name "$AZUSERNAME"
+
+                git add .
+                git commit -m "sync from git to azure"
+
+                git push
