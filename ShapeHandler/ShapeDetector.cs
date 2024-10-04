@@ -18,6 +18,8 @@ namespace ShapeHandler
         {
         }
 
+
+
         #region VSTO generated code
 
         /// <summary>

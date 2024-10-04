@@ -16,7 +16,7 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": [ "src", "alt", "load" ]
+            "enum": [ "src", "alt", "load", "width", "height" ]
           },
           "state": { "type": "boolean" },
           "matchValue": { "type": "string" }

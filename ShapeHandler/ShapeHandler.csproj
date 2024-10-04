@@ -182,6 +182,15 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="objects\Anchor.cs" />
+    <Compile Include="objects\Button.cs" />
+    <Compile Include="objects\Condition\Condition.cs" />
+    <Compile Include="objects\Condition\IConditionType.cs" />
+    <Compile Include="objects\HTMLGraph.cs" />
+    <Compile Include="objects\Image.cs" />
+    <Compile Include="objects\Input.cs" />
+    <Compile Include="objects\Select.cs" />
+    <Compile Include="objects\Span.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -194,12 +203,12 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <None Include="objects\anchor.json" />
-    <None Include="objects\button.json" />
-    <None Include="objects\image.json" />
-    <None Include="objects\input.json" />
-    <None Include="objects\select.json" />
-    <None Include="objects\span.json" />
+    <None Include="objects\jsonFiles\Anchor.json" />
+    <None Include="objects\jsonFiles\Button.json" />
+    <None Include="objects\jsonFiles\Image.json" />
+    <None Include="objects\jsonFiles\Input.json" />
+    <None Include="objects\jsonFiles\Select.json" />
+    <None Include="objects\jsonFiles\Span.json" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
