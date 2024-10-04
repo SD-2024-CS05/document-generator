@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ShapeHandler
 {
-    public class Image
+    public class Image : WebAction
     {
         public string Src { get; set; }
         public string Alt { get; set; }
@@ -15,9 +15,9 @@ namespace ShapeHandler
     public enum ImageConditionType
     {
         Src,
+        Load,
         Alt,
         Width,
-        Height,
-        Load
+        Height
     }
 }

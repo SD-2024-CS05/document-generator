@@ -2,7 +2,7 @@
 
 namespace ShapeHandler
 {
-    public class Button
+    public class Button : WebAction
     {
         public string Type { get; set; }
         public string Value { get; set; }

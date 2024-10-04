@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
+using ShapeHandler;
 
 namespace ShapeHandler
 {
@@ -10,7 +12,7 @@ namespace ShapeHandler
         Rel
     }
 
-    public class Anchor
+    public class Anchor : WebAction
     {
         public string Href { get; set; }
         public string Target { get; set; }

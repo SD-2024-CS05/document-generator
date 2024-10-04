@@ -101,6 +101,9 @@
   -->
   <ItemGroup>
     <Reference Include="Accessibility" />
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -182,15 +185,15 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="objects\Anchor.cs" />
-    <Compile Include="objects\Button.cs" />
-    <Compile Include="objects\Condition\Condition.cs" />
-    <Compile Include="objects\Condition\IConditionType.cs" />
-    <Compile Include="objects\HTMLGraph.cs" />
-    <Compile Include="objects\Image.cs" />
-    <Compile Include="objects\Input.cs" />
-    <Compile Include="objects\Select.cs" />
-    <Compile Include="objects\Span.cs" />
+    <Compile Include="Objects\Anchor.cs" />
+    <Compile Include="Objects\Button.cs" />
+    <Compile Include="Objects\Condition\Condition.cs" />
+    <Compile Include="Objects\Graph.cs" />
+    <Compile Include="Objects\Image.cs" />
+    <Compile Include="Objects\Input.cs" />
+    <Compile Include="Objects\Select.cs" />
+    <Compile Include="Objects\Span.cs" />
+    <Compile Include="Objects\WebAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -203,12 +206,13 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <None Include="objects\jsonFiles\Anchor.json" />
-    <None Include="objects\jsonFiles\Button.json" />
-    <None Include="objects\jsonFiles\Image.json" />
-    <None Include="objects\jsonFiles\Input.json" />
-    <None Include="objects\jsonFiles\Select.json" />
-    <None Include="objects\jsonFiles\Span.json" />
+    <None Include="Objects\JsonFiles\Anchor.json" />
+    <None Include="Objects\JsonFiles\Button.json" />
+    <None Include="Objects\JsonFiles\Image.json" />
+    <None Include="Objects\JsonFiles\Input.json" />
+    <None Include="Objects\JsonFiles\Select.json" />
+    <None Include="Objects\JsonFiles\Span.json" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
