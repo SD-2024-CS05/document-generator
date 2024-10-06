@@ -101,6 +101,9 @@
   -->
   <ItemGroup>
     <Reference Include="Accessibility" />
+    <Reference Include="Microsoft.Bcl.HashCode, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.HashCode.1.1.1\lib\net461\Microsoft.Bcl.HashCode.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -185,14 +188,14 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="Objects\Anchor.cs" />
-    <Compile Include="Objects\Button.cs" />
+    <Compile Include="Objects\ObjectFiles\Anchor.cs" />
+    <Compile Include="Objects\ObjectFiles\Button.cs" />
     <Compile Include="Objects\Condition\Condition.cs" />
     <Compile Include="Objects\Graph.cs" />
-    <Compile Include="Objects\Image.cs" />
-    <Compile Include="Objects\Input.cs" />
-    <Compile Include="Objects\Select.cs" />
-    <Compile Include="Objects\Span.cs" />
+    <Compile Include="Objects\ObjectFiles\Image.cs" />
+    <Compile Include="Objects\ObjectFiles\Input.cs" />
+    <Compile Include="Objects\ObjectFiles\Select.cs" />
+    <Compile Include="Objects\ObjectFiles\Span.cs" />
     <Compile Include="Objects\WebAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

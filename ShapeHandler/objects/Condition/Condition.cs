@@ -11,5 +11,21 @@ namespace ShapeHandler
         public T Type { get; set; }
         public bool State { get; set; }
         public string MatchValue { get; set; }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            Condition<T> condition = (Condition<T>)obj;
+            return Type.Equals(condition.Type) && State == condition.State && MatchValue == condition.MatchValue;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Type, State, MatchValue);
+        }
     }
 }

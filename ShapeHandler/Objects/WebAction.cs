@@ -24,6 +24,11 @@ namespace ShapeHandler
             WebAction webAction = (WebAction)obj;
             return Id == webAction.Id && Classes.SequenceEqual(webAction.Classes);
         }
+
+        public override int GetHashCode()
+        {
+           return HashCode.Combine(Id, Classes);
+        }
     }
 
     public class WebActionConverter : JsonConverter
