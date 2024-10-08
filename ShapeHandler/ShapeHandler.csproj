@@ -200,6 +200,12 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TestGenerator.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="TestGenerator.Designer.cs">
+      <DependentUpon>TestGenerator.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -209,6 +215,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="TestGenerator.resx">
+      <DependentUpon>TestGenerator.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="Objects\JsonFiles\Anchor.json" />
     <None Include="Objects\JsonFiles\Button.json" />
     <None Include="Objects\JsonFiles\Image.json" />
