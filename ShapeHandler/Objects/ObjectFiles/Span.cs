@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ShapeHandler
 {
-    public class Span : WebAction
+    public class Span : WebElement
     {
         public string Id { get; set; }
         public string Class { get; set; }

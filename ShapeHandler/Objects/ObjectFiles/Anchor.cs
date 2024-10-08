@@ -12,7 +12,7 @@ namespace ShapeHandler
         Rel
     }
 
-    public class Anchor : WebAction
+    public class Anchor : WebElement
     {
         public string Href { get; set; }
         public string Target { get; set; }

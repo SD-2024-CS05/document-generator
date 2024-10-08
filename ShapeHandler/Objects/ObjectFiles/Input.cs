@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ShapeHandler
 {
-    public class Input : WebAction
+    public class Input : WebElement
     {
         public string Type { get; set; }
         public string Value { get; set; }

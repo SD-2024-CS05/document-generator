@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace ShapeHandler
 {
-    [JsonConverter(typeof(WebActionConverter))]
-    public abstract class WebAction
+    [JsonConverter(typeof(WebElementConverter))]
+    public abstract class WebElement
     {
         public string Id { get; set; }
         public string[] Classes { get; set; }
@@ -21,27 +21,27 @@ namespace ShapeHandler
                 return false;
             }
 
-            WebAction webAction = (WebAction)obj;
+            WebElement webAction = (WebElement)obj;
             return Id == webAction.Id && Classes.SequenceEqual(webAction.Classes);
         }
 
         public override int GetHashCode()
         {
-           return HashCode.Combine(Id, Classes);
+            return HashCode.Combine(Id, Classes);
         }
     }
 
-    public class WebActionConverter : JsonConverter
+    public class WebElementConverter : JsonConverter
     {
         public override bool CanConvert(Type objectType)
         {
-            return objectType == typeof(WebAction);
+            return objectType == typeof(WebElement);
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             var jsonObject = JObject.Load(reader);
-            var webAction = default(WebAction);
+            var webAction = default(WebElement);
 
             // handle the different types of web actions
             if (jsonObject != null)

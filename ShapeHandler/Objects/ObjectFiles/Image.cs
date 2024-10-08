@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ShapeHandler
 {
-    public class Image : WebAction
+    public class Image : WebElement
     {
         public string Src { get; set; }
         public string Alt { get; set; }

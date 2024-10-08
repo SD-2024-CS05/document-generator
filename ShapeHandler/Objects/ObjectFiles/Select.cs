@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ShapeHandler
 {
-    public class Select : WebAction
+    public class Select : WebElement
     {
         public string Name { get; set; }
         public bool Disabled { get; set; }

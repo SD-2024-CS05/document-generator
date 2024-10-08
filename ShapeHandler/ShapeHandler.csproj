@@ -196,7 +196,7 @@
     <Compile Include="Objects\ObjectFiles\Input.cs" />
     <Compile Include="Objects\ObjectFiles\Select.cs" />
     <Compile Include="Objects\ObjectFiles\Span.cs" />
-    <Compile Include="Objects\WebAction.cs" />
+    <Compile Include="Objects\WebElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>

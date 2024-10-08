@@ -10,11 +10,11 @@ namespace ShapeHandler
 {
     public class Graph
     {
-        private Dictionary<WebAction, Dictionary<WebAction, List<Condition<Enum>>>> AdjacencyList { get; set; }
+        private Dictionary<WebElement, Dictionary<WebElement, List<Condition<Enum>>>> AdjacencyList { get; set; }
 
         public Graph()
         {
-            AdjacencyList = new Dictionary<WebAction, Dictionary<WebAction, List<Condition<Enum>>>>();
+            AdjacencyList = new Dictionary<WebElement, Dictionary<WebElement, List<Condition<Enum>>>>();
         }
 
         /// <summary>
@@ -23,16 +23,16 @@ namespace ShapeHandler
         /// <param name="source">Source WebAction Object</param>
         /// <param name="destination">Destination WebAction Object</param>
         /// <param name="conditions">Conditions to add to get to the destination Object</param>
-        public void AddEdge(WebAction source, WebAction destination, List<Condition<Enum>> conditions)
+        public void AddEdge(WebElement source, WebElement destination, List<Condition<Enum>> conditions)
         {
             if (!AdjacencyList.ContainsKey(source))
             {
-                AdjacencyList.Add(source, new Dictionary<WebAction, List<Condition<Enum>>>());
+                AdjacencyList.Add(source, new Dictionary<WebElement, List<Condition<Enum>>>());
             }
 
             if (!AdjacencyList.ContainsKey(destination))
             {
-                AdjacencyList.Add(destination, new Dictionary<WebAction, List<Condition<Enum>>>());
+                AdjacencyList.Add(destination, new Dictionary<WebElement, List<Condition<Enum>>>());
             }
 
             if (!AdjacencyList[source].ContainsKey(destination))
@@ -49,78 +49,34 @@ namespace ShapeHandler
         /// <param name="source">Source WebAction Object</param>
         /// <param name="destination">Destination WebAction Object</param>
         /// <returns></returns>
-        public bool HasEdge(WebAction source, WebAction destination)
+        public bool HasEdge(WebElement source, WebElement destination)
         {
             return AdjacencyList.ContainsKey(source) && AdjacencyList[source].ContainsKey(destination);
         }
 
         /// <summary>
-        /// Checks if there is a path between two WebAction objects
-        /// </summary>
-        /// <param name="source">Source WebAction Object</param>
-        /// <param name="destination">Destination WebAction Object</param>
-        /// <returns></returns>
-        public bool HasPath(WebAction source, WebAction destination)
-        {
-            if (source.Equals(destination))
-            {
-                return true;
-            }
-
-            HashSet<WebAction> visited = new HashSet<WebAction>();
-            Queue<WebAction> queue = new Queue<WebAction>();
-
-            visited.Add(source);
-            queue.Enqueue(source);
-
-            while (queue.Count != 0)
-            {
-                WebAction current = queue.Dequeue();
-
-                if (current.Equals(destination))
-                {
-                    return true;
-                }
-
-                if (AdjacencyList.ContainsKey(current))
-                {
-                    foreach (WebAction neighbor in AdjacencyList[current].Keys)
-                    {
-                        if (!visited.Contains(neighbor))
-                        {
-                            visited.Add(neighbor);
-                            queue.Enqueue(neighbor);
-                        }
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Checks whether a path exists between a Source and Destination WebAction, checking with fulfilled Conditions
+        /// Checks whether a path exists between a Source and Destination WebAction
         /// </summary>
         /// <param name="source">Source WebAction Object</param>
         /// <param name="destination">Destination WebAction object</param>
-        /// <param name="fulfilledConditions">Conditionals fulfilled</param>
+        /// <param name="fulfilledConditions">(optional) Conditionals fulfilled, if present will check against conditionals, otherwise will assume conditionals are passed</param>
         /// <returns></returns>
-        public bool HasPath(WebAction source, WebAction destination, List<Condition<Enum>> fulfilledConditions)
+        public bool HasPath(WebElement source, WebElement destination, List<Condition<Enum>> fulfilledConditions = null)
         {
             if (source.Equals(destination))
             {
                 return true;
             }
 
-            HashSet<WebAction> visited = new HashSet<WebAction>();
-            Queue<WebAction> queue = new Queue<WebAction>();
+            HashSet<WebElement> visited = new HashSet<WebElement>();
+            Queue<WebElement> queue = new Queue<WebElement>();
 
             visited.Add(source);
             queue.Enqueue(source);
 
             while (queue.Count != 0)
             {
-                WebAction current = queue.Dequeue();
+                WebElement current = queue.Dequeue();
 
                 if (current.Equals(destination))
                 {
@@ -129,9 +85,9 @@ namespace ShapeHandler
 
                 if (AdjacencyList.ContainsKey(current))
                 {
-                    foreach (WebAction neighbor in AdjacencyList[current].Keys)
+                    foreach (WebElement neighbor in AdjacencyList[current].Keys)
                     {
-                        bool conditionsFulfilled = !AdjacencyList[current][neighbor].Except(fulfilledConditions).Any();
+                        bool conditionsFulfilled = fulfilledConditions == null || !AdjacencyList[current][neighbor].Except(fulfilledConditions).Any();
 
                         if (!visited.Contains(neighbor) && conditionsFulfilled)
                         {
@@ -145,8 +101,89 @@ namespace ShapeHandler
             return false;
         }
 
+        /// <summary>
+        ///  Gets the start node of the graph
+        /// </summary>
+        /// <returns></returns>
+        public WebElement GetStartNode()
+        {
+            return AdjacencyList.FirstOrDefault().Key;
+        }
 
-        public void RemoveEdge(WebAction source, WebAction destination)
+        /// <summary>
+        /// Gets the end node of the graph
+        /// </summary>
+        /// <returns></returns>
+        public WebElement GetEndNode()
+        {
+            return AdjacencyList.LastOrDefault().Key;
+        }
+
+        /// <summary>
+        /// Gets the shortest path between two WebAction objects
+        /// </summary>
+        /// <param name="source">Source WebAction Object</param>
+        /// <param name="destination">Destination WebAction Object</param>
+        /// <returns></returns>
+        public List<WebElement> GetShortestPath(WebElement source, WebElement destination)
+        {
+            if (source.Equals(destination))
+            {
+                return new List<WebElement> { source };
+            }
+
+            Dictionary<WebElement, WebElement> parent = new Dictionary<WebElement, WebElement>();
+            Queue<WebElement> queue = new Queue<WebElement>();
+
+            parent.Add(source, null);
+            queue.Enqueue(source);
+
+            while (queue.Count != 0)
+            {
+                WebElement current = queue.Dequeue();
+
+                if (current.Equals(destination))
+                {
+                    break;
+                }
+
+                if (AdjacencyList.ContainsKey(current))
+                {
+                    foreach (WebElement neighbor in AdjacencyList[current].Keys)
+                    {
+                        if (!parent.ContainsKey(neighbor))
+                        {
+                            parent.Add(neighbor, current);
+                            queue.Enqueue(neighbor);
+                        }
+                    }
+                }
+            }
+
+            List<WebElement> path = new List<WebElement>();
+
+            if (!parent.ContainsKey(destination))
+            {
+                return path;
+            }
+
+            WebElement currentPath = destination;
+            while (currentPath != null)
+            {
+                path.Add(currentPath);
+                currentPath = parent[currentPath];
+            }
+
+            path.Reverse();
+            return path;
+        }
+
+        /// <summary>
+        /// Removes an edge from the graph
+        /// </summary>
+        /// <param name="source">Source WebAction Object</param>
+        /// <param name="destination">Destination WebAction Object</param>
+        public void RemoveEdge(WebElement source, WebElement destination)
         {
             if (AdjacencyList.ContainsKey(source) && AdjacencyList[source].ContainsKey(destination))
             {
