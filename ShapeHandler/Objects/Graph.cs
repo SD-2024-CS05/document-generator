@@ -120,6 +120,43 @@ namespace ShapeHandler
         }
 
         /// <summary>
+        /// Combines `otherGraph` with the current graph, optionally adding orphaned nodes
+        /// </summary>
+        /// <param name="otherGraph">The other graph to combine with</param>
+        /// <param name="addOrphans">Whether to includes nodes that are orphaned</param>
+        public void CombineGraphs(Graph otherGraph, bool addOrphans = true)
+        {
+            foreach (var sourceNode in otherGraph.AdjacencyList.Keys)
+            {
+                if (!AdjacencyList.ContainsKey(sourceNode))
+                {
+                    AdjacencyList.Add(sourceNode, new Dictionary<WebElement, List<Condition<Enum>>>());
+                }
+
+                foreach (var destinationNode in otherGraph.AdjacencyList[sourceNode].Keys)
+                {
+                    if (!AdjacencyList[sourceNode].ContainsKey(destinationNode))
+                    {
+                        AdjacencyList[sourceNode].Add(destinationNode, new List<Condition<Enum>>());
+                    }
+
+                    AdjacencyList[sourceNode][destinationNode].AddRange(otherGraph.AdjacencyList[sourceNode][destinationNode]);
+                }
+            }
+
+            if (addOrphans)
+            {
+                foreach (var sourceNode in otherGraph.AdjacencyList.Keys)
+                {
+                    if (!AdjacencyList.ContainsKey(sourceNode))
+                    {
+                        AdjacencyList.Add(sourceNode, new Dictionary<WebElement, List<Condition<Enum>>>());
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Gets the shortest path between two WebAction objects
         /// </summary>
         /// <param name="source">Source WebAction Object</param>

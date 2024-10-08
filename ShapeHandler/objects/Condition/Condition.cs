@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace ShapeHandler
 {
@@ -26,6 +27,16 @@ namespace ShapeHandler
         public override int GetHashCode()
         {
             return HashCode.Combine(Type, State, MatchValue);
+        }
+
+        public static Condition<T> FromXElement(XElement element)
+        {
+            return new Condition<T>
+            {
+                Type = (T)Enum.Parse(typeof(T), element.Attribute("Type").Value),
+                State = bool.Parse(element.Attribute("State").Value),
+                MatchValue = element.Attribute("MatchValue").Value
+            };
         }
     }
 }

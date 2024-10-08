@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace ShapeHandler
 {
@@ -28,6 +29,11 @@ namespace ShapeHandler
         public override int GetHashCode()
         {
             return HashCode.Combine(Id, Classes);
+        }
+
+        public static WebElement FromXElement(XElement element)
+        {
+            return null;
         }
     }
 
