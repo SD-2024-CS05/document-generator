@@ -55,35 +55,35 @@ namespace ShapeHandler
 
             foreach (Shape shape in page.Shapes)
             {
-                if (shape.Text == null || shape.Text.Length == 0)
+                string name = shape.Name;
+                if (shape.Name.Contains("Start/End"))
                 {
-                    continue;
                 }
-
-                XElement shapeXml = XElement.Parse(shape.Text);
-                WebElement source = WebElement.FromXElement(shapeXml);
-
-                foreach (Shape connector in shape.ConnectedShapes(VisConnectedShapesFlags.visConnectedShapesIncomingNodes, ""))
-                {
-                    if (connector.Text == null || connector.Text.Length == 0)
-                    {
-                        continue;
-                    }
-
-                    XElement connectorXml = XElement.Parse(connector.Text);
-                    WebElement destination = WebElement.FromXElement(connectorXml);
-
-                    List<Condition<Enum>> conditions = new List<Condition<Enum>>();
-                    foreach (XElement conditionElement in connectorXml.Elements("Condition"))
-                    {
-                        Condition<Enum> condition = Condition<Enum>.FromXElement(conditionElement);
-                        conditions.Add(condition);
-                    }
-
-                    graph.AddEdge(source, destination, conditions);
-                }
+                WebElement element;
+                //switch (name)
+                //{
+                //    case "Anchor":
+                //        element = new Anchor(shape);
+                //        break;
+                //    case "Button":
+                //        element = new Button(shape);
+                //        break;
+                //    case "Input":
+                //        element = new Input(shape);
+                //        break;
+                //    case "Image":
+                //        element = new Image(shape);
+                //        break;
+                //    case "Span":
+                //        element = new Span(shape);
+                //        break;
+                //    case "Select":
+                //        element = new Select(shape);
+                //        break;
+                //    default:
+                //        break;
+                //}
             }
-
             return graph;
         }
 
@@ -103,7 +103,6 @@ namespace ShapeHandler
 
             return graph;
         }
-
 
         #region VSTO generated code
 

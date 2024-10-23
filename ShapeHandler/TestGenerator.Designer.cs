@@ -31,6 +31,7 @@ namespace ShapeHandler
         private void HandleTestGenerationClick(object sender, RibbonControlEventArgs e)
         {
             ShapeDetector.CreateGraph();
+
         }
 
         #region Component Designer generated code

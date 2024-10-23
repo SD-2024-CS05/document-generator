@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Office.Interop.Visio;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,17 @@ namespace ShapeHandler
         public string Id { get; set; }
         public string[] Classes { get; set; }
 
+        public WebElement()
+        {
+            Id = "";
+            Classes = new string[0];
+        }
+
+        public WebElement(Shape shape)
+        {
+            // get record set id and then get the id to pu
+        }
+
         public override bool Equals(object obj)
         {
             if (obj == null || GetType() != obj.GetType())
@@ -29,11 +41,6 @@ namespace ShapeHandler
         public override int GetHashCode()
         {
             return HashCode.Combine(Id, Classes);
-        }
-
-        public static WebElement FromXElement(XElement element)
-        {
-            return null;
         }
     }
 
