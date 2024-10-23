@@ -1,12 +1,17 @@
 {
   "$schema": "https://json-schema.org/draft-07/schema",
-  "type": "object",
   "properties": {
-    "type": { "type": "string" },
+    "actionType": {
+      "type": "string",
+      "enum": [ "button" ]
+    },
+    "type": {
+      "enum": [ "button", "submit", "reset" ],
+      "type": "string"
+    },
     "value": { "type": "string" },
     "disabled": { "type": "boolean" },
     "name": { "type": "string" },
-    "placeholder": { "type": "string" },
     "conditions": {
       "type": "array",
       "items": {
@@ -14,17 +19,14 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": [ "value", "focus", "disabled" ]
+            "enum": [ "click", "doubleClick", "disabled", "text" ]
           },
           "state": { "type": "boolean" },
-          "matchValue": {
-            "type": "string",
-            "pattern": "^[A-Za-z]+$"
-          }
+          "matchValue": { "type": "string" }
         }
       }
     }
   },
-  "required": [ "type" ]
+  "required": [ "type" ],
+  "type": "object"
 }
-  

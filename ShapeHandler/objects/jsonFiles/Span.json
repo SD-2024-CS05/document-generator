@@ -2,9 +2,12 @@
   "$schema": "https://json-schema.org/draft-07/schema",
   "type": "object",
   "properties": {
-    "href": { "type": "string" },
-    "target": { "type": "string" },
-    "rel": { "type": "string" },
+    "actionType": {
+      "type": "string",
+      "enum": [ "span" ]
+    },
+    "id": { "type": "string" },
+    "class": { "type": "string" },
     "conditions": {
       "type": "array",
       "items": {
@@ -12,13 +15,12 @@
         "properties": {
           "type": {
             "type": "string",
-            "enum": [ "click", "href", "rel" ]
+            "enum": [ "innerText", "visibility" ]
           },
           "state": { "type": "boolean" },
           "matchValue": { "type": "string" }
         }
       }
     }
-  },
-  "required": [ "href" ]
+  }
 }
