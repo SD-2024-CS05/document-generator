@@ -5,16 +5,19 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AngleSharp;
+using AngleSharp.Dom;
+using AngleSharp.Html.Dom;
 
-namespace ShapeHandler
+namespace ShapeHandler.Objects
 {
-    public class Graph
+    public class HtmlGraph
     {
-        private Dictionary<WebElement, Dictionary<WebElement, List<Condition<Enum>>>> AdjacencyList { get; set; }
+        private Dictionary<HtmlNode, Dictionary<HtmlNode, List<Condition<string>>>> AdjacencyList { get; set; }
 
-        public Graph()
+        public HtmlGraph()
         {
-            AdjacencyList = new Dictionary<WebElement, Dictionary<WebElement, List<Condition<Enum>>>>();
+            AdjacencyList = new Dictionary<HtmlNode, Dictionary<HtmlNode, List<Condition<string>>>>();
         }
 
         /// <summary>
@@ -23,21 +26,21 @@ namespace ShapeHandler
         /// <param name="source">Source WebAction Object</param>
         /// <param name="destination">Destination WebAction Object</param>
         /// <param name="conditions">Conditions to add to get to the destination Object</param>
-        public void AddEdge(WebElement source, WebElement destination, List<Condition<Enum>> conditions)
+        public void AddEdge(HtmlNode source, HtmlNode destination, List<Condition<string>> conditions)
         {
             if (!AdjacencyList.ContainsKey(source))
             {
-                AdjacencyList.Add(source, new Dictionary<WebElement, List<Condition<Enum>>>());
+                AdjacencyList.Add(source, new Dictionary<HtmlNode, List<Condition<string>>>());
             }
 
             if (!AdjacencyList.ContainsKey(destination))
             {
-                AdjacencyList.Add(destination, new Dictionary<WebElement, List<Condition<Enum>>>());
+                AdjacencyList.Add(destination, new Dictionary<HtmlNode, List<Condition<string>>>());
             }
 
             if (!AdjacencyList[source].ContainsKey(destination))
             {
-                AdjacencyList[source].Add(destination, new List<Condition<Enum>>());
+                AdjacencyList[source].Add(destination, new List<Condition<string>>());
             }
 
             AdjacencyList[source][destination] = conditions;
@@ -49,7 +52,7 @@ namespace ShapeHandler
         /// <param name="source">Source WebAction Object</param>
         /// <param name="destination">Destination WebAction Object</param>
         /// <returns></returns>
-        public bool HasEdge(WebElement source, WebElement destination)
+        public bool HasEdge(HtmlNode source, HtmlNode destination)
         {
             return AdjacencyList.ContainsKey(source) && AdjacencyList[source].ContainsKey(destination);
         }
@@ -61,22 +64,22 @@ namespace ShapeHandler
         /// <param name="destination">Destination WebAction object</param>
         /// <param name="fulfilledConditions">(optional) Conditionals fulfilled, if present will check against conditionals, otherwise will assume conditionals are passed</param>
         /// <returns></returns>
-        public bool HasPath(WebElement source, WebElement destination, List<Condition<Enum>> fulfilledConditions = null)
+        public bool HasPath(HtmlNode source, HtmlNode destination, List<Condition<string>> fulfilledConditions = null)
         {
             if (source.Equals(destination))
             {
                 return true;
             }
 
-            HashSet<WebElement> visited = new HashSet<WebElement>();
-            Queue<WebElement> queue = new Queue<WebElement>();
+            HashSet<HtmlNode> visited = new HashSet<HtmlNode>();
+            Queue<HtmlNode> queue = new Queue<HtmlNode>();
 
             visited.Add(source);
             queue.Enqueue(source);
 
             while (queue.Count != 0)
             {
-                WebElement current = queue.Dequeue();
+                HtmlNode current = queue.Dequeue();
 
                 if (current.Equals(destination))
                 {
@@ -85,7 +88,7 @@ namespace ShapeHandler
 
                 if (AdjacencyList.ContainsKey(current))
                 {
-                    foreach (WebElement neighbor in AdjacencyList[current].Keys)
+                    foreach (HtmlNode neighbor in AdjacencyList[current].Keys)
                     {
                         bool conditionsFulfilled = fulfilledConditions == null || !AdjacencyList[current][neighbor].Except(fulfilledConditions).Any();
 
@@ -105,7 +108,7 @@ namespace ShapeHandler
         ///  Gets the start node of the graph
         /// </summary>
         /// <returns></returns>
-        public WebElement GetStartNode()
+        public HtmlNode GetStartNode()
         {
             return AdjacencyList.FirstOrDefault().Key;
         }
@@ -114,7 +117,7 @@ namespace ShapeHandler
         /// Gets the end node of the graph
         /// </summary>
         /// <returns></returns>
-        public WebElement GetEndNode()
+        public HtmlNode GetEndNode()
         {
             return AdjacencyList.LastOrDefault().Key;
         }
@@ -124,20 +127,20 @@ namespace ShapeHandler
         /// </summary>
         /// <param name="otherGraph">The other graph to combine with</param>
         /// <param name="addOrphans">Whether to includes nodes that are orphaned</param>
-        public void CombineGraphs(Graph otherGraph, bool addOrphans = true)
+        public void CombineGraphs(HtmlGraph otherGraph, bool addOrphans = true)
         {
             foreach (var sourceNode in otherGraph.AdjacencyList.Keys)
             {
                 if (!AdjacencyList.ContainsKey(sourceNode))
                 {
-                    AdjacencyList.Add(sourceNode, new Dictionary<WebElement, List<Condition<Enum>>>());
+                    AdjacencyList.Add(sourceNode, new Dictionary<HtmlNode, List<Condition<string>>>());
                 }
 
                 foreach (var destinationNode in otherGraph.AdjacencyList[sourceNode].Keys)
                 {
                     if (!AdjacencyList[sourceNode].ContainsKey(destinationNode))
                     {
-                        AdjacencyList[sourceNode].Add(destinationNode, new List<Condition<Enum>>());
+                        AdjacencyList[sourceNode].Add(destinationNode, new List<Condition<string>>());
                     }
 
                     AdjacencyList[sourceNode][destinationNode].AddRange(otherGraph.AdjacencyList[sourceNode][destinationNode]);
@@ -150,7 +153,7 @@ namespace ShapeHandler
                 {
                     if (!AdjacencyList.ContainsKey(sourceNode))
                     {
-                        AdjacencyList.Add(sourceNode, new Dictionary<WebElement, List<Condition<Enum>>>());
+                        AdjacencyList.Add(sourceNode, new Dictionary<HtmlNode, List<Condition<string>>>());
                     }
                 }
             }
@@ -162,22 +165,22 @@ namespace ShapeHandler
         /// <param name="source">Source WebAction Object</param>
         /// <param name="destination">Destination WebAction Object</param>
         /// <returns></returns>
-        public List<WebElement> GetShortestPath(WebElement source, WebElement destination)
+        public List<HtmlNode> GetShortestPath(HtmlNode source, HtmlNode destination)
         {
             if (source.Equals(destination))
             {
-                return new List<WebElement> { source };
+                return new List<HtmlNode> { source };
             }
 
-            Dictionary<WebElement, WebElement> parent = new Dictionary<WebElement, WebElement>();
-            Queue<WebElement> queue = new Queue<WebElement>();
+            Dictionary<HtmlNode, HtmlNode> parent = new Dictionary<HtmlNode, HtmlNode>();
+            Queue<HtmlNode> queue = new Queue<HtmlNode>();
 
             parent.Add(source, null);
             queue.Enqueue(source);
 
             while (queue.Count != 0)
             {
-                WebElement current = queue.Dequeue();
+                HtmlNode current = queue.Dequeue();
 
                 if (current.Equals(destination))
                 {
@@ -186,7 +189,7 @@ namespace ShapeHandler
 
                 if (AdjacencyList.ContainsKey(current))
                 {
-                    foreach (WebElement neighbor in AdjacencyList[current].Keys)
+                    foreach (HtmlNode neighbor in AdjacencyList[current].Keys)
                     {
                         if (!parent.ContainsKey(neighbor))
                         {
@@ -197,14 +200,14 @@ namespace ShapeHandler
                 }
             }
 
-            List<WebElement> path = new List<WebElement>();
+            List<HtmlNode> path = new List<HtmlNode>();
 
             if (!parent.ContainsKey(destination))
             {
                 return path;
             }
 
-            WebElement currentPath = destination;
+            HtmlNode currentPath = destination;
             while (currentPath != null)
             {
                 path.Add(currentPath);
@@ -220,7 +223,7 @@ namespace ShapeHandler
         /// </summary>
         /// <param name="source">Source WebAction Object</param>
         /// <param name="destination">Destination WebAction Object</param>
-        public void RemoveEdge(WebElement source, WebElement destination)
+        public void RemoveEdge(HtmlNode source, HtmlNode destination)
         {
             if (AdjacencyList.ContainsKey(source) && AdjacencyList[source].ContainsKey(destination))
             {
