@@ -210,7 +210,6 @@
     <Compile Include="Objects\Condition\Condition.cs" />
     <Compile Include="Objects\Graph\Connection.cs" />
     <Compile Include="Objects\Graph\DecisionNode.cs" />
-    <Compile Include="Objects\Graph\Edge.cs" />
     <Compile Include="Objects\Graph\FlowchartNode.cs" />
     <Compile Include="Objects\Graph\HtmlGraph.cs" />
     <Compile Include="Objects\Graph\HtmlNode.cs" />
