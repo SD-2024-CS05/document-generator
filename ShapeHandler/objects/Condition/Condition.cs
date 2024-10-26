@@ -12,6 +12,7 @@ namespace ShapeHandler.Objects
         public T Type { get; set; }
         public bool State { get; set; }
         public string MatchValue { get; set; }
+        public Func<string, bool> Validate { get; set; } // Validation function
 
         public override bool Equals(object obj)
         {
@@ -19,7 +20,6 @@ namespace ShapeHandler.Objects
             {
                 return false;
             }
-
             Condition<T> condition = (Condition<T>)obj;
             return Type.Equals(condition.Type) && State == condition.State && MatchValue == condition.MatchValue;
         }
@@ -27,16 +27,6 @@ namespace ShapeHandler.Objects
         public override int GetHashCode()
         {
             return HashCode.Combine(Type, State, MatchValue);
-        }
-
-        public static Condition<T> FromXElement(XElement element)
-        {
-            return new Condition<T>
-            {
-                Type = (T)Enum.Parse(typeof(T), element.Attribute("Type").Value),
-                State = bool.Parse(element.Attribute("State").Value),
-                MatchValue = element.Attribute("MatchValue").Value
-            };
         }
     }
 }

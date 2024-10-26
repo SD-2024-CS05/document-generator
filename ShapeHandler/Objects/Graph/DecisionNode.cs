@@ -7,17 +7,13 @@ using System.Threading.Tasks;
 
 namespace ShapeHandler.Objects
 {
-    public class DecisionElement : HtmlNode
+    public class DecisionNode : FlowchartNode
     {
-        public Dictionary<string, HtmlNode> OutgoingPaths { get; set; } = new Dictionary<string, HtmlNode>();
+        public List<Condition<string>> Conditions { get; set; }
 
-        public DecisionElement(IHtmlBaseElement element) : base(element) { }
-
-        // Add a new path option for the decision
-        public void AddPath(string condition, HtmlNode targetNode)
+        public DecisionNode(string id) : base(id, NodeType.Decision)
         {
-            OutgoingPaths[condition] = targetNode;
+            Conditions = new List<Condition<string>>();
         }
     }
-
 }

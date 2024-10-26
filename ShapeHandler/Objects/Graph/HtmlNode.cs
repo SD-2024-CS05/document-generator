@@ -1,4 +1,6 @@
-﻿using AngleSharp.Html.Dom;
+﻿using AngleSharp.Dom;
+using AngleSharp.Html.Dom;
+using AngleSharp.Io;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,12 +9,11 @@ using System.Threading.Tasks;
 
 namespace ShapeHandler.Objects
 {
-    public class HtmlNode
+    public class HtmlNode : FlowchartNode
     {
-        public IHtmlBaseElement Element { get; set; }
-        public List<Edge> OutgoingEdges { get; set; } = new List<Edge>();
+        public IHtmlElement Element { get; set; }
 
-        public HtmlNode(IHtmlBaseElement element)
+        public HtmlNode(IHtmlElement element) : base(element.Id, NodeType.HtmlElement)
         {
             Element = element;
         }
