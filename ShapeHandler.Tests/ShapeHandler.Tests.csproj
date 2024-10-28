@@ -79,6 +79,12 @@
       <DependentUpon>ConditionTTest.cs</DependentUpon>
     </Compile>
     <Compile Include="ConditionTTest.cs" />
+    <Compile Include="ConditionTTest.Equals01.g.cs">
+      <DependentUpon>ConditionTTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConditionTTest.GetHashCode01.g.cs">
+      <DependentUpon>ConditionTTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="ConnectionTest.ConstructorTest.g.cs">
       <DependentUpon>ConnectionTest.cs</DependentUpon>
     </Compile>
@@ -87,7 +93,6 @@
       <DependentUpon>DecisionNodeTest.cs</DependentUpon>
     </Compile>
     <Compile Include="DecisionNodeTest.cs" />
-    <Compile Include="FlowchartNodeTest.cs" />
     <Compile Include="HtmlGraphTest.AddConnectionTest.g.cs">
       <DependentUpon>HtmlGraphTest.cs</DependentUpon>
     </Compile>
@@ -102,6 +107,9 @@
       <DependentUpon>HtmlNodeTest.cs</DependentUpon>
     </Compile>
     <Compile Include="HtmlNodeTest.cs" />
+    <Compile Include="PageNodeTest.ConstructorTest.g.cs">
+      <DependentUpon>PageNodeTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="PageNodeTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\PexAssemblyInfo.cs" />
@@ -109,6 +117,9 @@
       <DependentUpon>ShapeDetectorTest.cs</DependentUpon>
     </Compile>
     <Compile Include="ShapeDetectorTest.cs" />
+    <Compile Include="StartEndNodeTest.Constructor.g.cs">
+      <DependentUpon>StartEndNodeTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="StartEndNodeTest.cs" />
   </ItemGroup>
   <ItemGroup>
