@@ -26,7 +26,10 @@ jobs:
    - name: Restore NuGet packages
      run: |
          nuget restore
-         nuget list -Installed
+         nuget list
+         cache: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+            key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+            path: ~/.nuget/packages
 
    - name: create PFX file
      run: |
