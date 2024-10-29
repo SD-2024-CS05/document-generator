@@ -31,6 +31,16 @@ jobs:
        restore-keys: |
          ${{ runner.os }}-nuget-
 
+   - name: Cache build outputs
+     uses: actions/cache@v4
+     with:
+       path: |
+         **/bin/Release
+         **/obj/Release
+       key: ${{ runner.os }}-build-${{ hashFiles('**/*.csproj') }}
+       restore-keys: |
+         ${{ runner.os }}-build-
+
    - name: Restore NuGet packages
      run: nuget restore
 
@@ -76,5 +86,5 @@ jobs:
    - name: Run tests
      uses: microsoft/vstest-action@v1.0.0
      with:
-       searchFolder: './build'
+       searchFolder: './ShapeHandler.Tests/bin/Release'
        runInParallel: true
