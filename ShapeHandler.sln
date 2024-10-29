@@ -9,7 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShapeHandler.Tests", "Shape
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0674B98F-AAB6-4991-965E-0AA039768F3D}"
 	ProjectSection(SolutionItems) = preProject
-		.github\workflows\testing-protection.yml = .github\workflows\testing-protection.yml
+		.github\workflows\build-and-test.yml = .github\workflows\build-and-test.yml
+		codeql-analysis.yml = codeql-analysis.yml
 	EndProjectSection
 EndProject
 Global
