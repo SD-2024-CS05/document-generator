@@ -23,11 +23,19 @@ jobs:
    - name: Setup MSBuild
      uses: microsoft/setup-msbuild@v1
 
-   - name: Install Visual Studio components
-     run: |
-       choco install visualstudio2019buildtools --package-parameters "--add Microsoft.VisualStudio.Component.Office.Tools"
-       choco install visualstudio2019-workload-manageddesktopbuildtools
-     shell: powershell
+   # - name: Cache Visual Studio components
+   #   uses: actions/cache@v4
+   #   with:
+   #     path: C:\ProgramData\chocolatey\lib
+   #     key: ${{ runner.os }}-vscomponents-${{ hashFiles('**/*.yml') }}
+   #     restore-keys: |
+   #       ${{ runner.os }}-vscomponents-
+
+   # - name: Install Visual Studio components
+   #   run: |
+   #     choco install visualstudio2019buildtools --package-parameters "--add Microsoft.VisualStudio.Component.Office.Tools"
+   #     choco install visualstudio2019-workload-manageddesktopbuildtools
+   #   shell: powershell
 
    - name: Cache NuGet packages
      uses: actions/cache@v4
@@ -62,7 +70,8 @@ jobs:
      with:
        name: build-artifacts
        path: |
-         **/*.*
+         **/bin/Release/*.dll
+         **/bin/Release/*.pdb
 
  test:
    runs-on: windows-latest 
@@ -79,10 +88,8 @@ jobs:
        path: ./build
 
    - name: Run tests
-     run: dotnet test ./ShapeHandler.sln --no-build --verbosity normal --logger "trx;LogFileName=test_results.trx"
-
-   - name: Upload test results
-     uses: actions/upload-artifact@v4
+     uses: microsoft-approved-actions/vstest@master
      with:
-       name: test-results
-       path: test_results.trx
+       testAssembly: '**\bin\Release\*.dll'
+       searchFolder: './build'
+       runInParallel: true
