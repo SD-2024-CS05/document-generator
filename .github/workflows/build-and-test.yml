@@ -23,14 +23,11 @@ jobs:
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v1
 
-    - name: Install .NET 4.8
-      run: Install-Package -Name 'Microsoft.Net.Framework.DeveloperPack_4.8' -Force
-
     - name: Restore NuGet packages
-      run: nuget restore YourSolution.sln
+      run: nuget restore ShapeHandler.sln
 
     - name: Build with MSBuild
-      run: msbuild YourSolution.sln /p:Configuration=Release /p:GITHUB_ACTIONS=true
+      run: msbuild ShapeHandler.sln /p:Configuration=Release /p:GITHUB_ACTIONS=true
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
