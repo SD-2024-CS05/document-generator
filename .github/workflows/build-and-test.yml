@@ -56,17 +56,33 @@ jobs:
         CertDir: D:\a\document-generator\document-generator\ShapeHandler\
         CertName: ShapeHandler_TemporaryKey.pfx
 
-   - name: Build with VSTest-Actions
-     uses: microsoft/vstest-action@v1.0.0
-     with:
-       testAssembly: 'ShapeHandler.Tests.dll'
-       searchFolder: 'ShapeHandler.Tests/bin/Release/'
-       runInParallel: true
-
-   - name: Build with MSBuild and test  
+   - name: Build with MSBuild
      if: steps.cache-build.outputs.cache-hit != 'true'  
      run: |  
-       msbuild /p:Configuration=Release ShapeHandler.sln
-       $env:VSTestExecutable ShapeHandler.Tests\bin\Release\ShapeHandler.Tests.dll  
-     env:  
-       VSTestExecutable: C:\Program Files\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe
+       msbuild /p:Configuration=Release ShapeHandler.sln /p:GITHUB_ACTIONS=true
+
+   - name: Upload Artifact
+     uses: actions/upload-artifact@v4
+     with:
+       name: ShapeHandler 
+
+ test:
+    runs-on: windows-latest
+    steps:
+       - name: Get Artifact
+         uses: actions/download-artifact@v4
+         with:
+           name: ShapeHandler
+
+       - name: Run tests
+         run: |
+            $testResults = Invoke-Expression -Command "vstest.console.exe ${{ env.ARTIFACTS_PATH }}\ShapeHandler.Tests.dll"
+            $testResults | Out-File -FilePath $env:TEST_RESULTS_PATH
+            env:
+                ARTIFACTS_PATH: ${{ github.workspace }}/ShapeHandler
+                TEST_RESULTS_PATH: ${{ github.workspace }}/test-results.txt
+
+       - name: Upload test results
+         uses: actions/upload-artifact@v4
+         with:
+            name: test-results
