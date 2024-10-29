@@ -24,10 +24,9 @@ jobs:
      uses: microsoft/setup-msbuild@v1
 
    - name: Restore NuGet packages
-     run: nuget restore
-
-   - name: Install AngleSharp
-     run: nuget install AngleSharp -OutputDirectory packages
+     run: |
+         nuget restore
+         nuget list -Installed
 
    - name: create PFX file
      run: |
