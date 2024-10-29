@@ -30,7 +30,7 @@ jobs:
      run: |
          $pfxPassword = ConvertTo-SecureString -String ${{ secrets.CERT_PASS }} -Force -AsPlainText
          $pfxFile = Join-Path $env:CertDir $env:Certname
-         $pfx_cert_byte = [System.Convert]::FromBase64String(${{ secrets.CERT_KEY }})
+         $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.CERT_KEY }}")
          [System.IO.File]::WriteAllBytes($pfxFile, $pfx_cert_byte)
          Import-PfxCertificate -FilePath $pfxFile -Password $pfxPassword -Exportable -CertStoreLocation Cert:\CurrentUser\My
      env: 
