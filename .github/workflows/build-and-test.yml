@@ -83,10 +83,10 @@ jobs:
 
        - name: Run tests
          run: |
-            $testResults = Invoke-Expression -Command "${{ env.vstestPath }} ${{ env.ARTIFACTS_PATH }}\ShapeHandler.Tests.dll"
+            $testResults = & "${{ env.vstestPath }}" "${{ env.ARTIFACTS_PATH }}\ShapeHandler.Tests.dll"
             $testResults | Out-File -FilePath $env:TEST_RESULTS_PATH
          env:
-            vstestPath: 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe'
+            vstestPath: C:\Program Files\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe
             ARTIFACTS_PATH: ${{ github.workspace }}/ShapeHandler
             TEST_RESULTS_PATH: ${{ github.workspace }}/test-results.txt
 
