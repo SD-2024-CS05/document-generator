@@ -69,6 +69,9 @@ jobs:
        path: |
          **/bin/Release/
          **/obj/Release/
+         **/*.targets
+         **/*.sln
+         **/*.csproj
 
  test:
    runs-on: windows-latest 
@@ -84,11 +87,8 @@ jobs:
        name: build-artifacts
        path: ./build
 
-   - name: Setup MSBuild
-     uses: microsoft/setup-msbuild@v1
-
    - name: Run tests
-     run: dotnet test ./build --no-build --verbosity normal --logger "trx;LogFileName=test_results.trx"
+     run: dotnet test  --no-build --verbosity normal --logger "trx;LogFileName=test_results.trx"
 
    - name: Upload test results
      uses: actions/upload-artifact@v4
