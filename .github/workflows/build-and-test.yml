@@ -105,8 +105,9 @@ jobs:
 
    permissions:
     contents: read
-    actions: read
+    issues: read
     checks: write
+    pull-requests: write
 
    steps:
      - name: Get Test Results
@@ -116,12 +117,9 @@ jobs:
          path: ./test-results
 
      - name: Publish Test Results
-       uses: dorny/test-reporter@v1.9.1
-       with:
-        artifact: test-results
-        name: Test Results
-        path: '*.trx'
-        reporter: dotnet-trx
+       uses: EnricoMi/publish-unit-test-result-action@v2.18.0
        if: always()
+       with:
+        files: ./test-results/**/*.trx
         
 
