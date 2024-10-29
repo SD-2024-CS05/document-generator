@@ -67,8 +67,8 @@ jobs:
      with:
        name: build-artifacts
        path: |
-         **/bin/Release/*.dll
-         **/bin/Release/*.pdb
+         **/bin/Release/
+         **/obj/Release/
 
  test:
    runs-on: windows-latest 
@@ -88,13 +88,10 @@ jobs:
      uses: microsoft/setup-msbuild@v1
 
    - name: Run tests
-     run: |
-       $vsTestConsoleExe = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Enterprise\\Common7\\IDE\\Extensions\\TestPlatform\\vstest.console.exe"
-       $testDll = Get-ChildItem -Path ./build -Recurse -Filter *.Tests.dll
-       & $vsTestConsoleExe $testDll.FullName /logger:trx
+     run: dotnet test ./build --no-build --verbosity normal --logger "trx;LogFileName=test_results.trx"
 
    - name: Upload test results
      uses: actions/upload-artifact@v4
      with:
        name: test-results
-       path: ./test-results
+       path: test_results.trx
