@@ -293,7 +293,7 @@
     <ManifestKeyFile>ShapeHandler_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>03D81DB2F3ADCD7F4026FB3DCCF2581094D8BCF5</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>2884794061FA54413CB549ED0A8FF5F2692F100F</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <SignAssembly>false</SignAssembly>

@@ -28,23 +28,12 @@ jobs:
 
    - name: create PFX file
      run: |
-         $pfxFile = Join-Path $env:CertDir $env:Certname
-         $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.CERT_KEY }}")
-         [System.IO.File]::WriteAllBytes($pfxFile, $pfx_cert_byte)
-     env: 
-       CertDir: D:\a\document-generator\document-generator\ShapeHandler\
-       Certname: ShapeHandler_TemporaryKey.pfx
-   - name: Install Certificate  
-     run: |  
-       $pfxFile = Join-Path $env:CertDir -ChildPath $env:Certname
-       $cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2($pfxFile, "", [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::MachineKeySet)  
-       $store = New-Object System.Security.Cryptography.X509Certificates.X509Store("My", "LocalMachine")  
-       $store.Open("MaxAllowed")  
-       $store.Add($cert)  
-       $store.Close()
+         $pfxCertFilePath = Join-Path -Path $env:CertDir -ChildPath $env:CertName
+         Set-Content -Value $([System.Convert]::FromBase64String(${{secrets.CERT_KEY}})) -Path $pfxCertFilePath -Encoding Byte
+         $codeSigningCert = Import-PfxCertificate -FilePath $pfxCertFilePath -Password $(${{secrets.CERT_PASS}} | ConvertTo-SecureString -AsPlainText -Force) -CertStoreLocation Cert:\CurrentUser\My
      env:
         CertDir: D:\a\document-generator\document-generator\ShapeHandler\
-        Certname: ShapeHandler_TemporaryKey.pfx
+        CertName: ShapeHandler_TemporaryKey.pfx
 
    - name: Build with MSBuild
      run: msbuild /p:Configuration=Release /p:AppxPackageSigningEnabled=${{ env.SigningEnabled }}
