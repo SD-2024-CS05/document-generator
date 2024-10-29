@@ -36,7 +36,7 @@ jobs:
        Certname: ShapeHandler_TemporaryKey.pfx
    - name: Install Certificate  
      run: |  
-       $pfxFile = Join-Path $env:CertDir $env:Certname  
+       $pfxFile = Join-Path $env:CertDir -ChildPath $env:Certname
        $cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2($pfxFile, "", [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::MachineKeySet)  
        $store = New-Object System.Security.Cryptography.X509Certificates.X509Store("My", "LocalMachine")  
        $store.Open("MaxAllowed")  
