@@ -84,7 +84,13 @@ jobs:
        path: ./build
 
    - name: Run tests
-     uses: microsoft/vstest-action@v1.0.0
+     run: |
+       $testResults = Invoke-Expression -Command "dotnet test --no-build --verbosity normal"
+       $testResults | Out-File -FilePath test-results.txt
+       shell: pwsh
+
+   - name: Upload test results
+     uses: actions/upload-artifact@v4
      with:
-       searchFolder: './ShapeHandler.Tests/bin/Release'
-       runInParallel: true
+        name: test-results
+        path: test-results.txt
