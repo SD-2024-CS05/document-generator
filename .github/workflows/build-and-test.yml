@@ -59,6 +59,7 @@ jobs:
    - name: Build with MSBuild and test  
      if: steps.cache-build.outputs.cache-hit != 'true'  
      run: |  
-       $env:VSTestExecutable ShapeHandler.Tests\bin\Release\*.Tests.dll  
+       msbuild /p:Configuration=Release ShapeHandler.sln
+       $env:VSTestExecutable ShapeHandler.Tests\bin\Release\ShapeHandler.Tests.dll  
      env:  
        VSTestExecutable: C:\Program Files\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe
