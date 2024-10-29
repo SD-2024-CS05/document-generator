@@ -90,13 +90,13 @@ jobs:
    - name: Setup MSBuild
      uses: microsoft/setup-msbuild@v1
 
-   - name: Run tests
-     run: dotnet test  --no-build --verbosity normal --logger "trx;LogFileName=test_results.trx"
-
    - name: Run Tests (msbuild)
      run: msbuild /t:VSTest /p:Configuration=Release $env:solutionFile
      env:
        solutionFile: ShapeHandler.sln
+   
+   - name: Run tests
+     run: dotnet test  --no-build --verbosity normal --logger "trx;LogFileName=test_results.trx"
 
    - name: Upload test results
      uses: actions/upload-artifact@v4
