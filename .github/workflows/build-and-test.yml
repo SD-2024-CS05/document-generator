@@ -14,7 +14,6 @@ on:
 
 jobs:
  build:
-
    runs-on: windows-latest
 
    steps:
@@ -35,11 +34,33 @@ jobs:
    - name: Build with MSBuild
      run: msbuild /p:Configuration=Release
 
+   - name: Upload build artifacts
+     uses: actions/upload-artifact@v4
+     with:
+       name: build-artifacts
+       path: |
+         **/bin/Release/
+         **/obj/Release/
+
+ test:
+   runs-on: windows-latest
+   needs: build
+
+   steps:
+   - name: Checkout code
+     uses: actions/checkout@v2
+
+   - name: Download build artifacts
+     uses: actions/download-artifact@v4
+     with:
+       name: build-artifacts
+       path: ./build
+
    - name: Run tests
-     run: dotnet test --no-build --verbosity normal --logger "trx;LogFileName=test_results.trx"
+     run: dotnet test ./build --no-build --verbosity normal --logger "trx;LogFileName=test_results.trx"
 
    - name: Upload test results
      uses: actions/upload-artifact@v4
      with:
-        name: test-results
-        path: test_results.trx
+       name: test-results
+       path: test_results.trx

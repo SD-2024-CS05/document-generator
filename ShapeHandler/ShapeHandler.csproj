@@ -290,7 +290,8 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>ShapeHandler_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>2FD9F4A7A4C3BE7E618F7D699E5F8A92AE8177B7</ManifestCertificateThumbprint>
