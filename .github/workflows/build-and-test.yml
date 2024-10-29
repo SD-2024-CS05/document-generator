@@ -87,7 +87,7 @@ jobs:
 
        - name: Run tests
          run: |
-            $testResults = & "${{ env.vstestPath }}" "${{ env.ARTIFACTS_PATH }}\ShapeHandler.Tests.dll" /Logger:trx;LogFileName=${{ env.TEST_RESULTS_PATH }}
+            $testResults = & "${{ env.vstestPath }}" "${{ env.ARTIFACTS_PATH }}\ShapeHandler.Tests.dll" "/Logger:trx;LogFileName=${{ env.TEST_RESULTS_PATH }}"
             env:
                 vstestPath: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe
                 ARTIFACTS_PATH: ./build/ShapeHandler.Tests/bin/Release
@@ -99,6 +99,7 @@ jobs:
             path: ${{ github.workspace }}/test-results.trx
  publish:
    runs-on: ubuntu-latest
+   needs: test
    if: always()
 
    steps:
