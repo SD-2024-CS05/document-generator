@@ -101,6 +101,9 @@
   -->
   <ItemGroup>
     <Reference Include="Accessibility" />
+    <Reference Include="AngleSharp, Version=1.1.2.0, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
+      <HintPath>..\packages\AngleSharp.1.1.2\lib\net472\AngleSharp.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.HashCode, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.HashCode.1.1.1\lib\net461\Microsoft.Bcl.HashCode.dll</HintPath>
     </Reference>
@@ -108,8 +111,24 @@
       <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.4\lib\net461\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encoding.CodePages, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encoding.CodePages.6.0.0\lib\net461\System.Text.Encoding.CodePages.dll</HintPath>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -188,15 +207,15 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="Objects\ObjectFiles\Anchor.cs" />
-    <Compile Include="Objects\ObjectFiles\Button.cs" />
     <Compile Include="Objects\Condition\Condition.cs" />
-    <Compile Include="Objects\Graph.cs" />
-    <Compile Include="Objects\ObjectFiles\Image.cs" />
-    <Compile Include="Objects\ObjectFiles\Input.cs" />
-    <Compile Include="Objects\ObjectFiles\Select.cs" />
-    <Compile Include="Objects\ObjectFiles\Span.cs" />
-    <Compile Include="Objects\WebElement.cs" />
+    <Compile Include="Objects\Graph\Connection.cs" />
+    <Compile Include="Objects\Graph\DecisionNode.cs" />
+    <Compile Include="Objects\Graph\FlowchartNode.cs" />
+    <Compile Include="Objects\Graph\HtmlGraph.cs" />
+    <Compile Include="Objects\Graph\HtmlNode.cs" />
+    <Compile Include="Objects\Graph\NodeType.cs" />
+    <Compile Include="Objects\Graph\PageNode.cs" />
+    <Compile Include="Objects\Graph\StartEndNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -218,12 +237,7 @@
     <EmbeddedResource Include="TestGenerator.resx">
       <DependentUpon>TestGenerator.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="Objects\JsonFiles\Anchor.json" />
-    <None Include="Objects\JsonFiles\Button.json" />
-    <None Include="Objects\JsonFiles\Image.json" />
-    <None Include="Objects\JsonFiles\Input.json" />
-    <None Include="Objects\JsonFiles\Select.json" />
-    <None Include="Objects\JsonFiles\Span.json" />
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

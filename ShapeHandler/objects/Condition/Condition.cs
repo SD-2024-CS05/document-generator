@@ -5,38 +5,32 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace ShapeHandler
+namespace ShapeHandler.Objects
 {
     public class Condition<T>
     {
         public T Type { get; set; }
         public bool State { get; set; }
         public string MatchValue { get; set; }
+        public Func<string, bool> Validate { get; set; } // Validation function
 
         public override bool Equals(object obj)
         {
-            if (obj == null || GetType() != obj.GetType())
+            if (!(obj is Condition<T> otherCondition))
             {
                 return false;
             }
 
-            Condition<T> condition = (Condition<T>)obj;
-            return Type.Equals(condition.Type) && State == condition.State && MatchValue == condition.MatchValue;
+            bool typeEquals = EqualityComparer<T>.Default.Equals(Type, otherCondition.Type);
+            bool stateEquals = State == otherCondition.State;
+            bool matchValueEquals = MatchValue == otherCondition.MatchValue;
+
+            return typeEquals && stateEquals && matchValueEquals;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Type, State, MatchValue);
-        }
-
-        public static Condition<T> FromXElement(XElement element)
-        {
-            return new Condition<T>
-            {
-                Type = (T)Enum.Parse(typeof(T), element.Attribute("Type").Value),
-                State = bool.Parse(element.Attribute("State").Value),
-                MatchValue = element.Attribute("MatchValue").Value
-            };
+            return HashCode.Combine(Type, State, MatchValue, Validate);
         }
     }
 }
