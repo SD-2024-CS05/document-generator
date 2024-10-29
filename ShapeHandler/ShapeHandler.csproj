@@ -295,6 +295,12 @@
   <PropertyGroup>
     <ManifestCertificateThumbprint>2FD9F4A7A4C3BE7E618F7D699E5F8A92AE8177B7</ManifestCertificateThumbprint>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>ShapeHandler_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- Include additional build rules for an Office application add-in. -->
