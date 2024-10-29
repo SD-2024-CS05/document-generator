@@ -26,6 +26,17 @@ jobs:
    - name: Restore NuGet packages
      run: nuget restore
 
+   - name: create PFX file
+     run: |
+         $pfxPassword = ConvertTo-SecureString -String ${{ secrets.CERT_PASS }} -Force -AsPlainText
+         $pfxFile = Join-Path $env:CertDir $env:Certname
+         $pfx_cert_byte = [System.Convert]::FromBase64String(${{ secrets.CERT_KEY }})
+         [System.IO.File]::WriteAllBytes($pfxFile, $pfx_cert_byte)
+         Import-PfxCertificate -FilePath $pfxFile -Password $pfxPassword -Exportable -CertStoreLocation Cert:\CurrentUser\My
+     env: 
+       CertDir: D:\a\document-generator\document-generator\ShapeHandler\
+       Certname: ShapeHandler_TemporaryKey.pfx
+
    - name: Build with MSBuild
      run: msbuild /p:Configuration=Release /p:AppxPackageSigningEnabled=${{ env.SigningEnabled }}
      env:
