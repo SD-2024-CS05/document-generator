@@ -26,6 +26,9 @@ jobs:
    - name: Restore NuGet packages
      run: nuget restore
 
+   - name: Install AngleSharp
+     run: nuget install AngleSharp -OutputDirectory packages
+
    - name: create PFX file
      run: |
          $pfxCertFilePath = Join-Path -Path $env:CertDir -ChildPath $env:CertName
