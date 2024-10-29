@@ -60,7 +60,6 @@ build:
         msbuild /t:VSTest /p:VSTestPath="C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\Extensions\TestPlatform\vstest.console.exe" /p:VSTestVersion=16.0 /p:Platform="Any CPU" /p:Configuration=Release /p:GITHUB_ACTIONS=true
         mkdir -p test-results
         cp **/TestResults/*.trx test-results/
-    continue-on-error: true
 
   - name: Upload test results
     if: always()
