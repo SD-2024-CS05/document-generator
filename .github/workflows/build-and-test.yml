@@ -31,7 +31,7 @@ jobs:
        path: ~/.nuget/packages
        key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
        restore-keys: |
-         ${{ runner.os }}-nuget-
+         ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
 
    - name: Cache build outputs
      uses: actions/cache@v4
@@ -44,7 +44,7 @@ jobs:
          **/*.targets
        key: ${{ runner.os }}-build-${{ hashFiles('**/*.csproj') }}
        restore-keys: |
-         ${{ runner.os }}-build-
+         ${{ runner.os }}-build-${{ hashFiles('**/*.csproj') }}
 
    - name: Restore NuGet packages
      run: nuget restore ${{ env.SOLUTION_FILE }}
@@ -110,6 +110,14 @@ jobs:
   steps:
     - name: Checkout code
       uses: actions/checkout@v2
+
+    - name: Cache CodeQL tools
+      uses: actions/cache@v2
+      with:
+        path: ${{ runner.tool_cache }}
+        key: ${{ runner.os }}-codeql-${{ hashFiles('**/qlpack.yml') }}
+        restore-keys: |
+          ${{ runner.os }}-codeql-${{ hashFiles('**/qlpack.yml') }}
 
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v3
