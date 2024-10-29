@@ -87,13 +87,11 @@ jobs:
    - name: Setup MSBuild
      uses: microsoft/setup-msbuild@v1
 
-   - name: Install VSTest
-     run: |
-       choco install microsoft-testplatform --version=16.7.1
-
    - name: Run tests
      run: |
-       vstest.console.exe **/bin/Release/*.dll --logger:trx --resultsDirectory:./test-results
+       $vsTestConsoleExe = "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Enterprise\\Common7\\IDE\\Extensions\\TestPlatform\\vstest.console.exe"
+       $testDll = Get-ChildItem -Path ./build -Recurse -Filter *.Tests.dll
+       & $vsTestConsoleExe $testDll.FullName /logger:trx
 
    - name: Upload test results
      uses: actions/upload-artifact@v4
