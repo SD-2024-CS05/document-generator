@@ -32,12 +32,7 @@ jobs:
          ${{ runner.os }}-nuget-
 
    - name: Restore NuGet packages
-     run: |
-         if (Test-Path -Path ~/.nuget/packages) {
-             Write-Host "Using cached NuGet packages."
-         } else {
-             nuget restore
-         }
+     run: nuget restore
 
    - name: create PFX file
      run: |
