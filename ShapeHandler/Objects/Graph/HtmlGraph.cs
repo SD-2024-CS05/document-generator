@@ -17,6 +17,10 @@ namespace ShapeHandler.Objects
 
         public void AddNode(FlowchartNode node)
         {
+            if (node == null)
+            {
+                throw new ArgumentNullException("Node must be non-null");
+            }
             if (!AdjacencyList.ContainsKey(node))
             {
                 AdjacencyList[node] = new Dictionary<FlowchartNode, List<Connection>>();
@@ -26,6 +30,11 @@ namespace ShapeHandler.Objects
         public void AddConnection(FlowchartNode source, FlowchartNode target, string label, string behavior)
         {
             var connection = new Connection(label, behavior, source, target);
+
+            if (source == null || target == null)
+            {
+                throw new ArgumentNullException("Source and target must be non-null");
+            }
 
             if (!AdjacencyList.ContainsKey(source))
             {

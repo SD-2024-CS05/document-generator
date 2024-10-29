@@ -13,8 +13,12 @@ namespace ShapeHandler.Objects
     {
         public IHtmlElement Element { get; set; }
 
-        public HtmlNode(IHtmlElement element) : base(element.Id, NodeType.HtmlElement)
+        public HtmlNode(IHtmlElement element) : base(element?.Id, NodeType.HtmlElement)
         {
+            if (element == null)
+            {
+                throw new ArgumentNullException(nameof(element));
+            }
             Element = element;
         }
     }

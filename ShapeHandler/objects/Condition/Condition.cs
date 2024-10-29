@@ -16,17 +16,21 @@ namespace ShapeHandler.Objects
 
         public override bool Equals(object obj)
         {
-            if (obj == null || GetType() != obj.GetType())
+            if (!(obj is Condition<T> otherCondition))
             {
                 return false;
             }
-            Condition<T> condition = (Condition<T>)obj;
-            return Type.Equals(condition.Type) && State == condition.State && MatchValue == condition.MatchValue;
+
+            bool typeEquals = EqualityComparer<T>.Default.Equals(Type, otherCondition.Type);
+            bool stateEquals = State == otherCondition.State;
+            bool matchValueEquals = MatchValue == otherCondition.MatchValue;
+
+            return typeEquals && stateEquals && matchValueEquals;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Type, State, MatchValue);
+            return HashCode.Combine(Type, State, MatchValue, Validate);
         }
     }
 }
