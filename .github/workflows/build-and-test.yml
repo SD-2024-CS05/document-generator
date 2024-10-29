@@ -36,7 +36,7 @@ jobs:
         CertName: ShapeHandler_TemporaryKey.pfx
 
    - name: Build with MSBuild
-     run: msbuild /p:Configuration=Release /p:PackageCertificateKeyFile=$env:SigningCertificate /p:PackageCertificatePassword=$env:PrivateKey /p:PackageCertificateThumbprint=$env:Thumbprint
+     run: msbuild /p:Configuration=Release /p:PackageCertificateKeyFile=$env:SigningCertificate /p:PackageCertificatePassword=$env:PrivateKey /p:PackageCertificateThumbprint=$env:Thumbprint /p:AppxPackageSigningEnabled=true
      env:
        SigningEnabled: false
        PrivateKey: ${{secrets.CERT_KEY}}
