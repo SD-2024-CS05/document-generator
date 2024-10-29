@@ -11,6 +11,10 @@ on:
      - main
      - staging
      - dev
+permissions:
+  contents: read
+  actions: read
+  checks: write
 
 jobs:
  build:
