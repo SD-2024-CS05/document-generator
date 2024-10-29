@@ -57,7 +57,7 @@ jobs:
         CertName: ShapeHandler_TemporaryKey.pfx
 
    - name: Build with VSTest-Actions
-     uses: microsoft/vstest-action@v1
+     uses: microsoft/vstest-action@v1.0.0
      with:
        testAssemblyPath: 'ShapeHandler.Tests.dll'
        searchFolder: 'ShapeHandler.Tests/bin/Release/'
