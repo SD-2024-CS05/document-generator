@@ -28,10 +28,12 @@ jobs:
 
    - name: Decode PFX
      run: |
-      $pfx_cert_password = [System.Convert]::FromBase64String("${{ secrets.CERT_KEY }}")
-      $currentDir = Get-Location
-      $certPath = "D:\a\document-generator\document-generator\ShapeHandler\ShapeHandler_TemporaryKey.pfx"
-      [System.IO.File]::WriteAllBytes($certPath, $pfx_cert_password)
+        $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.CERT_KEY }}")
+        $currentDirectory = Get-Location
+        $certificatePath = Join-Path -Path $currentDirectory -ChildPath $env:SigningCertificate
+        [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)
+     env:
+       SigningCertificate: ShapeHandler_TemporaryKey.pfx
 
    - name: Build with MSBuild
      run: msbuild /p:Configuration=Release
