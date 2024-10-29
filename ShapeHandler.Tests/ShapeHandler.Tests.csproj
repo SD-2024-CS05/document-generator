@@ -40,6 +40,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AngleSharp, Version=1.1.2.0, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\ShapeHandler\bin\Debug\AngleSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.ExtendedReflection, Version=17.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Office.Tools, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Microsoft.Office.Tools.Common, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <Private>True</Private>
@@ -67,11 +75,45 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConditionTTest.ConstructorTest.g.cs">
+      <DependentUpon>ConditionTTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConditionTTest.cs" />
+    <Compile Include="ConnectionTest.ConstructorTest.g.cs">
+      <DependentUpon>ConnectionTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ConnectionTest.cs" />
+    <Compile Include="DecisionNodeTest.ConstructorTest.g.cs">
+      <DependentUpon>DecisionNodeTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DecisionNodeTest.cs" />
+    <Compile Include="HtmlGraphTest.AddConnectionTest.g.cs">
+      <DependentUpon>HtmlGraphTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HtmlGraphTest.AddNodeTest.g.cs">
+      <DependentUpon>HtmlGraphTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HtmlGraphTest.ConstructorTest.g.cs">
+      <DependentUpon>HtmlGraphTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HtmlGraphTest.cs" />
+    <Compile Include="HtmlNodeTest.ConstructorTest.g.cs">
+      <DependentUpon>HtmlNodeTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="HtmlNodeTest.cs" />
+    <Compile Include="PageNodeTest.ConstructorTest.g.cs">
+      <DependentUpon>PageNodeTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="PageNodeTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\PexAssemblyInfo.cs" />
-    <Compile Include="ShapeDetectorTest.cs" />
+    <Compile Include="StartEndNodeTest.Constructor.g.cs">
+      <DependentUpon>StartEndNodeTest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="StartEndNodeTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Choose>

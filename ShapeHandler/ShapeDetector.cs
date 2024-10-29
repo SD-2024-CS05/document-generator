@@ -6,6 +6,7 @@ using System.Xml.Linq;
 using Visio = Microsoft.Office.Interop.Visio;
 using Office = Microsoft.Office.Core;
 using Microsoft.Office.Interop.Visio;
+using ShapeHandler.Objects;
 
 namespace ShapeHandler
 {
@@ -23,7 +24,7 @@ namespace ShapeHandler
         /// Creates a Graph of the active Visio Document
         /// </summary>
         /// <returns></returns>
-        public static Graph CreateGraph()
+        public static HtmlGraph CreateGraph()
         {
             Console.WriteLine("Creating Graph");
 
@@ -36,7 +37,7 @@ namespace ShapeHandler
             }
 
             // combine all pages into one graph
-            Graph graph = CombineGraphPages(pageIndexes);
+            HtmlGraph graph = CombineGraphPages(pageIndexes);
 
             Console.WriteLine("Graph Created");
 
@@ -48,9 +49,9 @@ namespace ShapeHandler
         /// </summary>
         /// <param name="pageIndex">Index of the page to graph</param>
         /// <returns></returns>
-        private static Graph GetGraphOfPage(int pageIndex)
+        private static HtmlGraph GetGraphOfPage(int pageIndex)
         {
-            Graph graph = new Graph();
+            HtmlGraph graph = new HtmlGraph();
             Page page = Globals.ShapeDetector.Application.ActiveDocument.Pages[pageIndex];
 
             foreach (Shape shape in page.Shapes)
@@ -59,7 +60,7 @@ namespace ShapeHandler
                 if (shape.Name.Contains("Start/End"))
                 {
                 }
-                WebElement element;
+                FlowchartNode element;
                 //switch (name)
                 //{
                 //    case "Anchor":
@@ -92,13 +93,12 @@ namespace ShapeHandler
         /// </summary>
         /// <param name="pageIndexes">List of page indices to graph</param>
         /// <returns>Graph Object</returns>
-        private static Graph CombineGraphPages(List<short> pageIndexes)
+        private static HtmlGraph CombineGraphPages(List<short> pageIndexes)
         {
-            Graph graph = new Graph();
+            HtmlGraph graph = new HtmlGraph();
             foreach (short pageIndex in pageIndexes)
             {
-                Graph pageGraph = GetGraphOfPage(pageIndex);
-                graph.CombineGraphs(pageGraph);
+                HtmlGraph pageGraph = GetGraphOfPage(pageIndex);
             }
 
             return graph;
