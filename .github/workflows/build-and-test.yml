@@ -29,7 +29,7 @@ jobs:
    - name: Decode PFX
      run: |
         $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.CERT_KEY }}")
-        $currentDirectory = Get-Location
+        $currentDirectory = "D:\a\document-generator\document-generator\ShapeHandler\"
         $certificatePath = Join-Path -Path $currentDirectory -ChildPath $env:SigningCertificate
         [IO.File]::WriteAllBytes("$certificatePath", $pfx_cert_byte)
      env:
