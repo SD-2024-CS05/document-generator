@@ -30,7 +30,7 @@ jobs:
      run: |
          $pfxCertFilePath = Join-Path -Path $env:CertDir -ChildPath $env:CertName
          [System.IO.File]::WriteAllBytes($pfxCertFilePath, [System.Convert]::FromBase64String("${{secrets.CERT_KEY}}"))
-         $codeSigningCert = Import-PfxCertificate -FilePath $pfxCertFilePath -Password $(${{secrets.CERT_PASS}} | ConvertTo-SecureString -AsPlainText -Force) -CertStoreLocation Cert:\CurrentUser\My
+         $codeSigningCert = Import-PfxCertificate -FilePath $pfxCertFilePath -Password $("${{secrets.CERT_PASS}}" | ConvertTo-SecureString -AsPlainText -Force) -CertStoreLocation Cert:\CurrentUser\My
      env:
         CertDir: D:\a\document-generator\document-generator\ShapeHandler\
         CertName: ShapeHandler_TemporaryKey.pfx
