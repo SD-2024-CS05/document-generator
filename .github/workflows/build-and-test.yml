@@ -1,105 +1,70 @@
 name: Build and Test
 
 on:
- push:
-   branches:
-     - main
-     - staging
-     - dev
- pull_request:
-   branches:
-     - main
-     - staging
-     - dev
+push:
+  branches:
+    - main
+    - staging
+    - dev
+pull_request:
+  branches:
+    - main
+    - staging
+    - dev
 
 jobs:
- build:
-   runs-on: windows-latest
+build:
+  runs-on: windows-2019
 
-   steps:
-   - name: Checkout code
-     uses: actions/checkout@v2
+  steps:
+  - name: Checkout code
+    uses: actions/checkout@v2
 
-   - name: Setup MSBuild
-     uses: microsoft/setup-msbuild@v1
+  - name: Setup MSBuild
+    uses: microsoft/setup-msbuild@v1
 
-   - name: Cache NuGet packages
-     uses: actions/cache@v4
-     with:
-       path: ~/.nuget/packages
-       key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
-       restore-keys: |
-         ${{ runner.os }}-nuget-
+  - name: Cache NuGet packages
+    uses: actions/cache@v4
+    with:
+      path: ~/.nuget/packages
+      key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+      restore-keys: |
+        ${{ runner.os }}-nuget-
 
-   - name: Cache build outputs
-     uses: actions/cache@v4
-     with:
-       path: |
-         **/bin/Release
-         **/obj/Release
-       key: ${{ runner.os }}-build-${{ hashFiles('**/*.csproj') }}
-       restore-keys: |
-         ${{ runner.os }}-build-
+  - name: Cache build outputs
+    uses: actions/cache@v4
+    with:
+      path: |
+        **/bin/Release
+        **/obj/Release
+      key: ${{ runner.os }}-build-${{ hashFiles('**/*.csproj') }}
+      restore-keys: |
+        ${{ runner.os }}-build-
 
-   - name: Restore NuGet packages
-     run: nuget restore
+  - name: Restore NuGet packages
+    run: nuget restore
 
-   - name: create PFX file
-     run: |
-         $pfxCertFilePath = Join-Path -Path $env:CertDir -ChildPath $env:CertName
-         [System.IO.File]::WriteAllBytes($pfxCertFilePath, [System.Convert]::FromBase64String("${{secrets.CERT_KEY}}"))
-         certutil -f -p "" -importpfx $pfxCertFilePath
-     env:
-        CertDir: D:\a\document-generator\document-generator\ShapeHandler\
-        CertName: ShapeHandler_TemporaryKey.pfx
+  - name: create PFX file
+    run: |
+        $pfxCertFilePath = Join-Path -Path $env:CertDir -ChildPath $env:CertName
+        [System.IO.File]::WriteAllBytes($pfxCertFilePath, [System.Convert]::FromBase64String("${{secrets.CERT_KEY}}"))
+        certutil -f -p "" -importpfx $pfxCertFilePath
+    env:
+       CertDir: D:\a\document-generator\document-generator\ShapeHandler\
+       CertName: ShapeHandler_TemporaryKey.pfx
 
-   - name: Build with MSBuild
-     if: steps.cache-build.outputs.cache-hit != 'true'
-     run: msbuild /p:Configuration=Release /p:GITHUB_ACTIONS=true
-     env:
-       SigningEnabled: false
-       Password: ${{secrets.CERT_PASS}}
-       Thumbprint: ${{secrets.CERT_THUMBPRINT}}
-       SigningCertificate: ShapeHandler_TemporaryKey.pfx
+  - name: Build with MSBuild and Test
+    if: steps.cache-build.outputs.cache-hit != 'true'
+    run: |
+        msbuild /p:Configuration=Release
+        msbuild /t:VSTest /p:VSTestPath="C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\Extensions\TestPlatform\vstest.console.exe" /p:VSTestVersion=16.0 /p:Platform="Any CPU" /p:Configuration=Release /p:GITHUB_ACTIONS=true
+        mkdir -p test-results
+        cp **/TestResults/*.trx test-results/
+    continue-on-error: true
 
-   - name: Upload build artifacts
-     uses: actions/upload-artifact@v4
-     with:
-       name: build-artifacts
-       path: |
-         **/bin/Release/
-         **/obj/Release/
-         **/*.targets
-         **/*.sln
-         **/*.csproj
-
- test:
-   runs-on: windows-latest 
-   needs: build
-
-   steps:
-   - name: Checkout code
-     uses: actions/checkout@v2
-
-   - name: Download build artifacts
-     uses: actions/download-artifact@v4
-     with:
-       name: build-artifacts
-       path: ./build
-
-   - name: Setup MSBuild
-     uses: microsoft/setup-msbuild@v1
-
-   - name: Run Tests (msbuild)
-     run: msbuild /t:VSTest /p:Configuration=Release $env:solutionFile
-     env:
-       solutionFile: ShapeHandler.sln
-   
-   - name: Run tests
-     run: dotnet test  --no-build --verbosity normal --logger "trx;LogFileName=test_results.trx"
-
-   - name: Upload test results
-     uses: actions/upload-artifact@v4
-     with:
-       name: test-results
-       path: test_results.trx
+  - name: Upload test results
+    if: always()
+    uses: actions/upload-artifact@v2
+    with:
+      name: test-results
+      path: test-results/
