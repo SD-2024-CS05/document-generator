@@ -83,11 +83,13 @@ jobs:
 
        - name: Run tests
          run: |
-            $testResults = Invoke-Expression -Command "vstest.console.exe ${{ env.ARTIFACTS_PATH }}\ShapeHandler.Tests.dll"
+            $vstestPath = "C:\Program Files\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\Extensions\TestPlatform\vstest.console.exe"
+            $testResults = Invoke-Expression -Command "$vstestPath ${{ env.ARTIFACTS_PATH }}\ShapeHandler.Tests.dll"
             $testResults | Out-File -FilePath $env:TEST_RESULTS_PATH
-            env:
-                ARTIFACTS_PATH: ${{ github.workspace }}/ShapeHandler
-                TEST_RESULTS_PATH: ${{ github.workspace }}/test-results.txt
+         env:
+            ARTIFACTS_PATH: ${{ github.workspace }}/ShapeHandler
+            TEST_RESULTS_PATH: ${{ github.workspace }}/test-results.txt
+
 
        - name: Upload test results
          uses: actions/upload-artifact@v4
