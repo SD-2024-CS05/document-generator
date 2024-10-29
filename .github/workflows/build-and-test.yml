@@ -14,6 +14,8 @@ on:
 
 jobs:
  build:
+   env:
+      SOLUTION_FILE: ShapeHandler.sln
    runs-on: windows-latest
 
    steps:
@@ -45,7 +47,7 @@ jobs:
          ${{ runner.os }}-build-
 
    - name: Restore NuGet packages
-     run: nuget restore
+     run: nuget restore ${{ env.SOLUTION_FILE }}
 
    - name: create PFX file
      run: |
@@ -59,12 +61,15 @@ jobs:
    - name: Build with MSBuild
      if: steps.cache-build.outputs.cache-hit != 'true'  
      run: |  
-       msbuild /p:Configuration=Release ShapeHandler.sln /p:GITHUB_ACTIONS=true
+       msbuild /p:Configuration=Release ${{env.SOLUTION_FILE}} /p:GITHUB_ACTIONS=true
 
    - name: Upload Artifact
      uses: actions/upload-artifact@v4
      with:
        name: ShapeHandler 
+       path: |
+         **/bin/Release
+         **/obj/Release
 
  test:
     runs-on: windows-latest
