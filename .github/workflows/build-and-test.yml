@@ -87,10 +87,11 @@ jobs:
 
        - name: Run tests  
          run: |
-             cd ./build/ShapeHandler.Tests/bin/Release
+             cd ${{ env.RELEASE_DIR }}
              & "${{ env.vstestPath }}" "${{ env.TEST_FILE }}" "/Logger:trx;LogFileName=${{ env.TEST_RESULTS_PATH }}"  
          env:  
             vstestPath: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe  
+            RELEASE_DIR: ./build/ShapeHandler.Tests/bin/Release
             TEST_RESULTS_PATH: ${{ github.workspace }}\test-results.trx
             TEST_FILE: ShapeHandler.Tests.dll
        - name: Upload test results
