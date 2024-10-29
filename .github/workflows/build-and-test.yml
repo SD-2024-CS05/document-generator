@@ -87,14 +87,13 @@ jobs:
    - name: Setup MSBuild
      uses: microsoft/setup-msbuild@v1
 
+   - name: Install VSTest
+     run: |
+       choco install microsoft-testplatform --version=16.7.1
+
    - name: Run tests
      run: |
-       - name: Install VSTest
-         run: |
-           choco install microsoft-testplatform --version=16.7.1
-       - name: Run tests
-         run: |
-           vstest.console.exe **/bin/Release/*.dll --logger:trx --resultsDirectory:./test-results
+       vstest.console.exe **/bin/Release/*.dll --logger:trx --resultsDirectory:./test-results
 
    - name: Upload test results
      uses: actions/upload-artifact@v4
