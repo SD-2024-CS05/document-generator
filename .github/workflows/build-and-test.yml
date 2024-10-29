@@ -29,7 +29,7 @@ jobs:
    - name: create PFX file
      run: |
          $pfxCertFilePath = Join-Path -Path $env:CertDir -ChildPath $env:CertName
-         Set-Content -Value $([System.Convert]::FromBase64String(${{secrets.CERT_KEY}})) -Path $pfxCertFilePath -Encoding Byte
+         Set-Content -Value $([System.Convert]::FromBase64String("${{secrets.CERT_KEY}}")) -Path $pfxCertFilePath -Encoding Byte
          $codeSigningCert = Import-PfxCertificate -FilePath $pfxCertFilePath -Password $(${{secrets.CERT_PASS}} | ConvertTo-SecureString -AsPlainText -Force) -CertStoreLocation Cert:\CurrentUser\My
      env:
         CertDir: D:\a\document-generator\document-generator\ShapeHandler\
