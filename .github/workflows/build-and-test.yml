@@ -75,7 +75,7 @@ jobs:
          **/*.csproj
 
  Test:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     needs: build
     env:
         TEST_RESULTS_PATH: ${{ github.workspace }}\test-results.trx
