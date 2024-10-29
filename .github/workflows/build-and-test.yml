@@ -58,5 +58,5 @@ jobs:
 
    - name: Build with MSBuild and test
      if: steps.cache-build.outputs.cache-hit != 'true'
-     run: |
-       'C:\Program Files\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe' **\*.Tests.dll
+     run: |  
+           'C:\Program Files\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe' $(Get-ChildItem -Path . -Recurse -Filter *.Tests.dll | ForEach-Object { $_.FullName })
