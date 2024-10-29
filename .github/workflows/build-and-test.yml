@@ -23,21 +23,8 @@ jobs:
     - name: Setup MSBuild
       uses: microsoft/setup-msbuild@v1
 
-    - name: Cache .NET Framework Installer
-      id: cache-dotnet-installer
-      uses: actions/cache@v3
-      with:
-        path: dotnet-framework-4.8-developer-pack.exe
-        key: dotnet-framework-4.8-developer-pack
-        restore-keys: dotnet-framework-4.8-developer-pack
-
-    - name: Download .NET Framework Installer if not cached
-      if: steps.cache-dotnet-installer.outputs.cache-hit != 'true'
-      run: |
-        Invoke-WebRequest -Uri https://aka.ms/dotnet-framework-4.8-developer-pack -OutFile dotnet-framework-4.8-developer-pack.exe
-
-    - name: Install .NET Framework 4.8 Developer Pack
-      run: .\dotnet-framework-4.8-developer-pack.exe /quiet /norestart
+    - name: Install .NET 4.8
+      run: Install-Package -Name 'Microsoft.Net.Framework.DeveloperPack_4.8' -Force
 
     - name: Restore NuGet packages
       run: nuget restore YourSolution.sln
