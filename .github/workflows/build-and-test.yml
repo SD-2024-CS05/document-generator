@@ -76,5 +76,5 @@ jobs:
    - name: Run tests
      uses: microsoft/vstest-action@v1.0.0
      with:
-       searchFolder: 'ShapeHandler.Tests\bin\Release'
+       searchFolder: './build'
        runInParallel: true
