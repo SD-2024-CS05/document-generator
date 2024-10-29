@@ -51,32 +51,6 @@ jobs:
        Thumbprint: ${{secrets.CERT_THUMBPRINT}}
        SigningCertificate: ShapeHandler_TemporaryKey.pfx
 
-   - name: Upload build artifacts
-     uses: actions/upload-artifact@v4
-     with:
-       name: build-artifacts
-       path: |
-         **/*.*
-
- test:
-   runs-on: windows-latest 
-   needs: build
-
-   steps:
-   - name: Checkout code
-     uses: actions/checkout@v2
-
-   - name: Download build artifacts
-     uses: actions/download-artifact@v4
-     with:
-       name: build-artifacts
-       path: ./build
-   
-   - name: Setup .NET
-     uses: actions/setup-dotnet@v4
-     with:
-       dotnet-version: '4.8.1'
-
    - name: Run tests
      run: dotnet test ./ShapeHandler.sln --no-build --verbosity normal --logger "trx;LogFileName=test_results.trx"
 
