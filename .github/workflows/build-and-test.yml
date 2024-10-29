@@ -26,13 +26,14 @@ jobs:
    - name: Restore NuGet packages
      run: nuget restore
 
-   # - name: create PFX file
-   #   run: |
-   #       $pfxCertFilePath = Join-Path -Path $env:CertDir -ChildPath $env:CertName
-   #       [System.IO.File]::WriteAllBytes($pfxCertFilePath, [System.Convert]::FromBase64String("${{secrets.CERT_KEY}}"))
-   #   env:
-   #      CertDir: D:\a\document-generator\document-generator\ShapeHandler\
-   #      CertName: ShapeHandler_TemporaryKey.pfx
+   - name: create PFX file
+     run: |
+         $pfxCertFilePath = Join-Path -Path $env:CertDir -ChildPath $env:CertName
+         [System.IO.File]::WriteAllBytes($pfxCertFilePath, [System.Convert]::FromBase64String("${{secrets.CERT_KEY}}"))
+         certutil -f -p "" -importpfx $pfxCertFilePath
+     env:
+        CertDir: D:\a\document-generator\document-generator\ShapeHandler\
+        CertName: ShapeHandler_TemporaryKey.pfx
 
    - name: Build with MSBuild
      run: msbuild /p:Configuration=Release
