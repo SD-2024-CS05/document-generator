@@ -60,4 +60,4 @@ jobs:
      if: steps.cache-build.outputs.cache-hit != 'true'
      run: |
          msbuild /p:Configuration=Release
-         msbuild /t:VSTest /p:GITHUB_ACTIONS=true
+         & 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe' **\*.Tests.dll
