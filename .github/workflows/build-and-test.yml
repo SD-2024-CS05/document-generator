@@ -56,6 +56,13 @@ jobs:
         CertDir: D:\a\document-generator\document-generator\ShapeHandler\
         CertName: ShapeHandler_TemporaryKey.pfx
 
+   - name: Build with VSTest-Actions
+     uses: microsoft/vstest-action@v1
+     with:
+       testAssemblyPath: 'ShapeHandler.Tests.dll'
+       searchFolder: 'ShapeHandler.Tests/bin/Release/'
+       runInParallel: true
+
    - name: Build with MSBuild and test  
      if: steps.cache-build.outputs.cache-hit != 'true'  
      run: |  
