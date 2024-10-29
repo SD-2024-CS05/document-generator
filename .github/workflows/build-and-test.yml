@@ -55,7 +55,7 @@ jobs:
 
    - name: Build with MSBuild
      if: steps.cache-build.outputs.cache-hit != 'true'
-     run: msbuild /p:Configuration=Release
+     run: msbuild /p:Configuration=Release /p:GITHUB_ACTIONS=true
      env:
        SigningEnabled: false
        Password: ${{secrets.CERT_PASS}}
@@ -87,8 +87,16 @@ jobs:
        name: build-artifacts
        path: ./build
 
+   - name: Setup MSBuild
+     uses: microsoft/setup-msbuild@v1
+
    - name: Run tests
      run: dotnet test  --no-build --verbosity normal --logger "trx;LogFileName=test_results.trx"
+
+   - name: Run Tests (msbuild)
+     run: msbuild /t:VSTest /p:Configuration=Release $env:solutionFile
+     env:
+       solutionFile: ShapeHandler.sln
 
    - name: Upload test results
      uses: actions/upload-artifact@v4
