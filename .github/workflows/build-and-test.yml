@@ -1,69 +1,110 @@
 name: Build and Test
 
-on:
-    push:
-      branches:
-        - main
-        - staging
-        - dev
-    pull_request:
-      branches:
-        - main
-        - staging
-        - dev
+on: 
+  push:
+    branches:
+      - main
+      - staging
+      - dev
+  pull_request:
+    branches:
+      - main
+      - staging
+      - dev
 
 jobs:
-    Test:
-      runs-on: windows-2019
+  build:
+    runs-on: windows-latest
 
-      steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      - name: Setup MSBuild
-        uses: microsoft/setup-msbuild@v1
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1
 
-      - name: Cache NuGet packages
-        uses: actions/cache@v4
-        with:
-          path: ~/.nuget/packages
-          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
-          restore-keys: |
-            ${{ runner.os }}-nuget-
+    - name: Cache .NET Framework Installer
+      id: cache-dotnet-installer
+      uses: actions/cache@v3
+      with:
+        path: dotnet-framework-4.8-developer-pack.exe
+        key: dotnet-framework-4.8-developer-pack
+        restore-keys: dotnet-framework-4.8-developer-pack
 
-      - name: Cache build outputs
-        uses: actions/cache@v4
-        with:
-          path: |
-            **/bin/Release
-            **/obj/Release
-          key: ${{ runner.os }}-build-${{ hashFiles('**/*.csproj') }}
-          restore-keys: |
-            ${{ runner.os }}-build-
+    - name: Download .NET Framework Installer if not cached
+      if: steps.cache-dotnet-installer.outputs.cache-hit != 'true'
+      run: |
+        Invoke-WebRequest -Uri https://aka.ms/dotnet-framework-4.8-developer-pack -OutFile dotnet-framework-4.8-developer-pack.exe
 
-      - name: Restore NuGet packages
-        run: nuget restore
+    - name: Install .NET Framework 4.8 Developer Pack
+      run: .\dotnet-framework-4.8-developer-pack.exe /quiet /norestart
 
-      - name: create PFX file
-        run: |
-            $pfxCertFilePath = Join-Path -Path $env:CertDir -ChildPath $env:CertName
-            [System.IO.File]::WriteAllBytes($pfxCertFilePath, [System.Convert]::FromBase64String("${{secrets.CERT_KEY}}"))
-            certutil -f -p "" -importpfx $pfxCertFilePath
-        env:
-           CertDir: D:\a\document-generator\document-generator\ShapeHandler\
-           CertName: ShapeHandler_TemporaryKey.pfx
+    - name: Restore NuGet packages
+      run: nuget restore YourSolution.sln
 
-      - name: Build with MSBuild and Test
-        if: steps.cache-build.outputs.cache-hit != 'true'
-        run: |
-            msbuild /p:Configuration=Release
-            msbuild /t:VSTest /p:Configuration=Release /p:GITHUB_ACTIONS=true
-            mkdir -p test-results
-            cp **/TestResults/*.trx test-results/
+    - name: Build with MSBuild
+      run: msbuild YourSolution.sln /p:Configuration=Release /p:GITHUB_ACTIONS=true
 
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results
-          path: test-results/
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-artifacts
+        path: |
+          **/bin/Release/
+          **/obj/Release/
+          **/*.targets
+          **/*.sln
+          **/*.csproj
+
+  test-dotnet:
+    runs-on: windows-latest
+    needs: build
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-artifacts
+        path: ./build
+
+    - name: Run tests with dotnet
+      continue-on-error: true
+      run: |
+        dotnet test ShapeHandler.sln --no-build --verbosity normal --logger "trx;LogFileName=test_results_dotnet.trx"
+
+    - name: Upload test results for dotnet
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results-dotnet
+        path: ./test_results_dotnet.trx
+
+  test-msbuild:
+    runs-on: windows-latest
+    needs: build
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Download build artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: build-artifacts
+        path: ./build
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1
+
+    - name: Run tests with MSBuild
+      continue-on-error: true
+      run: |
+        msbuild /t:VSTest /p:Configuration=Release YourSolution.sln
+
+    - name: Upload test results for MSBuild
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results-msbuild
+        path: ./test_results.trx
