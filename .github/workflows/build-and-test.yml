@@ -76,6 +76,6 @@ jobs:
    - name: Run tests
      uses: microsoft/vstest-action@v1.0.0
      with:
-       testAssembly: '**\bin\Release\ShapeHandler.Tests.dll'
+       testAssembly: 'ShapeHandler.Tests\bin\Release\ShapeHandler.Tests.dll'
        searchFolder: 'ShapeHandler.Tests\bin\Release'
        runInParallel: true
