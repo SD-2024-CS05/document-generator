@@ -67,7 +67,7 @@ jobs:
        path: ./build
 
    - name: Run tests
-     run: dotnet test ./build --no-build --verbosity normal --logger "trx;LogFileName=test_results.trx"
+     run: dotnet test ./build/ShapeHandler.sln --no-build --verbosity normal --logger "trx;LogFileName=test_results.trx"
 
    - name: Upload test results
      uses: actions/upload-artifact@v4
