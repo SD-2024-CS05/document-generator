@@ -1,94 +1,63 @@
 name: Build and Test
 
-on: 
-  push:
-    branches:
-      - main
-      - staging
-      - dev
-  pull_request:
-    branches:
-      - main
-      - staging
-      - dev
+on:
+ push:
+   branches:
+     - main
+     - staging
+     - dev
+ pull_request:
+   branches:
+     - main
+     - staging
+     - dev
 
 jobs:
-  build:
-    runs-on: windows-latest
+ build:
+   runs-on: windows-latest
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+   steps:
+   - name: Checkout code
+     uses: actions/checkout@v2
 
-    - name: Setup MSBuild
-      uses: microsoft/setup-msbuild@v1
+   - name: Setup MSBuild
+     uses: microsoft/setup-msbuild@v1
 
-    - name: Restore NuGet packages
-      run: nuget restore ShapeHandler.sln
+   - name: Cache NuGet packages
+     uses: actions/cache@v4
+     with:
+       path: ~/.nuget/packages
+       key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+       restore-keys: |
+         ${{ runner.os }}-nuget-
 
-    - name: Build with MSBuild
-      run: msbuild ShapeHandler.sln /p:Configuration=Release /p:GITHUB_ACTIONS=true
+   - name: Cache build outputs
+     uses: actions/cache@v4
+     with:
+       path: |
+         **/bin/Release
+         **/obj/Release
+         **/*.sln
+         **/*.csproj
+         **/*.targets
+       key: ${{ runner.os }}-build-${{ hashFiles('**/*.csproj') }}
+       restore-keys: |
+         ${{ runner.os }}-build-
 
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: build-artifacts
-        path: |
-          **/bin/Release/
-          **/obj/Release/
-          **/*.targets
-          **/*.sln
-          **/*.csproj
+   - name: Restore NuGet packages
+     run: nuget restore
 
-  test-dotnet:
-    runs-on: windows-latest
-    needs: build
+   - name: create PFX file
+     run: |
+         $pfxCertFilePath = Join-Path -Path $env:CertDir -ChildPath $env:CertName
+         [System.IO.File]::WriteAllBytes($pfxCertFilePath, [System.Convert]::FromBase64String("${{secrets.CERT_KEY}}"))
+         certutil -f -p "" -importpfx $pfxCertFilePath
+     env:
+        CertDir: D:\a\document-generator\document-generator\ShapeHandler\
+        CertName: ShapeHandler_TemporaryKey.pfx
 
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Download build artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: build-artifacts
-        path: ./build
-
-    - name: Run tests with dotnet
-      continue-on-error: true
-      run: |
-        dotnet test ShapeHandler.sln --no-build --verbosity normal --logger "trx;LogFileName=test_results_dotnet.trx"
-
-    - name: Upload test results for dotnet
-      uses: actions/upload-artifact@v4
-      with:
-        name: test-results-dotnet
-        path: ./test_results_dotnet.trx
-
-  test-msbuild:
-    runs-on: windows-latest
-    needs: build
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Download build artifacts
-      uses: actions/download-artifact@v4
-      with:
-        name: build-artifacts
-        path: ./build
-
-    - name: Setup MSBuild
-      uses: microsoft/setup-msbuild@v1
-
-    - name: Run tests with MSBuild
-      continue-on-error: true
-      run: |
-        msbuild /t:VSTest /p:Configuration=Release YourSolution.sln
-
-    - name: Upload test results for MSBuild
-      uses: actions/upload-artifact@v4
-      with:
-        name: test-results-msbuild
-        path: ./test_results.trx
+   - name: Build with MSBuild and test
+     if: steps.cache-build.outputs.cache-hit != 'true'
+     run: |
+         msbuild /p:Configuration=Release
+         msbuild /t:VSTest /p:GITHUB_ACTIONS=true
