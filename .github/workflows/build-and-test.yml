@@ -30,7 +30,7 @@ jobs:
      run: |
          $pfxFile = Join-Path $env:CertDir $env:Certname
          $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.CERT_KEY }}")
-         [System.IO.File]::WriteAllBytes($pfxFile, $pfx_cert_byte)]
+         [System.IO.File]::WriteAllBytes($pfxFile, $pfx_cert_byte)
      env: 
        CertDir: D:\a\document-generator\document-generator\ShapeHandler\
        Certname: ShapeHandler_TemporaryKey.pfx
@@ -38,9 +38,9 @@ jobs:
    - name: Install certificate
      run: |
          $pfxFile = Join-Path $env:CertDir $env:Certname
-            $pfxPassword = "${{ secrets.CERT_PASSWORD }}"
-            $securePassword = ConvertTo-SecureString -String $pfxPassword -Force -AsPlainText
-            Import-PfxCertificate -FilePath $pfxFile -CertStoreLocation Cert:\LocalMachine\Root -Password ""
+         $pfxPassword = "${{ secrets.CERT_PASS }}"
+         $securePassword = ConvertTo-SecureString -String $pfxPassword -Force -AsPlainText
+         Import-PfxCertificate -FilePath $pfxFile -CertStoreLocation Cert:\LocalMachine\Root -Password $securePassword
      env: 
        CertDir: D:\a\document-generator\document-generator\ShapeHandler\
        Certname: ShapeHandler_TemporaryKey.pfx
