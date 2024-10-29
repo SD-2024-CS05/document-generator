@@ -26,11 +26,6 @@ jobs:
    - name: Restore NuGet packages
      run: nuget restore
 
-   - name: Disable ClickOnce signing on non-main branches
-     if: github.ref != 'refs/heads/main'
-     run: |
-       sed -i 's/<SignManifests>true<\/SignManifests>/<SignManifests>false<\/SignManifests>/' ShapeHandler/ShapeHandler.csproj
-
    - name: Build with MSBuild
      run: msbuild /p:Configuration=Release
 
