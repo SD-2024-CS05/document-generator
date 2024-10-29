@@ -34,16 +34,18 @@ jobs:
      env: 
        CertDir: D:\a\document-generator\document-generator\ShapeHandler\
        Certname: ShapeHandler_TemporaryKey.pfx
-
-   - name: Install certificate
-     run: |
-         $pfxFile = Join-Path $env:CertDir $env:Certname
-         $pfxPassword = "${{ secrets.CERT_PASS }}"
-         $securePassword = ConvertTo-SecureString -String $pfxPassword -Force -AsPlainText
-         Import-PfxCertificate -FilePath $pfxFile -CertStoreLocation Cert:\LocalMachine\Root -Password $securePassword
-     env: 
-       CertDir: D:\a\document-generator\document-generator\ShapeHandler\
-       Certname: ShapeHandler_TemporaryKey.pfx
+   - name: Install Certificate  
+     run: |  
+       $pfxFile = Join-Path $env:CertDir $env:Certname  
+       $cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2  
+       $cert.Import($pfxFile)  
+       $store = New-Object System.Security.Cryptography.X509Certificates.X509Store("My", "LocalMachine")  
+       $store.Open("MaxAllowed")  
+       $store.Add($cert)  
+       $store.Close()
+     env:
+        CertDir: D:\a\document-generator\document-generator\ShapeHandler\
+        Certname: ShapeHandler_TemporaryKey.pfx
 
    - name: Build with MSBuild
      run: msbuild /p:Configuration=Release /p:AppxPackageSigningEnabled=${{ env.SigningEnabled }}
