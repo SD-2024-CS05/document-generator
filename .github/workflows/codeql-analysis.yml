@@ -45,16 +45,14 @@ jobs:
       with:
         languages: ${{ matrix.language }}
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: '4.8.1'
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1
 
     - name: Restore dependencies
-      run: dotnet restore
+      run: msbuild /t:restore
 
     - name: Build
-      run: dotnet build --configuration Release
+      run: msbuild /p:Configuration=Release
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2

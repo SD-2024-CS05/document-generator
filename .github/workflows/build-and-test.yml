@@ -37,7 +37,7 @@ jobs:
    - name: Install Certificate  
      run: |  
        $pfxFile = Join-Path $env:CertDir $env:Certname  
-       $cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2($pfxFile)  
+       $cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2($pfxFile, "", [System.Security.Cryptography.X509Certificates.X509KeyStorageFlags]::MachineKeySet)  
        $store = New-Object System.Security.Cryptography.X509Certificates.X509Store("My", "LocalMachine")  
        $store.Open("MaxAllowed")  
        $store.Add($cert)  
