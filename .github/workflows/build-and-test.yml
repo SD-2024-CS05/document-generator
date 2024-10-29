@@ -26,8 +26,15 @@ jobs:
    - name: Restore NuGet packages
      run: nuget restore
 
+   - name: Decode PFX
+     run: |
+      $pfx_cert_password = [System.Convert]::FromBase64String("${{ secrets.CERT_KEY }}")
+      $currentDir = Get-Location
+      $certPath = Join-Path $currentDir "ShapeHandler_TemporaryKey.pfx"
+      [System.IO.File]::WriteAllBytes($certPath, $pfx_cert_password)
+
    - name: Build with MSBuild
-     run: msbuild /p:Configuration=Release /p:SkipStrongNameVerification=true /p:SignAssembly=false
+     run: msbuild /p:Configuration=Release
 
    - name: Upload build artifacts
      uses: actions/upload-artifact@v4
