@@ -59,7 +59,7 @@ jobs:
    - name: Build with VSTest-Actions
      uses: microsoft/vstest-action@v1.0.0
      with:
-       testAssemblyPath: 'ShapeHandler.Tests.dll'
+       testAssembly: 'ShapeHandler.Tests.dll'
        searchFolder: 'ShapeHandler.Tests/bin/Release/'
        runInParallel: true
 
