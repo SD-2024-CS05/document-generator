@@ -54,6 +54,7 @@ jobs:
         CertName: ShapeHandler_TemporaryKey.pfx
 
    - name: Build with MSBuild
+     if: steps.cache-build.outputs.cache-hit != 'true'
      run: msbuild /p:Configuration=Release
      env:
        SigningEnabled: false
@@ -88,7 +89,12 @@ jobs:
 
    - name: Run tests
      run: |
-       vstest.console.exe **/bin/Release/*.dll --logger:trx --resultsDirectory:./test-results
+       - name: Install VSTest
+         run: |
+           choco install microsoft-testplatform --version=16.7.1
+       - name: Run tests
+         run: |
+           vstest.console.exe **/bin/Release/*.dll --logger:trx --resultsDirectory:./test-results
 
    - name: Upload test results
      uses: actions/upload-artifact@v4
