@@ -79,6 +79,7 @@ jobs:
          uses: actions/download-artifact@v4
          with:
            name: ShapeHandler
+           path: ${{ github.workspace }}/ShapeHandler
 
        - name: Run tests
          run: |
