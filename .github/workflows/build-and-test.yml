@@ -32,6 +32,7 @@ jobs:
          $pfxFile = Join-Path $env:CertDir $env:Certname
          $pfx_cert_byte = [System.Convert]::FromBase64String("${{ secrets.CERT_KEY }}")
          [System.IO.File]::WriteAllBytes($pfxFile, $pfx_cert_byte)
+         Import-PfxCertificate -FilePath $pfxFile -CertStoreLocation Cert:\LocalMachine\My
      env: 
        CertDir: D:\a\document-generator\document-generator\ShapeHandler\
        Certname: ShapeHandler_TemporaryKey.pfx
