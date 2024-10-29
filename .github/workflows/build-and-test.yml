@@ -59,5 +59,4 @@ jobs:
    - name: Build with MSBuild and test
      if: steps.cache-build.outputs.cache-hit != 'true'
      run: |
-         msbuild /p:Configuration=Release
-         & 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe' **\*.Tests.dll
+       'C:\Program Files\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe' **\*.Tests.dll
