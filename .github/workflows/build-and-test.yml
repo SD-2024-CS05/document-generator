@@ -70,6 +70,9 @@ jobs:
        path: |
          **/bin/Release
          **/obj/Release
+         **/*.targets
+         **/*.sln
+         **/*.csproj
 
  test:
     runs-on: windows-latest
@@ -79,7 +82,7 @@ jobs:
          uses: actions/download-artifact@v4
          with:
            name: ShapeHandler
-           path: ${{ github.workspace }}/ShapeHandler
+           path: ./build
 
        - name: Run tests
          run: |
@@ -87,7 +90,7 @@ jobs:
             $testResults | Out-File -FilePath $env:TEST_RESULTS_PATH
          env:
             vstestPath: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe
-            ARTIFACTS_PATH: ${{ github.workspace }}\ShapeHandler.Tests\bin\Release
+            ARTIFACTS_PATH: ./build/ShapeHandler.Tests/bin/Release
             TEST_RESULTS_PATH: ${{ github.workspace }}\test-results.txt
 
 
