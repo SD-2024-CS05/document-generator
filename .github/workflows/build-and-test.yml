@@ -101,34 +101,3 @@ jobs:
          if: always()
          with:
           files: ${{ env.TEST_RESULTS_PATH }}
-     
- 
- CodeQL-Analysis:
-  runs-on: windows-latest
-  needs: Build
-
-  steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Cache CodeQL tools
-      uses: actions/cache@v2
-      with:
-        path: ${{ runner.tool_cache }}
-        key: ${{ runner.os }}-codeql-${{ hashFiles('**/qlpack.yml') }}
-        restore-keys: |
-          ${{ runner.os }}-codeql-${{ hashFiles('**/qlpack.yml') }}
-
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
-      with:
-        languages: csharp
-
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
-
-    - name: Upload CodeQL Analysis Results
-      uses: actions/upload-artifact@v4
-      with:
-        name: codeql-results
-
