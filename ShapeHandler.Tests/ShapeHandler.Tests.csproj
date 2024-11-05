@@ -132,9 +132,6 @@
       <DependentUpon>DecisionNodeTest.cs</DependentUpon>
     </Compile>
     <Compile Include="DecisionNodeTest.cs" />
-    <Compile Include="HtmlGraphTest.AddConnectionTest.g.cs">
-      <DependentUpon>HtmlGraphTest.cs</DependentUpon>
-    </Compile>
     <Compile Include="HtmlGraphTest.AddNodeTest.g.cs">
       <DependentUpon>HtmlGraphTest.cs</DependentUpon>
     </Compile>
