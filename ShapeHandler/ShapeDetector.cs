@@ -24,7 +24,7 @@ namespace ShapeHandler
         /// Returns the Graph object that represents the flowchart
         /// </summary>
         /// <returns>An HtmlGraph Object</returns>
-        private HtmlGraph CreateGraph()
+        public HtmlGraph CreateGraph()
         {
             throw new NotImplementedException();
         }

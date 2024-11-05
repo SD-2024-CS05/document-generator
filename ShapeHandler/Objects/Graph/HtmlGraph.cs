@@ -14,8 +14,8 @@ namespace ShapeHandler.Objects
 
         public HtmlGraph()
         {
-            OutEdges = new Dictionary<FlowchartNode, Dictionary<FlowchartNode, List<Condition>>>();
-            InEdges = new Dictionary<FlowchartNode, Dictionary<FlowchartNode, List<Condition>>>();
+            OutEdges = new Dictionary<FlowchartNode, Dictionary<FlowchartNode, List<Condition<Enum>>>>();
+            InEdges = new Dictionary<FlowchartNode, Dictionary<FlowchartNode, List<Condition<Enum>>>>();
         }
 
         /// <summary>
@@ -31,11 +31,11 @@ namespace ShapeHandler.Objects
             }
             if (!OutEdges.ContainsKey(node))
             {
-                OutEdges[node] = new Dictionary<FlowchartNode, List<Condition>>();
+                OutEdges[node] = new Dictionary<FlowchartNode, List<Condition<Enum>>>();
             }
             if (!InEdges.ContainsKey(node))
             {
-                InEdges[node] = new Dictionary<FlowchartNode, List<Condition>>();
+                InEdges[node] = new Dictionary<FlowchartNode, List<Condition<Enum>>>();
             }
         }
 
@@ -59,7 +59,7 @@ namespace ShapeHandler.Objects
             }
             if (!OutEdges[source].ContainsKey(target))
             {
-                OutEdges[source][target] = new List<Condition>();
+                OutEdges[source][target] = new List<Condition<Enum>>();
             }
             OutEdges[source][target].Add(condition);
 
@@ -69,7 +69,7 @@ namespace ShapeHandler.Objects
             }
             if (!InEdges[target].ContainsKey(source))
             {
-                InEdges[target][source] = new List<Condition>();
+                InEdges[target][source] = new List<Condition<Enum>>();
             }
             InEdges[target][source].Add(condition);
         }
