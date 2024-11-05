@@ -21,87 +21,12 @@ namespace ShapeHandler
         }
 
         /// <summary>
-        /// Creates a Graph of the active Visio Document
+        /// Returns the Graph object that represents the flowchart
         /// </summary>
-        /// <returns></returns>
-        public static HtmlGraph CreateGraph()
+        /// <returns>An HtmlGraph Object</returns>
+        private HtmlGraph CreateGraph()
         {
-            Console.WriteLine("Creating Graph");
-
-            // get all pages
-            List<short> pageIndexes = new List<short>();
-
-            foreach (Page page in Globals.ShapeDetector.Application.ActiveDocument.Pages)
-            {
-                pageIndexes.Add(page.Index);
-            }
-
-            // combine all pages into one graph
-            HtmlGraph graph = CombineGraphPages(pageIndexes);
-
-            Console.WriteLine("Graph Created");
-
-            return graph;
-        }
-
-        /// <summary>
-        /// Makes a graph of the given page
-        /// </summary>
-        /// <param name="pageIndex">Index of the page to graph</param>
-        /// <returns></returns>
-        private static HtmlGraph GetGraphOfPage(int pageIndex)
-        {
-            HtmlGraph graph = new HtmlGraph();
-            Page page = Globals.ShapeDetector.Application.ActiveDocument.Pages[pageIndex];
-
-            foreach (Shape shape in page.Shapes)
-            {
-                string name = shape.Name;
-                if (shape.Name.Contains("Start/End"))
-                {
-                }
-                FlowchartNode element;
-                //switch (name)
-                //{
-                //    case "Anchor":
-                //        element = new Anchor(shape);
-                //        break;
-                //    case "Button":
-                //        element = new Button(shape);
-                //        break;
-                //    case "Input":
-                //        element = new Input(shape);
-                //        break;
-                //    case "Image":
-                //        element = new Image(shape);
-                //        break;
-                //    case "Span":
-                //        element = new Span(shape);
-                //        break;
-                //    case "Select":
-                //        element = new Select(shape);
-                //        break;
-                //    default:
-                //        break;
-                //}
-            }
-            return graph;
-        }
-
-        /// <summary>
-        /// Combines all the graphs of the pages into one graph
-        /// </summary>
-        /// <param name="pageIndexes">List of page indices to graph</param>
-        /// <returns>Graph Object</returns>
-        private static HtmlGraph CombineGraphPages(List<short> pageIndexes)
-        {
-            HtmlGraph graph = new HtmlGraph();
-            foreach (short pageIndex in pageIndexes)
-            {
-                HtmlGraph pageGraph = GetGraphOfPage(pageIndex);
-            }
-
-            return graph;
+            throw new NotImplementedException();
         }
 
         #region VSTO generated code
