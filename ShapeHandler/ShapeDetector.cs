@@ -7,6 +7,7 @@ using Visio = Microsoft.Office.Interop.Visio;
 using Office = Microsoft.Office.Core;
 using Microsoft.Office.Interop.Visio;
 using ShapeHandler.Objects;
+using ShapeHandler.Identity;
 
 namespace ShapeHandler
 {
@@ -14,6 +15,8 @@ namespace ShapeHandler
     {
         private void ShapeDetector_Startup(object sender, System.EventArgs e)
         {
+            KeyVaultManager manager = new KeyVaultManager();
+            string username = manager.GetSecretAsync("Neo4JUsername").Result;
         }
 
         private void ShapeDetector_Shutdown(object sender, System.EventArgs e)
