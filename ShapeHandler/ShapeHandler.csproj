@@ -416,7 +416,7 @@
   <ItemGroup>
     <Compile Include="Database\DatabaseConnector.cs" />
     <Compile Include="Identity\KeyVaultManager.cs" />
-    <Compile Include="Objects\Condition\Condition.cs" />
+    <Compile Include="Objects\Graph\Condition.cs" />
     <Compile Include="Objects\Graph\Connection.cs" />
     <Compile Include="Objects\Graph\DecisionNode.cs" />
     <Compile Include="Objects\Graph\FlowchartNode.cs" />

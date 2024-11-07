@@ -1,4 +1,5 @@
-﻿using Azure.Identity;
+﻿using Azure;
+using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -56,9 +57,9 @@ namespace ShapeHandler.Identity
                     var secretResponse = await client.GetSecretAsync(secretName);
                     return secretResponse.Value.Value;
                 }
-                catch (Exception e)
+                catch (RequestFailedException e)
                 {
-                    throw new Exception($"Failed to retrieve secret {secretName} from KeyVault", e);
+                    throw new RequestFailedException($"Failed to retrieve secret {secretName} from KeyVault", e);
                 }
             }
             return secret;

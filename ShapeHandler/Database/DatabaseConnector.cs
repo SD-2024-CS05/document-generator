@@ -27,6 +27,17 @@ namespace ShapeHandler.Database
             }
         }
 
+        public DatabaseConnector(IDriver driver)
+        {
+            _driver = driver;
+
+            // check if the connection is successful
+            if (_driver.TryVerifyConnectivityAsync().Result == false)
+            {
+                throw new Exception("Connection to the database failed");
+            }
+        }
+
         public void Dispose()
         {
             _driver?.Dispose();
@@ -48,7 +59,7 @@ namespace ShapeHandler.Database
                 var tx = await session.BeginTransactionAsync();
                 try
                 {
-                    WriteNodes(tx, graph).Wait();
+                    await WriteNodes(tx, graph);
 
                     await tx.CommitAsync();
                     return true;
