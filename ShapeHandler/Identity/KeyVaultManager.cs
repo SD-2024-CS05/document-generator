@@ -17,15 +17,10 @@ namespace ShapeHandler.Identity
         {
             var dir = AppDomain.CurrentDomain.BaseDirectory;
 
-            // log the dir to console
-            Console.WriteLine(dir);
             if (!dir.Contains("appsettings.json"))
             {
                 dir = Path.Combine(dir, "bin");
             }
-
-            // log the dir to console
-            Console.WriteLine(dir);
 
             var builder = new ConfigurationBuilder()
                 .SetBasePath(dir)
