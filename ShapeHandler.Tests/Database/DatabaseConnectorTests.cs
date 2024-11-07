@@ -26,10 +26,14 @@ namespace ShapeHandler.Database.Tests
             _mockSession = new Mock<IAsyncSession>();
             _mockTransaction = new Mock<IAsyncTransaction>();
 
-            _mockDriver.Setup(d => d.AsyncSession(It.IsAny<Action<SessionConfigBuilder>>()))
+            _mockDriver.Setup(d => d.AsyncSession())
                        .Returns(_mockSession.Object);
-            _mockSession.Setup(s => s.BeginTransactionAsync(It.IsAny<Action<TransactionConfigBuilder>>()))
+
+            _mockSession.Setup(s => s.BeginTransactionAsync())
                         .ReturnsAsync(_mockTransaction.Object);
+
+            _mockTransaction.Setup(t => t.RunAsync(It.IsAny<string>(), It.IsAny<object>()))
+                            .ReturnsAsync(Mock.Of<IResultCursor>());
         }
 
         [TestMethod()]
@@ -64,27 +68,39 @@ namespace ShapeHandler.Database.Tests
         public async Task WriteHtmlGraphAsyncTest()
         {
             _mockDriver.Setup(d => d.TryVerifyConnectivityAsync())
-                       .Returns(Task.FromResult(true));
+           .Returns(Task.FromResult(true));
+
+            _mockDriver.Setup(d => d.AsyncSession())
+                       .Returns(_mockSession.Object);
+
+            _mockSession.Setup(s => s.BeginTransactionAsync())
+                        .ReturnsAsync(_mockTransaction.Object);
+
+            _mockTransaction.Setup(t => t.CommitAsync())
+                            .Returns(Task.CompletedTask);
 
             var connector = new DatabaseConnector(_mockDriver.Object);
 
             _mockDriver.Verify(d => d.TryVerifyConnectivityAsync(), Times.Once);
 
             var graph = new HtmlGraph();
+
             var elementMock = new Mock<IHtmlElement>();
-            var node = new HtmlNode(elementMock.Object);
+            var node1 = new HtmlNode(elementMock.Object);
+            var node2 = new HtmlNode(elementMock.Object);
 
-            _mockDriver.Setup(d => d.AsyncSession())
-                       .Returns(_mockSession.Object);
+            Condition<Enum> condition = new Condition<Enum>
+            {
+                MatchValue = "test",
+                Type = NodeType.HtmlElement,
+                State = true,
+                Validate = (s) => true
+            };
 
-            _mockSession.Setup(s => s.BeginTransactionAsync(It.IsAny<Action<TransactionConfigBuilder>>()))
-                        .ReturnsAsync(_mockTransaction.Object);
+            graph.AddNode(node1);
+            graph.AddNode(node2);
 
-            _mockTransaction.Setup(t => t.CommitAsync())
-                .Returns(Task.CompletedTask);
-
-            _mockTransaction.Setup(t => t.RunAsync(It.IsAny<string>(), It.IsAny<object>()))
-                            .ReturnsAsync(Mock.Of<IResultCursor>());
+            graph.AddConnection(node1, node2, condition);
 
             var result = await connector.WriteHtmlGraphAsync(graph);
 
