@@ -8,6 +8,7 @@ using Office = Microsoft.Office.Core;
 using Microsoft.Office.Interop.Visio;
 using ShapeHandler.Objects;
 using ShapeHandler.Identity;
+using ShapeHandler.Database;
 
 namespace ShapeHandler
 {
@@ -17,6 +18,12 @@ namespace ShapeHandler
         {
             KeyVaultManager manager = new KeyVaultManager();
             string username = manager.GetSecretAsync("Neo4JUsername").Result;
+            string password = manager.GetSecretAsync("Neo4JPassword").Result;
+            string uri = manager.GetSecretAsync("Neo4JURI").Result;
+
+            DatabaseConnector database = new DatabaseConnector(uri, username, password);
+
+            database.WriteHtmlGraphAsync(CreateGraph()).Wait();
         }
 
         private void ShapeDetector_Shutdown(object sender, System.EventArgs e)
@@ -29,7 +36,21 @@ namespace ShapeHandler
         /// <returns>An HtmlGraph Object</returns>
         public static HtmlGraph CreateGraph()
         {
-            throw new NotImplementedException();
+
+            HtmlGraph htmlGraph = new HtmlGraph();
+
+            htmlGraph.AddNode(new StartEndNode("1"));
+            htmlGraph.AddNode(new DecisionNode("2"));
+
+            htmlGraph.AddConnection("1", "2", new Condition<Enum>
+            {
+                Type = NodeType.Decision,
+                State = true,
+                MatchValue = "Yes",
+                Validate = (string value) => value == "Yes"
+            });
+
+            return htmlGraph;
         }
 
         #region VSTO generated code

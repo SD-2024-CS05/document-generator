@@ -42,10 +42,42 @@ namespace ShapeHandler.Objects
         /// <summary>
         /// Adds a connection between two nodes in the graph.
         /// </summary>
-        /// <param name="source">The source node.</param>
-        /// <param name="target">The target node.</param>
+        /// <param name="source">The source node id</param>
+        /// <param name="target">The target node id</param>
         /// <param name="condition">The condition of the connection.</param>
         /// <exception cref="ArgumentNullException">Thrown when the source or target node is null.</exception>
+        public void AddConnection(string source, string target, Condition<Enum> condition)
+        {
+            if (source == null || target == null)
+            {
+                throw new ArgumentNullException("Source and target must be non-null");
+            }
+
+            FlowchartNode sourceNode = OutEdges.Keys.FirstOrDefault(x => x.Id == source);
+            FlowchartNode targetNode = OutEdges.Keys.FirstOrDefault(x => x.Id == target);
+
+            if (sourceNode == null)
+            {
+                sourceNode = new DecisionNode(source);
+                AddNode(sourceNode);
+            }
+
+            if (targetNode == null)
+            {
+                targetNode = new DecisionNode(target);
+                AddNode(targetNode);
+            }
+
+            AddConnection(sourceNode, targetNode, condition);
+        }
+
+        /// <summary>
+        /// Add a connection between two nodes in the graph
+        /// </summary>
+        /// <param name="source">The source node</param>
+        /// <param name="target">The target node</param>
+        /// <param name="condition">The Condition of the connectin</param>
+        /// <exception cref="ArgumentNullException">Thrown when source or target is null</exception>
         public void AddConnection(FlowchartNode source, FlowchartNode target, Condition<Enum> condition)
         {
             if (source == null || target == null)
@@ -55,22 +87,23 @@ namespace ShapeHandler.Objects
 
             if (!OutEdges.ContainsKey(source))
             {
-                AddNode(source);
+                OutEdges[source] = new Dictionary<FlowchartNode, List<Condition<Enum>>>();
             }
+            if (!InEdges.ContainsKey(target))
+            {
+                InEdges[target] = new Dictionary<FlowchartNode, List<Condition<Enum>>>();
+            }
+
             if (!OutEdges[source].ContainsKey(target))
             {
                 OutEdges[source][target] = new List<Condition<Enum>>();
-            }
-            OutEdges[source][target].Add(condition);
-
-            if (!InEdges.ContainsKey(target))
-            {
-                AddNode(target);
             }
             if (!InEdges[target].ContainsKey(source))
             {
                 InEdges[target][source] = new List<Condition<Enum>>();
             }
+
+            OutEdges[source][target].Add(condition);
             InEdges[target][source].Add(condition);
         }
 
@@ -130,6 +163,19 @@ namespace ShapeHandler.Objects
                 return new Dictionary<FlowchartNode, List<Condition<Enum>>>();
             }
             return InEdges[node];
+        }
+
+        public List<Condition<Enum>> GetConditions(FlowchartNode source, FlowchartNode target)
+        {
+            if (source == null || target == null)
+            {
+                throw new ArgumentNullException("Source and target must be non-null");
+            }
+            if (!OutEdges.ContainsKey(source) || !OutEdges[source].ContainsKey(target))
+            {
+                return new List<Condition<Enum>>();
+            }
+            return OutEdges[source][target];
         }
     }
 }
