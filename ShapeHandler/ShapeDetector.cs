@@ -23,7 +23,7 @@ namespace ShapeHandler
 
             DatabaseConnector database = new DatabaseConnector(uri, username, password);
 
-            database.WriteHtmlGraphAsync(CreateGraph()).Wait();
+            //database.WriteHtmlGraphAsync(CreateGraph()).Wait();
         }
 
         private void ShapeDetector_Shutdown(object sender, System.EventArgs e)
