@@ -16,41 +16,21 @@ namespace ShapeHandler
     {
         private void ShapeDetector_Startup(object sender, System.EventArgs e)
         {
-            KeyVaultManager manager = new KeyVaultManager();
-            string username = manager.GetSecretAsync("Neo4JUsername").Result;
-            string password = manager.GetSecretAsync("Neo4JPassword").Result;
-            string uri = manager.GetSecretAsync("Neo4JURI").Result;
-
-            DatabaseConnector database = new DatabaseConnector(uri, username, password);
-
-            //database.WriteHtmlGraphAsync(CreateGraph()).Wait();
+            // Uncomment for local testing
+            //ShapeDetector.CreateGraphFromFlowchart(Globals.ShapeDetector.Application);
         }
 
         private void ShapeDetector_Shutdown(object sender, System.EventArgs e)
         {
         }
 
-        /// <summary>
-        /// Returns the Graph object that represents the flowchart
-        /// </summary>
-        /// <returns>An HtmlGraph Object</returns>
-        public static HtmlGraph CreateGraph()
+        public static HtmlGraph CreateGraphFromFlowchart(Visio.Application application)
         {
+            HtmlGraph graph = new HtmlGraph();
 
-            HtmlGraph htmlGraph = new HtmlGraph();
+            // TODO: Implement
 
-            htmlGraph.AddNode(new StartEndNode("1"));
-            htmlGraph.AddNode(new DecisionNode("2"));
-
-            htmlGraph.AddConnection("1", "2", new Condition<Enum>
-            {
-                Type = NodeType.Decision,
-                State = true,
-                MatchValue = "Yes",
-                Validate = (string value) => value == "Yes"
-            });
-
-            return htmlGraph;
+            return graph;
         }
 
         #region VSTO generated code

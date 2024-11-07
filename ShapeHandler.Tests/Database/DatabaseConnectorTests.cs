@@ -26,23 +26,22 @@ namespace ShapeHandler.Database.Tests
             _mockSession = new Mock<IAsyncSession>();
             _mockTransaction = new Mock<IAsyncTransaction>();
 
-            _mockDriver.Setup(d => d.AsyncSession())
+            _mockDriver.Setup(d => d.TryVerifyConnectivityAsync()) // verification during construction
+                       .Returns(Task.FromResult(true));
+
+            _mockDriver.Setup(d => d.AsyncSession()) // creation of session to write to database
                        .Returns(_mockSession.Object);
 
-            _mockSession.Setup(s => s.BeginTransactionAsync())
+            _mockSession.Setup(s => s.BeginTransactionAsync()) // creation of transaction to write to database
                         .ReturnsAsync(_mockTransaction.Object);
 
-            _mockTransaction.Setup(t => t.RunAsync(It.IsAny<string>(), It.IsAny<object>()))
+            _mockTransaction.Setup(t => t.RunAsync(It.IsAny<string>(), It.IsAny<object>())) // writing to database
                             .ReturnsAsync(Mock.Of<IResultCursor>());
         }
 
         [TestMethod()]
-        public void DatabaseConnectorTest()
+        public void DatabaseConnectorConstructorTest()
         {
-
-            _mockDriver.Setup(d => d.TryVerifyConnectivityAsync())
-                       .Returns(Task.FromResult(true));
-
             var connector = new DatabaseConnector(_mockDriver.Object);
 
             _mockDriver.Verify(d => d.TryVerifyConnectivityAsync(), Times.Once);
@@ -53,10 +52,6 @@ namespace ShapeHandler.Database.Tests
         [TestMethod()]
         public void DisposeTest()
         {
-
-            _mockDriver.Setup(d => d.TryVerifyConnectivityAsync())
-                       .Returns(Task.FromResult(true));
-
             var connector = new DatabaseConnector(_mockDriver.Object);
             _mockDriver.Verify(d => d.TryVerifyConnectivityAsync(), Times.Once);
 
@@ -67,18 +62,6 @@ namespace ShapeHandler.Database.Tests
         [TestMethod()]
         public async Task WriteHtmlGraphAsyncTest()
         {
-            _mockDriver.Setup(d => d.TryVerifyConnectivityAsync())
-           .Returns(Task.FromResult(true));
-
-            _mockDriver.Setup(d => d.AsyncSession())
-                       .Returns(_mockSession.Object);
-
-            _mockSession.Setup(s => s.BeginTransactionAsync())
-                        .ReturnsAsync(_mockTransaction.Object);
-
-            _mockTransaction.Setup(t => t.CommitAsync())
-                            .Returns(Task.CompletedTask);
-
             var connector = new DatabaseConnector(_mockDriver.Object);
 
             _mockDriver.Verify(d => d.TryVerifyConnectivityAsync(), Times.Once);

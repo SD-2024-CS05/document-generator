@@ -1,4 +1,8 @@
 ﻿using Microsoft.Office.Tools.Ribbon;
+using ShapeHandler.Database;
+using ShapeHandler.Identity;
+using ShapeHandler.Objects;
+using System.Windows.Forms;
 
 namespace ShapeHandler
 {
@@ -28,10 +32,36 @@ namespace ShapeHandler
             base.Dispose(disposing);
         }
 
+        /// <summary>
+        /// Connects to Neo4J Database
+        /// </summary>
+        /// <returns></returns>
+        private DatabaseConnector ConnectToDatabase()
+        {
+            KeyVaultManager manager = new KeyVaultManager();
+            string username = manager.GetSecretAsync("Neo4JUsername").Result;
+            string password = manager.GetSecretAsync("Neo4JPassword").Result;
+            string uri = manager.GetSecretAsync("Neo4JURI").Result;
+
+            return new DatabaseConnector(uri, username, password);
+        }
+
         private void HandleTestGenerationClick(object sender, RibbonControlEventArgs e)
         {
-            ShapeDetector.CreateGraph();
+            HtmlGraph graph = ShapeDetector.CreateGraphFromFlowchart(Globals.ShapeDetector.Application);
 
+            DatabaseConnector connector = ConnectToDatabase();
+
+            if (connector.WriteHtmlGraphAsync(graph).Result == false)
+            {
+                MessageBox.Show("Failed to write Instruction Set to database");
+            }
+            else
+            {
+                MessageBox.Show("Instruction Set written to database");
+            }
+
+            connector.Dispose();
         }
 
         #region Component Designer generated code

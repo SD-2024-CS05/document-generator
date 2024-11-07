@@ -2,6 +2,7 @@
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using Microsoft.Extensions.Configuration;
+using ShapeHandler.Objects;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -16,15 +17,10 @@ namespace ShapeHandler.Identity
 
         public KeyVaultManager()
         {
-            var dir = AppDomain.CurrentDomain.BaseDirectory;
-
-            if (!dir.Contains("appsettings.json"))
-            {
-                dir = Path.Combine(dir, "bin");
-            }
+            var appPath = FileManager.GetFilePath("appsettings.json");
 
             var builder = new ConfigurationBuilder()
-                .SetBasePath(dir)
+                .SetBasePath(appPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
             configuration = builder.Build();
