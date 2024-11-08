@@ -21,27 +21,28 @@ namespace ShapeHandler.Tests
         public void CreateGraphTest(string visioFileName)
         {
             // Arrange
-            Application visioApp;
-            try
-            {
-                visioApp = (Application)Marshal.GetActiveObject("Visio.Application");
-            }
-            catch (COMException)
-            {
-                visioApp = new Application();
-            }
+            var mockVisioApp = new Mock<Application>();
+            var mockDocuments = new Mock<Documents>();
+            var mockDocument = new Mock<Document>();
+
+            mockVisioApp.Setup(app => app.Documents).Returns(mockDocuments.Object);
+            mockDocuments.Setup(docs => docs.Add(It.IsAny<string>())).Returns(mockDocument.Object);
 
             string visioPath = FileManager.GetFilePath(visioFileName);
-
             visioPath = System.IO.Path.Combine(visioPath, visioFileName);
 
-            var visioDoc = visioApp.Documents.Add(visioPath);
+            SetupVisioFile(mockVisioApp.Object, visioPath);
 
             // Act
-            var result = ShapeDetector.CreateGraphFromFlowchart(visioApp);
+            var result = ShapeDetector.CreateGraphFromFlowchart(mockVisioApp.Object);
 
             // Assert
             Assert.IsNotNull(result);
+        }
+
+        private static void SetupVisioFile(Application application, string visioPath)
+        {
+            application.Documents.Add(visioPath);
         }
     }
 }

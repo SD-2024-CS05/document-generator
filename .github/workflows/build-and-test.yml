@@ -117,6 +117,7 @@ jobs:
          with:
            name: test-results
            path: ${{ github.workspace }}/test-results.trx
+         if: always()
 
  Publish-Test-Report:
    runs-on: ubuntu-latest
