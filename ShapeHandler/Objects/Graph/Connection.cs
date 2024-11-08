@@ -9,16 +9,18 @@ namespace ShapeHandler.Objects
     public class Connection
     {
         public string Label { get; set; }
-        public string Behavior { get; set; } // Action or meaning of the connection
-        public FlowchartNode Source { get; set; }
-        public FlowchartNode Target { get; set; }
+        public List<Condition> Conditions { get; set; }
 
-        public Connection(string label, string behavior, FlowchartNode source, FlowchartNode target)
+        public Connection(string label)
         {
             Label = label;
-            Behavior = behavior;
-            Source = source;
-            Target = target;
+            Conditions = new List<Condition>();
+        }
+
+        public Connection(string label, List<Condition> conditions)
+        {
+            Label = label;
+            Conditions = conditions;
         }
     }
 

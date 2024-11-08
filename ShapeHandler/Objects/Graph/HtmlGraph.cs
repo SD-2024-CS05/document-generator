@@ -6,16 +6,16 @@ namespace ShapeHandler.Objects
 {
     public class HtmlGraph
     {
-        //<source, <target, conditions>>
-        private Dictionary<FlowchartNode, Dictionary<FlowchartNode, List<Condition<Enum>>>> OutEdges { get; set; }
+        //<source, <target, connection>>
+        private Dictionary<FlowchartNode, Dictionary<FlowchartNode, Connection>> OutEdges { get; set; }
 
-        //<target, <source, conditions>>
-        private Dictionary<FlowchartNode, Dictionary<FlowchartNode, List<Condition<Enum>>>> InEdges { get; set; }
+        //<target, <source, connection>>
+        private Dictionary<FlowchartNode, Dictionary<FlowchartNode, Connection>> InEdges { get; set; }
 
         public HtmlGraph()
         {
-            OutEdges = new Dictionary<FlowchartNode, Dictionary<FlowchartNode, List<Condition<Enum>>>>();
-            InEdges = new Dictionary<FlowchartNode, Dictionary<FlowchartNode, List<Condition<Enum>>>>();
+            OutEdges = new Dictionary<FlowchartNode, Dictionary<FlowchartNode, Connection>>();
+            InEdges = new Dictionary<FlowchartNode, Dictionary<FlowchartNode, Connection>>();
         }
 
         /// <summary>
@@ -31,44 +31,12 @@ namespace ShapeHandler.Objects
             }
             if (!OutEdges.ContainsKey(node))
             {
-                OutEdges[node] = new Dictionary<FlowchartNode, List<Condition<Enum>>>();
+                OutEdges[node] = new Dictionary<FlowchartNode, Connection>();
             }
             if (!InEdges.ContainsKey(node))
             {
-                InEdges[node] = new Dictionary<FlowchartNode, List<Condition<Enum>>>();
+                InEdges[node] = new Dictionary<FlowchartNode, Connection>();
             }
-        }
-
-        /// <summary>
-        /// Adds a connection between two nodes in the graph.
-        /// </summary>
-        /// <param name="source">The source node id</param>
-        /// <param name="target">The target node id</param>
-        /// <param name="condition">The condition of the connection.</param>
-        /// <exception cref="ArgumentNullException">Thrown when the source or target node is null.</exception>
-        public void AddConnection(string source, string target, Condition<Enum> condition)
-        {
-            if (source == null || target == null)
-            {
-                throw new ArgumentNullException("Source and target must be non-null");
-            }
-
-            FlowchartNode sourceNode = OutEdges.Keys.FirstOrDefault(x => x.Id == source);
-            FlowchartNode targetNode = OutEdges.Keys.FirstOrDefault(x => x.Id == target);
-
-            if (sourceNode == null)
-            {
-                sourceNode = new DecisionNode(source);
-                AddNode(sourceNode);
-            }
-
-            if (targetNode == null)
-            {
-                targetNode = new DecisionNode(target);
-                AddNode(targetNode);
-            }
-
-            AddConnection(sourceNode, targetNode, condition);
         }
 
         /// <summary>
@@ -76,9 +44,9 @@ namespace ShapeHandler.Objects
         /// </summary>
         /// <param name="source">The source node</param>
         /// <param name="target">The target node</param>
-        /// <param name="condition">The Condition of the connectin</param>
+        /// <param name="connection">The connection between the nodes</param>
         /// <exception cref="ArgumentNullException">Thrown when source or target is null</exception>
-        public void AddConnection(FlowchartNode source, FlowchartNode target, Condition<Enum> condition)
+        public void AddConnection(FlowchartNode source, FlowchartNode target, Connection connection)
         {
             if (source == null || target == null)
             {
@@ -87,24 +55,15 @@ namespace ShapeHandler.Objects
 
             if (!OutEdges.ContainsKey(source))
             {
-                OutEdges[source] = new Dictionary<FlowchartNode, List<Condition<Enum>>>();
+                OutEdges[source] = new Dictionary<FlowchartNode, Connection>();
             }
             if (!InEdges.ContainsKey(target))
             {
-                InEdges[target] = new Dictionary<FlowchartNode, List<Condition<Enum>>>();
+                InEdges[target] = new Dictionary<FlowchartNode, Connection>();
             }
 
-            if (!OutEdges[source].ContainsKey(target))
-            {
-                OutEdges[source][target] = new List<Condition<Enum>>();
-            }
-            if (!InEdges[target].ContainsKey(source))
-            {
-                InEdges[target][source] = new List<Condition<Enum>>();
-            }
-
-            OutEdges[source][target].Add(condition);
-            InEdges[target][source].Add(condition);
+            OutEdges[source][target] = connection;
+            InEdges[target][source] = connection;
         }
 
         /// <summary>
@@ -133,8 +92,8 @@ namespace ShapeHandler.Objects
         /// Get all nodes connected from a given node
         /// </summary>
         /// <param name="node">The source node</param>
-        /// <returns>Dictionary of connected nodes and their conditions</returns>
-        public Dictionary<FlowchartNode, List<Condition<Enum>>> GetConnectedNodesFrom(FlowchartNode node)
+        /// <returns>Dictionary of connected nodes and their connections</returns>
+        public Dictionary<FlowchartNode, Connection> GetConnectedNodesFrom(FlowchartNode node)
         {
             if (node == null)
             {
@@ -142,7 +101,7 @@ namespace ShapeHandler.Objects
             }
             if (!OutEdges.ContainsKey(node))
             {
-                return new Dictionary<FlowchartNode, List<Condition<Enum>>>();
+                return new Dictionary<FlowchartNode, Connection>();
             }
             return OutEdges[node];
         }
@@ -151,8 +110,8 @@ namespace ShapeHandler.Objects
         /// Get all nodes connected to a given node
         /// </summary>
         /// <param name="node">The target node</param>
-        /// <returns>Dictionary of connected nodes and their conditions</returns>
-        public Dictionary<FlowchartNode, List<Condition<Enum>>> GetConnectedNodesTo(FlowchartNode node)
+        /// <returns>Dictionary of connected nodes and their connections</returns>
+        public Dictionary<FlowchartNode, Connection> GetConnectedNodesTo(FlowchartNode node)
         {
             if (node == null)
             {
@@ -160,12 +119,12 @@ namespace ShapeHandler.Objects
             }
             if (!InEdges.ContainsKey(node))
             {
-                return new Dictionary<FlowchartNode, List<Condition<Enum>>>();
+                return new Dictionary<FlowchartNode, Connection>();
             }
             return InEdges[node];
         }
 
-        public List<Condition<Enum>> GetConditions(FlowchartNode source, FlowchartNode target)
+        public Connection GetConnection(FlowchartNode source, FlowchartNode target)
         {
             if (source == null || target == null)
             {
@@ -173,9 +132,21 @@ namespace ShapeHandler.Objects
             }
             if (!OutEdges.ContainsKey(source) || !OutEdges[source].ContainsKey(target))
             {
-                return new List<Condition<Enum>>();
+                return null;
             }
             return OutEdges[source][target];
         }
+
+        public List<Condition> GetConditions(FlowchartNode source, FlowchartNode target)
+        {
+            Connection connection = GetConnection(source, target);
+            if (connection == null)
+            {
+                return new List<Condition>();
+            }
+
+            return connection.Conditions;
+        }
     }
+
 }

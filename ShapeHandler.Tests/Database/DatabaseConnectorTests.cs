@@ -72,18 +72,12 @@ namespace ShapeHandler.Database.Tests
             var node1 = new HtmlNode(elementMock.Object);
             var node2 = new HtmlNode(elementMock.Object);
 
-            Condition<Enum> condition = new Condition<Enum>
-            {
-                MatchValue = "test",
-                Type = NodeType.HtmlElement,
-                State = true,
-                Validate = (s) => true
-            };
+            Connection connection = new Connection("1");
 
             graph.AddNode(node1);
             graph.AddNode(node2);
 
-            graph.AddConnection(node1, node2, condition);
+            graph.AddConnection(node1, node2, connection);
 
             var result = await connector.WriteHtmlGraphAsync(graph);
 

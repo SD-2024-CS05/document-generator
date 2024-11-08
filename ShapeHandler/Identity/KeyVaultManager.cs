@@ -2,6 +2,7 @@
 using Azure.Identity;
 using Azure.Security.KeyVault.Secrets;
 using Microsoft.Extensions.Configuration;
+using ShapeHandler.Database;
 using ShapeHandler.Objects;
 using System;
 using System.IO;
@@ -34,6 +35,19 @@ namespace ShapeHandler.Identity
 
             // Initialize the KeyVaultClient with Visual Studio credentials
             client = new SecretClient(new Uri(keyVaultUrl), new VisualStudioCredential());
+        }
+
+        /// <summary>
+        /// Connects to Neo4J Database
+        /// </summary>
+        /// <returns></returns>
+        public DatabaseConnector ConnectToDatabase()
+        {
+            string username = GetSecretAsync("Neo4JUsername").Result;
+            string password = GetSecretAsync("Neo4JPassword").Result;
+            string uri = GetSecretAsync("Neo4JURI").Result;
+
+            return new DatabaseConnector(uri, username, password);
         }
 
         /// <summary>

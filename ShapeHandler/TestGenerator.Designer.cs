@@ -13,10 +13,13 @@ namespace ShapeHandler
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
+        private KeyVaultManager keyVaultManager;
+
         public TestGenerator()
             : base(Globals.Factory.GetRibbonFactory())
         {
             InitializeComponent();
+            keyVaultManager = new KeyVaultManager();
         }
 
         /// <summary> 
@@ -32,25 +35,11 @@ namespace ShapeHandler
             base.Dispose(disposing);
         }
 
-        /// <summary>
-        /// Connects to Neo4J Database
-        /// </summary>
-        /// <returns></returns>
-        private DatabaseConnector ConnectToDatabase()
-        {
-            KeyVaultManager manager = new KeyVaultManager();
-            string username = manager.GetSecretAsync("Neo4JUsername").Result;
-            string password = manager.GetSecretAsync("Neo4JPassword").Result;
-            string uri = manager.GetSecretAsync("Neo4JURI").Result;
-
-            return new DatabaseConnector(uri, username, password);
-        }
-
         private void HandleTestGenerationClick(object sender, RibbonControlEventArgs e)
         {
             HtmlGraph graph = ShapeDetector.CreateGraphFromFlowchart(Globals.ShapeDetector.Application);
 
-            DatabaseConnector connector = ConnectToDatabase();
+            DatabaseConnector connector = keyVaultManager.ConnectToDatabase();
 
             if (connector.WriteHtmlGraphAsync(graph).Result == false)
             {

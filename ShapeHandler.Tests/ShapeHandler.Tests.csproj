@@ -328,6 +328,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Database\DatabaseConnectorTests.cs" />
+    <Compile Include="Database\TestFlowChartExample.cs" />
     <Compile Include="Objects\Graph\ConditionTTest.ConstructorTest.g.cs">
       <DependentUpon>ConditionTTest.cs</DependentUpon>
     </Compile>
@@ -368,7 +369,7 @@
     <None Include="..\ShapeHandler\appsettings.json" Link="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Visio\TestFlowDiagram.vsdx" Link="TestFlowDiagram.vsdx" CopyToOutputDirectory="PreserveNewest"/>
+    <None Include="Visio\TestFlowDiagram.vsdx" Link="TestFlowDiagram.vsdx" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <ItemGroup />
   <Choose>

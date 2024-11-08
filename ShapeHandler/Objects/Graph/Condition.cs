@@ -1,36 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace ShapeHandler.Objects
 {
-    public class Condition<T>
+    public class Condition
     {
-        public T Type { get; set; }
-        public bool State { get; set; }
-        public string MatchValue { get; set; }
+        public string ElementType { get; set; } // e.g., "button", "input"
+        public string Attribute { get; set; } // e.g., "id", "class"
+        public string AttributeValue { get; set; } // e.g., "submit-button", "form-control"
+        public bool IsActive { get; set; } // e.g., true if the condition is active
         public Func<string, bool> Validate { get; set; } // Validation function
 
         public override bool Equals(object obj)
         {
-            if (!(obj is Condition<T> otherCondition))
+            if (!(obj is Condition otherCondition))
             {
                 return false;
             }
 
-            bool typeEquals = EqualityComparer<T>.Default.Equals(Type, otherCondition.Type);
-            bool stateEquals = State == otherCondition.State;
-            bool matchValueEquals = MatchValue == otherCondition.MatchValue;
+            bool elementTypeEquals = ElementType == otherCondition.ElementType;
+            bool attributeEquals = Attribute == otherCondition.Attribute;
+            bool attributeValueEquals = AttributeValue == otherCondition.AttributeValue;
+            bool isActiveEquals = IsActive == otherCondition.IsActive;
 
-            return typeEquals && stateEquals && matchValueEquals;
+            return elementTypeEquals && attributeEquals && attributeValueEquals && isActiveEquals;
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(Type, State, MatchValue, Validate);
+            return HashCode.Combine(ElementType, Attribute, AttributeValue, IsActive, Validate);
         }
     }
 }

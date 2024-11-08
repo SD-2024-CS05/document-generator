@@ -140,7 +140,7 @@ namespace ShapeHandler.Database
         /// <param name="currentNode">The Current Node being processed</param>
         /// <param name="neighbors">Outgoing neighbors of the current node</param>
         /// <returns></returns>
-        private async Task CreateRelationships(IAsyncTransaction tx, HtmlGraph graph, FlowchartNode currentNode, Dictionary<FlowchartNode, List<Condition<Enum>>> neighbors)
+        private async Task CreateRelationships(IAsyncTransaction tx, HtmlGraph graph, FlowchartNode currentNode, Dictionary<FlowchartNode, Connection> neighbors)
         {
             foreach (var neighbor in neighbors.Keys)
             {
@@ -149,9 +149,16 @@ namespace ShapeHandler.Database
                 {
                     await tx.RunAsync(@"
                         MATCH (a:FlowchartNode {id: $sourceId}), (b:FlowchartNode {id: $targetId})
-                        MERGE (a)-[r:CONNECTED {type: $type, state: $state, matchValue: $matchValue}]->(b)
-                        ON CREATE SET r.type = $type, r.state = $state, r.matchValue = $matchValue",
-                        new { sourceId = currentNode.Id, targetId = neighbor.Id, type = condition.Type.ToString(), state = condition.State, matchValue = condition.MatchValue });
+                        MERGE (a)-[r:CONNECTED {elementType: $elementType, attribute: $attribute, attributeValue: $attributeValue, isActive: $isActive}]->(b)
+                        ON CREATE SET r.elementType = $elementType, r.attribute = $attribute, r.attributeValue = $attributeValue, r.isActive = $isActive",
+                        new { 
+                            sourceId = currentNode.Id, 
+                            targetId = neighbor.Id, 
+                            elementType = condition.ElementType, 
+                            attribute = condition.Attribute, 
+                            attributeValue = condition.AttributeValue, 
+                            isActive = condition.IsActive
+                        });
                 }
             }
         }
