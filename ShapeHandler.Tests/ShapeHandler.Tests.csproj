@@ -369,7 +369,6 @@
     <None Include="..\ShapeHandler\appsettings.json" Link="appsettings.json" CopyToOutputDirectory="PreserveNewest" />
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Visio\TestFlowDiagram.vsdx" Link="TestFlowDiagram.vsdx" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <ItemGroup />
   <Choose>

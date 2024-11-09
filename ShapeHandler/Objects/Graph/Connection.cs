@@ -42,6 +42,19 @@ namespace ShapeHandler.Objects
             Type = ConnectionType.GOES_TO;
         }
 
+        public override bool Equals(object obj)
+        {
+            return obj is Connection connection &&
+                   Label == connection.Label &&
+                   EqualityComparer<List<Condition>>.Default.Equals(Conditions, connection.Conditions) &&
+                   Type == connection.Type;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
         public override string ToString()
         {
             StringBuilder builder = new StringBuilder();
@@ -65,6 +78,7 @@ namespace ShapeHandler.Objects
     {
         DIRECTS_TO,
         GOES_TO,
+        INPUT_FOR,
         VALIDATES,
         SUBMITS,
         RESETS,

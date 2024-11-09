@@ -96,6 +96,8 @@ namespace ShapeHandler.Database
             if (node is HtmlNode htmlNode)
             {
                 var elementAttributes = htmlNode.Element.Attributes.ToDictionary(attr => attr.Name, attr => (object)attr.Value);
+                elementAttributes.Remove("id");
+                elementAttributes.Add("ElementId", htmlNode.Element.Id);
                 await tx.RunAsync(@"
                     UNWIND $attributes AS attribute
                     MERGE (n:" + node.Type.ToString() + @" {id: $id})
@@ -124,33 +126,37 @@ namespace ShapeHandler.Database
         }
 
 
-        private async Task CreateRelationships(IAsyncTransaction tx, HtmlGraph graph, FlowchartNode currentNode, Dictionary<FlowchartNode, Connection> neighbors)
+        private async Task CreateRelationships(IAsyncTransaction tx, HtmlGraph graph, FlowchartNode currentNode, Dictionary<FlowchartNode, List<Connection>> neighbors)
         {
             foreach (var neighbor in neighbors.Keys)
             {
-                var connection = neighbors[neighbor];
+                var connections = neighbors[neighbor];
 
-                var connectionJson = JsonConvert.SerializeObject(connection, new Neo4JSerializer());
-                var connectionDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(connectionJson);
+                foreach (var connection in connections)
+                {
+                    var connectionJson = JsonConvert.SerializeObject(connection, new Neo4JSerializer());
+                    var connectionDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(connectionJson);
 
-                var conditions = connection.Conditions.Select(c => c.NodeId).ToList();
+                    var conditions = connection.Conditions.Select(c => c.ToString()).ToList();
 
-                await tx.RunAsync(@"
-                    MATCH 
-                        (a:" + currentNode.Type.ToString() + @" {id: $sourceId}), 
-                        (b:" + neighbor.Type.ToString() + @" {id: $targetId})
-                    MERGE 
-                        (a)-[r:" + connection.Type.ToString().ToUpper() + @" {label: $label}]->(b)
-                    ON CREATE SET r += $connectionObj, r.Conditions = $conditions",
-                    new
-                    {
-                        sourceId = currentNode.Id,
-                        targetId = neighbor.Id,
-                        label = connection.Label,
-                        connectionObj = connectionDict,
-                        conditions = conditions
-                    });
-
+                    await tx.RunAsync(@"
+                        MATCH 
+                            (a:" + currentNode.Type.ToString() + @" {id: $sourceId}), 
+                            (b:" + neighbor.Type.ToString() + @" {id: $targetId})
+                        MERGE 
+                            (a)-[r:" + connection.Type.ToString().ToUpper() + @" {Label: COALESCE($connectionObj.label, '')}]->(b)
+                        ON CREATE SET r += $connectionObj
+                        WITH r
+                        UNWIND $conditions AS condition
+                        SET r.Conditions = condition",
+                        new
+                        {
+                            sourceId = currentNode.Id,
+                            targetId = neighbor.Id,
+                            connectionObj = connectionDict,
+                            conditions = conditions
+                        });
+                }
             }
         }
     }

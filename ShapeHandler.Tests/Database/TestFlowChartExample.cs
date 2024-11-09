@@ -36,7 +36,7 @@ namespace ShapeHandler.Tests.Database
             inputTempSensor.Maximum = 150.ToString();
             inputTempSensor.ClassList.Add("form-control");
 
-            var inputTempSensorNode = new HtmlNode(inputTempSensor.Id, inputTempSensor);
+            var inputTempSensorNode = new HtmlNode(inputTempSensor.Id, inputTempSensor, NodeType.Input);
 
             /// Checkbox Node
             var setFastCoolingMode = document.CreateElement("input") as IHtmlInputElement;
@@ -45,7 +45,7 @@ namespace ShapeHandler.Tests.Database
             setFastCoolingMode.ClassList.Add("form-check-input");
             setFastCoolingMode.IsChecked = true;
 
-            var setFastCoolingModeNode = new HtmlNode(setFastCoolingMode.Id, setFastCoolingMode);
+            var setFastCoolingModeNode = new HtmlNode(setFastCoolingMode.Id, setFastCoolingMode, NodeType.Input);
 
             /// Input Form Node
             var inputWaitTime = document.CreateElement("input") as IHtmlInputElement;
@@ -53,7 +53,7 @@ namespace ShapeHandler.Tests.Database
             inputWaitTime.Id = "inputWaitTime";
             inputWaitTime.Value = 3.ToString();
 
-            var inputWaitTimeNode = new HtmlNode(inputWaitTime.Id, inputWaitTime);
+            var inputWaitTimeNode = new HtmlNode(inputWaitTime.Id, inputWaitTime, NodeType.Input);
 
             /// Decision Node
             /// Submit Button
@@ -62,14 +62,22 @@ namespace ShapeHandler.Tests.Database
             submitButton.Id = "submitButton";
             submitButton.Type = "submit";
 
-            var submitButtonNode = new HtmlNode(submitButton.Id, submitButton);
+            var submitButtonNode = new HtmlNode(submitButton.Id, submitButton, NodeType.Button);
 
             /// Cancel Button
             var cancelButton = document.CreateElement("a") as IHtmlAnchorElement;
             cancelButton.Id = "cancelButton";
             cancelButton.Href = "/fast-cooling/input";
 
-            var cancelButtonNode = new HtmlNode(cancelButton.Id, cancelButton);
+            var cancelButtonNode = new HtmlNode(cancelButton.Id, cancelButton, NodeType.Anchor);
+
+            // Make Wrapper for Form 1
+            var TemperatureFormNode = new DataInputWrapperNode("Input Data");
+            TemperatureFormNode.DataInputNodes.Add(inputTempSensorNode);
+            TemperatureFormNode.DataInputNodes.Add(setFastCoolingModeNode);
+            TemperatureFormNode.DataInputNodes.Add(inputWaitTimeNode);
+            TemperatureFormNode.DataInputNodes.Add(submitButtonNode);
+            TemperatureFormNode.DataInputNodes.Add(cancelButtonNode);
 
             /// Conditions
             Condition submitCondition = new Condition
@@ -92,19 +100,36 @@ namespace ShapeHandler.Tests.Database
                 NodeId = cancelButtonNode.Id
             };
 
-            DecisionNode submitDecisionNode = new DecisionNode("Submit Results?", new List<string> { submitButtonNode.Id , cancelButtonNode.Id });
+            DecisionNode submitDecisionNode = new DecisionNode("Submit Results?",
+                new List<string> { TemperatureFormNode.Id });
+
+            /// Process nodes (wip)
+            ProcessNode processDataNode = new ProcessNode("Process Data", false);
+            ProcessNode displayResults = new ProcessNode("Display Results", true);
 
             /// View Related Data Decision Node
             var yesButton = document.CreateElement("button") as IHtmlButtonElement;
             yesButton.Id = "viewRelatedDataButton";
             yesButton.Type = "submit";
 
-            var yesButtonNode = new HtmlNode(yesButton.Id, yesButton);
+            var yesButtonNode = new HtmlNode(yesButton.Id, yesButton, NodeType.Button);
 
             var noButton = document.CreateElement("button") as IHtmlButtonElement;
             noButton.Type = "submit";
 
-            var noButtonNode = new HtmlNode(noButton.Id, noButton);
+            var noButtonNode = new HtmlNode(noButton.Id, noButton, NodeType.Button);
+
+            var backToInputForm = document.CreateElement("a") as IHtmlAnchorElement;
+            backToInputForm.Href = "/fast-cooling/input";
+            backToInputForm.ClassList.Add(new string[] { "btn", "btn-primary" });
+
+            var backToInputFormNode = new HtmlNode(backToInputForm.Id, backToInputForm, NodeType.Anchor);
+
+            // make data input wrapper node
+            var viewRelatedDataFormNode = new DataInputWrapperNode("View Related Data");
+            viewRelatedDataFormNode.DataInputNodes.Add(yesButtonNode);
+            viewRelatedDataFormNode.DataInputNodes.Add(noButtonNode);
+            viewRelatedDataFormNode.DataInputNodes.Add(backToInputFormNode);
 
             /// Conditions
             Condition yesCondition = new Condition
@@ -127,7 +152,13 @@ namespace ShapeHandler.Tests.Database
                 NodeId = noButtonNode.Id
             };
 
-            DecisionNode viewRelatedDataDecisionNode = new DecisionNode("View Related Data?", new List<string> { yesButtonNode.Id, noButtonNode.Id });
+            DecisionNode viewRelatedDataDecisionNode = new DecisionNode("View Related Data?", new List<string> { viewRelatedDataFormNode.Id });
+
+
+            // Other functions
+            DecisionNode otherFunctionsDecisionNode = new DecisionNode("Other Functions?");
+
+            PageNode pageANode = new PageNode("A");
 
             /// End Node
 
@@ -148,41 +179,61 @@ namespace ShapeHandler.Tests.Database
             htmlGraph.AddNode(yesButtonNode);
             htmlGraph.AddNode(noButtonNode);
             htmlGraph.AddNode(submitDecisionNode);
+            htmlGraph.AddNode(processDataNode);
+            htmlGraph.AddNode(displayResults);
+            htmlGraph.AddNode(TemperatureFormNode);
+            htmlGraph.AddNode(viewRelatedDataFormNode);
+            htmlGraph.AddNode(otherFunctionsDecisionNode);
+            htmlGraph.AddNode(pageANode);
             htmlGraph.AddNode(end);
 
             /// Create Connections
-            Connection startToInput = new Connection("1");
-            Connection inputToDecisionNode = new Connection("2");
+            // Start -> Input Data Form -> Submit Decision -> Process Data
+            Connection startToInputDataForm = new Connection("1");
+            Connection inputDataFormToSubmitDecision = new Connection("", ConnectionType.VALIDATES);
+            Connection inputDataFormToSubmitDecisionGoing = new Connection("2");
+            Connection submitDecisionNo = new Connection("N 3", new List<Condition> { cancelCondition });
+            Connection submitDecisionYesToProcessData = new Connection("Y 4", new List<Condition> { submitCondition });
 
-            /// Create connections from decision nodes
-            Connection cancelConnection = new Connection("N 3", new List<Condition> { cancelCondition });
-            Connection submitConnection = new Connection("Y 4", new List<Condition> { submitCondition });
-            Connection yesConnection = new Connection("Y 5", new List<Condition> { yesCondition });
-            Connection noConnection = new Connection("N 6", new List<Condition> { noCondition });
+            // Process Data -> Display Results -> View Related Data
+            Connection processDataToDisplayResults = new Connection("5");
+            Connection displayResultsToViewRelatedData = new Connection("6");
+            Connection inputDataFormToViewDataDecision = new Connection("", ConnectionType.VALIDATES);
 
-            /// Create validation connection types
-            Connection submitValidationConnection = new Connection("", ConnectionType.VALIDATES);
-            Connection cancelValidationConnection = new Connection("", ConnectionType.VALIDATES);
-            Connection yesValidationConnection = new Connection("", ConnectionType.VALIDATES);
-            Connection noValidationConnection = new Connection("", ConnectionType.VALIDATES);
+            // View Related Data -> Input Data Form -> Other Functions? -> End
+            Connection viewRelatedDataYes = new Connection("Y 7", new List<Condition> { yesCondition });
+            Connection viewRelatedDataNoToOtherFunction = new Connection("N 8", new List<Condition> { noCondition });
+            Connection otherFunctionYesToPage = new Connection("Y 9");
+            Connection otherFunctionNoToBeginning = new Connection("N 10");
 
-            /// Regular connections
-            htmlGraph.AddConnection(start, inputTempSensorNode, startToInput);
-            htmlGraph.AddConnection(inputTempSensorNode, submitDecisionNode, inputToDecisionNode);
+            // Add input element connections for data forms
+            // Temperature Form
+            foreach (var inputNode in TemperatureFormNode.DataInputNodes)
+            {
+                htmlGraph.AddConnection(inputNode, TemperatureFormNode, new Connection(inputNode.Element.Id ?? inputNode.Id, ConnectionType.INPUT_FOR));
+            }
 
-            /// Connections from Decision Nodes
-            htmlGraph.AddConnection(submitDecisionNode, viewRelatedDataDecisionNode, submitConnection);
-            htmlGraph.AddConnection(submitDecisionNode, inputTempSensorNode, cancelConnection);
+            // View Related Data Form
+            foreach (var inputNode in viewRelatedDataFormNode.DataInputNodes)
+            {
+                htmlGraph.AddConnection(inputNode, viewRelatedDataFormNode, new Connection(inputNode.Element.Id ?? inputNode.Id, ConnectionType.INPUT_FOR));
+            }
 
-            htmlGraph.AddConnection(viewRelatedDataDecisionNode, end, yesConnection);
-            htmlGraph.AddConnection(viewRelatedDataDecisionNode, inputTempSensorNode, noConnection);
 
-            /// Validation Connections
-            htmlGraph.AddConnection(submitButtonNode, submitDecisionNode, submitValidationConnection);
-            htmlGraph.AddConnection(cancelButtonNode, submitDecisionNode, cancelValidationConnection);
-            htmlGraph.AddConnection(yesButtonNode, viewRelatedDataDecisionNode, yesValidationConnection);
-            htmlGraph.AddConnection(noButtonNode, viewRelatedDataDecisionNode, noValidationConnection);
+            /// Add connections
+            htmlGraph.AddConnection(start, TemperatureFormNode, startToInputDataForm);
+            htmlGraph.AddConnection(TemperatureFormNode, submitDecisionNode, inputDataFormToSubmitDecision);
+            htmlGraph.AddConnection(TemperatureFormNode, submitDecisionNode, inputDataFormToSubmitDecisionGoing);
+            htmlGraph.AddConnection(submitDecisionNode, processDataNode, submitDecisionYesToProcessData);
+            htmlGraph.AddConnection(submitDecisionNode, TemperatureFormNode, submitDecisionNo);
+            htmlGraph.AddConnection(processDataNode, displayResults, processDataToDisplayResults);
 
+            htmlGraph.AddConnection(displayResults, viewRelatedDataDecisionNode, displayResultsToViewRelatedData);
+            htmlGraph.AddConnection(viewRelatedDataFormNode, viewRelatedDataDecisionNode, inputDataFormToViewDataDecision);
+            htmlGraph.AddConnection(viewRelatedDataDecisionNode, end, viewRelatedDataYes);
+            htmlGraph.AddConnection(viewRelatedDataDecisionNode, otherFunctionsDecisionNode, viewRelatedDataNoToOtherFunction);
+            htmlGraph.AddConnection(otherFunctionsDecisionNode, pageANode, otherFunctionYesToPage);
+            htmlGraph.AddConnection(otherFunctionsDecisionNode, start, otherFunctionNoToBeginning);
 
             #endregion
 

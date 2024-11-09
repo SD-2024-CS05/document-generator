@@ -25,6 +25,22 @@ namespace ShapeHandler.Objects
             return "{id: \"" + Id + "\", type: \"" + Type.ToString().ToUpper() + "\"}";
         }
 
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            FlowchartNode node = (FlowchartNode)obj;
+            return Id == node.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
     }
 
 }

@@ -17,5 +17,11 @@ namespace ShapeHandler.Objects
             Label = label;
             DecisionElementIds = elements;
         }
+
+        public DecisionNode(string label) : base(label, NodeType.Decision)
+        {
+            Label = label;
+            DecisionElementIds = new List<string>();
+        }
     }
 }

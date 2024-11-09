@@ -7,16 +7,16 @@ namespace ShapeHandler.Objects
 {
     public class HtmlGraph
     {
-        //<source, <target, connection>>
-        private Dictionary<FlowchartNode, Dictionary<FlowchartNode, Connection>> OutEdges { get; set; }
+        //<source, <target, connections>>
+        private Dictionary<FlowchartNode, Dictionary<FlowchartNode, List<Connection>>> OutEdges { get; set; }
 
-        //<target, <source, connection>>
-        private Dictionary<FlowchartNode, Dictionary<FlowchartNode, Connection>> InEdges { get; set; }
+        //<target, <source, connections>>
+        private Dictionary<FlowchartNode, Dictionary<FlowchartNode, List<Connection>>> InEdges { get; set; }
 
         public HtmlGraph()
         {
-            OutEdges = new Dictionary<FlowchartNode, Dictionary<FlowchartNode, Connection>>();
-            InEdges = new Dictionary<FlowchartNode, Dictionary<FlowchartNode, Connection>>();
+            OutEdges = new Dictionary<FlowchartNode, Dictionary<FlowchartNode, List<Connection>>>();
+            InEdges = new Dictionary<FlowchartNode, Dictionary<FlowchartNode, List<Connection>>>();
         }
 
         /// <summary>
@@ -32,11 +32,11 @@ namespace ShapeHandler.Objects
             }
             if (!OutEdges.ContainsKey(node))
             {
-                OutEdges[node] = new Dictionary<FlowchartNode, Connection>();
+                OutEdges[node] = new Dictionary<FlowchartNode, List<Connection>>();
             }
             if (!InEdges.ContainsKey(node))
             {
-                InEdges[node] = new Dictionary<FlowchartNode, Connection>();
+                InEdges[node] = new Dictionary<FlowchartNode, List<Connection>>();
             }
         }
 
@@ -54,29 +54,66 @@ namespace ShapeHandler.Objects
                 throw new ArgumentNullException("Source and target must be non-null");
             }
 
-            if (source is DecisionNode && connection.Conditions != null && connection.Conditions.Any())
-            {
-                var decisionNode = source as DecisionNode;
-                foreach (var condition in connection.Conditions)
-                {
-                    if (!decisionNode.DecisionElementIds.Any(id => id == condition.NodeId))
-                    {
-                        throw new InvalidOperationException("Condition node must match an element in the DecisionNode");
-                    }
-                }
-            }
-
             if (!OutEdges.ContainsKey(source))
             {
-                OutEdges[source] = new Dictionary<FlowchartNode, Connection>();
+                OutEdges[source] = new Dictionary<FlowchartNode, List<Connection>>();
             }
             if (!InEdges.ContainsKey(target))
             {
-                InEdges[target] = new Dictionary<FlowchartNode, Connection>();
+                InEdges[target] = new Dictionary<FlowchartNode, List<Connection>>();
             }
 
-            OutEdges[source][target] = connection;
-            InEdges[target][source] = connection;
+            if (source is DecisionNode decisionNode && connection.Conditions != null && connection.Conditions.Any())
+            {
+                ValidateDecisionNodeConnection(decisionNode, connection);
+            }
+
+            if (!OutEdges[source].ContainsKey(target))
+            {
+                OutEdges[source][target] = new List<Connection>();
+            }
+            if (!InEdges[target].ContainsKey(source))
+            {
+                InEdges[target][source] = new List<Connection>();
+            }
+
+            if (!OutEdges[source][target].Contains(connection))
+            {
+                OutEdges[source][target].Add(connection);
+            }
+            if (!InEdges[target][source].Contains(connection))
+            {
+                InEdges[target][source].Add(connection);
+            }
+        }
+
+        private void ValidateDecisionNodeConnection(DecisionNode decisionNode, Connection connection)
+        {
+            var dataWrapperNodes = InEdges[decisionNode] // Get all nodes connected to the decision node with 'VALIDATES' connection
+                .Where(x => x.Key is DataInputWrapperNode && x.Value.Any(c => c.Type == ConnectionType.VALIDATES))
+                .Select(x => x.Key)
+                .ToList();
+
+            if (!dataWrapperNodes.Any())
+            {
+                throw new Exception($"No dataWrapper node found for decision node id: {decisionNode.Id}");
+            }
+
+            // Check if the dataWrapper node contains ids of the conditions
+            foreach (var dataWrapperNode in dataWrapperNodes)
+            {
+                var dataWrapper = dataWrapperNode as DataInputWrapperNode;
+                var htmlNodes = dataWrapper.DataInputNodes;
+
+                // Check if the conditions contain the ids of the nodes in the dataWrapper node
+                foreach (var condition in connection.Conditions)
+                {
+                    if (!htmlNodes.Any(x => x.Id == condition.NodeId))
+                    {
+                        throw new Exception("Node id not found in the dataWrapper node");
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -106,7 +143,7 @@ namespace ShapeHandler.Objects
         /// </summary>
         /// <param name="node">The source node</param>
         /// <returns>Dictionary of connected nodes and their connections</returns>
-        public Dictionary<FlowchartNode, Connection> GetConnectedNodesFrom(FlowchartNode node)
+        public Dictionary<FlowchartNode, List<Connection>> GetConnectedNodesFrom(FlowchartNode node)
         {
             if (node == null)
             {
@@ -114,7 +151,7 @@ namespace ShapeHandler.Objects
             }
             if (!OutEdges.ContainsKey(node))
             {
-                return new Dictionary<FlowchartNode, Connection>();
+                return new Dictionary<FlowchartNode, List<Connection>>();
             }
             return OutEdges[node];
         }
@@ -124,7 +161,7 @@ namespace ShapeHandler.Objects
         /// </summary>
         /// <param name="node">The target node</param>
         /// <returns>Dictionary of connected nodes and their connections</returns>
-        public Dictionary<FlowchartNode, Connection> GetConnectedNodesTo(FlowchartNode node)
+        public Dictionary<FlowchartNode, List<Connection>> GetConnectedNodesTo(FlowchartNode node)
         {
             if (node == null)
             {
@@ -132,12 +169,12 @@ namespace ShapeHandler.Objects
             }
             if (!InEdges.ContainsKey(node))
             {
-                return new Dictionary<FlowchartNode, Connection>();
+                return new Dictionary<FlowchartNode, List<Connection>>();
             }
             return InEdges[node];
         }
 
-        public Connection GetConnection(FlowchartNode source, FlowchartNode target)
+        public List<Connection> GetConnections(FlowchartNode source, FlowchartNode target)
         {
             if (source == null || target == null)
             {
@@ -145,20 +182,20 @@ namespace ShapeHandler.Objects
             }
             if (!OutEdges.ContainsKey(source) || !OutEdges[source].ContainsKey(target))
             {
-                return null;
+                return new List<Connection>();
             }
             return OutEdges[source][target];
         }
 
         public List<Condition> GetConditions(FlowchartNode source, FlowchartNode target)
         {
-            Connection connection = GetConnection(source, target);
-            if (connection == null)
+            List<Connection> connections = GetConnections(source, target);
+            if (connections == null || !connections.Any())
             {
                 return new List<Condition>();
             }
 
-            return connection.Conditions;
+            return connections.SelectMany(c => c.Conditions).ToList();
         }
     }
 

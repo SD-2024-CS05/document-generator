@@ -48,7 +48,13 @@ namespace ShapeHandler.Objects
             // return a string that prints all information regarding the Element in a way that neo4j can write it
             StringBuilder builder = new StringBuilder();
             builder.Append($"{{");
-            builder.Append($"id: \"{Element.Id}\", ");
+            builder.Append($"id: \"{Id}\", ");
+            builder.Append($"type: \"{Type.ToString().ToUpper()}\", ");
+            builder.Append($"label: \"{Label}\", ");
+            builder.Append(
+                $"element: {{ ");
+            builder.Append(
+                $"id: \"{Element.Id}\", ");
             builder.Append($"tag: \"{Element.TagName}\", ");
             builder.Append($"attributes: {{");
             foreach (var attribute in Element.Attributes)
