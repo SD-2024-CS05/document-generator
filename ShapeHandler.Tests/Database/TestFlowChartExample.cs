@@ -152,11 +152,21 @@ namespace ShapeHandler.Tests.Database
                 NodeId = noButtonNode.Id
             };
 
+            Condition backToInputCondition = new Condition
+            {
+                ElementType = "a",
+                Attribute = "href",
+                AttributeValue = "/fast-cooling/input",
+                IsActive = true,
+                Validate = (value) => value == "/fast-cooling/input",
+                NodeId = backToInputFormNode.Id
+            };
+
             DecisionNode viewRelatedDataDecisionNode = new DecisionNode("View Related Data?", new List<string> { viewRelatedDataFormNode.Id });
 
 
             // Other functions
-            DecisionNode otherFunctionsDecisionNode = new DecisionNode("Other Functions?");
+            DecisionNode otherFunctionsDecisionNode = new DecisionNode("Other Functions?", new List<string> { viewRelatedDataFormNode.Id });
 
             PageNode pageANode = new PageNode("A");
 
@@ -199,12 +209,13 @@ namespace ShapeHandler.Tests.Database
             Connection processDataToDisplayResults = new Connection("5");
             Connection displayResultsToViewRelatedData = new Connection("6");
             Connection inputDataFormToViewDataDecision = new Connection("", ConnectionType.VALIDATES);
+            Connection inputDataFormToOtherFunctions = new Connection("", ConnectionType.VALIDATES);
 
             // View Related Data -> Input Data Form -> Other Functions? -> End
             Connection viewRelatedDataYes = new Connection("Y 7", new List<Condition> { yesCondition });
             Connection viewRelatedDataNoToOtherFunction = new Connection("N 8", new List<Condition> { noCondition });
             Connection otherFunctionYesToPage = new Connection("Y 9");
-            Connection otherFunctionNoToBeginning = new Connection("N 10");
+            Connection otherFunctionNoToBeginning = new Connection("N 10", new List<Condition> { backToInputCondition });
 
             // Add input element connections for data forms
             // Temperature Form
@@ -219,19 +230,25 @@ namespace ShapeHandler.Tests.Database
                 htmlGraph.AddConnection(inputNode, viewRelatedDataFormNode, new Connection(inputNode.Element.Id ?? inputNode.Id, ConnectionType.INPUT_FOR));
             }
 
-
             /// Add connections
+            // Start -> Input Data Form -> Submit Decision -> Process Data
             htmlGraph.AddConnection(start, TemperatureFormNode, startToInputDataForm);
             htmlGraph.AddConnection(TemperatureFormNode, submitDecisionNode, inputDataFormToSubmitDecision);
             htmlGraph.AddConnection(TemperatureFormNode, submitDecisionNode, inputDataFormToSubmitDecisionGoing);
+
+            // Submit Decision -> Process Data
             htmlGraph.AddConnection(submitDecisionNode, processDataNode, submitDecisionYesToProcessData);
             htmlGraph.AddConnection(submitDecisionNode, TemperatureFormNode, submitDecisionNo);
-            htmlGraph.AddConnection(processDataNode, displayResults, processDataToDisplayResults);
 
+            // Process Data -> Display Results -> View Related Data
+            htmlGraph.AddConnection(processDataNode, displayResults, processDataToDisplayResults);
             htmlGraph.AddConnection(displayResults, viewRelatedDataDecisionNode, displayResultsToViewRelatedData);
             htmlGraph.AddConnection(viewRelatedDataFormNode, viewRelatedDataDecisionNode, inputDataFormToViewDataDecision);
             htmlGraph.AddConnection(viewRelatedDataDecisionNode, end, viewRelatedDataYes);
             htmlGraph.AddConnection(viewRelatedDataDecisionNode, otherFunctionsDecisionNode, viewRelatedDataNoToOtherFunction);
+
+            // Other Functions
+            htmlGraph.AddConnection(viewRelatedDataFormNode, otherFunctionsDecisionNode, inputDataFormToOtherFunctions);
             htmlGraph.AddConnection(otherFunctionsDecisionNode, pageANode, otherFunctionYesToPage);
             htmlGraph.AddConnection(otherFunctionsDecisionNode, start, otherFunctionNoToBeginning);
 

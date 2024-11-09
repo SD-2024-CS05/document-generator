@@ -13,6 +13,10 @@ namespace ShapeHandler.Objects
         //<target, <source, connections>>
         private Dictionary<FlowchartNode, Dictionary<FlowchartNode, List<Connection>>> InEdges { get; set; }
 
+        // Start and End nodes are unique and may only have one of each
+        private bool hasStart = false;
+        private bool hasEnd = false;
+
         public HtmlGraph()
         {
             OutEdges = new Dictionary<FlowchartNode, Dictionary<FlowchartNode, List<Connection>>>();
@@ -37,6 +41,31 @@ namespace ShapeHandler.Objects
             if (!InEdges.ContainsKey(node))
             {
                 InEdges[node] = new Dictionary<FlowchartNode, List<Connection>>();
+            }
+
+            // Check if the node is a start or end node and handle it if so
+            if (node is StartEndNode seNode)
+            {
+                // Only one start node allowed
+                if (seNode.IsStart && hasStart)
+                {
+                    throw new Exception("Only one start node allowed");
+                }
+
+                // Only one end node allowed
+                if (!seNode.IsStart && hasEnd)
+                {
+                    throw new Exception("Only one end node allowed");
+                }
+
+                if (seNode.IsStart)
+                {
+                    hasStart = true;
+                }
+                else
+                {
+                    hasEnd = true;
+                }
             }
         }
 
@@ -96,7 +125,11 @@ namespace ShapeHandler.Objects
 
             if (!dataWrapperNodes.Any())
             {
-                throw new Exception($"No dataWrapper node found for decision node id: {decisionNode.Id}");
+                if (connection.Conditions != null && connection.Conditions.Any())
+                {
+                    throw new Exception($"No dataWrapper node found for decision node id: {decisionNode.Id}, but conditions are present.");
+                }
+                return;
             }
 
             // Check if the dataWrapper node contains ids of the conditions

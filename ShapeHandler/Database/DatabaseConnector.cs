@@ -108,9 +108,8 @@ namespace ShapeHandler.Database
             {
                 var validationElements = decisionNode.DecisionElementIds.Select(ve => ve.ToString()).ToList();
                 await tx.RunAsync(@"
-                    UNWIND $elements AS element
                     MERGE (n:" + node.Type.ToString() + @" {id: $id})
-                    ON CREATE SET n += { ValidationElements: element, Label: $label }",
+                    ON CREATE SET n += { ValidationElements: CASE WHEN size($elements) > 0 THEN $elements ELSE [] END, Label: $label }",
                     new { id = decisionNode.Id, elements = validationElements, label = decisionNode.Label });
             }
             else
