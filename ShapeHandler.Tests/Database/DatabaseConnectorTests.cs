@@ -1,4 +1,5 @@
-﻿using AngleSharp.Html.Dom;
+﻿using AngleSharp.Dom;
+using AngleSharp.Html.Dom;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Neo4j.Driver;
@@ -69,6 +70,18 @@ namespace ShapeHandler.Database.Tests
             var graph = new HtmlGraph();
 
             var elementMock = new Mock<IHtmlElement>();
+            var attributeMock = new Mock<IAttr>();
+            attributeMock.Setup(a => a.Name).Returns("attrName");
+            attributeMock.Setup(a => a.Value).Returns("attrValue");
+
+            var namedNodeMapMock = new Mock<INamedNodeMap>();
+            namedNodeMapMock.Setup(n => n.Length).Returns(1);
+            namedNodeMapMock.Setup(n => n[0]).Returns(attributeMock.Object);
+            namedNodeMapMock.Setup(n => n.GetEnumerator()).Returns(new List<IAttr> { attributeMock.Object }.GetEnumerator());
+
+            elementMock.Setup(e => e.Attributes).Returns(namedNodeMapMock.Object);
+
+            // Now you can create HtmlNode instances
             var node1 = new HtmlNode("", elementMock.Object);
             var node2 = new HtmlNode("", elementMock.Object);
 
@@ -85,5 +98,6 @@ namespace ShapeHandler.Database.Tests
             _mockTransaction.Verify(t => t.RunAsync(It.IsAny<string>(), It.IsAny<object>()), Times.AtLeastOnce);
             _mockTransaction.Verify(t => t.CommitAsync(), Times.Once);
         }
+
     }
 }
