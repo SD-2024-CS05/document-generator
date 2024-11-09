@@ -69,8 +69,8 @@ namespace ShapeHandler.Database.Tests
             var graph = new HtmlGraph();
 
             var elementMock = new Mock<IHtmlElement>();
-            var node1 = new HtmlNode(elementMock.Object);
-            var node2 = new HtmlNode(elementMock.Object);
+            var node1 = new HtmlNode("", elementMock.Object);
+            var node2 = new HtmlNode("", elementMock.Object);
 
             Connection connection = new Connection("1");
 

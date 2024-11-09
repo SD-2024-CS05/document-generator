@@ -16,7 +16,7 @@ namespace ShapeHandler.Objects
         protected FlowchartNode(string label, NodeType type)
         {
             Id = Guid.NewGuid().ToString();
-            Label = label;
+            Label = label ?? Id;
             Type = type;
         }
 

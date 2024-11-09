@@ -13,7 +13,7 @@ namespace ShapeHandler.Objects
     {
         public IHtmlElement Element { get; set; }
 
-        public HtmlNode(string label, IHtmlElement element) : base(label, NodeType.HtmlElement)
+        public HtmlNode(string label, IHtmlElement element, NodeType type = NodeType.HtmlElement) : base(label, type)
         {
             if (element == null)
             {

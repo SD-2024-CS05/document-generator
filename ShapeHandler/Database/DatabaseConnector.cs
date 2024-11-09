@@ -98,16 +98,16 @@ namespace ShapeHandler.Database
                 var elementAttributes = htmlNode.Element.Attributes.ToDictionary(attr => attr.Name, attr => (object)attr.Value);
                 await tx.RunAsync(@"
                     UNWIND $attributes AS attribute
-                    MERGE (n:HtmlNode {id: $id})
-                    ON CREATE SET n += attribute",
-                    new { id = htmlNode.Id, attributes = elementAttributes });
+                    MERGE (n:" + node.Type.ToString() + @" {id: $id})
+                    ON CREATE SET n += attribute, n.Label = $label",
+                    new { id = htmlNode.Id, attributes = elementAttributes, label = htmlNode.Label });
             }
             else if (node is DecisionNode decisionNode)
             {
-                var validationElements = decisionNode.ValidationElements.Select(ve => ve.ToString()).ToList();
+                var validationElements = decisionNode.DecisionElementIds.Select(ve => ve.ToString()).ToList();
                 await tx.RunAsync(@"
                     UNWIND $elements AS element
-                    MERGE (n:DecisionNode {id: $id})
+                    MERGE (n:" + node.Type.ToString() + @" {id: $id})
                     ON CREATE SET n += { ValidationElements: element, Label: $label }",
                     new { id = decisionNode.Id, elements = validationElements, label = decisionNode.Label });
             }
@@ -117,7 +117,7 @@ namespace ShapeHandler.Database
                 var nodeDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(nodeJson);
 
                 await tx.RunAsync(@"
-                    MERGE (n:FlowchartNode {id: $id})
+                    MERGE (n:" + node.Type.ToString() + @" {id: $id})
                     ON CREATE SET n += $nodeObj",
                     new { id = node.Id, nodeObj = nodeDict });
             }
@@ -133,17 +133,24 @@ namespace ShapeHandler.Database
                 var connectionJson = JsonConvert.SerializeObject(connection, new Neo4JSerializer());
                 var connectionDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(connectionJson);
 
+                var conditions = connection.Conditions.Select(c => c.NodeId).ToList();
+
                 await tx.RunAsync(@"
-                    MATCH (a:FlowchartNode {id: $sourceId}), (b:FlowchartNode {id: $targetId})
-                    MERGE (a)-[r:" + connection.Type.ToString().ToUpper() + @" {label: $label}]->(b)
-                    ON CREATE SET r += $connectionObj",
+                    MATCH 
+                        (a:" + currentNode.Type.ToString() + @" {id: $sourceId}), 
+                        (b:" + neighbor.Type.ToString() + @" {id: $targetId})
+                    MERGE 
+                        (a)-[r:" + connection.Type.ToString().ToUpper() + @" {label: $label}]->(b)
+                    ON CREATE SET r += $connectionObj, r.Conditions = $conditions",
                     new
                     {
                         sourceId = currentNode.Id,
                         targetId = neighbor.Id,
                         label = connection.Label,
-                        connectionObj = connectionDict
+                        connectionObj = connectionDict,
+                        conditions = conditions
                     });
+
             }
         }
     }

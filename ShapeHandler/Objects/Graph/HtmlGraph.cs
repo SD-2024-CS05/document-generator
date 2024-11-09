@@ -59,7 +59,7 @@ namespace ShapeHandler.Objects
                 var decisionNode = source as DecisionNode;
                 foreach (var condition in connection.Conditions)
                 {
-                    if (!decisionNode.ValidationElements.Any(e => e.Id == condition.NodeId))
+                    if (!decisionNode.DecisionElementIds.Any(id => id == condition.NodeId))
                     {
                         throw new InvalidOperationException("Condition node must match an element in the DecisionNode");
                     }

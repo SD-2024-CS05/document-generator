@@ -17,41 +17,26 @@ namespace ShapeHandler.Database
 
             if (value is FlowchartNode node)
             {
-                obj["id"] = node.Id;
-                obj["type"] = node.Type.ToString().ToUpper();
-
-                if (node is HtmlNode htmlNode)
+                if (node is StartEndNode startEndNode)
                 {
-                    obj["element"] = JObject.FromObject(htmlNode.Element, serializer);
+                    obj.Add("type", startEndNode.Type.ToString().ToUpper());
+                    obj.Add("isStart", startEndNode.IsStart);
+                }
+                else if (node is PageNode pageNode)
+                {
+                    obj.Add("type", pageNode.Type.ToString().ToUpper());
                 }
                 else if (node is DecisionNode decisionNode)
                 {
-                    JArray validationElementsArray = new JArray();
-                    foreach (var element in decisionNode.ValidationElements)
-                    {
-                        validationElementsArray.Add(JObject.FromObject(element, serializer));
-                    }
-                    obj["validationElements"] = validationElementsArray;
+                    obj.Add("type", decisionNode.Type.ToString().ToUpper());
+
+                    obj.Add("decisionElementIds", new JArray(decisionNode.DecisionElementIds));
                 }
-            }
-            else if (value is Connection connection)
+                obj.Add("Label", node.Label ?? node.Id);
+            } else if (value is Connection connection)
             {
-                obj["label"] = connection.Label;
-                obj["type"] = connection.Type.ToString().ToUpper();
-                JArray conditionsArray = new JArray();
-                foreach (var condition in connection.Conditions)
-                {
-                    JObject conditionObj = new JObject
-                    {
-                        ["elementType"] = condition.ElementType,
-                        ["attribute"] = condition.Attribute,
-                        ["attributeValue"] = condition.AttributeValue,
-                        ["isActive"] = condition.IsActive,
-                        ["nodeId"] = condition.NodeId
-                    };
-                    conditionsArray.Add(conditionObj);
-                }
-                obj["conditions"] = conditionsArray;
+                obj.Add("Label", connection.Label);
+                obj.Add("type", connection.Type.ToString().ToUpper());
             }
 
             obj.WriteTo(writer);

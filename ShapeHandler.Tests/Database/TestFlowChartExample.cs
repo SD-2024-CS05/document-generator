@@ -92,7 +92,7 @@ namespace ShapeHandler.Tests.Database
                 NodeId = cancelButtonNode.Id
             };
 
-            DecisionNode submitDecisionNode = new DecisionNode("Submit Results?", new List<HtmlNode> { submitButtonNode, cancelButtonNode });
+            DecisionNode submitDecisionNode = new DecisionNode("Submit Results?", new List<string> { submitButtonNode.Id , cancelButtonNode.Id });
 
             /// View Related Data Decision Node
             var yesButton = document.CreateElement("button") as IHtmlButtonElement;
@@ -127,7 +127,7 @@ namespace ShapeHandler.Tests.Database
                 NodeId = noButtonNode.Id
             };
 
-            DecisionNode viewRelatedDataDecisionNode = new DecisionNode("View Related Data?" , new List<HtmlNode> { yesButtonNode, noButtonNode });
+            DecisionNode viewRelatedDataDecisionNode = new DecisionNode("View Related Data?", new List<string> { yesButtonNode.Id, noButtonNode.Id });
 
             /// End Node
 
@@ -154,13 +154,13 @@ namespace ShapeHandler.Tests.Database
             Connection startToInput = new Connection("1");
             Connection inputToDecisionNode = new Connection("2");
 
-            /// Add connections from decision nodes
+            /// Create connections from decision nodes
             Connection cancelConnection = new Connection("N 3", new List<Condition> { cancelCondition });
             Connection submitConnection = new Connection("Y 4", new List<Condition> { submitCondition });
             Connection yesConnection = new Connection("Y 5", new List<Condition> { yesCondition });
             Connection noConnection = new Connection("N 6", new List<Condition> { noCondition });
 
-            /// Add other connection types
+            /// Create validation connection types
             Connection submitValidationConnection = new Connection("", ConnectionType.VALIDATES);
             Connection cancelValidationConnection = new Connection("", ConnectionType.VALIDATES);
             Connection yesValidationConnection = new Connection("", ConnectionType.VALIDATES);
@@ -178,10 +178,10 @@ namespace ShapeHandler.Tests.Database
             htmlGraph.AddConnection(viewRelatedDataDecisionNode, inputTempSensorNode, noConnection);
 
             /// Validation Connections
-            htmlGraph.AddConnection(submitDecisionNode, submitDecisionNode, submitValidationConnection);
-            htmlGraph.AddConnection(submitDecisionNode, submitDecisionNode, cancelValidationConnection);
-            htmlGraph.AddConnection(viewRelatedDataDecisionNode, viewRelatedDataDecisionNode, yesValidationConnection);
-            htmlGraph.AddConnection(viewRelatedDataDecisionNode, viewRelatedDataDecisionNode, noValidationConnection);
+            htmlGraph.AddConnection(submitButtonNode, submitDecisionNode, submitValidationConnection);
+            htmlGraph.AddConnection(cancelButtonNode, submitDecisionNode, cancelValidationConnection);
+            htmlGraph.AddConnection(yesButtonNode, viewRelatedDataDecisionNode, yesValidationConnection);
+            htmlGraph.AddConnection(noButtonNode, viewRelatedDataDecisionNode, noValidationConnection);
 
 
             #endregion
