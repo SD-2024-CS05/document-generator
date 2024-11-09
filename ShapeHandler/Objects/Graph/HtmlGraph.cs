@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Neo4jClient.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -51,6 +52,18 @@ namespace ShapeHandler.Objects
             if (source == null || target == null)
             {
                 throw new ArgumentNullException("Source and target must be non-null");
+            }
+
+            if (source is DecisionNode && connection.Conditions != null && connection.Conditions.Any())
+            {
+                var decisionNode = source as DecisionNode;
+                foreach (var condition in connection.Conditions)
+                {
+                    if (!decisionNode.ValidationElements.Any(e => e.Id == condition.NodeId))
+                    {
+                        throw new InvalidOperationException("Condition node must match an element in the DecisionNode");
+                    }
+                }
             }
 
             if (!OutEdges.ContainsKey(source))

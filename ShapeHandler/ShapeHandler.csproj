@@ -415,6 +415,7 @@
   -->
   <ItemGroup>
     <Compile Include="Database\DatabaseConnector.cs" />
+    <Compile Include="Database\Neo4JSerializer.cs" />
     <Compile Include="Identity\KeyVaultManager.cs" />
     <Compile Include="Objects\FileManager.cs" />
     <Compile Include="Objects\Graph\Condition.cs" />

@@ -10,11 +10,11 @@ namespace ShapeHandler.Objects
     public class DecisionNode : FlowchartNode
     {
 
-        public List<IHtmlElement> Elements { get; set; }
+        public List<HtmlNode> ValidationElements { get; set; }
 
-        public DecisionNode(string label, List<IHtmlElement> elements) : base(label, NodeType.Decision)
+        public DecisionNode(string label, List<HtmlNode> elements) : base(label, NodeType.Decision)
         {
-            Elements = elements;
+            ValidationElements = elements;
         }
     }
 }

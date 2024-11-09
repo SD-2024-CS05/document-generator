@@ -9,13 +9,20 @@ namespace ShapeHandler.Objects
 {
     public abstract class FlowchartNode
     {
-        public string Id { get; set; }
+        public string Id { get; }
+        public string Label { get; set; }
         public NodeType Type { get; set; }
-        
-        protected FlowchartNode(string id, NodeType type)
+
+        protected FlowchartNode(string label, NodeType type)
         {
-            Id = id;
+            Id = Guid.NewGuid().ToString();
+            Label = label;
             Type = type;
+        }
+
+        public override string ToString()
+        {
+            return "{id: \"" + Id + "\", type: \"" + Type.ToString().ToUpper() + "\"}";
         }
 
     }

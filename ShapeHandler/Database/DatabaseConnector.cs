@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Neo4j.Driver;
 using Neo4jClient.Transactions;
+using Newtonsoft.Json;
 using ShapeHandler.Objects;
 
 namespace ShapeHandler.Database
@@ -11,17 +13,10 @@ namespace ShapeHandler.Database
     {
         private readonly IDriver _driver;
 
-        /// <summary>
-        /// Constructor for the DatabaseConnector class
-        /// </summary>
-        /// <param name="uri">The URI of the database</param>
-        /// <param name="user">The username to access database</param>
-        /// <param name="password">The Password to access database</param>
         public DatabaseConnector(string uri, string user, string password)
         {
             _driver = GraphDatabase.Driver(uri, AuthTokens.Basic(user, password));
 
-            // check if the connection is successful
             if (_driver.TryVerifyConnectivityAsync().Result == false)
             {
                 throw new Exception("Connection to the database failed");
@@ -32,7 +27,6 @@ namespace ShapeHandler.Database
         {
             _driver = driver;
 
-            // check if the connection is successful
             if (_driver.TryVerifyConnectivityAsync().Result == false)
             {
                 throw new Exception("Connection to the database failed");
@@ -44,17 +38,10 @@ namespace ShapeHandler.Database
             _driver?.Dispose();
         }
 
-        /// <summary>
-        /// Writes the graph to the database
-        /// </summary>
-        /// <param name="graph">The HTML Graph</param>
-        /// <returns>Task of whether write was successful</returns>
-        /// <exception cref="ArgumentNullException">Null if graph is null</exception>
         public async Task<bool> WriteHtmlGraphAsync(HtmlGraph graph)
         {
             if (graph == null) throw new ArgumentNullException(nameof(graph));
 
-            // Start Session
             using (var session = _driver.AsyncSession())
             {
                 var tx = await session.BeginTransactionAsync();
@@ -68,17 +55,11 @@ namespace ShapeHandler.Database
                 catch (Exception ex)
                 {
                     await tx.RollbackAsync();
-                    return false;
+                    throw new Exception("Failed to write graph to database", ex);
                 }
             }
         }
 
-        /// <summary>
-        /// Writes the nodes to the database
-        /// </summary>
-        /// <param name="tx">The Async Transaction</param>
-        /// <param name="graph">The Html Graph</param>
-        /// <returns></returns>
         private async Task WriteNodes(IAsyncTransaction tx, HtmlGraph graph)
         {
             HashSet<FlowchartNode> visited = new HashSet<FlowchartNode>();
@@ -93,14 +74,6 @@ namespace ShapeHandler.Database
             }
         }
 
-        /// <summary>
-        /// Depth First Search to write nodes to the database
-        /// </summary>
-        /// <param name="tx">The Transaction</param>
-        /// <param name="graph">The Html Graph</param>
-        /// <param name="visited">Nodes already Visited</param>
-        /// <param name="node">Current Node</param>
-        /// <returns></returns>
         private async Task DepthFirstSearch(IAsyncTransaction tx, HtmlGraph graph, HashSet<FlowchartNode> visited, FlowchartNode node)
         {
             visited.Add(node);
@@ -118,48 +91,59 @@ namespace ShapeHandler.Database
             await CreateRelationships(tx, graph, node, neighbors);
         }
 
-        /// <summary>
-        /// Runs the query to create a node in the database if it doesn't already exist
-        /// </summary>
-        /// <param name="tx">The Transaction</param>
-        /// <param name="node">The node to write</param>
-        /// <returns></returns>
         private async Task CreateNode(IAsyncTransaction tx, FlowchartNode node)
         {
-            await tx.RunAsync(@"
-                MERGE (n:FlowchartNode {id: $id})
-                ON CREATE SET n.type = $type",
-                new { id = node.Id, type = node.Type.ToString() });
+            if (node is HtmlNode htmlNode)
+            {
+                var elementAttributes = htmlNode.Element.Attributes.ToDictionary(attr => attr.Name, attr => (object)attr.Value);
+                await tx.RunAsync(@"
+                    UNWIND $attributes AS attribute
+                    MERGE (n:HtmlNode {id: $id})
+                    ON CREATE SET n += attribute",
+                    new { id = htmlNode.Id, attributes = elementAttributes });
+            }
+            else if (node is DecisionNode decisionNode)
+            {
+                var validationElements = decisionNode.ValidationElements.Select(ve => ve.ToString()).ToList();
+                await tx.RunAsync(@"
+                    UNWIND $elements AS element
+                    MERGE (n:DecisionNode {id: $id})
+                    ON CREATE SET n += { ValidationElements: element, Label: $label }",
+                    new { id = decisionNode.Id, elements = validationElements, label = decisionNode.Label });
+            }
+            else
+            {
+                var nodeJson = JsonConvert.SerializeObject(node, new Neo4JSerializer());
+                var nodeDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(nodeJson);
+
+                await tx.RunAsync(@"
+                    MERGE (n:FlowchartNode {id: $id})
+                    ON CREATE SET n += $nodeObj",
+                    new { id = node.Id, nodeObj = nodeDict });
+            }
         }
 
-        /// <summary>
-        /// Creates relationships between nodes in the database
-        /// </summary>
-        /// <param name="tx">The Async Transaction</param>
-        /// <param name="graph">The Html Graph</param>
-        /// <param name="currentNode">The Current Node being processed</param>
-        /// <param name="neighbors">Outgoing neighbors of the current node</param>
-        /// <returns></returns>
+
         private async Task CreateRelationships(IAsyncTransaction tx, HtmlGraph graph, FlowchartNode currentNode, Dictionary<FlowchartNode, Connection> neighbors)
         {
             foreach (var neighbor in neighbors.Keys)
             {
-                var conditions = graph.GetConditions(currentNode, neighbor);
-                foreach (var condition in conditions)
-                {
-                    await tx.RunAsync(@"
-                        MATCH (a:FlowchartNode {id: $sourceId}), (b:FlowchartNode {id: $targetId})
-                        MERGE (a)-[r:CONNECTED {elementType: $elementType, attribute: $attribute, attributeValue: $attributeValue, isActive: $isActive}]->(b)
-                        ON CREATE SET r.elementType = $elementType, r.attribute = $attribute, r.attributeValue = $attributeValue, r.isActive = $isActive",
-                        new { 
-                            sourceId = currentNode.Id, 
-                            targetId = neighbor.Id, 
-                            elementType = condition.ElementType, 
-                            attribute = condition.Attribute, 
-                            attributeValue = condition.AttributeValue, 
-                            isActive = condition.IsActive
-                        });
-                }
+                var connection = neighbors[neighbor];
+
+                var connectionJson = JsonConvert.SerializeObject(connection, new Neo4JSerializer());
+                var connectionDict = JsonConvert.DeserializeObject<Dictionary<string, object>>(connectionJson);
+
+                await tx.RunAsync(@"
+                    MATCH (a:FlowchartNode {id: $sourceId}), (b:FlowchartNode {id: $targetId})
+                    MERGE (a)-[r:" + connection.Type.ToString().ToUpper() + @" {label: $label}]->(b)
+                    ON CREATE SET r += $connectionObj",
+                    new
+                    {
+                        sourceId = currentNode.Id,
+                        targetId = neighbor.Id,
+                        label = connection.Label,
+                        connectionObj = connectionDict
+                    });
             }
         }
     }
