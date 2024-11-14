@@ -417,9 +417,8 @@
     <Compile Include="Database\DatabaseConnector.cs" />
     <Compile Include="Database\Neo4JSerializer.cs" />
     <Compile Include="Identity\KeyVaultManager.cs" />
-    <Compile Include="Objects\Condition\ConditionList.cs" />
     <Compile Include="Objects\FileManager.cs" />
-    <Compile Include="Objects\Condition\Condition.cs" />
+    <Compile Include="Objects\Graph\Conditions.cs" />
     <Compile Include="Objects\Graph\Connection.cs" />
     <Compile Include="Objects\Graph\DataInputNode.cs" />
     <Compile Include="Objects\Graph\DecisionNode.cs" />

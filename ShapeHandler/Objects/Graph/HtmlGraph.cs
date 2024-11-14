@@ -92,6 +92,11 @@ namespace ShapeHandler.Objects
                 throw new Exception("Target node not found in graph");
             }
 
+            if (source is DecisionNode decisionNode && connection.Conditions != null && connection.Conditions.NodeIds.Any())
+            {
+                ValidateDecisionNodeConnection(decisionNode, connection);
+            }
+
             if (!OutEdges[source].ContainsKey(target))
             {
                 OutEdges[source][target] = new List<Connection>();
@@ -108,6 +113,31 @@ namespace ShapeHandler.Objects
             if (!InEdges[target][source].Contains(connection))
             {
                 InEdges[target][source].Add(connection);
+            }
+        }
+
+        private void ValidateDecisionNodeConnection(DecisionNode decisionNode, Connection connection)
+        {
+            var dataInputNodes = InEdges[decisionNode] // Get all nodes connected to the decision node with 'VALIDATES' connection
+                .Where(x => x.Key is DataInputNode && x.Value.Any(c => c.Type == ConnectionType.VALIDATES))
+                .Select(x => x.Key as DataInputNode)
+                .ToList();
+
+            if (!dataInputNodes.Any())
+            {
+                throw new Exception($"No DataInput node found for decision node id: {decisionNode.Id}");
+            }
+
+            var condition = connection.Conditions;
+            var dataInputNodeIds = dataInputNodes.SelectMany(x => x.DataInputNodes.Select(y => y.Id)).ToHashSet();
+
+            while (condition != null)
+            {
+                if (condition.NodeIds.Any() && !condition.NodeIds.All(x => dataInputNodeIds.Contains(x)))
+                {
+                    throw new Exception($"Condition node ids do not match data input node ids for decision node id: {decisionNode.Id}");
+                }
+                condition = condition.InnerConditions;
             }
         }
 
@@ -182,15 +212,15 @@ namespace ShapeHandler.Objects
             return OutEdges[source][target];
         }
 
-        public List<Condition> GetConditions(FlowchartNode source, FlowchartNode target)
+        public List<Conditions> GetConditions(FlowchartNode source, FlowchartNode target)
         {
             List<Connection> connections = GetConnections(source, target);
             if (connections == null || !connections.Any())
             {
-                return new List<Condition>();
+                return new List<Conditions>();
             }
 
-            return connections.SelectMany(c => c.Conditions).ToList();
+            return connections.Select(x => x.Conditions).ToList();
         }
     }
 

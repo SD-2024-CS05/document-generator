@@ -29,14 +29,16 @@ namespace ShapeHandler.Database
                 else if (node is DecisionNode decisionNode)
                 {
                     obj.Add("type", decisionNode.Type.ToString().ToUpper());
-
-                    obj.Add("decisionElementIds", new JArray(decisionNode.Conditions));
                 }
                 obj.Add("Label", node.Label ?? node.Id);
             } else if (value is Connection connection)
             {
                 obj.Add("Label", connection.Label);
                 obj.Add("type", connection.Type.ToString().ToUpper());
+                if (connection.SubmissionId != null)
+                {
+                    obj.Add("submissionId", connection.SubmissionId);
+                }
             }
 
             obj.WriteTo(writer);

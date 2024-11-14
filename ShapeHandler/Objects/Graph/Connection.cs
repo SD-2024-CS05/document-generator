@@ -9,44 +9,65 @@ namespace ShapeHandler.Objects
     public class Connection
     {
         public string Label { get; set; }
-        public ConditionList Conditions { get; set; }
+        public Conditions Conditions { get; set; }
         public ConnectionType Type { get; set; }
+        public string SubmissionId { get; set; } // optional string for a submission event id
 
         public Connection(string label)
         {
             Label = label;
-            Conditions = new ConditionList();
             Type = ConnectionType.GOES_TO;
         }
 
         public Connection(string label, ConnectionType type)
         {
             Label = label;
-            Conditions = new ConditionList();
             Type = type;
         }
 
-        public Connection(string label, ConditionList conditions)
+        public Connection(string label, Conditions condition)
         {
             Label = label;
-            Conditions = conditions;
+            Conditions = condition;
             Type = ConnectionType.GOES_TO;
 
         }
-
-        public Connection(string label, ConditionList conditions, ConnectionType type)
+        public Connection(string label, Conditions condition, ConnectionType type)
         {
             Label = label;
-            Conditions = conditions;
+            Conditions = condition;
             Type = type;
             Type = ConnectionType.GOES_TO;
+        }
+
+        public Connection(string label, Conditions condition, ConnectionType type, string submissionId)
+        {
+            Label = label;
+            Conditions = condition;
+            Type = type;
+            SubmissionId = submissionId;
+        }
+
+        public Connection(string label, string submissionId)
+        {
+            Label = label;
+            Type = ConnectionType.GOES_TO;
+            SubmissionId = submissionId;
+        }
+
+        public Connection(string label, Conditions condition, string submissionId)
+        {
+            Label = label;
+            Conditions = condition;
+            Type = ConnectionType.GOES_TO;
+            SubmissionId = submissionId;
         }
 
         public override bool Equals(object obj)
         {
             return obj is Connection connection &&
                    Label == connection.Label &&
-                   EqualityComparer<ConditionList>.Default.Equals(Conditions, connection.Conditions) &&
+                   EqualityComparer<Conditions>.Default.Equals(Conditions, connection.Conditions) &&
                    Type == connection.Type;
         }
 
@@ -60,8 +81,15 @@ namespace ShapeHandler.Objects
             StringBuilder builder = new StringBuilder();
             // return string that can be written to neo4j
             builder.Append($"{{");
+            if (SubmissionId != null)
+            {
+                builder.Append($"submissionId: \"{SubmissionId}\", ");
+            }
             builder.Append($"label: \"{Label}\", ");
-            builder.Append($"conditions: {Conditions}, ");
+            if (Conditions != null && Conditions.NodeIds.Any())
+            {
+                builder.Append($"conditions: {Conditions}, ");
+            }
             builder.Append($"type: \"{Type.ToString().ToUpper()}\"");
             builder.Append($"}}");
             return builder.ToString();

@@ -79,21 +79,7 @@ namespace ShapeHandler.Tests.Database
             TemperatureFormNode.DataInputNodes.Add(submitButtonNode);
             TemperatureFormNode.DataInputNodes.Add(cancelButtonNode);
 
-            /// Conditions
-            Condition submitCondition = new Condition
-            {
-                Validate = (value) => value == "submitButton",
-                NodeId = submitButtonNode.Id
-            };
-
-            Condition cancelCondition = new Condition
-            {
-                Validate = (value) => value == "cancelButton",
-                NodeId = cancelButtonNode.Id
-            };
-
-            DecisionNode submitDecisionNode = new DecisionNode("Submit Results?",
-                new List<string> { TemperatureFormNode.Id });
+            DecisionNode submitDecisionNode = new DecisionNode("Submit Results?");
 
             /// Process nodes (wip)
             ProcessNode processDataNode = new ProcessNode("Process Data", false);
@@ -123,42 +109,10 @@ namespace ShapeHandler.Tests.Database
             viewRelatedDataFormNode.DataInputNodes.Add(noButtonNode);
             viewRelatedDataFormNode.DataInputNodes.Add(backToInputFormNode);
 
-            /// Conditions
-            Condition yesCondition = new Condition
-            {
-                ElementType = "button",
-                Attribute = "id",
-                AttributeValue = "viewRelatedDataButton",
-                IsActive = true,
-                Validate = (value) => value == "viewRelatedDataButton",
-                NodeId = yesButtonNode.Id
-            };
-
-            Condition noCondition = new Condition
-            {
-                ElementType = "button",
-                Attribute = "id",
-                AttributeValue = "",
-                IsActive = true,
-                Validate = (value) => value == "",
-                NodeId = noButtonNode.Id
-            };
-
-            Condition backToInputCondition = new Condition
-            {
-                ElementType = "a",
-                Attribute = "href",
-                AttributeValue = "/fast-cooling/input",
-                IsActive = true,
-                Validate = (value) => value == "/fast-cooling/input",
-                NodeId = backToInputFormNode.Id
-            };
-
-            DecisionNode viewRelatedDataDecisionNode = new DecisionNode("View Related Data?", new List<string> { viewRelatedDataFormNode.Id });
-
+            DecisionNode viewRelatedDataDecisionNode = new DecisionNode("View Related Data?");
 
             // Other functions
-            DecisionNode otherFunctionsDecisionNode = new DecisionNode("Other Functions?", new List<string> { viewRelatedDataFormNode.Id });
+            DecisionNode otherFunctionsDecisionNode = new DecisionNode("Other Functions?");
 
             PageNode pageANode = new PageNode("A");
 
@@ -180,6 +134,7 @@ namespace ShapeHandler.Tests.Database
             htmlGraph.AddNode(viewRelatedDataDecisionNode);
             htmlGraph.AddNode(yesButtonNode);
             htmlGraph.AddNode(noButtonNode);
+            htmlGraph.AddNode(backToInputFormNode);
             htmlGraph.AddNode(submitDecisionNode);
             htmlGraph.AddNode(processDataNode);
             htmlGraph.AddNode(displayResults);
@@ -189,13 +144,20 @@ namespace ShapeHandler.Tests.Database
             htmlGraph.AddNode(pageANode);
             htmlGraph.AddNode(end);
 
+            // Create Conditions
+            Conditions submitCondition = new Conditions
+            {
+                NodeIds = new List<string> { inputTempSensorNode.Id, inputWaitTimeNode.Id },
+                Operator = LogicalOperator.AND
+            };
+
             /// Create Connections
             // Start -> Input Data Form -> Submit Decision -> Process Data
             Connection startToInputDataForm = new Connection("1");
             Connection inputDataFormToSubmitDecision = new Connection("", ConnectionType.VALIDATES);
             Connection inputDataFormToSubmitDecisionGoing = new Connection("2");
-            Connection submitDecisionNo = new Connection("N 3", new List<Condition> { cancelCondition });
-            Connection submitDecisionYesToProcessData = new Connection("Y 4", new List<Condition> { submitCondition });
+            Connection submitDecisionNo = new Connection("N 3", cancelButtonNode.Id);
+            Connection submitDecisionYesToProcessData = new Connection("Y 4", submitCondition, submitButtonNode.Id);
 
             // Process Data -> Display Results -> View Related Data
             Connection processDataToDisplayResults = new Connection("5");
@@ -204,10 +166,10 @@ namespace ShapeHandler.Tests.Database
             Connection inputDataFormToOtherFunctions = new Connection("", ConnectionType.VALIDATES);
 
             // View Related Data -> Input Data Form -> Other Functions? -> End
-            Connection viewRelatedDataYes = new Connection("Y 7", new List<Condition> { yesCondition });
-            Connection viewRelatedDataNoToOtherFunction = new Connection("N 8", new List<Condition> { noCondition });
+            Connection viewRelatedDataYes = new Connection("Y 7", yesButtonNode.Id);
+            Connection viewRelatedDataNoToOtherFunction = new Connection("N 8", noButtonNode.Id);
             Connection otherFunctionYesToPage = new Connection("Y 9");
-            Connection otherFunctionNoToBeginning = new Connection("N 10", new List<Condition> { backToInputCondition });
+            Connection otherFunctionNoToBeginning = new Connection("N 10", backToInputFormNode.Id);
 
             // Add input element connections for data forms
             // Temperature Form
@@ -250,7 +212,7 @@ namespace ShapeHandler.Tests.Database
         }
 
         [TestMethod()]
-        //[Ignore] // Ignored because it writes to the database
+        [Ignore] // Ignored because it writes to the database
         public void WriteTestFlowchartToFile()
         {
             DatabaseConnector connector = new KeyVaultManager().ConnectToDatabase();
