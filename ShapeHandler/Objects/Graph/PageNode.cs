@@ -8,7 +8,7 @@ namespace ShapeHandler.Objects
 {
     public class PageNode : FlowchartNode
     {
-        public PageNode(string id) : base(id, NodeType.Page) { }
+        public PageNode(string label) : base(label, NodeType.Page) { }
     }
 
 }

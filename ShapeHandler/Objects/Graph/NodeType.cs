@@ -9,6 +9,12 @@ namespace ShapeHandler.Objects
     public enum NodeType
     {
         HtmlElement,
+        Button,
+        UserProcess,
+        BackgroundProcess,
+        DataInput,
+        Input,
+        Anchor,
         Decision,
         StartEnd,
         Page

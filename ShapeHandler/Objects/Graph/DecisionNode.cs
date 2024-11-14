@@ -8,12 +8,10 @@ using System.Threading.Tasks;
 namespace ShapeHandler.Objects
 {
     public class DecisionNode : FlowchartNode
-    {
-        public List<Condition<string>> Conditions { get; set; }
-
-        public DecisionNode(string id) : base(id, NodeType.Decision)
+    { 
+        public DecisionNode(string label) : base(label, NodeType.Decision)
         {
-            Conditions = new List<Condition<string>>();
+            Label = label;
         }
     }
 }

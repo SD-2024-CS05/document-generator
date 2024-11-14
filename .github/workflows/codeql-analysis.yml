@@ -1,0 +1,117 @@
+name: "CodeQL"
+
+on:
+  push:
+    branches:
+      - main
+      - staging
+      - dev
+    paths:
+      - '**.cs'
+      - '**.csproj'
+  pull_request:
+    branches:
+      - main
+      - staging
+      - dev
+    paths:
+        - '**.cs'
+        - '**.csproj'
+  
+env:
+  SOLUTION_FILE: ShapeHandler.sln
+
+jobs:
+  analyze:
+
+    runs-on: windows-latest
+
+    permissions:
+      contents: read
+      security-events: write
+  
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Cache CodeQL tools
+      uses: actions/cache@v2
+      with:
+        path: ${{ runner.tool_cache }}
+        key: ${{ runner.os }}-codeql-${{ hashFiles('**/qlpack.yml') }}
+        restore-keys: |
+          ${{ runner.os }}-codeql-${{ hashFiles('**/qlpack.yml') }}
+   
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: csharp
+        build-mode: manual
+
+    - name: Setup MSBuild
+      uses: microsoft/setup-msbuild@v1
+
+    - name: Cache NuGet packages
+      uses: actions/cache@v4
+      with:
+       path: ~/.nuget/packages
+       key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+       restore-keys: |
+         ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+
+    - name: Cache build outputs
+      uses: actions/cache@v4
+      with:
+       path: |
+         **/bin/Release
+         **/obj/Release
+         **/*.sln
+         **/*.csproj
+         **/*.targets
+       key: ${{ runner.os }}-build-${{ hashFiles('**/*.csproj') }}
+       restore-keys: |
+         ${{ runner.os }}-build-${{ hashFiles('**/*.csproj') }}
+
+    - name: Restore NuGet packages
+      run: nuget restore ${{ env.SOLUTION_FILE }}
+
+    - name: create PFX file
+      run: |
+         $pfxCertFilePath = Join-Path -Path $env:CertDir -ChildPath $env:CertName
+         [System.IO.File]::WriteAllBytes($pfxCertFilePath, [System.Convert]::FromBase64String("${{secrets.CERT_KEY}}"))
+         certutil -f -p "" -importpfx $pfxCertFilePath
+      env:
+        CertDir: D:\a\document-generator\document-generator\ShapeHandler\
+        CertName: ShapeHandler_TemporaryKey.pfx  
+
+    - name: Create App Settings
+      run: |
+           $appSettingsFilePath = Join-Path -Path $env:AppSettingsDir -ChildPath $env:AppSettingsName
+           [System.IO.File]::WriteAllText($appSettingsFilePath, $env:AppSettingsContent)
+      env:
+        AppSettingsDir: D:\a\document-generator\document-generator\ShapeHandler\
+        AppSettingsName: appsettings.json
+        AppSettingsContent: |
+           {
+             "AzureKeyVaultURI": "${{ secrets.AZURE_KEY_VAULT_URI }}",
+             "Neo4JURI": "${{ secrets.NEO4J_URI }}",
+             "Neo4JUsername": "${{ secrets.NEO4J_USERNAME }}",
+             "Neo4JPassword": "${{ secrets.NEO4J_PASSWORD }}",
+             "Neo4JInstanceID": "${{ secrets.NEO4J_INSTANCE_ID }}",
+             "Neo4JInstanceName": "${{ secrets.NEO4J_INSTANCE_NAME }}"
+           }
+
+    - name: Build with MSBuild
+      if: steps.cache-build.outputs.cache-hit != 'true'  
+      run: |  
+       msbuild /p:Configuration=Release ${{env.SOLUTION_FILE}} /p:GITHUB_ACTIONS=true
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+
+    - name: Upload CodeQL Analysis Results
+      uses: actions/upload-artifact@v4
+      with:
+        name: codeql-results
+        path: D:/a/document-generator/results/csharp.sarif
+      if: always()

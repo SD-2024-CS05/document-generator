@@ -8,7 +8,10 @@ namespace ShapeHandler.Objects
 {
     public class StartEndNode : FlowchartNode
     {
-        public StartEndNode(string id) : base(id, NodeType.StartEnd) { }
+
+        public bool IsStart { get; set; } = false;
+
+        public StartEndNode(string label) : base(label, NodeType.StartEnd) { }
     }
 
 }

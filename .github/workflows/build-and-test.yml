@@ -1,0 +1,143 @@
+name: Build and Test
+
+on:
+ push:
+   branches:
+     - main
+     - staging
+     - dev
+ pull_request:
+   branches:
+     - main
+     - staging
+     - dev
+
+jobs:
+ Build:
+   env:
+      SOLUTION_FILE: ShapeHandler.sln
+   runs-on: windows-latest
+
+   steps:
+   - name: Checkout code
+     uses: actions/checkout@v2
+
+   - name: Setup MSBuild
+     uses: microsoft/setup-msbuild@v1
+
+   - name: Cache NuGet packages
+     uses: actions/cache@v4
+     with:
+       path: ~/.nuget/packages
+       key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+       restore-keys: |
+         ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+
+   - name: Cache build outputs
+     uses: actions/cache@v4
+     with:
+       path: |
+         **/bin/Release
+         **/obj/Release
+         **/*.sln
+         **/*.csproj
+         **/*.targets
+       key: ${{ runner.os }}-build-${{ hashFiles('**/*.csproj') }}
+       restore-keys: |
+         ${{ runner.os }}-build-${{ hashFiles('**/*.csproj') }}
+
+   - name: Restore NuGet packages
+     run: nuget restore ${{ env.SOLUTION_FILE }}
+
+   - name: create PFX file
+     run: |
+         $pfxCertFilePath = Join-Path -Path $env:CertDir -ChildPath $env:CertName
+         [System.IO.File]::WriteAllBytes($pfxCertFilePath, [System.Convert]::FromBase64String("${{secrets.CERT_KEY}}"))
+         certutil -f -p "" -importpfx $pfxCertFilePath
+     env:
+        CertDir: D:\a\document-generator\document-generator\ShapeHandler\
+        CertName: ShapeHandler_TemporaryKey.pfx
+
+   - name: Create App Settings
+     run: |
+           $appSettingsFilePath = Join-Path -Path $env:AppSettingsDir -ChildPath $env:AppSettingsName
+           [System.IO.File]::WriteAllText($appSettingsFilePath, $env:AppSettingsContent)
+     env:
+        AppSettingsDir: D:\a\document-generator\document-generator\ShapeHandler\
+        AppSettingsName: appsettings.json
+        AppSettingsContent: |
+           {
+             "AzureKeyVaultURI": "${{ secrets.AZURE_KEY_VAULT_URI }}",
+             "Neo4JURI": "${{ secrets.NEO4J_URI }}",
+             "Neo4JUsername": "${{ secrets.NEO4J_USERNAME }}",
+             "Neo4JPassword": "${{ secrets.NEO4J_PASSWORD }}",
+             "Neo4JInstanceID": "${{ secrets.NEO4J_INSTANCE_ID }}",
+             "Neo4JInstanceName": "${{ secrets.NEO4J_INSTANCE_NAME }}"
+           }
+
+   - name: Build with MSBuild
+     if: steps.cache-build.outputs.cache-hit != 'true'  
+     run: |  
+       msbuild /p:Configuration=Release ${{env.SOLUTION_FILE}} /p:GITHUB_ACTIONS=true
+
+   - name: Upload Artifact
+     uses: actions/upload-artifact@v4
+     with:
+       name: ShapeHandler 
+       path: |
+         **/bin/Release
+         **/obj/Release
+         **/*.targets
+         **/*.sln
+         **/*.csproj
+
+ Test:
+    runs-on: windows-latest
+    needs: build
+
+    steps:
+       - name: Get Artifact
+         uses: actions/download-artifact@v4
+         with:
+           name: ShapeHandler
+           path: ./build
+
+       - name: Run tests  
+         run: |
+             cd ${{ env.RELEASE_DIR }}
+             & "${{ env.vstestPath }}" "${{ env.TEST_FILE }}" "/Logger:trx;LogFileName=${{ env.TEST_RESULTS_PATH }}"
+         env:  
+            vstestPath: C:\Program Files\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\CommonExtensions\Microsoft\TestWindow\vstest.console.exe  
+            RELEASE_DIR: ./build/ShapeHandler.Tests/bin/Release
+            TEST_RESULTS_PATH: ${{ github.workspace }}\test-results.trx
+            TEST_FILE: '*.Tests.dll'
+
+       - name: Upload Test Results
+         uses: actions/upload-artifact@v4
+         with:
+           name: test-results
+           path: ${{ github.workspace }}/test-results.trx
+         if: always()
+
+ Publish-Test-Report:
+   runs-on: ubuntu-latest
+   needs: test
+
+   permissions:
+    contents: read
+    issues: read
+    checks: write
+    pull-requests: write
+
+   steps:
+     - name: Get Test Results
+       uses: actions/download-artifact@v4
+       with:
+         name: test-results
+         path: ./test-results
+
+     - name: Publish Test Results
+       uses: EnricoMi/publish-unit-test-result-action@v2.18.0
+       if: always()
+       with:
+        files: ./test-results/**/*.trx
