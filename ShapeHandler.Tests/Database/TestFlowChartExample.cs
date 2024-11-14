@@ -72,7 +72,7 @@ namespace ShapeHandler.Tests.Database
             var cancelButtonNode = new HtmlNode(cancelButton.Id, cancelButton, NodeType.Anchor);
 
             // Make Wrapper for Form 1
-            var TemperatureFormNode = new DataInputWrapperNode("Input Data");
+            var TemperatureFormNode = new DataInputNode("Input Data");
             TemperatureFormNode.DataInputNodes.Add(inputTempSensorNode);
             TemperatureFormNode.DataInputNodes.Add(setFastCoolingModeNode);
             TemperatureFormNode.DataInputNodes.Add(inputWaitTimeNode);
@@ -82,20 +82,12 @@ namespace ShapeHandler.Tests.Database
             /// Conditions
             Condition submitCondition = new Condition
             {
-                ElementType = "button",
-                Attribute = "id",
-                AttributeValue = "submitButton",
-                IsActive = true,
                 Validate = (value) => value == "submitButton",
                 NodeId = submitButtonNode.Id
             };
 
             Condition cancelCondition = new Condition
             {
-                ElementType = "a",
-                Attribute = "id",
-                AttributeValue = "cancelButton",
-                IsActive = true,
                 Validate = (value) => value == "cancelButton",
                 NodeId = cancelButtonNode.Id
             };
@@ -126,7 +118,7 @@ namespace ShapeHandler.Tests.Database
             var backToInputFormNode = new HtmlNode(backToInputForm.Id, backToInputForm, NodeType.Anchor);
 
             // make data input wrapper node
-            var viewRelatedDataFormNode = new DataInputWrapperNode("View Related Data");
+            var viewRelatedDataFormNode = new DataInputNode("View Related Data");
             viewRelatedDataFormNode.DataInputNodes.Add(yesButtonNode);
             viewRelatedDataFormNode.DataInputNodes.Add(noButtonNode);
             viewRelatedDataFormNode.DataInputNodes.Add(backToInputFormNode);
@@ -258,7 +250,7 @@ namespace ShapeHandler.Tests.Database
         }
 
         [TestMethod()]
-        [Ignore] // Ignored because it writes to the database
+        //[Ignore] // Ignored because it writes to the database
         public void WriteTestFlowchartToFile()
         {
             DatabaseConnector connector = new KeyVaultManager().ConnectToDatabase();

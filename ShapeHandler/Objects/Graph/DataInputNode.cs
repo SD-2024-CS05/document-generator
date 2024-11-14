@@ -7,16 +7,16 @@ using System.Threading.Tasks;
 
 namespace ShapeHandler.Objects
 {
-    public class DataInputWrapperNode : FlowchartNode
+    public class DataInputNode : FlowchartNode
     {
         public List<HtmlNode> DataInputNodes { get; set; }
 
-        public DataInputWrapperNode(string label, NodeType type = NodeType.DataInput) : base(label, type)
+        public DataInputNode(string label, NodeType type = NodeType.DataInput) : base(label, type)
         {
             DataInputNodes = new List<HtmlNode>();
         }
 
-        public DataInputWrapperNode(string label, List<HtmlNode> dataInputNodes, NodeType type = NodeType.DataInput) : base(label, type)
+        public DataInputNode(string label, List<HtmlNode> dataInputNodes, NodeType type = NodeType.DataInput) : base(label, type)
         {
             DataInputNodes = dataInputNodes;
         }
@@ -28,7 +28,7 @@ namespace ShapeHandler.Objects
                 return false;
             }
 
-            if (!(obj is DataInputWrapperNode otherNode))
+            if (!(obj is DataInputNode otherNode))
             {
                 return false;
             }

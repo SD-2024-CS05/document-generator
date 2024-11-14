@@ -9,24 +9,24 @@ namespace ShapeHandler.Objects
     public class Connection
     {
         public string Label { get; set; }
-        public List<Condition> Conditions { get; set; }
+        public ConditionList Conditions { get; set; }
         public ConnectionType Type { get; set; }
 
         public Connection(string label)
         {
             Label = label;
-            Conditions = new List<Condition>();
+            Conditions = new ConditionList();
             Type = ConnectionType.GOES_TO;
         }
 
         public Connection(string label, ConnectionType type)
         {
             Label = label;
-            Conditions = new List<Condition>();
+            Conditions = new ConditionList();
             Type = type;
         }
 
-        public Connection(string label, List<Condition> conditions)
+        public Connection(string label, ConditionList conditions)
         {
             Label = label;
             Conditions = conditions;
@@ -34,7 +34,7 @@ namespace ShapeHandler.Objects
 
         }
 
-        public Connection(string label, List<Condition> conditions, ConnectionType type)
+        public Connection(string label, ConditionList conditions, ConnectionType type)
         {
             Label = label;
             Conditions = conditions;
@@ -46,7 +46,7 @@ namespace ShapeHandler.Objects
         {
             return obj is Connection connection &&
                    Label == connection.Label &&
-                   EqualityComparer<List<Condition>>.Default.Equals(Conditions, connection.Conditions) &&
+                   EqualityComparer<ConditionList>.Default.Equals(Conditions, connection.Conditions) &&
                    Type == connection.Type;
         }
 
@@ -58,18 +58,12 @@ namespace ShapeHandler.Objects
         public override string ToString()
         {
             StringBuilder builder = new StringBuilder();
-
+            // return string that can be written to neo4j
             builder.Append($"{{");
             builder.Append($"label: \"{Label}\", ");
-            builder.Append($"type: \"{Type.ToString().ToUpper()}\", ");
-            builder.Append($"conditions: [");
-            foreach (var condition in Conditions)
-            {
-                builder.Append($"{condition}, ");
-            }
-            builder.Append($"]");
+            builder.Append($"conditions: {Conditions}, ");
+            builder.Append($"type: \"{Type.ToString().ToUpper()}\"");
             builder.Append($"}}");
-
             return builder.ToString();
         }
     }

@@ -106,7 +106,7 @@ namespace ShapeHandler.Database
             }
             else if (node is DecisionNode decisionNode)
             {
-                var validationElements = decisionNode.DecisionElementIds.Select(ve => ve.ToString()).ToList();
+                var validationElements = decisionNode.Conditions.Select(ve => ve.ToString()).ToList();
                 await tx.RunAsync(@"
                     MERGE (n:" + node.Type.ToString() + @" {id: $id})
                     ON CREATE SET n += { ValidationElements: CASE WHEN size($elements) > 0 THEN $elements ELSE [] END, Label: $label }",

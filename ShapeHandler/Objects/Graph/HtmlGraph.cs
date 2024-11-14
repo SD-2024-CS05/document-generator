@@ -85,16 +85,11 @@ namespace ShapeHandler.Objects
 
             if (!OutEdges.ContainsKey(source))
             {
-                OutEdges[source] = new Dictionary<FlowchartNode, List<Connection>>();
+                throw new Exception("Source node not found in graph");
             }
             if (!InEdges.ContainsKey(target))
             {
-                InEdges[target] = new Dictionary<FlowchartNode, List<Connection>>();
-            }
-
-            if (source is DecisionNode decisionNode && connection.Conditions != null && connection.Conditions.Any())
-            {
-                ValidateDecisionNodeConnection(decisionNode, connection);
+                throw new Exception("Target node not found in graph");
             }
 
             if (!OutEdges[source].ContainsKey(target))
@@ -113,39 +108,6 @@ namespace ShapeHandler.Objects
             if (!InEdges[target][source].Contains(connection))
             {
                 InEdges[target][source].Add(connection);
-            }
-        }
-
-        private void ValidateDecisionNodeConnection(DecisionNode decisionNode, Connection connection)
-        {
-            var dataWrapperNodes = InEdges[decisionNode] // Get all nodes connected to the decision node with 'VALIDATES' connection
-                .Where(x => x.Key is DataInputWrapperNode && x.Value.Any(c => c.Type == ConnectionType.VALIDATES))
-                .Select(x => x.Key)
-                .ToList();
-
-            if (!dataWrapperNodes.Any())
-            {
-                if (connection.Conditions != null && connection.Conditions.Any())
-                {
-                    throw new Exception($"No dataWrapper node found for decision node id: {decisionNode.Id}, but conditions are present.");
-                }
-                return;
-            }
-
-            // Check if the dataWrapper node contains ids of the conditions
-            foreach (var dataWrapperNode in dataWrapperNodes)
-            {
-                var dataWrapper = dataWrapperNode as DataInputWrapperNode;
-                var htmlNodes = dataWrapper.DataInputNodes;
-
-                // Check if the conditions contain the ids of the nodes in the dataWrapper node
-                foreach (var condition in connection.Conditions)
-                {
-                    if (!htmlNodes.Any(x => x.Id == condition.NodeId))
-                    {
-                        throw new Exception("Node id not found in the dataWrapper node");
-                    }
-                }
             }
         }
 

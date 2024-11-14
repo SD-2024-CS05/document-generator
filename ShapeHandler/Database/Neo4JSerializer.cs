@@ -30,7 +30,7 @@ namespace ShapeHandler.Database
                 {
                     obj.Add("type", decisionNode.Type.ToString().ToUpper());
 
-                    obj.Add("decisionElementIds", new JArray(decisionNode.DecisionElementIds));
+                    obj.Add("decisionElementIds", new JArray(decisionNode.Conditions));
                 }
                 obj.Add("Label", node.Label ?? node.Id);
             } else if (value is Connection connection)
