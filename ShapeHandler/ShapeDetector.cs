@@ -6,6 +6,9 @@ using System.Xml.Linq;
 using Visio = Microsoft.Office.Interop.Visio;
 using Office = Microsoft.Office.Core;
 using Microsoft.Office.Interop.Visio;
+using ShapeHandler.Objects;
+using ShapeHandler.Identity;
+using ShapeHandler.Database;
 
 namespace ShapeHandler
 {
@@ -13,93 +16,19 @@ namespace ShapeHandler
     {
         private void ShapeDetector_Startup(object sender, System.EventArgs e)
         {
+            // Uncomment for local testing
+            //ShapeDetector.CreateGraphFromFlowchart(Globals.ShapeDetector.Application);
         }
 
         private void ShapeDetector_Shutdown(object sender, System.EventArgs e)
         {
         }
 
-        /// <summary>
-        /// Creates a Graph of the active Visio Document
-        /// </summary>
-        /// <returns></returns>
-        public static Graph CreateGraph()
+        public static HtmlGraph CreateGraphFromFlowchart(Visio.Application application)
         {
-            Console.WriteLine("Creating Graph");
+            HtmlGraph graph = new HtmlGraph();
 
-            // get all pages
-            List<short> pageIndexes = new List<short>();
-
-            foreach (Page page in Globals.ShapeDetector.Application.ActiveDocument.Pages)
-            {
-                pageIndexes.Add(page.Index);
-            }
-
-            // combine all pages into one graph
-            Graph graph = CombineGraphPages(pageIndexes);
-
-            Console.WriteLine("Graph Created");
-
-            return graph;
-        }
-
-        /// <summary>
-        /// Makes a graph of the given page
-        /// </summary>
-        /// <param name="pageIndex">Index of the page to graph</param>
-        /// <returns></returns>
-        private static Graph GetGraphOfPage(int pageIndex)
-        {
-            Graph graph = new Graph();
-            Page page = Globals.ShapeDetector.Application.ActiveDocument.Pages[pageIndex];
-
-            foreach (Shape shape in page.Shapes)
-            {
-                string name = shape.Name;
-                if (shape.Name.Contains("Start/End"))
-                {
-                }
-                WebElement element;
-                //switch (name)
-                //{
-                //    case "Anchor":
-                //        element = new Anchor(shape);
-                //        break;
-                //    case "Button":
-                //        element = new Button(shape);
-                //        break;
-                //    case "Input":
-                //        element = new Input(shape);
-                //        break;
-                //    case "Image":
-                //        element = new Image(shape);
-                //        break;
-                //    case "Span":
-                //        element = new Span(shape);
-                //        break;
-                //    case "Select":
-                //        element = new Select(shape);
-                //        break;
-                //    default:
-                //        break;
-                //}
-            }
-            return graph;
-        }
-
-        /// <summary>
-        /// Combines all the graphs of the pages into one graph
-        /// </summary>
-        /// <param name="pageIndexes">List of page indices to graph</param>
-        /// <returns>Graph Object</returns>
-        private static Graph CombineGraphPages(List<short> pageIndexes)
-        {
-            Graph graph = new Graph();
-            foreach (short pageIndex in pageIndexes)
-            {
-                Graph pageGraph = GetGraphOfPage(pageIndex);
-                graph.CombineGraphs(pageGraph);
-            }
+            // TODO: Implement
 
             return graph;
         }
