@@ -7,6 +7,8 @@ using Visio = Microsoft.Office.Interop.Visio;
 using Office = Microsoft.Office.Core;
 using Microsoft.Office.Interop.Visio;
 using ShapeHandler.Objects;
+using ShapeHandler.Identity;
+using ShapeHandler.Database;
 
 namespace ShapeHandler
 {
@@ -14,19 +16,21 @@ namespace ShapeHandler
     {
         private void ShapeDetector_Startup(object sender, System.EventArgs e)
         {
+            // Uncomment for local testing
+            //ShapeDetector.CreateGraphFromFlowchart(Globals.ShapeDetector.Application);
         }
 
         private void ShapeDetector_Shutdown(object sender, System.EventArgs e)
         {
         }
 
-        /// <summary>
-        /// Returns the Graph object that represents the flowchart
-        /// </summary>
-        /// <returns>An HtmlGraph Object</returns>
-        public static HtmlGraph CreateGraph()
+        public static HtmlGraph CreateGraphFromFlowchart(Visio.Application application)
         {
-            throw new NotImplementedException();
+            HtmlGraph graph = new HtmlGraph();
+
+            // TODO: Implement
+
+            return graph;
         }
 
         #region VSTO generated code

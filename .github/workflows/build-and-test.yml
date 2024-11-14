@@ -58,6 +58,23 @@ jobs:
         CertDir: D:\a\document-generator\document-generator\ShapeHandler\
         CertName: ShapeHandler_TemporaryKey.pfx
 
+   - name: Create App Settings
+     run: |
+           $appSettingsFilePath = Join-Path -Path $env:AppSettingsDir -ChildPath $env:AppSettingsName
+           [System.IO.File]::WriteAllText($appSettingsFilePath, $env:AppSettingsContent)
+     env:
+        AppSettingsDir: D:\a\document-generator\document-generator\ShapeHandler\
+        AppSettingsName: appsettings.json
+        AppSettingsContent: |
+           {
+             "AzureKeyVaultURI": "${{ secrets.AZURE_KEY_VAULT_URI }}",
+             "Neo4JURI": "${{ secrets.NEO4J_URI }}",
+             "Neo4JUsername": "${{ secrets.NEO4J_USERNAME }}",
+             "Neo4JPassword": "${{ secrets.NEO4J_PASSWORD }}",
+             "Neo4JInstanceID": "${{ secrets.NEO4J_INSTANCE_ID }}",
+             "Neo4JInstanceName": "${{ secrets.NEO4J_INSTANCE_NAME }}"
+           }
+
    - name: Build with MSBuild
      if: steps.cache-build.outputs.cache-hit != 'true'  
      run: |  
@@ -100,6 +117,7 @@ jobs:
          with:
            name: test-results
            path: ${{ github.workspace }}/test-results.trx
+         if: always()
 
  Publish-Test-Report:
    runs-on: ubuntu-latest

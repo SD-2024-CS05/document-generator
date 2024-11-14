@@ -1,4 +1,8 @@
 ﻿using Microsoft.Office.Tools.Ribbon;
+using ShapeHandler.Database;
+using ShapeHandler.Identity;
+using ShapeHandler.Objects;
+using System.Windows.Forms;
 
 namespace ShapeHandler
 {
@@ -9,10 +13,13 @@ namespace ShapeHandler
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
+        private KeyVaultManager keyVaultManager;
+
         public TestGenerator()
             : base(Globals.Factory.GetRibbonFactory())
         {
             InitializeComponent();
+            keyVaultManager = new KeyVaultManager();
         }
 
         /// <summary> 
@@ -30,8 +37,20 @@ namespace ShapeHandler
 
         private void HandleTestGenerationClick(object sender, RibbonControlEventArgs e)
         {
-            ShapeDetector.CreateGraph();
+            HtmlGraph graph = ShapeDetector.CreateGraphFromFlowchart(Globals.ShapeDetector.Application);
 
+            DatabaseConnector connector = keyVaultManager.ConnectToDatabase();
+
+            if (connector.WriteHtmlGraphAsync(graph).Result == false)
+            {
+                MessageBox.Show("Failed to write Instruction Set to database");
+            }
+            else
+            {
+                MessageBox.Show("Instruction Set written to database");
+            }
+
+            connector.Dispose();
         }
 
         #region Component Designer generated code

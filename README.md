@@ -16,3 +16,25 @@ table information from the data dictionary and 'language' to 3) generate a meta-
 pages) that can be utilized for client discussions, initial design mockups, 30/60/90% client and technical design reviews/code walks and generation of specific
 system and interface tests. 4) A simulated feedback session may then be entered back into the DevOps area and/or Excel tables, to then iterate the graphical
 generation until client and review feedback suggests that iteration is no longer required for the implementation to be successful.
+
+
+## How to Develop Locally
+
+> Prior to running, a certificate must be added to the project. To get access to the certificate, please reach out to [Joshua Venable](mailto:jvenable@zagmail.gonzaga.edu)
+
+In the `ShapeHandler` Project, add an `appsettings.json` file in the root of the project with the following content:
+
+```json
+{
+  "AzureKeyVaultURI": "https://shapehandler.vault.azure.net/",
+  "Neo4JURI": "<uri>",
+  "Neo4JUsername": "<username>",
+  "Neo4JPassword": "<password>",
+  "Neo4JInstanceID": "<instance ID>",
+  "Neo4JInstanceName": "ShapeHandlerDEV"
+}
+```
+  
+ 
+ 
+Set `ShapeHandler` as the startup project, and either debug or run the project.
