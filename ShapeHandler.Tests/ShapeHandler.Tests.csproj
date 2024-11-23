@@ -363,6 +363,7 @@
       <DependentUpon>StartEndNodeTest.cs</DependentUpon>
     </Compile>
     <Compile Include="Objects\Graph\StartEndNodeTest.cs" />
+    <Compile Include="ShapeTransformation\ShapeReaderTests.cs" />
     <Compile Include="Visio\ShapeDetectorTests.cs" />
   </ItemGroup>
   <ItemGroup>
