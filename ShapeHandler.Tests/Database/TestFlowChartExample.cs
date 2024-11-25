@@ -15,8 +15,7 @@ namespace ShapeHandler.Tests.Database
 
         private HtmlGraph graph;
 
-        [TestInitialize()]
-        public void Setup()
+        public void Setup1()
         {
             var htmlGraph = new HtmlGraph();
             var context = BrowsingContext.New(Configuration.Default);
@@ -211,15 +210,179 @@ namespace ShapeHandler.Tests.Database
             graph = htmlGraph;
         }
 
+        public void SetupTest2()
+        {
+            var htmlGraph = new HtmlGraph();
+            var context = BrowsingContext.New(Configuration.Default);
+            var document = context.OpenNewAsync().Result;
+
+            /// Start Node
+            var start = new StartEndNode("start");
+            start.IsStart = true;
+
+            // add to basket decision
+            var addToBasket = document.CreateElement("input") as IHtmlInputElement;
+            addToBasket.Type = "submit";
+            addToBasket.Value = "[ ADD TO BASKET ]";
+            addToBasket.ClassList.Add("esh-catalog-thumbnail");
+            var addToBasketInput = new HtmlNode(addToBasket.Id, addToBasket, NodeType.Input);
+
+            var addToBasketDecision = new DecisionNode("Click Add to Basket");
+
+            // Make Data Input wrapper
+            var addToBasketDataInput = new DataInputNode(new List<HtmlNode> { addToBasketInput });
+
+            /// Input Quantity Box
+            // input
+            var inputQuantity = document.CreateElement("input") as IHtmlInputElement;
+            inputQuantity.Type = "number";
+            inputQuantity.Value = "1";
+            inputQuantity.ClassList.Add("esh-basket-input");
+            inputQuantity.Minimum = "0";
+            inputQuantity.Name = "Items[0].Quantity";
+
+            var inputQuantityNode = new HtmlNode(inputQuantity.Id, inputQuantity, NodeType.Input);
+
+            // anchor button
+            var continueShopping = document.CreateElement("a") as IHtmlAnchorElement;
+            continueShopping.ClassList.Add("btn", "esh-basket-checkout", "text-white");
+            continueShopping.Href = "/";
+            continueShopping.TextContent = "[ Continue Shopping ]";
+
+            var continueShoppingNode = new HtmlNode(continueShopping.Id, continueShopping, NodeType.Anchor);
+
+            // continue shopping decision
+            var continueShoppingDecision = new DecisionNode("Continue Shopping?");
+
+            // update button
+            var updateBasket = document.CreateElement("button") as IHtmlButtonElement;
+            updateBasket.ClassList.Add("btn", "esh-basket-checkout");
+            updateBasket.Name = "updatebutton";
+            updateBasket.Type = "submit";
+            updateBasket.FormAction = "/Basket/Update";
+            updateBasket.TextContent = "[ Update Basket ]";
+
+            var updateBasketNode = new HtmlNode(updateBasket.Id, updateBasket, NodeType.Button);
+
+            var updateDecision = new DecisionNode("Update?");
+
+            // foreground process
+            var updateCartProcess = new ProcessNode("Update Cart");
+
+            //checkout button
+            var checkout = document.CreateElement("a") as IHtmlAnchorElement;
+            checkout.ClassList.Add("btn", "esh-basket-checkout");
+            checkout.Href = "/Basket/Checkout";
+            checkout.TextContent = "[ Checkout ]";
+
+            var checkoutNode = new HtmlNode(checkout.Id, checkout, NodeType.Anchor);
+
+            // checkout decision
+            var checkoutDecision = new DecisionNode("Checkout?");
+
+            // data input node
+            var dataInputFinalPage = new DataInputNode("Input Quantity", new List<HtmlNode> { continueShoppingNode, updateBasketNode, checkoutNode, inputQuantityNode });
+
+            // final node
+            var end = new StartEndNode("end");
+
+            htmlGraph.AddNode(start);
+            htmlGraph.AddNode(addToBasketDecision);
+            htmlGraph.AddNode(addToBasketInput);
+            htmlGraph.AddNode(addToBasketDataInput);
+            htmlGraph.AddNode(inputQuantityNode);
+            htmlGraph.AddNode(continueShoppingNode);
+            htmlGraph.AddNode(continueShoppingDecision);
+            htmlGraph.AddNode(updateBasketNode);
+            htmlGraph.AddNode(updateDecision);
+            htmlGraph.AddNode(updateCartProcess);
+            htmlGraph.AddNode(dataInputFinalPage);
+            htmlGraph.AddNode(checkoutNode);
+            htmlGraph.AddNode(checkoutDecision);
+            htmlGraph.AddNode(end);
+
+            /// make connections
+            var connection1 = new Connection("1");
+            htmlGraph.AddConnection(start, addToBasketDecision, connection1);
+
+            var connectionN2 = new Connection("N 2");
+            htmlGraph.AddConnection(addToBasketDecision, start, connectionN2);
+
+            // dependency connections
+            htmlGraph.AddConnection(addToBasketInput, addToBasketDataInput, new Connection(ConnectionType.INPUT_FOR));
+            htmlGraph.AddConnection(addToBasketDataInput, addToBasketDecision, new Connection(ConnectionType.VALIDATES));
+
+            var connectionY3 = new Connection("Y 3", addToBasketInput.Id);
+            htmlGraph.AddConnection(addToBasketDecision, dataInputFinalPage, connectionY3);
+
+            // dependency connections
+            htmlGraph.AddConnection(inputQuantityNode, dataInputFinalPage, new Connection(ConnectionType.INPUT_FOR));
+            htmlGraph.AddConnection(continueShoppingNode, dataInputFinalPage, new Connection(ConnectionType.INPUT_FOR));
+            htmlGraph.AddConnection(updateBasketNode, dataInputFinalPage, new Connection(ConnectionType.INPUT_FOR));
+            htmlGraph.AddConnection(checkoutNode, dataInputFinalPage, new Connection(ConnectionType.INPUT_FOR));
+            htmlGraph.AddConnection(dataInputFinalPage, continueShoppingDecision, new Connection(ConnectionType.VALIDATES));
+            htmlGraph.AddConnection(dataInputFinalPage, updateDecision, new Connection(ConnectionType.VALIDATES));
+            htmlGraph.AddConnection(dataInputFinalPage, checkoutDecision, new Connection(ConnectionType.VALIDATES));
+
+            var connection4 = new Connection("4");
+            htmlGraph.AddConnection(dataInputFinalPage, continueShoppingDecision, connection4);
+
+            var connectionY5 = new Connection("Y 5", continueShoppingNode.Id);
+            htmlGraph.AddConnection(continueShoppingDecision, start, connectionY5);
+
+            var connectionN6 = new Connection("N 6");
+            htmlGraph.AddConnection(continueShoppingDecision, updateDecision, connectionN6);
+
+            var connectionY7 = new Connection("Y 7", updateBasketNode.Id);
+            htmlGraph.AddConnection(updateDecision, updateCartProcess, connectionY7);
+
+            var connection8 = new Connection("8");
+            htmlGraph.AddConnection(updateCartProcess, continueShoppingDecision, connection8);
+
+            var connectionN9 = new Connection("N 9");
+            htmlGraph.AddConnection(updateDecision, checkoutDecision, connectionN9);
+
+            var connectionY10 = new Connection("Y 10", checkoutNode.Id);
+            htmlGraph.AddConnection(checkoutDecision, end, connectionY10);
+
+            var connectionN11 = new Connection("N 11");
+            htmlGraph.AddConnection(checkoutDecision, continueShoppingDecision, connectionN11);
+
+
+            graph = htmlGraph;
+        }
+
         [TestMethod()]
         [Ignore] // Ignored because it writes to the database
-        public void WriteTestFlowchartToFile()
+        public void WriteTestFlowchartToFile1()
         {
             DatabaseConnector connector = new KeyVaultManager().ConnectToDatabase();
 
             bool res = false;
             try
             {
+                Setup1();
+                res = connector.WriteHtmlGraphAsync(graph).Result;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                Assert.Fail();
+            }
+
+            Assert.IsTrue(res, "Failed to write Instruction Set to database");
+        }
+
+        [TestMethod()]
+        //[Ignore] // Ignored because it writes to the database   
+        public void WriteTestFlowchartToFile2()
+        {
+            DatabaseConnector connector = new KeyVaultManager().ConnectToDatabase();
+
+            bool res = false;
+            try
+            {
+                SetupTest2();
                 res = connector.WriteHtmlGraphAsync(graph).Result;
             }
             catch (Exception e)

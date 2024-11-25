@@ -19,6 +19,11 @@ namespace ShapeHandler.Objects
             Type = ConnectionType.GOES_TO;
         }
 
+        public Connection(ConnectionType type)
+        {
+            Type = type;
+        }
+
         public Connection(string label, ConnectionType type)
         {
             Label = label;
@@ -85,7 +90,7 @@ namespace ShapeHandler.Objects
             {
                 builder.Append($"submissionId: \"{SubmissionId}\", ");
             }
-            builder.Append($"label: \"{Label}\", ");
+            builder.Append($"label: \"{Label ?? Type.ToString().ToUpper()}\", ");
             if (Conditions != null && Conditions.NodeIds.Any())
             {
                 builder.Append($"conditions: {Conditions}, ");
