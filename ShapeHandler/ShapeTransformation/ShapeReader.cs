@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using Microsoft.Office.Interop.Visio;
 using ShapeHandler.Objects;
 
@@ -6,27 +9,50 @@ namespace ShapeHandler.ShapeTransformation
 {
     public class ShapeReader
     {
-        /// <summary>
-        /// Intakes shapes from Visio and transforms them into graph
-        /// </summary>
-        /// <param name="shapesFromVisio">Visio shapes</param>
-        /// <returns>HTML graph adapted from Visio shapes</returns>
         public static HtmlGraph ConvertShapesToGraph(Shapes shapesFromVisio)
         {
-            List<VisioShape> shapes = new List<VisioShape>();
+            List<NodesNCrap> nodes = new List<NodesNCrap>();
             foreach (Shape shapeFromVisio in shapesFromVisio)
             {
-                VisioShape shape = new VisioShape
+                if (!Regex.IsMatch(shapeFromVisio.Name, "\\W*((?i)Dynamic connector(?-i))\\W*"))
                 {
-                    Name = shapeFromVisio.Text,
-                    Type = DetermineNodeType(shapeFromVisio.Name),
-                    ShapeData = ReadShapeData(shapeFromVisio)
-                };
-                shapes.Add(shape);
+                    NodesNCrap node = new NodesNCrap
+                    {
+                        VisioID = shapeFromVisio.ID,
+                        Name = shapeFromVisio.Text,
+                        Node = ConvertShapeToNode(shapeFromVisio),
+                        ShapeData = ReadShapeData(shapeFromVisio),
+                        Connections = GetConnected(shapeFromVisio)
+                    };
+                    nodes.Add(node);
+                }
             }
-            shapes.RemoveAt(0); // For some reason Visio provides an "extra" shape
-            HtmlGraph htmlGraph = ConvertShapesToNodes(shapes);
+            nodes.RemoveAt(0); // For some reason the active page is a "shape"
+            const string startLabel = "5";
+            nodes = nodes.SkipWhile(x => x.Name != startLabel)
+                .Concat(nodes.TakeWhile(x => x.Name != startLabel))
+                .ToList();
+            HtmlGraph htmlGraph = ConvertNodesToGraph(nodes);
             return htmlGraph;
+        }
+
+        private static List<VisioConnector> GetConnected(Shape shape)
+        {
+            List<VisioConnector> connections = new List<VisioConnector>();
+            Array connectedShapeArrayTargetIDs = shape.ConnectedShapes(VisConnectedShapesFlags.visConnectedShapesOutgoingNodes, "");
+            Array connectorArrayTargetIDs = shape.GluedShapes(VisGluedShapesFlags.visGluedShapesOutgoing1D, "");
+            for (int i = connectedShapeArrayTargetIDs.GetLowerBound(0); i <= connectedShapeArrayTargetIDs.GetUpperBound(0); i++)
+            {
+                Shape connector = shape.ContainingPage.Shapes.ItemFromID[(int)connectorArrayTargetIDs.GetValue(i)];
+                Shape connectedShape = shape.ContainingPage.Shapes.ItemFromID[(int)connectedShapeArrayTargetIDs.GetValue(i)];
+                VisioConnector connection = new VisioConnector
+                {
+                    Name = connector.Text,
+                    ConnectedShapeID = connectedShape.ID
+                };
+                connections.Add(connection);
+            }
+            return connections;
         }
 
         /// <summary>
@@ -63,6 +89,27 @@ namespace ShapeHandler.ShapeTransformation
             return properties;
         }
 
+        private static HtmlGraph ConvertNodesToGraph(List<NodesNCrap> nodes)
+        {
+            HtmlGraph htmlGraph = new HtmlGraph();
+            foreach (NodesNCrap node in nodes)
+            {
+                htmlGraph.AddNode(node.Node);
+            }
+            foreach (NodesNCrap node in nodes)
+            {
+                foreach (VisioConnector connection in node.Connections)
+                {
+                    htmlGraph.AddConnection(
+                        node.Node,
+                        nodes.Find(x => x.VisioID == connection.ConnectedShapeID).Node,
+                        new Connection(connection.Name)
+                    );
+                }
+            }
+            return htmlGraph;
+        }
+
         /// <summary>
         /// Takes a shape's type and provides a NodeType enum 
         /// </summary>
@@ -70,42 +117,20 @@ namespace ShapeHandler.ShapeTransformation
         /// <returns>Enum of node type</returns>
         private static NodeType DetermineNodeType(string type)
         {
-            switch (type)
-            {
-                // Condition based off of TestFlowchartExample
-                case "Start/End": return NodeType.StartEnd;
-
-                // Condition based off of TestFlowchartExample
-                case "Start/End.17": return NodeType.StartEnd;
-
-                // TODO: Decision
-                // TODO: Input Data
-                // TODO: Foreground Process
-
-                // Condition based off of TestFlowchartExample
-                case "Page": return NodeType.Page;
-
-                // TODO: Special Connector
-                // TODO: Background Process
-                default: return NodeType.HtmlElement;
-            }
-        }
-
-        /// <summary>
-        /// Converts shapes to nodes
-        /// </summary>
-        /// <param name="shapes">Transformed </param>
-        /// <returns>HTML graph</returns>
-        private static HtmlGraph ConvertShapesToNodes(List<VisioShape> shapes)
-        {
-            HtmlGraph htmlGraph = new HtmlGraph();
-            foreach (VisioShape shape in shapes)
-            {
-                dynamic node = AddNodeType(shape);
-                if (node != null)
-                    htmlGraph.AddNode(node);
-            }
-            return htmlGraph;
+            if (Regex.IsMatch(type, "\\W*((?i)Start/End(?-i))\\W*"))
+                return NodeType.StartEnd;
+            if (Regex.IsMatch(type, "\\W*((?i)Decision(?-i))\\W*"))
+                return NodeType.Decision;
+            if (Regex.IsMatch(type, "\\W*((?i)Input Data(?-i))\\W*"))
+                return NodeType.DataInput;
+             if (Regex.IsMatch(type, "\\W*((?i)Process(?-i))\\W*"))
+                return NodeType.UserProcess;
+            if (Regex.IsMatch(type, "\\W*((?i)Page(?-i))\\W*"))
+                return NodeType.Page;
+            // TODO: Special Connector
+            if (Regex.IsMatch(type, "\\W*((?i)Subprocess(?-i))\\W*"))
+                return NodeType.BackgroundProcess;
+            return NodeType.HtmlElement;
         }
 
         /// <summary>
@@ -113,30 +138,31 @@ namespace ShapeHandler.ShapeTransformation
         /// </summary>
         /// <param name="shape">Transformed shape</param>
         /// <returns>The node to be added to an HTML graph</returns>
-        private static dynamic AddNodeType(VisioShape shape)
+        private static dynamic ConvertShapeToNode(Shape shape)
         {
+            NodeType type = DetermineNodeType(shape.Name);
             dynamic node = null;
-            switch (shape.Type)
+            switch (type)
             {
                 case NodeType.StartEnd:
                     {
                         // Condition based off of TestFlowchartExample
-                        if (shape.Name == "5")
+                        if (shape.Text == "5")
                         {
                             node = new StartEndNode("start");
                             node.IsStart = true;
                         }
                         // Condition based off of TestFlowchartExample
-                        if (shape.Name == "5.1")
+                        if (shape.Text == "5.1")
                             node = new StartEndNode("end");
                     }
                     break;
-                // TODO: Decision
-                // TODO: Input Data
-                // TODO: Foreground process
+                case NodeType.Decision: node = new DecisionNode(shape.Text); break;
+                case NodeType.DataInput: node = new DataInputNode(shape.Text); break;
+                case NodeType.UserProcess: node = new ProcessNode(shape.Text); break;
                 case NodeType.Page: node = new PageNode("A"); break;
                 // TODO: Special connector
-                // TODO: Background process
+                case NodeType.BackgroundProcess: node = new ProcessNode(shape.Text, true); break;
             }
             return node;
         }
