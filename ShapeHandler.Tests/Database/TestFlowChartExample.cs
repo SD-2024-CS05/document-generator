@@ -374,7 +374,7 @@ namespace ShapeHandler.Tests.Database
         }
 
         [TestMethod()]
-        //[Ignore] // Ignored because it writes to the database   
+        [Ignore] // Ignored because it writes to the database   
         public void WriteTestFlowchartToFile2()
         {
             DatabaseConnector connector = new KeyVaultManager().ConnectToDatabase();
