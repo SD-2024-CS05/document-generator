@@ -21,6 +21,11 @@ namespace ShapeHandler.Objects
             DataInputNodes = dataInputNodes;
         }
 
+        public DataInputNode(List<HtmlNode> dataInputNodes): base("", NodeType.DataInput)
+        {
+            DataInputNodes = dataInputNodes;
+        }
+
         public override bool Equals(object obj)
         {
             if (obj == null)

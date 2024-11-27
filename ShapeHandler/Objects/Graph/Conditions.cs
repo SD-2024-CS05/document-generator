@@ -16,6 +16,7 @@ namespace ShapeHandler.Objects
         public Conditions()
         {
             NodeIds = new List<string>();
+            Operator = LogicalOperator.AND;
         }
 
         public Conditions(LogicalOperator op)
