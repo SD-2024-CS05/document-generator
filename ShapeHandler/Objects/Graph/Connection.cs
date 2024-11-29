@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations; // url attribute
 
 namespace ShapeHandler.Objects
 {
@@ -12,11 +13,20 @@ namespace ShapeHandler.Objects
         public Conditions Conditions { get; set; }
         public ConnectionType Type { get; set; }
         public string SubmissionId { get; set; } // optional string for a submission event id
+        public string URL {get; set;} // optional url atttribute
 
         public Connection(string label)
         {
             Label = label;
             Type = ConnectionType.GOES_TO;
+        }
+
+        // url attribute added
+        public Connection(string label, string url)
+        {
+            Label = label;
+            Type = ConnectionType.GOES_TO;
+            URL = url;
         }
 
         public Connection(string label, ConnectionType type)
@@ -25,6 +35,15 @@ namespace ShapeHandler.Objects
             Type = type;
         }
 
+        // url attribute added
+        public Connection(string label, ConnectionType type, string url)
+        {
+            Label = label;
+            Type = type;
+            URL = url;
+        }
+
+
         public Connection(string label, Conditions condition)
         {
             Label = label;
@@ -32,12 +51,32 @@ namespace ShapeHandler.Objects
             Type = ConnectionType.GOES_TO;
 
         }
+
+        // url attribute added
+        public Connection(string label, Conditions condition, string url)
+        {
+            Label = label;
+            Conditions = condition;
+            Type = ConnectionType.GOES_TO;
+            URL = url;
+        }
+
         public Connection(string label, Conditions condition, ConnectionType type)
         {
             Label = label;
             Conditions = condition;
             Type = type;
             Type = ConnectionType.GOES_TO;
+        }
+
+        // url attribute added
+        public Connection(string label, Conditions condition, ConnectionType type, string url)
+        {
+            Label = label;
+            Conditions = condition;
+            Type = type;
+            Type = ConnectionType.GOES_TO;
+            URL = url;
         }
 
         public Connection(string label, Conditions condition, ConnectionType type, string submissionId)
@@ -48,11 +87,30 @@ namespace ShapeHandler.Objects
             SubmissionId = submissionId;
         }
 
+        // url attribute added
+        public Connection(string label, Conditions condition, ConnectionType type, string submissionId, string url)
+        {
+            Label = label;
+            Conditions = condition;
+            Type = type;
+            SubmissionId = submissionId;
+            URL = url;
+        }
+
         public Connection(string label, string submissionId)
         {
             Label = label;
             Type = ConnectionType.GOES_TO;
             SubmissionId = submissionId;
+        }
+
+        // url attribute added
+        public Connection(string label, string submissionId, string url)
+        {
+            Label = label;
+            Type = ConnectionType.GOES_TO;
+            SubmissionId = submissionId;
+            URL = url;
         }
 
         public Connection(string label, Conditions condition, string submissionId)
@@ -61,6 +119,16 @@ namespace ShapeHandler.Objects
             Conditions = condition;
             Type = ConnectionType.GOES_TO;
             SubmissionId = submissionId;
+        }
+
+        // url attribute added
+        public Connection(string label, Conditions condition, string submissionId, string url)
+        {
+            Label = label;
+            Conditions = condition;
+            Type = ConnectionType.GOES_TO;
+            SubmissionId = submissionId;
+            URL = url;
         }
 
         public override bool Equals(object obj)
