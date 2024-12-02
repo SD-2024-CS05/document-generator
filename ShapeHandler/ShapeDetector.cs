@@ -20,6 +20,7 @@ namespace ShapeHandler
             // Uncomment for local testing
             //ShapeDetector.CreateGraphFromFlowchart(Globals.ShapeDetector.Application);
             this.Application.DocumentOpened += new Visio.EApplication_DocumentOpenedEventHandler(Application_DocumentOpened);
+            fForm.Text = "VSTO Add-in Form";
         }
 
         private void Application_DocumentOpened(Visio.Document doc)
@@ -29,18 +30,14 @@ namespace ShapeHandler
 
         private void ActiveDocument_ShapeAdded(Visio.IVShape shape)
         {
-            // Check if the shape is of a type you are interested in (e.g., a specific shape type)
-            // For example, check if the shape name is "Square"
-            //if (shape.Name == "Square")
-            //{
-            //    // Show the form when the specific shape is added
-                fForm.Show();
-            //}
+            
+            // Show the form when the specific shape is added
+            fForm.Show();
         }
 
         private void ShapeDetector_Shutdown(object sender, System.EventArgs e)
         {
-            //this.Application.ActiveDocument.ShapeAdded -= ActiveDocument_ShapeAdded;
+            
         }
 
         public static HtmlGraph CreateGraphFromFlowchart(Visio.Application application)
