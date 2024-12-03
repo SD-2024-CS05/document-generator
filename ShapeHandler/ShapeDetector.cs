@@ -14,13 +14,13 @@ namespace ShapeHandler
 {
     public partial class ShapeDetector
     {
-        private Form1 fForm = new Form1();
+        private ShapeDataForm shapeForm = new ShapeDataForm();
         private void ShapeDetector_Startup(object sender, System.EventArgs e)
         {
             // Uncomment for local testing
             //ShapeDetector.CreateGraphFromFlowchart(Globals.ShapeDetector.Application);
             this.Application.DocumentOpened += new Visio.EApplication_DocumentOpenedEventHandler(Application_DocumentOpened);
-            fForm.Text = "VSTO Add-in Form";
+            shapeForm.Text = "VSTO Add-in Form";
         }
 
         private void Application_DocumentOpened(Visio.Document doc)
@@ -30,9 +30,8 @@ namespace ShapeHandler
 
         private void ActiveDocument_ShapeAdded(Visio.IVShape shape)
         {
-            
             // Show the form when the specific shape is added
-            fForm.Show();
+            shapeForm.Show();
         }
 
         private void ShapeDetector_Shutdown(object sender, System.EventArgs e)

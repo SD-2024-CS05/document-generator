@@ -10,16 +10,14 @@ using System.Windows.Forms;
 
 namespace ShapeHandler.Database
 {
-    public partial class Form1 : Form
+    public partial class ShapeDataForm : Form
     {
-        public Form1()
+        public ShapeDataForm()
         {
             InitializeComponent();
-
-            //this.Application.ActiveDocument.ShapeAdded += new Microsoft.Office.Interop.Visio.EDocument_ShapeAddedEventHandler(ActiveDocument_ShapeAdded);
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void ShapeDataForm_Load(object sender, EventArgs e)
         {
             
         }

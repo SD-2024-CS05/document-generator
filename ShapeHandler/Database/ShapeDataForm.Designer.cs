@@ -1,7 +1,7 @@
 ﻿using Visio = Microsoft.Office.Interop.Visio;
 namespace ShapeHandler.Database
 {
-    partial class Form1
+    partial class ShapeDataForm
     {
         /// <summary>
         /// Required designer variable.

@@ -417,11 +417,11 @@
   -->
   <ItemGroup>
     <Compile Include="Database\DatabaseConnector.cs" />
-    <Compile Include="Database\Form1.cs">
+    <Compile Include="Database\ShapeDataForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Database\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Database\ShapeDataForm.Designer.cs">
+      <DependentUpon>ShapeDataForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Database\Neo4JSerializer.cs" />
     <Compile Include="Identity\KeyVaultManager.cs" />
@@ -446,8 +446,8 @@
     <Compile Include="TestGenerator.Designer.cs">
       <DependentUpon>TestGenerator.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Database\Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="Database\ShapeDataForm.resx">
+      <DependentUpon>ShapeDataForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
