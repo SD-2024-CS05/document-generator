@@ -55,14 +55,6 @@ namespace ShapeHandler.Objects
 
         }
 
-        // url attribute added
-        public Connection(string label, Conditions condition, string url)
-        {
-            Label = label;
-            Conditions = condition;
-            Type = ConnectionType.GOES_TO;
-            URL = url;
-        }
 
         public Connection(string label, Conditions condition, ConnectionType type)
         {
