@@ -3,6 +3,7 @@ using Microsoft.Office.Interop.Visio;
 using ShapeHandler.Objects;
 using ShapeHandler.ShapeTransformation;
 using System;
+using ShapeHandler.Database;
 
 namespace ShapeHandler
 {
