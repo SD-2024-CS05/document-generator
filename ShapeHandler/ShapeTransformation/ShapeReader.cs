@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using AngleSharp.Text;
 using Microsoft.Office.Interop.Visio;
 using ShapeHandler.Objects;
 
@@ -20,22 +21,30 @@ namespace ShapeHandler.ShapeTransformation
                     {
                         VisioID = shapeFromVisio.ID,
                         Name = shapeFromVisio.Text,
-                        Node = ConvertShapeToNode(shapeFromVisio),
                         ShapeData = ReadShapeData(shapeFromVisio),
                         Connections = GetConnected(shapeFromVisio)
                     };
+                    node.Node = ConvertShapeToNode(node);
                     nodes.Add(node);
                 }
             }
             nodes.RemoveAt(0); // For some reason the active page is a "shape"
-            const string startLabel = "5";
+
+            // Begin the list at the start node
+            const string startLabel = "start";
             nodes = nodes.SkipWhile(x => x.Name != startLabel)
                 .Concat(nodes.TakeWhile(x => x.Name != startLabel))
                 .ToList();
+
             HtmlGraph htmlGraph = ConvertNodesToGraph(nodes);
             return htmlGraph;
         }
 
+        /// <summary>
+        /// Gets the connected shapes of a shape
+        /// </summary>
+        /// <param name="shape">Visio shape</param>
+        /// <returns>List of connected shapes to a shape</returns>
         private static List<VisioConnector> GetConnected(Shape shape)
         {
             List<VisioConnector> connections = new List<VisioConnector>();
@@ -89,6 +98,11 @@ namespace ShapeHandler.ShapeTransformation
             return properties;
         }
 
+        /// <summary>
+        /// Converts nodes to graph
+        /// </summary>
+        /// <param name="nodes">List of nodes</param>
+        /// <returns>HTML graph</returns>
         private static HtmlGraph ConvertNodesToGraph(List<NodesNCrap> nodes)
         {
             HtmlGraph htmlGraph = new HtmlGraph();
@@ -117,18 +131,18 @@ namespace ShapeHandler.ShapeTransformation
         /// <returns>Enum of node type</returns>
         private static NodeType DetermineNodeType(string type)
         {
-            if (Regex.IsMatch(type, "\\W*((?i)Start/End(?-i))\\W*"))
+            if (type == "Start/End")
                 return NodeType.StartEnd;
-            if (Regex.IsMatch(type, "\\W*((?i)Decision(?-i))\\W*"))
+            if (type == "Decision")
                 return NodeType.Decision;
-            if (Regex.IsMatch(type, "\\W*((?i)Input Data(?-i))\\W*"))
+            if (type == "Input Data")
                 return NodeType.DataInput;
-             if (Regex.IsMatch(type, "\\W*((?i)Process(?-i))\\W*"))
+            if (type == "Process")
                 return NodeType.UserProcess;
-            if (Regex.IsMatch(type, "\\W*((?i)Page(?-i))\\W*"))
+            if (type == "Page")
                 return NodeType.Page;
             // TODO: Special Connector
-            if (Regex.IsMatch(type, "\\W*((?i)Subprocess(?-i))\\W*"))
+            if (type == "Subprocess")
                 return NodeType.BackgroundProcess;
             return NodeType.HtmlElement;
         }
@@ -138,31 +152,30 @@ namespace ShapeHandler.ShapeTransformation
         /// </summary>
         /// <param name="shape">Transformed shape</param>
         /// <returns>The node to be added to an HTML graph</returns>
-        private static dynamic ConvertShapeToNode(Shape shape)
+        private static dynamic ConvertShapeToNode(NodesNCrap nodeToConvert)
         {
-            NodeType type = DetermineNodeType(shape.Name);
+            NodeType type = DetermineNodeType(nodeToConvert.ShapeData["Node Type"]);
             dynamic node = null;
             switch (type)
             {
                 case NodeType.StartEnd:
                     {
-                        // Condition based off of TestFlowchartExample
-                        if (shape.Text == "5")
+                        bool isStart = nodeToConvert.ShapeData["Is Start"].ToBoolean();
+                        if (isStart)
                         {
                             node = new StartEndNode("start");
                             node.IsStart = true;
                         }
-                        // Condition based off of TestFlowchartExample
-                        if (shape.Text == "5.1")
+                        else
                             node = new StartEndNode("end");
                     }
                     break;
-                case NodeType.Decision: node = new DecisionNode(shape.Text); break;
-                case NodeType.DataInput: node = new DataInputNode(shape.Text); break;
-                case NodeType.UserProcess: node = new ProcessNode(shape.Text); break;
-                case NodeType.Page: node = new PageNode("A"); break;
+                case NodeType.Decision: node = new DecisionNode(nodeToConvert.Name); break;
+                case NodeType.DataInput: node = new DataInputNode(nodeToConvert.Name); break;
+                case NodeType.UserProcess: node = new ProcessNode(nodeToConvert.Name); break;
+                case NodeType.Page: node = new PageNode(nodeToConvert.Name); break;
                 // TODO: Special connector
-                case NodeType.BackgroundProcess: node = new ProcessNode(shape.Text, true); break;
+                case NodeType.BackgroundProcess: node = new ProcessNode(nodeToConvert.Name, true); break;
             }
             return node;
         }
