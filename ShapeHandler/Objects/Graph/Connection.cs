@@ -27,7 +27,7 @@ namespace ShapeHandler.Objects
             Label = label;
             Type = ConnectionType.GOES_TO;
             URL = url;
-
+        }
         public Connection(ConnectionType type)
         {
             Type = type;
