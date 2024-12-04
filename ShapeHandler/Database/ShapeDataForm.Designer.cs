@@ -146,7 +146,7 @@ namespace ShapeHandler.Database
             this.Value.Name = "Value";
             this.Value.Width = 200;
             // 
-            // Form1
+            // ShapeDataForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -161,7 +161,7 @@ namespace ShapeHandler.Database
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox1);
-            this.Name = "Form1";
+            this.Name = "ShapeDataForm";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.ShapeDataForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

@@ -233,8 +233,8 @@
     <Reference Include="Microsoft.Win32.Registry, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Win32.Registry.5.0.0\lib\net461\Microsoft.Win32.Registry.dll</HintPath>
     </Reference>
-    <Reference Include="Neo4j.Driver, Version=5.26.37.1, Culture=neutral, PublicKeyToken=b646bc66d277ac07, processorArchitecture=MSIL">
-      <HintPath>..\packages\Neo4j.Driver.Signed.5.26.1\lib\netstandard2.0\Neo4j.Driver.dll</HintPath>
+    <Reference Include="Neo4j.Driver, Version=5.18.1.1, Culture=neutral, PublicKeyToken=b646bc66d277ac07, processorArchitecture=MSIL">
+      <HintPath>..\packages\Neo4j.Driver.Signed.5.18.1\lib\netstandard2.0\Neo4j.Driver.dll</HintPath>
     </Reference>
     <Reference Include="Neo4j.Driver.Extensions, Version=1.0.14.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Neo4j.Driver.Extensions.1.0.14\lib\netstandard2.0\Neo4j.Driver.Extensions.dll</HintPath>
