@@ -490,7 +490,7 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>shape_detector.pfx</ManifestKeyFile>
+    <ManifestKeyFile>ShapeHandler_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>C68D2481C9EA8B0BEAA675D7DDAFC5565EE2F76D</ManifestCertificateThumbprint>
