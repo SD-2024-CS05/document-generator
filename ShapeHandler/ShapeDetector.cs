@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Xml.Linq;
-using Visio = Microsoft.Office.Interop.Visio;
-using Office = Microsoft.Office.Core;
+﻿using Visio = Microsoft.Office.Interop.Visio;
 using Microsoft.Office.Interop.Visio;
 using ShapeHandler.Objects;
-using ShapeHandler.Identity;
+using ShapeHandler.ShapeTransformation;
+using System;
 using ShapeHandler.Database;
 
 namespace ShapeHandler
@@ -41,13 +36,11 @@ namespace ShapeHandler
 
         public static HtmlGraph CreateGraphFromFlowchart(Visio.Application application)
         {
-            HtmlGraph graph = new HtmlGraph();
-
+            Page page = application.ActivePage;
+            HtmlGraph htmlGraph = ShapeReader.ConvertShapesToGraph(page.Shapes);
             // TODO: Implement
-
-            return graph;
+            return htmlGraph;
         }
-
         #region VSTO generated code
 
         /// <summary>
