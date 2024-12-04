@@ -13,6 +13,9 @@ namespace ShapeHandler.Objects
         public string Label { get; set; }
         public NodeType Type { get; set; }
 
+        // adding url
+        public string URL {get; set;}
+
         protected FlowchartNode(string label, NodeType type)
         {
             Id = Guid.NewGuid().ToString();
