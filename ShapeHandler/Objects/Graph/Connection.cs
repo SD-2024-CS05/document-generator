@@ -21,13 +21,6 @@ namespace ShapeHandler.Objects
             Type = ConnectionType.GOES_TO;
         }
 
-        // url attribute added
-        public Connection(string label, string url)
-        {
-            Label = label;
-            Type = ConnectionType.GOES_TO;
-            URL = url;
-        }
         public Connection(ConnectionType type)
         {
             Type = type;
@@ -79,15 +72,6 @@ namespace ShapeHandler.Objects
             Type = ConnectionType.GOES_TO;
         }
 
-        // url attribute added
-        public Connection(string label, Conditions condition, ConnectionType type, string url)
-        {
-            Label = label;
-            Conditions = condition;
-            Type = type;
-            Type = ConnectionType.GOES_TO;
-            URL = url;
-        }
 
         public Connection(string label, Conditions condition, ConnectionType type, string submissionId)
         {
@@ -131,15 +115,7 @@ namespace ShapeHandler.Objects
             SubmissionId = submissionId;
         }
 
-        // url attribute added
-        public Connection(string label, Conditions condition, string submissionId, string url)
-        {
-            Label = label;
-            Conditions = condition;
-            Type = ConnectionType.GOES_TO;
-            SubmissionId = submissionId;
-            URL = url;
-        }
+
 
         public override bool Equals(object obj)
         {
