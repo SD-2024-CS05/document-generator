@@ -11,7 +11,7 @@ namespace ShapeHandler.Objects
 
         public bool IsStart { get; set; } = false;
 
-        public StartEndNode(string label, string url) : base(label, url, NodeType.StartEnd) { }
+        public StartEndNode(string label) : base(label, NodeType.StartEnd) { }
     }
 
 }
