@@ -10,7 +10,7 @@ namespace ShapeHandler.Objects
     {
         public bool IsStart { get; set; } = false;
         // Adding URL
-        public string url { get; set; };
+        public string url { get; set; }
         public StartEndNode(string label) : base(label, NodeType.StartEnd) { }
     }
 
