@@ -12,7 +12,7 @@ namespace ShapeHandler.Objects
         public Conditions Conditions { get; set; }
         public ConnectionType Type { get; set; }
         public string SubmissionId { get; set; } // optional string for a submission event id
-        public string URL {get; set;} // optional url atttribute
+        public string Url {get; set;} // optional url atttribute
 
         public Connection(string label)
         {
@@ -28,7 +28,7 @@ namespace ShapeHandler.Objects
         public Connection(ConnectionType type, string url)
         {
             Type = type;
-            URL = url;
+            Url = url;
         }
 
         public Connection(string label, ConnectionType type)
@@ -42,7 +42,7 @@ namespace ShapeHandler.Objects
         {
             Label = label;
             Type = type;
-            URL = url;
+            Url = url;
         }
 
 
@@ -79,7 +79,7 @@ namespace ShapeHandler.Objects
             Conditions = condition;
             Type = type;
             SubmissionId = submissionId;
-            URL = url;
+            Url = url;
         }
 
         public Connection(string label, string submissionId)
@@ -95,7 +95,7 @@ namespace ShapeHandler.Objects
             Label = label;
             Type = ConnectionType.GOES_TO;
             SubmissionId = submissionId;
-            URL = url;
+            Url = url;
         }
 
         public Connection(string label, Conditions condition, string submissionId)
