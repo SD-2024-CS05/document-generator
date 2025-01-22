@@ -442,7 +442,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ShapeTransformation\ShapeReader.cs" />
-    <Compile Include="ShapeTransformation\VisioShape.cs" />
     <Compile Include="TestGenerator.cs">
       <SubType>Component</SubType>
     </Compile>
