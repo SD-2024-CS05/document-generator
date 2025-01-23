@@ -6,13 +6,13 @@ on:
      - main
      - staging
      - dev
+   tags:
+     - 'v*'
  pull_request:
    branches:
      - main
      - staging
      - dev
-   tags:
-     - 'v*'
 
 jobs:
  Build:
