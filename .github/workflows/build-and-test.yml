@@ -13,7 +13,6 @@ on:
      - main
      - staging
      - dev
-
 permissions:
  contents: write
 
@@ -184,7 +183,6 @@ jobs:
          release_name: Release ${{ github.ref }}
          draft: false
          prerelease: false
-         generate_release_notes: true
 
      - name: Upload Release Asset
        uses: actions/upload-release-asset@v1
