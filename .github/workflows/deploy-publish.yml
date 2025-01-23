@@ -2,8 +2,9 @@ name: Deploy and Publish ClickOnce Install
 
 on:
   push:
-    tags:
-      - v*
+    branches:
+      - master
+      - Creating-ClickOnce-Installation
 
 jobs:
   build:
