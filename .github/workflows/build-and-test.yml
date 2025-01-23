@@ -78,7 +78,7 @@ jobs:
    - name: Build with MSBuild
      if: steps.cache-build.outputs.cache-hit != 'true'  
      run: |  
-       msbuild /p:Configuration=Release ${{env.SOLUTION_FILE}} /p:GITHUB_ACTIONS=true
+       msbuild /p:Configuration=Release ${{env.SOLUTION_FILE}} /p:GITHUB_ACTIONS=true /t:Publish /p:PublishDir=ShapeHandler/publish/
 
    - name: Upload Artifact
      uses: actions/upload-artifact@v4
@@ -155,9 +155,6 @@ jobs:
        with:
          name: ShapeHandler
          path: ./build
-
-     - name: Publish ClickOnce
-       run: msbuild ./build/ShapeHandler/ShapeHandler.csproj /t:Publish /p:Configuration=Release /p:PublishDir=ShapeHandler/publish/
 
      - name: Create zip of ClickOnce artifacts
        run: |
