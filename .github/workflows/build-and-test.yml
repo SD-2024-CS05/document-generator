@@ -12,7 +12,7 @@ on:
      - staging
      - dev
    tags:
-     - v*
+     - 'v*'
 
 jobs:
  Build:
