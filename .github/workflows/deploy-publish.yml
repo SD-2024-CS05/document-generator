@@ -34,7 +34,7 @@ jobs:
         powershell Compress-Archive -Path * -DestinationPath clickonce-publish.zip
 
     - name: Upload ClickOnce artifacts
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: clickonce-publish
         path: ShapeHandler/publish/clickonce-publish.zip
