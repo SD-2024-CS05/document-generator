@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using AngleSharp;
 using AngleSharp.Dom;
@@ -224,6 +225,7 @@ namespace ShapeHandler.ShapeTransformation
                 // TODO: Special connector
                 case Objects.NodeType.BackgroundProcess: node = new ProcessNode(shape.Text, true); break;
             }
+            string properties = JsonSerializer.Serialize(shapeData);
             return node;
         }
     }
