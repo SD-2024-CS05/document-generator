@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Text.RegularExpressions;
-using AngleSharp;
-using AngleSharp.Dom;
-using AngleSharp.Html.Dom;
 using AngleSharp.Text;
 using Microsoft.Office.Interop.Visio;
 using ShapeHandler.Objects;
@@ -26,15 +24,11 @@ namespace ShapeHandler.ShapeTransformation
             // Nodes
             List<FlowchartNode> nodes = new List<FlowchartNode>();
 
-            // HTML elements
-            IBrowsingContext context = BrowsingContext.New(Configuration.Default);
-            IDocument document = context.OpenNewAsync().Result;
-
             foreach (Shape shape in shapes)
             {
                 if (!Regex.IsMatch(shape.Name, "\\W*((?i)Dynamic connector(?-i))\\W*") && !Regex.IsMatch(shape.Name, "\\W*((?i)Sheet(?-i))\\W*"))
                 {
-                    FlowchartNode node = ConvertShapeToNode(shape, document);
+                    FlowchartNode node = ConvertShapeToNode(shape);
                     visioIDToGuid[shape.ID] = node.Id;
                     nodes.Add(node);
                 }
@@ -85,9 +79,9 @@ namespace ShapeHandler.ShapeTransformation
         /// </summary>
         /// <param name="shape">Visio shape</param>
         /// <returns>Dictionary of a shape data's labels as keys and values as values</returns>
-        public static IDictionary<string, dynamic> ReadShapeData(Shape shape)
+        public static IDictionary<string, string> ReadShapeData(Shape shape)
         {
-            IDictionary<string, dynamic> properties = new Dictionary<string, dynamic>();
+            IDictionary<string, string> properties = new Dictionary<string, string>();
             short iRow = (short)VisRowIndices.visRowFirst;
             while (
                 shape.get_CellsSRCExists
@@ -103,35 +97,15 @@ namespace ShapeHandler.ShapeTransformation
                         iRow,
                         (short)VisCellIndices.visCustPropsLabel
                     ).get_ResultStr(VisUnitCodes.visNoCast);
-                string type = shape.get_CellsSRC(
-                        (short)VisSectionIndices.visSectionProp,
-                        iRow,
-                        (short)VisCellIndices.visCustPropsType
-                    ).get_ResultStr(VisUnitCodes.visNoCast);
                 string value = shape.get_CellsSRC(
                         (short)VisSectionIndices.visSectionProp,
                         iRow,
                         (short)VisCellIndices.visCustPropsValue
                     ).get_ResultStr(VisUnitCodes.visNoCast);
-                    properties.Add(label, DetermineTypeOfValue(type, value));
+                properties.Add(label, value);
                 iRow++;
             }
             return properties;
-        }
-
-        /// <summary>
-        /// Determines the datatype based on the value
-        /// </summary>
-        /// <param name="type">Index of data type</param>
-        /// <param name="value">String of value</param>
-        /// <returns>Value in its proper datatype</returns>
-        private static dynamic DetermineTypeOfValue(string type, string value)
-        {
-            if (type == "2") // Number type has an index of 2
-                return float.Parse(value);
-            else if (type == "3") // Boolean type has an index of 3,
-                return bool.Parse(value);
-            return value;
         }
 
         /// <summary>
@@ -165,22 +139,22 @@ namespace ShapeHandler.ShapeTransformation
         /// </summary>
         /// <param name="type">Shape type</param>
         /// <returns>Enum of node type</returns>
-        private static Objects.NodeType DetermineNodeType(string type)
+        private static NodeType DetermineNodeType(string type)
         {
             if (type == "Start/End")
-                return Objects.NodeType.StartEnd;
+                return NodeType.StartEnd;
             if (type == "Decision")
-                return Objects.NodeType.Decision;
+                return NodeType.Decision;
             if (type == "Input Data")
-                return Objects.NodeType.DataInput;
+                return NodeType.DataInput;
             if (type == "Process")
-                return Objects.NodeType.UserProcess;
+                return NodeType.UserProcess;
             if (type == "Page")
-                return Objects.NodeType.Page;
+                return NodeType.Page;
             // TODO: Special Connector
             if (type == "Subprocess")
-                return Objects.NodeType.BackgroundProcess;
-            return Objects.NodeType.HtmlElement;
+                return NodeType.BackgroundProcess;
+            return NodeType.HtmlElement;
         }
 
         /// <summary>
@@ -188,14 +162,14 @@ namespace ShapeHandler.ShapeTransformation
         /// </summary>
         /// <param name="shape">Transformed shape</param>
         /// <returns>The node to be added to an HTML graph</returns>
-        private static FlowchartNode ConvertShapeToNode(Shape shape, IDocument document)
+        private static FlowchartNode ConvertShapeToNode(Shape shape)
         {
-            IDictionary<string, dynamic> shapeData = ReadShapeData(shape);
-            Objects.NodeType type = DetermineNodeType(shapeData["Node Type"]);
+            IDictionary<string, string> shapeData = ReadShapeData(shape);
+            NodeType type = DetermineNodeType(shapeData["Node Type"]);
             dynamic node = null;
             switch (type)
             {
-                case Objects.NodeType.StartEnd:
+                case NodeType.StartEnd:
                     {
                         bool isStart = shapeData["Is Start"].ToBoolean();
                         if (isStart)
@@ -207,23 +181,14 @@ namespace ShapeHandler.ShapeTransformation
                             node = new StartEndNode("End");
                     }
                     break;
-                case Objects.NodeType.Decision: node = new DecisionNode(shape.Text); break;
-                case Objects.NodeType.DataInput:
-                    {
-                        Queue<IHtmlInputElement> inputs = new Queue<IHtmlInputElement>();
-                        node = new DataInputNode(shape.Text);
-                        while (inputs.Count > 0)
-                        {
-                            node.DataInputNodes.Add(inputs.Peek());
-                            inputs.Dequeue();
-                        }
-                    }
-                    break;
-                case Objects.NodeType.UserProcess: node = new ProcessNode(shape.Text); break;
-                case Objects.NodeType.Page: node = new PageNode(shape.Text); break;
+                case NodeType.Decision: node = new DecisionNode(shape.Text); break;
+                case NodeType.DataInput: node = new DataInputNode(shape.Text); break;
+                case NodeType.UserProcess: node = new ProcessNode(shape.Text); break;
+                case NodeType.Page: node = new PageNode(shape.Text); break;
                 // TODO: Special connector
-                case Objects.NodeType.BackgroundProcess: node = new ProcessNode(shape.Text, true); break;
+                case NodeType.BackgroundProcess: node = new ProcessNode(shape.Text, true); break;
             }
+            string properties = JsonSerializer.Serialize(shapeData);
             return node;
         }
     }
