@@ -6,13 +6,14 @@ using ShapeHandler.Database;
 using ShapeHandler.Objects;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Azure.KeyVault.Models;
 
 namespace ShapeHandler.Identity
 {
     public class KeyVaultManager
     {
-
         private readonly IConfiguration configuration;
         private readonly SecretClient client;
 
@@ -28,19 +29,12 @@ namespace ShapeHandler.Identity
 
             string keyVaultUrl = configuration["AzureKeyVaultURI"];
 
-            if (keyVaultUrl == null)
+            if (!string.IsNullOrEmpty(keyVaultUrl))
             {
-                throw new ArgumentNullException("AzureKeyVaultURI does not exist");
+                client = new SecretClient(new Uri(keyVaultUrl), new DefaultAzureCredential());
             }
-
-            // Initialize the KeyVaultClient with Visual Studio credentials
-            client = new SecretClient(new Uri(keyVaultUrl), new VisualStudioCredential());
         }
 
-        /// <summary>
-        /// Connects to Neo4J Database
-        /// </summary>
-        /// <returns></returns>
         public DatabaseConnector ConnectToDatabase()
         {
             string username = GetSecretAsync("Neo4JUsername").Result;
@@ -50,26 +44,19 @@ namespace ShapeHandler.Identity
             return new DatabaseConnector(uri, username, password);
         }
 
-        /// <summary>
-        /// Get a secret from the KeyVault
-        /// </summary>
-        /// <param name="secretName">The Name of the Secret</param>
-        /// <returns></returns>
-        /// <exception cref="Exception">Exception if cannot reach Azure Key Vault</exception>
         public async Task<string> GetSecretAsync(string secretName)
         {
-            // first try from configuration, then keyvault, then fail
             string secret = configuration[secretName];
             if (secret == null)
             {
                 try
                 {
-                    var secretResponse = await client.GetSecretAsync(secretName);
-                    return secretResponse.Value.Value;
+                    KeyVaultSecret secretBundle = await client.GetSecretAsync(secretName);
+                    return secretBundle.Value;
                 }
                 catch (RequestFailedException e)
                 {
-                    throw new RequestFailedException($"Failed to retrieve secret {secretName} from KeyVault", e);
+                    throw new Exception($"Failed to retrieve secret {secretName} from KeyVault", e);
                 }
             }
             return secret;
