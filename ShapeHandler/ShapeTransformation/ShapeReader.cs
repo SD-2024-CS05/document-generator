@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using AngleSharp.Text;
 using Microsoft.Office.Interop.Visio;
@@ -10,33 +11,47 @@ namespace ShapeHandler.ShapeTransformation
 {
     public class ShapeReader
     {
-        public static HtmlGraph ConvertShapesToGraph(Shapes shapesFromVisio)
+        public static HtmlGraph ConvertShapesToGraph(Shapes shapes)
         {
-            List<NodesNCrap> nodes = new List<NodesNCrap>();
-            foreach (Shape shapeFromVisio in shapesFromVisio)
+            // Mapping between Visio Shape IDs and Node Guids
+            IDictionary<int, string> visioIDToGuid = new Dictionary<int, string>();
+
+            // Connections between nodes - Inner dictionary because 1st key is the node's ID,
+            // 2nd key(s) are IDs of nodes connected to the original node, the value is the
+            // label of the connection
+            IDictionary<string, IDictionary<string, string>> connections = new Dictionary<string, IDictionary<string, string>>();
+
+            // Nodes
+            List<FlowchartNode> nodes = new List<FlowchartNode>();
+
+            foreach (Shape shape in shapes)
             {
-                if (!Regex.IsMatch(shapeFromVisio.Name, "\\W*((?i)Dynamic connector(?-i))\\W*"))
+                if (!Regex.IsMatch(shape.Name, "\\W*((?i)Dynamic connector(?-i))\\W*") && !Regex.IsMatch(shape.Name, "\\W*((?i)Sheet(?-i))\\W*"))
                 {
-                    NodesNCrap node = new NodesNCrap
-                    {
-                        VisioID = shapeFromVisio.ID,
-                        Name = shapeFromVisio.Text,
-                        ShapeData = ReadShapeData(shapeFromVisio),
-                        Connections = GetConnected(shapeFromVisio)
-                    };
-                    node.Node = ConvertShapeToNode(node);
+                    FlowchartNode node = ConvertShapeToNode(shape);
+                    visioIDToGuid[shape.ID] = node.Id;
                     nodes.Add(node);
                 }
             }
-            nodes.RemoveAt(0); // For some reason the active page is a "shape"
 
             // Begin the list at the start node
-            const string startLabel = "start";
-            nodes = nodes.SkipWhile(x => x.Name != startLabel)
-                .Concat(nodes.TakeWhile(x => x.Name != startLabel))
+            nodes = nodes.SkipWhile(x => x.Label != "Start")
+                .Concat(nodes.TakeWhile(x => x.Label != "Start"))
                 .ToList();
 
-            HtmlGraph htmlGraph = ConvertNodesToGraph(nodes);
+            // Add the connections of the nodes
+            foreach (Shape shape in shapes)
+            {
+                if (!Regex.IsMatch(shape.Name, "\\W*((?i)Dynamic connector(?-i))\\W*") && !Regex.IsMatch(shape.Name, "\\W*((?i)Sheet(?-i))\\W*"))
+                {
+                    IDictionary<string, string> connected = GetConnected(shape, visioIDToGuid);
+                    connections[visioIDToGuid[shape.ID]] = connected;
+                }
+            }
+
+            // Convert nodes to a graph
+            HtmlGraph htmlGraph = ConvertNodesToGraph(nodes, connections);
+
             return htmlGraph;
         }
 
@@ -45,21 +60,16 @@ namespace ShapeHandler.ShapeTransformation
         /// </summary>
         /// <param name="shape">Visio shape</param>
         /// <returns>List of connected shapes to a shape</returns>
-        private static List<VisioConnector> GetConnected(Shape shape)
+        private static IDictionary<string, string> GetConnected(Shape shape, IDictionary<int, string> visioIDToGuid)
         {
-            List<VisioConnector> connections = new List<VisioConnector>();
+            IDictionary<string, string> connections = new Dictionary<string, string>();
             Array connectedShapeArrayTargetIDs = shape.ConnectedShapes(VisConnectedShapesFlags.visConnectedShapesOutgoingNodes, "");
             Array connectorArrayTargetIDs = shape.GluedShapes(VisGluedShapesFlags.visGluedShapesOutgoing1D, "");
             for (int i = connectedShapeArrayTargetIDs.GetLowerBound(0); i <= connectedShapeArrayTargetIDs.GetUpperBound(0); i++)
             {
                 Shape connector = shape.ContainingPage.Shapes.ItemFromID[(int)connectorArrayTargetIDs.GetValue(i)];
                 Shape connectedShape = shape.ContainingPage.Shapes.ItemFromID[(int)connectedShapeArrayTargetIDs.GetValue(i)];
-                VisioConnector connection = new VisioConnector
-                {
-                    Name = connector.Text,
-                    ConnectedShapeID = connectedShape.ID
-                };
-                connections.Add(connection);
+                connections.Add(visioIDToGuid[connectedShape.ID], connector.Text);
             }
             return connections;
         }
@@ -103,21 +113,21 @@ namespace ShapeHandler.ShapeTransformation
         /// </summary>
         /// <param name="nodes">List of nodes</param>
         /// <returns>HTML graph</returns>
-        private static HtmlGraph ConvertNodesToGraph(List<NodesNCrap> nodes)
+        private static HtmlGraph ConvertNodesToGraph(List<FlowchartNode> nodes, IDictionary<string, IDictionary<string, string>> connections)
         {
             HtmlGraph htmlGraph = new HtmlGraph();
-            foreach (NodesNCrap node in nodes)
+            foreach (FlowchartNode node in nodes)
             {
-                htmlGraph.AddNode(node.Node);
+                htmlGraph.AddNode(node);
             }
-            foreach (NodesNCrap node in nodes)
+            foreach (FlowchartNode node in nodes)
             {
-                foreach (VisioConnector connection in node.Connections)
+                foreach (KeyValuePair<string, string> connection in connections[node.Id])
                 {
                     htmlGraph.AddConnection(
-                        node.Node,
-                        nodes.Find(x => x.VisioID == connection.ConnectedShapeID).Node,
-                        new Connection(connection.Name)
+                        node,
+                        nodes.Find(x => x.Id == connection.Key),
+                        new Connection(connection.Value)
                     );
                 }
             }
@@ -152,31 +162,33 @@ namespace ShapeHandler.ShapeTransformation
         /// </summary>
         /// <param name="shape">Transformed shape</param>
         /// <returns>The node to be added to an HTML graph</returns>
-        private static dynamic ConvertShapeToNode(NodesNCrap nodeToConvert)
+        private static FlowchartNode ConvertShapeToNode(Shape shape)
         {
-            NodeType type = DetermineNodeType(nodeToConvert.ShapeData["Node Type"]);
+            IDictionary<string, string> shapeData = ReadShapeData(shape);
+            NodeType type = DetermineNodeType(shapeData["Node Type"]);
             dynamic node = null;
             switch (type)
             {
                 case NodeType.StartEnd:
                     {
-                        bool isStart = nodeToConvert.ShapeData["Is Start"].ToBoolean();
+                        bool isStart = shapeData["Is Start"].ToBoolean();
                         if (isStart)
                         {
-                            node = new StartEndNode("start");
+                            node = new StartEndNode("Start");
                             node.IsStart = true;
                         }
                         else
-                            node = new StartEndNode("end");
+                            node = new StartEndNode("End");
                     }
                     break;
-                case NodeType.Decision: node = new DecisionNode(nodeToConvert.Name); break;
-                case NodeType.DataInput: node = new DataInputNode(nodeToConvert.Name); break;
-                case NodeType.UserProcess: node = new ProcessNode(nodeToConvert.Name); break;
-                case NodeType.Page: node = new PageNode(nodeToConvert.Name); break;
+                case NodeType.Decision: node = new DecisionNode(shape.Text); break;
+                case NodeType.DataInput: node = new DataInputNode(shape.Text); break;
+                case NodeType.UserProcess: node = new ProcessNode(shape.Text); break;
+                case NodeType.Page: node = new PageNode(shape.Text); break;
                 // TODO: Special connector
-                case NodeType.BackgroundProcess: node = new ProcessNode(nodeToConvert.Name, true); break;
+                case NodeType.BackgroundProcess: node = new ProcessNode(shape.Text, true); break;
             }
+            string properties = JsonSerializer.Serialize(shapeData);
             return node;
         }
     }
