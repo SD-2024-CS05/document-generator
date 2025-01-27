@@ -6,13 +6,13 @@ on:
      - main
      - staging
      - dev
+   tags:
+     - 'v*'
  pull_request:
    branches:
      - main
      - staging
      - dev
-   tags:
-     - 'v*'
 
 jobs:
  Build:
@@ -77,10 +77,10 @@ jobs:
              "Neo4JInstanceName": "${{ secrets.NEO4J_INSTANCE_NAME }}"
            }
 
-   - name: Build with MSBuild
+   - name: Build with MSBuild  
      if: steps.cache-build.outputs.cache-hit != 'true'  
      run: |  
-       msbuild /p:Configuration=Release ${{env.SOLUTION_FILE}} /p:GITHUB_ACTIONS=true /t:Publish /p:PublishDir=ShapeHandler/publish/
+       msbuild ${{env.SOLUTION_FILE}} /p:Configuration=Release /p:GITHUB_ACTIONS=true /t:Publish /p:PublishDir=ShapeHandler/publish/
 
    - name: Upload Artifact
      uses: actions/upload-artifact@v4
@@ -94,7 +94,7 @@ jobs:
          **/*.csproj
 
  Test:
-    if: startsWith(github.ref, 'refs/tags/') == false
+    # if: startsWith(github.ref, 'refs/tags/') == false
     runs-on: windows-latest
     needs: build
 
