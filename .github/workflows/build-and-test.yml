@@ -230,35 +230,24 @@ jobs:
       - name: Setup VS Dev Environment
         uses: seanmiddleditch/gha-setup-vsdevenv@v4
 
-      - name: Restore NuGet packages
-        run: nuget restore ${{ env.SOLUTION_FILE }}
-
-      - name: create PFX file
+      - name: DisableOutOfProc Fix
         run: |
-         $pfxCertFilePath = Join-Path -Path $env:CertDir -ChildPath $env:CertName
-         [System.IO.File]::WriteAllBytes($pfxCertFilePath, [System.Convert]::FromBase64String("${{secrets.CERT_KEY}}"))
-         certutil -f -p "" -importpfx $pfxCertFilePath
-        env:
-         CertDir: D:\a\document-generator\document-generator\ShapeHandler\
-         CertName: ShapeHandler_TemporaryKey.pfx
+          function Invoke-DisableOutOfProcBuild {
+            param ();
+            $visualStudioWherePath = ('{0}/Microsoft Visual Studio/Installer/vswhere.exe' -f ${Env:ProgramFiles(x86)});
+            $visualStudioInstallationPath = & $visualStudioWherePath -latest -products 'Microsoft.VisualStudio.Product.Enterprise' -property 'installationPath';
+            $currentWorkingDirectory = ('{0}/Common7/IDE/CommonExtensions/Microsoft/VSI/DisableOutOfProcBuild' -f $visualStudioInstallationPath);
+        
+            Set-Location -Path $currentWorkingDirectory;
+        
+            $disableOutOfProcBuildPath = ('{0}/DisableOutOfProcBuild.exe' -f $currentWorkingDirectory);
+        
+            & $disableOutOfProcBuildPath;
+        
+            return;
+          }
+          Invoke-DisableOutOfProcBuild
 
-      - name: Create App Settings
-        run: |
-           $appSettingsFilePath = Join-Path -Path $env:AppSettingsDir -ChildPath $env:AppSettingsName
-           [System.IO.File]::WriteAllText($appSettingsFilePath, $env:AppSettingsContent)
-        env:
-         AppSettingsDir: D:\a\document-generator\document-generator\ShapeHandler\
-         AppSettingsName: appsettings.json
-         AppSettingsContent: |
-           {
-             "AzureKeyVaultURI": "${{ secrets.AZURE_KEY_VAULT_URI }}",
-             "Neo4JURI": "${{ secrets.NEO4J_URI }}",
-             "Neo4JUsername": "${{ secrets.NEO4J_USERNAME }}",
-             "Neo4JPassword": "${{ secrets.NEO4J_PASSWORD }}",
-             "Neo4JInstanceID": "${{ secrets.NEO4J_INSTANCE_ID }}",
-             "Neo4JInstanceName": "${{ secrets.NEO4J_INSTANCE_NAME }}"
-           }
-      
       - name: Build Windows Installer
         run: |
           devenv.com ${{ github.workspace }}/ShapeHandlerSetup/ShapeHandlerSetup.vdproj /build "Setup|Any CPU"
