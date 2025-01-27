@@ -79,17 +79,13 @@ jobs:
 
    - name: Build with MSBuild
      run: |
-       if [ "${{ steps.cache-build.outputs.cache-hit }}" != "true" ]; then
-         if [ "${{ env.IS_TAG }}" == "true" ]; then
-           msbuild ${{ env.SOLUTION_FILE }} ${{ env.TAG_ARGS }}
-         else
-           msbuild ${{ env.SOLUTION_FILE }} ${{ env.BUILD_TEST_ARGS }}
-         fi
-       fi
+        msbuild ${{ env.SOLUTION_FILE }} ${{ env.BUILD_ARGS }}
      env:
-       IS_TAG: ${{ startsWith(github.ref, 'refs/tags/') }}
        BUILD_TEST_ARGS: /p:Configuration=Release /p:GITHUB_ACTIONS=true
        TAG_ARGS: ${{ env.BUILD_TEST_ARGS }} /t:Publish /p:PublishDir=ShapeHandler/publish/
+       BUILD_ARGS: ${{ startsWith(github.ref, 'refs/tags/') && 
+           '/p:Configuration=Release /p:GITHUB_ACTIONS=true' ||
+           '/p:Configuration=Release /p:GITHUB_ACTIONS=true /t:Publish /p:PublishDir=ShapeHandler/publish/'}}
 
    - name: Upload Artifact
      uses: actions/upload-artifact@v4
