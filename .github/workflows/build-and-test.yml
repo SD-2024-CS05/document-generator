@@ -292,7 +292,9 @@ jobs:
       - name: Create zip of Windows Installer artifacts
         run: |
           cd ${{ github.workspace }}/ShapeHandlerSetup
-          && ls
+          ls
+          cd bin
+          ls
           powershell Compress-Archive -Path * -DestinationPath windows-installer.zip
 
       - name: Upload Windows Installer artifacts
