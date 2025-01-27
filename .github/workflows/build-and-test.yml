@@ -229,6 +229,9 @@ jobs:
 
       - name: Setup VS Dev Environment
         uses: seanmiddleditch/gha-setup-vsdevenv@v4
+
+      - name: Restore NuGet packages for Tests
+        run: nuget restore ${{ github.workspace }}/ShapeHandler.Tests/ShapeHandler.Tests.csproj
       
       - name: Build Windows Installer
         run: |
