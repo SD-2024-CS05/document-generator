@@ -232,9 +232,7 @@ jobs:
       
       - name: Build Windows Installer
         run: |
-          devenv.com $env:SOLUTION_FILE /build "Release|Any CPU"
-        env:
-            SOLUTION_FILE: ${{ github.workspace }}/ShapeHandlerSetup/ShapeHandlerSetup.vdproj
+          devenv.com ${{ github.workspace }}/ShapeHandlerSetup/ShapeHandlerSetup.vdproj /build "Release|Any CPU"
 
       - name: Create zip of Windows Installer artifacts
         run: |
