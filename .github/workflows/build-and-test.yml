@@ -203,7 +203,7 @@ jobs:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
        with:
          tag_name: ${{ github.ref }}-ClickOnce-Install
-         release_name: Release ${{ github.ref }}
+         release_name: Release ${{ github.ref }} - ClickOnce Install
          draft: false
          prerelease: false
 
@@ -216,12 +216,15 @@ jobs:
          asset_path: ShapeHandler/publish/clickonce-publish.zip
          asset_name: clickonce-publish.zip
          asset_content_type: application/zip
+
  Deploy-Windows-Installer:
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: windows-latest
     needs: build
     permissions:
       contents: write
+    env:
+       BUILD_DIR: ${{ github.workspace }}/ShapeHandlerSetup/Release
 
     steps:
       - name: Checkout repository
@@ -287,18 +290,18 @@ jobs:
 
       - name: Build Windows Installer
         run: |
-          devenv.com ${{ github.workspace }}/ShapeHandlerSetup/ShapeHandlerSetup.vdproj /build "Setup|Any CPU"
+          devenv.com ${{ github.workspace }}/ShapeHandlerSetup/ShapeHandlerSetup.vdproj /build "Release|Any CPU"
 
       - name: Create zip of Windows Installer artifacts
         run: |
-          cd ${{ github.workspace }}/ShapeHandlerSetup/Setup
+          cd ${{ env.BUILD_DIR }}
           powershell Compress-Archive -Path * -DestinationPath windows-installer.zip
 
       - name: Upload Windows Installer artifacts
         uses: actions/upload-artifact@v4
         with:
           name: windows-installer
-          path: ${{github.workspace}}/ShapeHandlerSetup/Setup/windows-installer.zip
+          path: ${{ env.BUILD_DIR }}/windows-installer.zip
 
       - name: Create GitHub Release
         id: create_release
@@ -317,6 +320,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ${{ github.workspace }}/ShapeHandlerSetup/Setup/windows-installer.zip
+          asset_path: ${{ env.BUILD_DIR }}/windows-installer.zip
           asset_name: windows-installer.zip
           asset_content_type: application/zip
