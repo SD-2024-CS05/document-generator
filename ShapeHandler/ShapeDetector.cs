@@ -20,7 +20,6 @@ namespace ShapeHandler
             // Uncomment for local testing
             //ShapeDetector.CreateGraphFromFlowchart(Globals.ShapeDetector.Application);
             this.Application.DocumentOpened += new Visio.EApplication_DocumentOpenedEventHandler(Application_DocumentOpened);
-            shapeForm.Text = "VSTO Add-in Form";
         }
 
         private void Application_DocumentOpened(Visio.Document doc)
