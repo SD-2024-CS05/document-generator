@@ -4,18 +4,17 @@ using ShapeHandler.Objects;
 using ShapeHandler.ShapeTransformation;
 using System;
 using ShapeHandler.Database;
+using System.Windows.Forms;
 
 namespace ShapeHandler
 {
     public partial class ShapeDetector
     {
-        private ShapeDataForm shapeForm = new ShapeDataForm();
         private void ShapeDetector_Startup(object sender, System.EventArgs e)
         {
             // Uncomment for local testing
             //ShapeDetector.CreateGraphFromFlowchart(Globals.ShapeDetector.Application);
             this.Application.DocumentOpened += new Visio.EApplication_DocumentOpenedEventHandler(Application_DocumentOpened);
-            shapeForm.Text = "VSTO Add-in Form";
         }
 
         private void Application_DocumentOpened(Visio.Document doc)
@@ -26,7 +25,8 @@ namespace ShapeHandler
         private void ActiveDocument_ShapeAdded(Visio.IVShape shape)
         {
             // Show the form when the specific shape is added
-            shapeForm.Show();
+            this.Application.ActivePage.Shapes[1].AddRow((short)VisSectionIndices.visSectionProp, (short)VisRowIndices.visRowFirst, (short)VisRowTags.visTagDefault);
+            ShapeDataForm.Instance.Show();
         }
 
         private void ShapeDetector_Shutdown(object sender, System.EventArgs e)
