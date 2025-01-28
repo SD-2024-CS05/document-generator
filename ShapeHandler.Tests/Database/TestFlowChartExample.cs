@@ -353,9 +353,14 @@ namespace ShapeHandler.Tests.Database
         }
 
         [TestMethod()]
-        [Ignore] // Ignored because it writes to the database
         public void WriteTestFlowchartToFile1()
         {
+            if (Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == "true")
+            {
+                Assert.Inconclusive("Test skipped in GitHub Actions environment.");
+                return;
+            }
+
             DatabaseConnector connector = new KeyVaultManager().ConnectToDatabase();
 
             bool res = false;
@@ -374,7 +379,7 @@ namespace ShapeHandler.Tests.Database
         }
 
         [TestMethod()]
-        [Ignore] // Ignored because it writes to the database   
+        [Ignore]  // Deprecated
         public void WriteTestFlowchartToFile2()
         {
             DatabaseConnector connector = new KeyVaultManager().ConnectToDatabase();
