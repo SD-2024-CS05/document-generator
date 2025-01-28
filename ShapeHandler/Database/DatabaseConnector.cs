@@ -15,7 +15,13 @@ namespace ShapeHandler.Database
 
         public DatabaseConnector(string uri, string user, string password)
         {
-            _driver = GraphDatabase.Driver(uri, AuthTokens.Basic(user, password));
+            var auth = AuthTokens.Basic(user, password);
+            _driver = GraphDatabase.Driver(uri, auth);
+
+            if (_driver.VerifyAuthenticationAsync(auth).Result == false)
+            {
+                throw new Exception("Authentication to the database failed");
+            }   
 
             if (_driver.TryVerifyConnectivityAsync().Result == false)
             {
