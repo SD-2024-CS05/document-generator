@@ -339,6 +339,7 @@
   <ItemGroup>
     <Compile Include="Database\DatabaseConnectorTests.cs" />
     <Compile Include="Database\TestFlowChartExample.cs" />
+    <Compile Include="Helpers\TestHelper.cs" />
     <Compile Include="Objects\Graph\ConditionTTest.ConstructorTest.g.cs">
       <DependentUpon>ConditionTTest.cs</DependentUpon>
     </Compile>

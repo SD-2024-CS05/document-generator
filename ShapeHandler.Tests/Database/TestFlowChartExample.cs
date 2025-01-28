@@ -6,6 +6,7 @@ using ShapeHandler.Identity;
 using ShapeHandler.Objects;
 using System;
 using System.Collections.Generic;
+using ShapeHandler.Tests.Helpers;
 
 namespace ShapeHandler.Tests.Database
 {
@@ -355,11 +356,7 @@ namespace ShapeHandler.Tests.Database
         [TestMethod()]
         public void WriteTestFlowchartToFile1()
         {
-            if (Environment.GetEnvironmentVariable("GITHUB_ACTIONS") == "true")
-            {
-                Assert.Inconclusive("Test skipped in GitHub Actions environment.");
-                return;
-            }
+            if (TestHelper.IsGithubActionRun) { Assert.Inconclusive(); return; }
 
             DatabaseConnector connector = new KeyVaultManager().ConnectToDatabase();
 
