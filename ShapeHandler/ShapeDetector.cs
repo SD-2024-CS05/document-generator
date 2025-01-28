@@ -30,6 +30,7 @@ namespace ShapeHandler
         private void ActiveDocument_ShapeAdded(Visio.IVShape shape)
         {
             // Show the form when the specific shape is added
+            this.Application.ActivePage.Shapes[1].AddRow((short)VisSectionIndices.visSectionProp, (short)VisRowIndices.visRowFirst, (short)VisRowTags.visTagDefault);
             ShapeDataForm.Instance.Show();
         }
 

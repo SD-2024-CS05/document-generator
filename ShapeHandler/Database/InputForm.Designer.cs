@@ -236,6 +236,7 @@
             this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "InputForm";
             this.Text = "Input Form";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.InputForm_Closing);
             this.Load += new System.EventHandler(this.InputForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -250,7 +251,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox typeTextBox;
+        public System.Windows.Forms.TextBox typeTextBox;
         private System.Windows.Forms.TextBox idTextBox;
         private System.Windows.Forms.TextBox nameTextBox;
         private System.Windows.Forms.TextBox valueTextBox;
