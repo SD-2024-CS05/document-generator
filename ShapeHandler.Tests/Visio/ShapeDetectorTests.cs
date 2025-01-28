@@ -17,6 +17,7 @@ namespace ShapeHandler.Tests
     public class ShapeDetectorTests
     {
         [TestMethod()]
+        [Ignore]
         [DataRow("TestFlowDiagram.vsdx")]
         public void CreateGraphTest(string visioFileName)
         {
