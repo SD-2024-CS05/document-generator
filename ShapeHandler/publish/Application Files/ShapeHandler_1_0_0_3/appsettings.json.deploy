@@ -1,0 +1,8 @@
+{
+  "AzureKeyVaultURI": "https://shapehandler.vault.azure.net/",
+  "Neo4JURI": "neo4j+s://4507c9d4.databases.neo4j.io",
+  "Neo4JUsername": "neo4j",
+  "Neo4JPassword": "_t-uaF0B2XGuR5s2w0f-Qlz3MHY5_iYiZEK0wnazp54",
+  "Neo4JInstanceID": "4507c9d4",
+  "Neo4JInstanceName": "WebsiteFlowGraph"
+}
