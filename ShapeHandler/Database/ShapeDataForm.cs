@@ -13,6 +13,7 @@ namespace ShapeHandler.Database
 {
     public partial class ShapeDataForm : Form
     {
+        private static ShapeDataForm _shapeDataForm = null;
         public ShapeDataForm()
         {
             InitializeComponent();
@@ -21,6 +22,23 @@ namespace ShapeHandler.Database
         private void ShapeDataForm_Load(object sender, EventArgs e)
         {
 
+        }
+
+        public static ShapeDataForm Instance
+        {
+            get
+            {
+                if (_shapeDataForm == null)
+                {
+                    _shapeDataForm = new ShapeDataForm();
+                }
+                return _shapeDataForm;
+            }
+        }
+
+        private void ShapeDataForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            _shapeDataForm = null;
         }
 
         private void AddElement_Click(object sender, EventArgs e)
@@ -37,6 +55,11 @@ namespace ShapeHandler.Database
                     case "<image>": inputForm.ShowDialog(); break;
                 }
             }
+        }
+
+        private void CancelButton_Click(object sender, EventArgs e)
+        {
+            _shapeDataForm.Close();
         }
     }
 }

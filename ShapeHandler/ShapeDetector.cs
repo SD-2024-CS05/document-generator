@@ -9,12 +9,12 @@ using Microsoft.Office.Interop.Visio;
 using ShapeHandler.Objects;
 using ShapeHandler.Identity;
 using ShapeHandler.Database;
+using System.Windows.Forms;
 
 namespace ShapeHandler
 {
     public partial class ShapeDetector
     {
-        private ShapeDataForm shapeForm = new ShapeDataForm();
         private void ShapeDetector_Startup(object sender, System.EventArgs e)
         {
             // Uncomment for local testing
@@ -30,7 +30,7 @@ namespace ShapeHandler
         private void ActiveDocument_ShapeAdded(Visio.IVShape shape)
         {
             // Show the form when the specific shape is added
-            shapeForm.Show();
+            ShapeDataForm.Instance.Show();
         }
 
         private void ShapeDetector_Shutdown(object sender, System.EventArgs e)

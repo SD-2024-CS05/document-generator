@@ -32,7 +32,7 @@ namespace ShapeHandler.Database
             this.label5 = new System.Windows.Forms.Label();
             this.HTMLOptions = new System.Windows.Forms.ComboBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.CancelButton = new System.Windows.Forms.Button();
             this.AddElement = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -68,14 +68,16 @@ namespace ShapeHandler.Database
             this.button1.Text = "Okay";
             this.button1.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // CancelButton
             // 
-            this.button2.Location = new System.Drawing.Point(695, 344);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(93, 37);
-            this.button2.TabIndex = 14;
-            this.button2.Text = "Cancel";
-            this.button2.UseVisualStyleBackColor = true;
+            this.CancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.CancelButton.Location = new System.Drawing.Point(695, 344);
+            this.CancelButton.Name = "CancelButton";
+            this.CancelButton.Size = new System.Drawing.Size(93, 37);
+            this.CancelButton.TabIndex = 14;
+            this.CancelButton.Text = "Cancel";
+            this.CancelButton.UseVisualStyleBackColor = true;
+            this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // AddElement
             // 
@@ -89,11 +91,13 @@ namespace ShapeHandler.Database
             // 
             // ShapeDataForm
             // 
+            this.AcceptButton = this.button1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.CancelButton;
             this.ClientSize = new System.Drawing.Size(800, 389);
             this.Controls.Add(this.AddElement);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.CancelButton);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.HTMLOptions);
             this.Controls.Add(this.label5);
@@ -109,7 +113,7 @@ namespace ShapeHandler.Database
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox HTMLOptions;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button CancelButton;
         private System.Windows.Forms.Button AddElement;
     }
 }
