@@ -29,6 +29,7 @@ namespace ShapeHandler.Database
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ShapeDataForm));
             this.label5 = new System.Windows.Forms.Label();
             this.HTMLOptions = new System.Windows.Forms.ComboBox();
             this.button1 = new System.Windows.Forms.Button();
@@ -39,9 +40,10 @@ namespace ShapeHandler.Database
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(19, 16);
+            this.label5.Location = new System.Drawing.Point(25, 20);
+            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(60, 25);
+            this.label5.Size = new System.Drawing.Size(77, 32);
             this.label5.TabIndex = 9;
             this.label5.Text = "Type";
             // 
@@ -54,16 +56,18 @@ namespace ShapeHandler.Database
             "<select>",
             "<a>",
             "<img>"});
-            this.HTMLOptions.Location = new System.Drawing.Point(85, 12);
+            this.HTMLOptions.Location = new System.Drawing.Point(113, 15);
+            this.HTMLOptions.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.HTMLOptions.Name = "HTMLOptions";
-            this.HTMLOptions.Size = new System.Drawing.Size(121, 33);
+            this.HTMLOptions.Size = new System.Drawing.Size(160, 39);
             this.HTMLOptions.TabIndex = 10;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(589, 344);
+            this.button1.Location = new System.Drawing.Point(785, 427);
+            this.button1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(93, 37);
+            this.button1.Size = new System.Drawing.Size(124, 46);
             this.button1.TabIndex = 13;
             this.button1.Text = "Okay";
             this.button1.UseVisualStyleBackColor = true;
@@ -71,9 +75,10 @@ namespace ShapeHandler.Database
             // CancelButton
             // 
             this.CancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CancelButton.Location = new System.Drawing.Point(695, 344);
+            this.CancelButton.Location = new System.Drawing.Point(927, 427);
+            this.CancelButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.CancelButton.Name = "CancelButton";
-            this.CancelButton.Size = new System.Drawing.Size(93, 37);
+            this.CancelButton.Size = new System.Drawing.Size(124, 46);
             this.CancelButton.TabIndex = 14;
             this.CancelButton.Text = "Cancel";
             this.CancelButton.UseVisualStyleBackColor = true;
@@ -81,9 +86,10 @@ namespace ShapeHandler.Database
             // 
             // AddElement
             // 
-            this.AddElement.Location = new System.Drawing.Point(212, 12);
+            this.AddElement.Location = new System.Drawing.Point(283, 15);
+            this.AddElement.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.AddElement.Name = "AddElement";
-            this.AddElement.Size = new System.Drawing.Size(59, 33);
+            this.AddElement.Size = new System.Drawing.Size(79, 41);
             this.AddElement.TabIndex = 15;
             this.AddElement.Text = "+";
             this.AddElement.UseVisualStyleBackColor = true;
@@ -92,15 +98,16 @@ namespace ShapeHandler.Database
             // ShapeDataForm
             // 
             this.AcceptButton = this.button1;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.CancelButton;
-            this.ClientSize = new System.Drawing.Size(800, 389);
+            this.ClientSize = new System.Drawing.Size(1067, 482);
             this.Controls.Add(this.AddElement);
             this.Controls.Add(this.CancelButton);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.HTMLOptions);
             this.Controls.Add(this.label5);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "ShapeDataForm";
             this.Text = "Shape Data Form";
             this.Load += new System.EventHandler(this.ShapeDataForm_Load);

@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InputForm));
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -111,7 +112,7 @@
             // typeTextBox
             // 
             this.typeTextBox.Location = new System.Drawing.Point(176, 15);
-            this.typeTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.typeTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.typeTextBox.Name = "typeTextBox";
             this.typeTextBox.Size = new System.Drawing.Size(132, 38);
             this.typeTextBox.TabIndex = 6;
@@ -119,7 +120,7 @@
             // idTextBox
             // 
             this.idTextBox.Location = new System.Drawing.Point(176, 61);
-            this.idTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.idTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.idTextBox.Name = "idTextBox";
             this.idTextBox.Size = new System.Drawing.Size(132, 38);
             this.idTextBox.TabIndex = 7;
@@ -127,7 +128,7 @@
             // nameTextBox
             // 
             this.nameTextBox.Location = new System.Drawing.Point(176, 198);
-            this.nameTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.nameTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.nameTextBox.Name = "nameTextBox";
             this.nameTextBox.Size = new System.Drawing.Size(132, 38);
             this.nameTextBox.TabIndex = 8;
@@ -135,7 +136,7 @@
             // valueTextBox
             // 
             this.valueTextBox.Location = new System.Drawing.Point(176, 244);
-            this.valueTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.valueTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.valueTextBox.Name = "valueTextBox";
             this.valueTextBox.Size = new System.Drawing.Size(132, 38);
             this.valueTextBox.TabIndex = 9;
@@ -143,7 +144,7 @@
             // minTextBox
             // 
             this.minTextBox.Location = new System.Drawing.Point(176, 339);
-            this.minTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.minTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.minTextBox.Name = "minTextBox";
             this.minTextBox.Size = new System.Drawing.Size(132, 38);
             this.minTextBox.TabIndex = 10;
@@ -151,7 +152,7 @@
             // maxTextBox
             // 
             this.maxTextBox.Location = new System.Drawing.Point(176, 384);
-            this.maxTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.maxTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.maxTextBox.Name = "maxTextBox";
             this.maxTextBox.Size = new System.Drawing.Size(132, 38);
             this.maxTextBox.TabIndex = 11;
@@ -159,7 +160,7 @@
             // classTextBox
             // 
             this.classTextBox.Location = new System.Drawing.Point(176, 107);
-            this.classTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.classTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.classTextBox.Name = "classTextBox";
             this.classTextBox.Size = new System.Drawing.Size(132, 38);
             this.classTextBox.TabIndex = 13;
@@ -177,7 +178,7 @@
             // styleTextBox
             // 
             this.styleTextBox.Location = new System.Drawing.Point(176, 153);
-            this.styleTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.styleTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.styleTextBox.Name = "styleTextBox";
             this.styleTextBox.Size = new System.Drawing.Size(132, 38);
             this.styleTextBox.TabIndex = 15;
@@ -195,7 +196,7 @@
             // placeholderTextBox
             // 
             this.placeholderTextBox.Location = new System.Drawing.Point(176, 290);
-            this.placeholderTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.placeholderTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.placeholderTextBox.Name = "placeholderTextBox";
             this.placeholderTextBox.Size = new System.Drawing.Size(132, 38);
             this.placeholderTextBox.TabIndex = 19;
@@ -233,7 +234,8 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "InputForm";
             this.Text = "Input Form";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.InputForm_Closing);
