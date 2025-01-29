@@ -43,10 +43,6 @@
             this.maxTextBox = new System.Windows.Forms.TextBox();
             this.classTextBox = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.styleTextBox = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.placeholderTextBox = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -72,7 +68,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(85, 202);
+            this.label3.Location = new System.Drawing.Point(84, 156);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(89, 32);
@@ -82,7 +78,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(87, 248);
+            this.label4.Location = new System.Drawing.Point(88, 199);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(88, 32);
@@ -92,7 +88,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(105, 342);
+            this.label5.Location = new System.Drawing.Point(113, 245);
             this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(60, 32);
@@ -102,7 +98,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(97, 388);
+            this.label6.Location = new System.Drawing.Point(99, 291);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(67, 32);
@@ -127,7 +123,7 @@
             // 
             // nameTextBox
             // 
-            this.nameTextBox.Location = new System.Drawing.Point(176, 198);
+            this.nameTextBox.Location = new System.Drawing.Point(176, 153);
             this.nameTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.nameTextBox.Name = "nameTextBox";
             this.nameTextBox.Size = new System.Drawing.Size(132, 38);
@@ -135,7 +131,7 @@
             // 
             // valueTextBox
             // 
-            this.valueTextBox.Location = new System.Drawing.Point(176, 244);
+            this.valueTextBox.Location = new System.Drawing.Point(176, 199);
             this.valueTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.valueTextBox.Name = "valueTextBox";
             this.valueTextBox.Size = new System.Drawing.Size(132, 38);
@@ -143,7 +139,7 @@
             // 
             // minTextBox
             // 
-            this.minTextBox.Location = new System.Drawing.Point(176, 339);
+            this.minTextBox.Location = new System.Drawing.Point(176, 245);
             this.minTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.minTextBox.Name = "minTextBox";
             this.minTextBox.Size = new System.Drawing.Size(132, 38);
@@ -151,7 +147,7 @@
             // 
             // maxTextBox
             // 
-            this.maxTextBox.Location = new System.Drawing.Point(176, 384);
+            this.maxTextBox.Location = new System.Drawing.Point(176, 291);
             this.maxTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.maxTextBox.Name = "maxTextBox";
             this.maxTextBox.Size = new System.Drawing.Size(132, 38);
@@ -175,51 +171,11 @@
             this.label7.TabIndex = 12;
             this.label7.Text = "Class";
             // 
-            // styleTextBox
-            // 
-            this.styleTextBox.Location = new System.Drawing.Point(176, 153);
-            this.styleTextBox.Margin = new System.Windows.Forms.Padding(4);
-            this.styleTextBox.Name = "styleTextBox";
-            this.styleTextBox.Size = new System.Drawing.Size(132, 38);
-            this.styleTextBox.TabIndex = 15;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(88, 156);
-            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(78, 32);
-            this.label8.TabIndex = 14;
-            this.label8.Text = "Style";
-            // 
-            // placeholderTextBox
-            // 
-            this.placeholderTextBox.Location = new System.Drawing.Point(176, 290);
-            this.placeholderTextBox.Margin = new System.Windows.Forms.Padding(4);
-            this.placeholderTextBox.Name = "placeholderTextBox";
-            this.placeholderTextBox.Size = new System.Drawing.Size(132, 38);
-            this.placeholderTextBox.TabIndex = 19;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(8, 294);
-            this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(166, 32);
-            this.label10.TabIndex = 18;
-            this.label10.Text = "Placeholder";
-            // 
             // InputForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1067, 558);
-            this.Controls.Add(this.placeholderTextBox);
-            this.Controls.Add(this.label10);
-            this.Controls.Add(this.styleTextBox);
-            this.Controls.Add(this.label8);
+            this.ClientSize = new System.Drawing.Size(1067, 351);
             this.Controls.Add(this.classTextBox);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.maxTextBox);
@@ -261,9 +217,5 @@
         private System.Windows.Forms.TextBox maxTextBox;
         private System.Windows.Forms.TextBox classTextBox;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox styleTextBox;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox placeholderTextBox;
-        private System.Windows.Forms.Label label10;
     }
 }
