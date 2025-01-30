@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.Office.Interop.Visio;
@@ -14,14 +15,41 @@ namespace ShapeHandler.Database
 {
     public partial class InputForm : Form
     {
-        public InputForm()
+        private static int _shapeID;
+        private static int _inputNum;
+
+        public InputForm(int shapeID)
         {
+            _shapeID = shapeID;
+            InitializeComponent();
+        }
+
+        public InputForm(int shapeID, int inputNum)
+        {
+            _shapeID = shapeID;
+            _inputNum = inputNum;
             InitializeComponent();
         }
 
         private void InputForm_Load(object sender, EventArgs e)
         {
-
+            IDictionary<string, string> attributes = JsonSerializer.Deserialize<Dictionary<string, string>>(
+                    //Globals.ShapeDetector.Application.ActivePage.Shapes[_shapeID].get_CellsSRC(
+                    //    (short)VisSectionIndices.visSectionProp,
+                    //    (short)VisRowIndices.visRowLast,
+                    //    (short)VisCellIndices.visCustPropsValue
+                    //).get_ResultStr(VisUnitCodes.visNoCast)
+                    Globals.ShapeDetector.Application.ActivePage.Shapes[_shapeID]
+                    .Cells["Input " + _inputNum.ToString()]
+                    .ResultStr[VisCellIndices.visCustPropsValue]
+                );
+            typeTextBox.Text = attributes["type"];
+            idTextBox.Text = attributes["id"];
+            nameTextBox.Text = attributes["name"];
+            valueTextBox.Text = attributes["value"];
+            minTextBox.Text = attributes["min"];
+            maxTextBox.Text = attributes["max"];
+            classTextBox.Text = attributes["class"];
         }
 
         private void InputForm_Closing(object sender, FormClosingEventArgs e)
@@ -34,14 +62,12 @@ namespace ShapeHandler.Database
             schema.Append("\"\"min\"\": \"\"" + minTextBox.Text + "\"\", ");
             schema.Append("\"\"max\"\": \"\"" + maxTextBox.Text + "\"\", ");
             schema.Append("\"\"class\"\": \"\"" + classTextBox.Text + "\"\", ");
-            schema.Append("\"\"style\"\": \"\"" + styleTextBox.Text + "\"\", ");
-            schema.Append("\"\"placeholder\"\": \"\"" + placeholderTextBox.Text + "\"\"}");
-            Globals.ShapeDetector.Application.ActivePage.Shapes[1].get_CellsSRC(
+            Globals.ShapeDetector.Application.ActivePage.Shapes[_shapeID].get_CellsSRC(
                 (short)VisSectionIndices.visSectionProp,
                 (short)VisRowIndices.visRowLast,
                 (short)VisCellIndices.visCustPropsLabel
             ).FormulaU = "\"" + "Input 1" + "\"";
-            Globals.ShapeDetector.Application.ActivePage.Shapes[1].get_CellsSRC(
+            Globals.ShapeDetector.Application.ActivePage.Shapes[_shapeID].get_CellsSRC(
                     (short)VisSectionIndices.visSectionProp,
                     (short)VisRowIndices.visRowLast,
                     (short)VisCellIndices.visCustPropsValue
