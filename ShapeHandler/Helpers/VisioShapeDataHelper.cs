@@ -11,10 +11,9 @@ namespace ShapeHandler.Objects
     public static class VisioShapeDataHelper
     {
         private static Visio.Shape _activeShape;
-        public static void AddShapeData(Visio.IVShape shape, string schema, string label = "Input 1")
+        public static void AddShapeData(int shapeId, string schema, string label = "Input 1")
         {
-            schema = FormatSchema(schema);
-            _activeShape = Globals.ShapeDetector.Application.ActivePage.Shapes[1];
+            _activeShape = Globals.ShapeDetector.Application.ActivePage.Shapes[shapeId];
             // check first if there is a row available
             if (_activeShape.get_RowCount((short)Visio.VisSectionIndices.visSectionProp) == 0)
             {
@@ -36,16 +35,17 @@ namespace ShapeHandler.Objects
 
         private static void SetShapeData(Visio.VisCellIndices cellIndex, string value)
         {
+
             _activeShape.get_CellsSRC(
                 (short)Visio.VisSectionIndices.visSectionProp,
                 (short)Visio.VisRowIndices.visRowFirst,
                 (short)cellIndex
-            ).FormulaU = "\"" + value + "\"";
+            ).FormulaU = FormatVal(value);
         }
 
-        private static string FormatSchema(string schema)
+        private static string FormatVal(string val)
         {
-            return schema.Replace("\"", "\"\"");
+            return "\"" + val + "\"";
         }
     }
 }

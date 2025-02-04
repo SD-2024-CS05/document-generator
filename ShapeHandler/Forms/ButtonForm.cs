@@ -1,4 +1,5 @@
 ﻿using AngleSharp;
+using AngleSharp.Html;
 using AngleSharp.Html.Dom;
 using ShapeHandler.Objects;
 using System;
@@ -17,10 +18,10 @@ namespace ShapeHandler.Forms
 {
     public partial class ButtonForm : Form
     {
-        private Visio.IVShape _shape;
-        public ButtonForm(Visio.IVShape shape)
+        private int _shapeId;
+        public ButtonForm(int shapeId)
         {
-            _shape = shape;
+            _shapeId = shapeId;
             InitializeComponent();
         }
 
@@ -61,8 +62,8 @@ namespace ShapeHandler.Forms
                 buttonElement.ClassList.Add(item);
             }
 
-            VisioShapeDataHelper.AddShapeData(_shape,
-                buttonElement.OuterHtml, 
+            VisioShapeDataHelper.AddShapeData(_shapeId,
+                buttonElement.OuterHtml,
                 "Button 1");
         }
     }
