@@ -1,5 +1,4 @@
-﻿using Visio = Microsoft.Office.Interop.Visio;
-namespace ShapeHandler.Database
+﻿namespace ShapeHandler.Database
 {
     partial class ShapeDataForm
     {

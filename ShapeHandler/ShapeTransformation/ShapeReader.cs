@@ -154,7 +154,7 @@ namespace ShapeHandler.ShapeTransformation
                 return Objects.NodeType.StartEnd;
             if (type == "Decision")
                 return Objects.NodeType.Decision;
-            if (type == "InputData")
+            if (type == "Input Data")
                 return Objects.NodeType.DataInput;
             if (type == "Process")
                 return Objects.NodeType.UserProcess;
@@ -174,7 +174,7 @@ namespace ShapeHandler.ShapeTransformation
         private static FlowchartNode ConvertShapeToNode(Shape shape)
         {
             IDictionary<string, string> shapeData = ReadShapeData(shape);
-            Objects.NodeType type = DetermineNodeType(shapeData["NodeType"]);
+            Objects.NodeType type = DetermineNodeType(shapeData["Node Type"]);
             dynamic node = null;
             switch (type)
             {
@@ -195,6 +195,11 @@ namespace ShapeHandler.ShapeTransformation
                     {
                         node = new DataInputNode(shape.Text);
                         IDictionary schema = JsonSerializer.Deserialize<Dictionary<string, string>>(shapeData["Input 1"]);
+                        IHtmlButtonElement button = document.CreateElement("button") as IHtmlButtonElement;
+                        button.Type = schema["type"].ToString();
+                        button.Id = schema["id"].ToString();
+                        HtmlNode buttonNode = new HtmlNode(button.Id, button, Objects.NodeType.Button);
+                        node.DataInputNodes.Add(buttonNode);
                         IHtmlInputElement input = document.CreateElement("input") as IHtmlInputElement;
                         input.Type = schema["type"].ToString();
                         input.Id = schema["id"].ToString();
