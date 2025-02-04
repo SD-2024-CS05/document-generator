@@ -34,6 +34,7 @@ on:
 
 jobs:
  Build:
+   if: github.event.pull_request.draft == false
    env:
       SOLUTION_FILE: ShapeHandler.sln
    runs-on: windows-latest
