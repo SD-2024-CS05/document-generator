@@ -200,12 +200,12 @@ jobs:
        env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
        with:
-         tag_name: ${{ github.ref }}-ClickOnce-Install
-         release_name: Release ${{ github.ref }} - ClickOnce Install
+         tag_name: ${{ github.ref }} - Installers
+         release_name: Release ${{ github.ref }} - Installers
          draft: false
          prerelease: false
 
-     - name: Upload Release Asset
+     - name: Upload ClickOnce Release Asset
        uses: actions/upload-release-asset@v1
        env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -301,23 +301,12 @@ jobs:
           name: windows-installer
           path: ${{ env.BUILD_DIR }}/windows-installer.zip
 
-      - name: Create GitHub Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}-Windows-Installer
-          release_name: Release ${{ github.ref }} - Windows Installer
-          draft: false
-          prerelease: false
-
-      - name: Upload Release Asset
+      - name: Upload Windows Installer Release Asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          upload_url: ${{ steps.Deploy-ClickOnce.outputs.create_release.outputs.upload_url }}
           asset_path: ${{ env.BUILD_DIR }}/windows-installer.zip
           asset_name: windows-installer.zip
           asset_content_type: application/zip
