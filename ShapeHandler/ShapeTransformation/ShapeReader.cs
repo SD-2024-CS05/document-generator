@@ -1,8 +1,12 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Text.RegularExpressions;
+using AngleSharp.Dom;
+using AngleSharp;
+using AngleSharp.Html.Dom;
 using AngleSharp.Text;
 using Microsoft.Office.Interop.Visio;
 using ShapeHandler.Objects;
@@ -11,6 +15,8 @@ namespace ShapeHandler.ShapeTransformation
 {
     public class ShapeReader
     {
+        private static IBrowsingContext context = BrowsingContext.New(Configuration.Default);
+        private static IDocument document = context.OpenNewAsync().Result;
         public static HtmlGraph ConvertShapesToGraph(Shapes shapes)
         {
             // Mapping between Visio Shape IDs and Node Guids
@@ -139,22 +145,22 @@ namespace ShapeHandler.ShapeTransformation
         /// </summary>
         /// <param name="type">Shape type</param>
         /// <returns>Enum of node type</returns>
-        private static NodeType DetermineNodeType(string type)
+        private static Objects.NodeType DetermineNodeType(string type)
         {
             if (type == "Start/End")
-                return NodeType.StartEnd;
+                return Objects.NodeType.StartEnd;
             if (type == "Decision")
-                return NodeType.Decision;
+                return Objects.NodeType.Decision;
             if (type == "Input Data")
-                return NodeType.DataInput;
+                return Objects.NodeType.DataInput;
             if (type == "Process")
-                return NodeType.UserProcess;
+                return Objects.NodeType.UserProcess;
             if (type == "Page")
-                return NodeType.Page;
+                return Objects.NodeType.Page;
             // TODO: Special Connector
             if (type == "Subprocess")
-                return NodeType.BackgroundProcess;
-            return NodeType.HtmlElement;
+                return Objects.NodeType.BackgroundProcess;
+            return Objects.NodeType.HtmlElement;
         }
 
         /// <summary>
@@ -165,11 +171,11 @@ namespace ShapeHandler.ShapeTransformation
         private static FlowchartNode ConvertShapeToNode(Shape shape)
         {
             IDictionary<string, string> shapeData = ReadShapeData(shape);
-            NodeType type = DetermineNodeType(shapeData["Node Type"]);
+            Objects.NodeType type = DetermineNodeType(shapeData["Node Type"]);
             dynamic node = null;
             switch (type)
             {
-                case NodeType.StartEnd:
+                case Objects.NodeType.StartEnd:
                     {
                         bool isStart = shapeData["Is Start"].ToBoolean();
                         if (isStart)
@@ -181,12 +187,22 @@ namespace ShapeHandler.ShapeTransformation
                             node = new StartEndNode("End");
                     }
                     break;
-                case NodeType.Decision: node = new DecisionNode(shape.Text); break;
-                case NodeType.DataInput: node = new DataInputNode(shape.Text); break;
-                case NodeType.UserProcess: node = new ProcessNode(shape.Text); break;
-                case NodeType.Page: node = new PageNode(shape.Text); break;
+                case Objects.NodeType.Decision: node = new DecisionNode(shape.Text); break;
+                case Objects.NodeType.DataInput:
+                    {
+                        node = new DataInputNode(shape.Text);
+                        IDictionary schema = JsonSerializer.Deserialize<Dictionary<string, string>>(shapeData["Input 1"]);
+                        IHtmlButtonElement button = document.CreateElement("button") as IHtmlButtonElement;
+                        button.Type = schema["type"].ToString();
+                        button.Id = schema["id"].ToString();
+                        HtmlNode buttonNode = new HtmlNode(button.Id, button, Objects.NodeType.Button);
+                        node.DataInputNodes.Add(buttonNode);
+                        break;
+                    }
+                case Objects.NodeType.UserProcess: node = new ProcessNode(shape.Text); break;
+                case Objects.NodeType.Page: node = new PageNode(shape.Text); break;
                 // TODO: Special connector
-                case NodeType.BackgroundProcess: node = new ProcessNode(shape.Text, true); break;
+                case Objects.NodeType.BackgroundProcess: node = new ProcessNode(shape.Text, true); break;
             }
             string properties = JsonSerializer.Serialize(shapeData);
             return node;
