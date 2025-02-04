@@ -147,6 +147,7 @@
             this.Controls.Add(this.label1);
             this.Name = "ButtonAttributesForm";
             this.Text = "Attributes";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ButtonAttributesForm_Closing);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -39,5 +39,4 @@ namespace ShapeHandler.Database.Input
                 ).FormulaU = "\"" + schema + "\"";
         }
     }
-    }
 }
