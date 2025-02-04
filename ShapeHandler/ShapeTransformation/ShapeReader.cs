@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using AngleSharp.Dom;
+using System.Xml.Linq;
 using AngleSharp;
+using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
 using AngleSharp.Text;
 using Microsoft.Office.Interop.Visio;
@@ -108,7 +109,9 @@ namespace ShapeHandler.ShapeTransformation
                         iRow,
                         (short)VisCellIndices.visCustPropsValue
                     ).get_ResultStr(VisUnitCodes.visNoCast);
-                properties.Add(label, value);
+                // This is here until I can figure out how to add only one row to shape data
+                if (!string.IsNullOrEmpty(label))
+                    properties.Add(label, value);
                 iRow++;
             }
             return properties;
@@ -197,6 +200,14 @@ namespace ShapeHandler.ShapeTransformation
                         button.Id = schema["id"].ToString();
                         HtmlNode buttonNode = new HtmlNode(button.Id, button, Objects.NodeType.Button);
                         node.DataInputNodes.Add(buttonNode);
+                        IHtmlInputElement input = document.CreateElement("input") as IHtmlInputElement;
+                        input.Type = schema["type"].ToString();
+                        input.Id = schema["id"].ToString();
+                        input.Minimum = schema["min"].ToString();
+                        input.Maximum = schema["max"].ToString();
+                        input.ClassList.Add(schema["class"].ToString());
+                        HtmlNode inputNode = new HtmlNode(input.Id, input, Objects.NodeType.Input);
+                        node.DataInputNodes.Add(inputNode);
                         break;
                     }
                 case Objects.NodeType.UserProcess: node = new ProcessNode(shape.Text); break;
@@ -204,7 +215,6 @@ namespace ShapeHandler.ShapeTransformation
                 // TODO: Special connector
                 case Objects.NodeType.BackgroundProcess: node = new ProcessNode(shape.Text, true); break;
             }
-            string properties = JsonSerializer.Serialize(shapeData);
             return node;
         }
     }
