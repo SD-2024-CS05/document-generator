@@ -435,7 +435,14 @@
     <Compile Include="Database\ShapeDataForm.Designer.cs">
       <DependentUpon>ShapeDataForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Database\Neo4JSerializer.cs" />
+    <Compile Include="Helpers\HtmlElementSerializer.cs" />
+    <Compile Include="Helpers\Neo4JSerializer.cs" />
+    <Compile Include="Forms\ButtonForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ButtonForm.Designer.cs">
+      <DependentUpon>ButtonForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Identity\KeyVaultManager.cs" />
     <Compile Include="Objects\FileManager.cs" />
     <Compile Include="Objects\Graph\Conditions.cs" />
@@ -449,6 +456,7 @@
     <Compile Include="Objects\Graph\PageNode.cs" />
     <Compile Include="Objects\Graph\ProcessNode.cs" />
     <Compile Include="Objects\Graph\StartEndNode.cs" />
+    <Compile Include="Helpers\VisioShapeDataHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -464,6 +472,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Database\ShapeDataForm.resx">
       <DependentUpon>ShapeDataForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ButtonForm.resx">
+      <DependentUpon>ButtonForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -510,6 +521,7 @@
   <ItemGroup>
     <Content Include="ILLink\ILLink.Descriptors.LibraryBuild.xml" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
