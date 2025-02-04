@@ -6,6 +6,7 @@ using ShapeHandler.Identity;
 using ShapeHandler.Objects;
 using System;
 using System.Collections.Generic;
+using ShapeHandler.Tests.Helpers;
 
 namespace ShapeHandler.Tests.Database
 {
@@ -353,9 +354,10 @@ namespace ShapeHandler.Tests.Database
         }
 
         [TestMethod()]
-        [Ignore] // Ignored because it writes to the database
         public void WriteTestFlowchartToFile1()
         {
+            if (TestHelper.IsGithubActionRun) { Assert.Inconclusive(); return; }
+
             DatabaseConnector connector = new KeyVaultManager().ConnectToDatabase();
 
             bool res = false;
@@ -374,7 +376,7 @@ namespace ShapeHandler.Tests.Database
         }
 
         [TestMethod()]
-        [Ignore] // Ignored because it writes to the database   
+        [Ignore]  // Deprecated
         public void WriteTestFlowchartToFile2()
         {
             DatabaseConnector connector = new KeyVaultManager().ConnectToDatabase();

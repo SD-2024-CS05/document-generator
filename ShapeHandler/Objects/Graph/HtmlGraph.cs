@@ -43,29 +43,44 @@ namespace ShapeHandler.Objects
                 InEdges[node] = new Dictionary<FlowchartNode, List<Connection>>();
             }
 
-            // Check if the node is a start or end node and handle it if so
-            if (node is StartEndNode seNode)
+            switch (node)
             {
-                // Only one start node allowed
-                if (seNode.IsStart && hasStart)
-                {
-                    throw new Exception("Only one start node allowed");
-                }
+                case StartEndNode seNode:
+                    // Only one start node allowed
+                    if (seNode.IsStart && hasStart)
+                    {
+                        throw new Exception("Only one start node allowed");
+                    }
 
-                // Only one end node allowed
-                if (!seNode.IsStart && hasEnd)
-                {
-                    throw new Exception("Only one end node allowed");
-                }
+                    // Only one end node allowed
+                    if (!seNode.IsStart && hasEnd)
+                    {
+                        throw new Exception("Only one end node allowed");
+                    }
 
-                if (seNode.IsStart)
-                {
-                    hasStart = true;
-                }
-                else
-                {
-                    hasEnd = true;
-                }
+                    if (seNode.IsStart)
+                    {
+                        hasStart = true;
+                    }
+                    else
+                    {
+                        hasEnd = true;
+                    }
+                    break;
+                case DataInputNode diNode:
+                    // check if dataInputNodes exist, if not add them, and then add connections
+                    foreach (var dataInputNode in diNode.DataInputNodes)
+                    {
+                        if(!OutEdges.ContainsKey(dataInputNode))
+                        {
+                            AddNode(dataInputNode);
+                        }
+                        AddConnection(dataInputNode, diNode, new Connection(dataInputNode.Element.Id ?? dataInputNode.Id, ConnectionType.INPUT_FOR));
+                    }
+                    break;
+
+                default:
+                    break;
             }
         }
 
