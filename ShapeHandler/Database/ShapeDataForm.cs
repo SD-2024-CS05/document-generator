@@ -116,7 +116,6 @@ namespace ShapeHandler.Database
                         Margin = new Padding(4),
                         Size = new Size(105, 40),
                         Text = "Delete",
-                        Click +=    
                     };
                     Controls.Add(label);
                     Controls.Add(comboBox);
