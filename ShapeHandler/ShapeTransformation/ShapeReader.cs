@@ -128,14 +128,6 @@ namespace ShapeHandler.ShapeTransformation
             foreach (FlowchartNode node in nodes)
             {
                 htmlGraph.AddNode(node);
-                if (node is DataInputNode dtNode)
-                {
-                    foreach (HtmlNode n in dtNode.DataInputNodes)
-                    {
-                        htmlGraph.AddNode(n);
-                        htmlGraph.AddConnection(n, dtNode, new Connection(n.Id, ConnectionType.INPUT_FOR));
-                    }
-                }
             }
             foreach (FlowchartNode node in nodes)
             {
