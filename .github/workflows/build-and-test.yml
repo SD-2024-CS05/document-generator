@@ -34,6 +34,7 @@ on:
 
 jobs:
  Build:
+   if: github.event.pull_request.draft == false
    env:
       SOLUTION_FILE: ShapeHandler.sln
    runs-on: windows-latest
@@ -172,6 +173,8 @@ jobs:
    needs: build
    permissions:
     contents: write
+   outputs:
+     upload_url: ${{ steps.create_release.outputs.upload_url }}
 
    steps:
      - name: Checkout repository
@@ -200,12 +203,16 @@ jobs:
        env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
        with:
-         tag_name: ${{ github.ref }}-ClickOnce-Install
-         release_name: Release ${{ github.ref }} - ClickOnce Install
+         tag_name: ${{ github.ref }}-Installers
+         release_name: Release ${{ github.ref }} - Installers
          draft: false
          prerelease: false
+     
+     - name: Set upload URL
+       id: set_upload_url
+       run: echo "::set-output name=upload_url::${{ steps.create_release.outputs.upload_url }}"
 
-     - name: Upload Release Asset
+     - name: Upload ClickOnce Release Asset
        uses: actions/upload-release-asset@v1
        env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -218,7 +225,7 @@ jobs:
  Deploy-Windows-Installer:
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: windows-latest
-    needs: build
+    needs: Deploy-ClickOnce
     permissions:
       contents: write
     env:
@@ -301,23 +308,12 @@ jobs:
           name: windows-installer
           path: ${{ env.BUILD_DIR }}/windows-installer.zip
 
-      - name: Create GitHub Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}-Windows-Installer
-          release_name: Release ${{ github.ref }} - Windows Installer
-          draft: false
-          prerelease: false
-
-      - name: Upload Release Asset
+      - name: Upload Windows Installer Release Asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          upload_url: ${{ needs.Deploy-ClickOnce.outputs.upload_url }}
           asset_path: ${{ env.BUILD_DIR }}/windows-installer.zip
           asset_name: windows-installer.zip
           asset_content_type: application/zip
