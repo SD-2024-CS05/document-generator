@@ -54,10 +54,15 @@ namespace ShapeHandler.Database
             valueTextBox.Text = attributes["value"];
             minTextBox.Text = attributes["min"];
             maxTextBox.Text = attributes["max"];
-            classTextBox.Text = attributes["class"];
+            classesTextBox.Text = attributes["class"];
         }
 
         private void InputForm_Closing(object sender, FormClosingEventArgs e)
+        {
+            
+        }
+
+        private void UpdateShapeData()
         {
             StringBuilder schema = new StringBuilder("{");
             schema.Append("\"\"type\"\": \"\"" + typeTextBox.Text + "\"\", ");
@@ -66,7 +71,7 @@ namespace ShapeHandler.Database
             schema.Append("\"\"value\"\": \"\"" + valueTextBox.Text + "\"\", ");
             schema.Append("\"\"min\"\": \"\"" + minTextBox.Text + "\"\", ");
             schema.Append("\"\"max\"\": \"\"" + maxTextBox.Text + "\"\", ");
-            schema.Append("\"\"class\"\": \"\"" + classTextBox.Text + "\"\", ");
+            schema.Append("\"\"class\"\": \"\"" + classesTextBox.Text + "\"\", ");
             Globals.ShapeDetector.Application.ActivePage.Shapes[_shapeID].get_CellsSRC(
                 (short)VisSectionIndices.visSectionProp,
                 (short)VisRowIndices.visRowLast,
@@ -102,6 +107,17 @@ namespace ShapeHandler.Database
             //output = JsonConvert.SerializeObject(input, new HtmlElementSerializer());
 
             //VisioShapeDataHelper.AddShapeData(_shapeID, output, "Input " + _inputNum);
+        }
+
+        private void cancelButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void saveButton_Click(object sender, EventArgs e)
+        {
+            UpdateShapeData();
+            this.Close();
         }
     }
 }
