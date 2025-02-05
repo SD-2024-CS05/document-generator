@@ -79,10 +79,10 @@ namespace ShapeHandler.Tests.Database
             TemperatureFormNode.DataInputNodes.Add(inputTempSensorNode);
             TemperatureFormNode.DataInputNodes.Add(setFastCoolingModeNode);
             TemperatureFormNode.DataInputNodes.Add(inputWaitTimeNode);
-            TemperatureFormNode.DataInputNodes.Add(submitButtonNode);
-            TemperatureFormNode.DataInputNodes.Add(cancelButtonNode);
 
             DecisionNode submitDecisionNode = new DecisionNode("Submit Results?");
+            submitDecisionNode.SubmissionNodes.Add(submitButtonNode);
+            submitDecisionNode.SubmissionNodes.Add(cancelButtonNode);
 
             /// Process nodes (wip)
             ProcessNode processDataNode = new ProcessNode("Process Data", false);
@@ -108,11 +108,11 @@ namespace ShapeHandler.Tests.Database
 
             // make data input wrapper node
             var viewRelatedDataFormNode = new DataInputNode("View Related Data");
-            viewRelatedDataFormNode.DataInputNodes.Add(yesButtonNode);
-            viewRelatedDataFormNode.DataInputNodes.Add(noButtonNode);
             viewRelatedDataFormNode.DataInputNodes.Add(backToInputFormNode);
 
             DecisionNode viewRelatedDataDecisionNode = new DecisionNode("View Related Data?");
+            viewRelatedDataDecisionNode.SubmissionNodes.Add(yesButtonNode);
+            viewRelatedDataDecisionNode.SubmissionNodes.Add(noButtonNode);
 
             // Other functions
             DecisionNode otherFunctionsDecisionNode = new DecisionNode("Other Functions?");
@@ -173,19 +173,6 @@ namespace ShapeHandler.Tests.Database
             Connection viewRelatedDataNoToOtherFunction = new Connection("N 8", noButtonNode.Id);
             Connection otherFunctionYesToPage = new Connection("Y 9");
             Connection otherFunctionNoToBeginning = new Connection("N 10", backToInputFormNode.Id);
-
-            // Add input element connections for data forms
-            // Temperature Form
-            foreach (var inputNode in TemperatureFormNode.DataInputNodes)
-            {
-                htmlGraph.AddConnection(inputNode, TemperatureFormNode, new Connection(inputNode.Element.Id ?? inputNode.Id, ConnectionType.INPUT_FOR));
-            }
-
-            // View Related Data Form
-            foreach (var inputNode in viewRelatedDataFormNode.DataInputNodes)
-            {
-                htmlGraph.AddConnection(inputNode, viewRelatedDataFormNode, new Connection(inputNode.Element.Id ?? inputNode.Id, ConnectionType.INPUT_FOR));
-            }
 
             /// Add connections
             // Start -> Input Data Form -> Submit Decision -> Process Data
@@ -359,8 +346,6 @@ namespace ShapeHandler.Tests.Database
         [TestMethod()]
         public void WriteTestFlowchartToFile1()
         {
-            //if (TestHelper.IsGithubActionRun) { Assert.Inconclusive(); return; }
-
             DatabaseConnector connector = new KeyVaultManager().ConnectToDatabase();
 
             bool res = false;

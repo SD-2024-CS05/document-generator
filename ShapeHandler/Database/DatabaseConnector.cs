@@ -75,12 +75,12 @@ namespace ShapeHandler.Database
             {
                 if (!visited.Contains(node))
                 {
-                    await DepthFirstSearch(tx, graph, visited, node);
+                    await DFS_CreateGraph(tx, graph, visited, node);
                 }
             }
         }
 
-        private async Task DepthFirstSearch(IAsyncTransaction tx, HtmlGraph graph, HashSet<FlowchartNode> visited, FlowchartNode node)
+        private async Task DFS_CreateGraph(IAsyncTransaction tx, HtmlGraph graph, HashSet<FlowchartNode> visited, FlowchartNode node)
         {
             visited.Add(node);
             await CreateNode(tx, node);
@@ -90,7 +90,7 @@ namespace ShapeHandler.Database
             {
                 if (!visited.Contains(neighbor))
                 {
-                    await DepthFirstSearch(tx, graph, visited, neighbor);
+                    await DFS_CreateGraph(tx, graph, visited, neighbor);
                 }
             }
 
