@@ -8,7 +8,12 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using AngleSharp;
+using AngleSharp.Html.Dom;
 using Microsoft.Office.Interop.Visio;
+using Newtonsoft.Json;
+using ShapeHandler.Helpers;
+using ShapeHandler.Objects;
 using Visio = Microsoft.Office.Interop.Visio;
 
 namespace ShapeHandler.Database
@@ -72,6 +77,31 @@ namespace ShapeHandler.Database
                     (short)VisRowIndices.visRowLast,
                     (short)VisCellIndices.visCustPropsValue
                 ).FormulaU = "\"" + schema + "\"";
+
+            //// EXAMPLE USAGE OF EASIER DATA FORMATTING
+
+            //var context = new BrowsingContext(Configuration.Default);
+            //var document = context.OpenNewAsync().Result;
+            //var input = document.CreateElement("input") as IHtmlInputElement;
+            //input.Type = typeTextBox.Text;
+            //input.Id = idTextBox.Text;
+            //input.Name = nameTextBox.Text;
+            //input.Value = valueTextBox.Text;
+            //input.Minimum = minTextBox.Text;
+            //input.Maximum = maxTextBox.Text;
+
+            //var classList = classTextBox.Text.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            //foreach (var className in classList)
+            //{
+            //    input.ClassList.Add(className);
+            //}
+
+            //// GET OUTPUT
+            //var output = input.OuterHtml;
+            //// OR UPDATE/USE CUSTOM SERIALIZATION (UPDATE TO YOUR NEEDS)
+            //output = JsonConvert.SerializeObject(input, new HtmlElementSerializer());
+
+            //VisioShapeDataHelper.AddShapeData(_shapeID, output, "Input " + _inputNum);
         }
     }
 }
