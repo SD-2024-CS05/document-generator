@@ -208,6 +208,11 @@ namespace ShapeHandler.ShapeTransformation
                         input.ClassList.Add(schema["class"].ToString());
                         HtmlNode inputNode = new HtmlNode(input.Id, input, Objects.NodeType.Input);
                         node.DataInputNodes.Add(inputNode);
+                        IHtmlAnchorElement anchor = document.CreateElement("a") as IHtmlAnchorElement;
+                        anchor.Id = schema["id"].ToString();
+                        anchor.Href = schema["href"].ToString();
+                        HtmlNode anchorNode = new HtmlNode(anchor.Id, anchor, Objects.NodeType.Anchor);
+                        node.DataInputNodes.Add(anchorNode);
                         break;
                     }
                 case Objects.NodeType.UserProcess: node = new ProcessNode(shape.Text); break;

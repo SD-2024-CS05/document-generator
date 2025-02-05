@@ -22,6 +22,7 @@ namespace ShapeHandler.Database.Input
         {
             StringBuilder schema = new StringBuilder("{");
             schema.Append("{\"\"type\"\": \"\"" + typeTextBox.Text + "\"\", ");
+            schema.Append("{\"\"id\"\": \"\"" + typeTextBox.Text + "\"\", ");
             schema.Append("\"\"href\"\": \"\"" + hrefTextBox.Text + "\"\", ");
             schema.Append("\"\"rel\"\": \"\"" + relTextBox.Text + "\"\"}}");
             Globals.ShapeDetector.Application.ActivePage.Shapes[1].get_CellsSRC(
