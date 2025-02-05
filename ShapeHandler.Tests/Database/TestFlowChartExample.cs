@@ -379,7 +379,8 @@ namespace ShapeHandler.Tests.Database
         }
 
         [TestMethod()]
-        [Ignore]  // Deprecated
+        [Ignore]
+        [Obsolete("This test is deprecated as it creates a graph that is no longer in use")]
         public void WriteTestFlowchartToFile2()
         {
             DatabaseConnector connector = new KeyVaultManager().ConnectToDatabase();
