@@ -38,7 +38,7 @@ namespace ShapeHandler.Database
 
         private void InputForm_Load(object sender, EventArgs e)
         {
-            IDictionary<string, string> attributes = JsonSerializer.Deserialize<Dictionary<string, string>>(
+            IDictionary<string, string> attributes = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(
                     //Globals.ShapeDetector.Application.ActivePage.Shapes[_shapeID].get_CellsSRC(
                     //    (short)VisSectionIndices.visSectionProp,
                     //    (short)VisRowIndices.visRowLast,
