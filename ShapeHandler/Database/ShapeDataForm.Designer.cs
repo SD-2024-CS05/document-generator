@@ -29,32 +29,32 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ShapeDataForm));
-            this.button1 = new System.Windows.Forms.Button();
-            this.CancelButton = new System.Windows.Forms.Button();
+            this.okayButton = new System.Windows.Forms.Button();
+            this.cancelButton = new System.Windows.Forms.Button();
             this.addControlButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // button1
+            // okayButton
             // 
-            this.button1.Location = new System.Drawing.Point(785, 427);
-            this.button1.Margin = new System.Windows.Forms.Padding(4);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(124, 46);
-            this.button1.TabIndex = 13;
-            this.button1.Text = "Okay";
-            this.button1.UseVisualStyleBackColor = true;
+            this.okayButton.Location = new System.Drawing.Point(785, 427);
+            this.okayButton.Margin = new System.Windows.Forms.Padding(4);
+            this.okayButton.Name = "okayButton";
+            this.okayButton.Size = new System.Drawing.Size(124, 46);
+            this.okayButton.TabIndex = 13;
+            this.okayButton.Text = "Okay";
+            this.okayButton.UseVisualStyleBackColor = true;
             // 
-            // CancelButton
+            // cancelButton
             // 
-            this.CancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CancelButton.Location = new System.Drawing.Point(927, 427);
-            this.CancelButton.Margin = new System.Windows.Forms.Padding(4);
-            this.CancelButton.Name = "CancelButton";
-            this.CancelButton.Size = new System.Drawing.Size(124, 46);
-            this.CancelButton.TabIndex = 14;
-            this.CancelButton.Text = "Cancel";
-            this.CancelButton.UseVisualStyleBackColor = true;
-            this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
+            this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.cancelButton.Location = new System.Drawing.Point(927, 427);
+            this.cancelButton.Margin = new System.Windows.Forms.Padding(4);
+            this.cancelButton.Name = "cancelButton";
+            this.cancelButton.Size = new System.Drawing.Size(124, 46);
+            this.cancelButton.TabIndex = 14;
+            this.cancelButton.Text = "Cancel";
+            this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // addControlButton
             // 
@@ -65,17 +65,17 @@
             this.addControlButton.TabIndex = 16;
             this.addControlButton.Text = "Add Control";
             this.addControlButton.UseVisualStyleBackColor = true;
-            this.addControlButton.Click += new System.EventHandler(this.addControlButton_Click);
+            this.addControlButton.Click += new System.EventHandler(this.AddControlButton_Click);
             // 
             // ShapeDataForm
             // 
-            this.AcceptButton = this.button1;
+            this.AcceptButton = this.okayButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1067, 482);
             this.Controls.Add(this.addControlButton);
-            this.Controls.Add(this.CancelButton);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.cancelButton);
+            this.Controls.Add(this.okayButton);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "ShapeDataForm";
@@ -86,8 +86,8 @@
         }
 
         #endregion
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button CancelButton;
+        private System.Windows.Forms.Button okayButton;
+        private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Button addControlButton;
     }
 }

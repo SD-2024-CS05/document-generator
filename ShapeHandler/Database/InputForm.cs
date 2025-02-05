@@ -9,6 +9,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using AngleSharp;
+using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
 using Microsoft.Office.Interop.Visio;
 using Newtonsoft.Json;
@@ -38,7 +39,10 @@ namespace ShapeHandler.Database
 
         private void InputForm_Load(object sender, EventArgs e)
         {
-            IDictionary<string, string> attributes = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(
+            var lol = _inputNum;
+            if (VisioShapeDataHelper.CheckIfRowsExist(_shapeID))
+            {
+                IDictionary<string, string> attributes = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(
                     //Globals.ShapeDetector.Application.ActivePage.Shapes[_shapeID].get_CellsSRC(
                     //    (short)VisSectionIndices.visSectionProp,
                     //    (short)VisRowIndices.visRowLast,
@@ -48,13 +52,14 @@ namespace ShapeHandler.Database
                     .Cells["Input " + _inputNum.ToString()]
                     .ResultStr[VisCellIndices.visCustPropsValue]
                 );
-            typeTextBox.Text = attributes["type"];
-            idTextBox.Text = attributes["id"];
-            nameTextBox.Text = attributes["name"];
-            valueTextBox.Text = attributes["value"];
-            minTextBox.Text = attributes["min"];
-            maxTextBox.Text = attributes["max"];
-            classesTextBox.Text = attributes["class"];
+                typeTextBox.Text = attributes["type"];
+                idTextBox.Text = attributes["id"];
+                nameTextBox.Text = attributes["name"];
+                valueTextBox.Text = attributes["value"];
+                minTextBox.Text = attributes["min"];
+                maxTextBox.Text = attributes["max"];
+                classesTextBox.Text = attributes["class"];
+            }
         }
 
         private void InputForm_Closing(object sender, FormClosingEventArgs e)
@@ -64,60 +69,38 @@ namespace ShapeHandler.Database
 
         private void UpdateShapeData()
         {
-            StringBuilder schema = new StringBuilder("{");
-            schema.Append("\"\"type\"\": \"\"" + typeTextBox.Text + "\"\", ");
-            schema.Append("\"\"id\"\": \"\"" + idTextBox.Text + "\"\", ");
-            schema.Append("\"\"name\"\": \"\"" + nameTextBox.Text + "\"\", ");
-            schema.Append("\"\"value\"\": \"\"" + valueTextBox.Text + "\"\", ");
-            schema.Append("\"\"min\"\": \"\"" + minTextBox.Text + "\"\", ");
-            schema.Append("\"\"max\"\": \"\"" + maxTextBox.Text + "\"\", ");
-            schema.Append("\"\"class\"\": \"\"" + classesTextBox.Text + "\"\", ");
-            Globals.ShapeDetector.Application.ActivePage.Shapes[_shapeID].get_CellsSRC(
-                (short)VisSectionIndices.visSectionProp,
-                (short)VisRowIndices.visRowLast,
-                (short)VisCellIndices.visCustPropsLabel
-            ).FormulaU = "\"" + "Input 1" + "\"";
-            Globals.ShapeDetector.Application.ActivePage.Shapes[_shapeID].get_CellsSRC(
-                    (short)VisSectionIndices.visSectionProp,
-                    (short)VisRowIndices.visRowLast,
-                    (short)VisCellIndices.visCustPropsValue
-                ).FormulaU = "\"" + schema + "\"";
+            BrowsingContext context = new BrowsingContext(Configuration.Default);
+            IDocument document = context.OpenNewAsync().Result;
+            IHtmlInputElement input = document.CreateElement("input") as IHtmlInputElement;
+            input.Type = typeTextBox.Text;
+            input.Id = idTextBox.Text;
+            input.Name = nameTextBox.Text;
+            input.Value = valueTextBox.Text;
+            input.Minimum = minTextBox.Text;
+            input.Maximum = maxTextBox.Text;
 
-            //// EXAMPLE USAGE OF EASIER DATA FORMATTING
-
-            //var context = new BrowsingContext(Configuration.Default);
-            //var document = context.OpenNewAsync().Result;
-            //var input = document.CreateElement("input") as IHtmlInputElement;
-            //input.Type = typeTextBox.Text;
-            //input.Id = idTextBox.Text;
-            //input.Name = nameTextBox.Text;
-            //input.Value = valueTextBox.Text;
-            //input.Minimum = minTextBox.Text;
-            //input.Maximum = maxTextBox.Text;
-
-            //var classList = classTextBox.Text.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-            //foreach (var className in classList)
-            //{
-            //    input.ClassList.Add(className);
-            //}
-
+            var classList = classesTextBox.Text.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var className in classList)
+            {
+                input.ClassList.Add(className);
+            }
             //// GET OUTPUT
             //var output = input.OuterHtml;
             //// OR UPDATE/USE CUSTOM SERIALIZATION (UPDATE TO YOUR NEEDS)
-            //output = JsonConvert.SerializeObject(input, new HtmlElementSerializer());
-
-            //VisioShapeDataHelper.AddShapeData(_shapeID, output, "Input " + _inputNum);
+            //var output = JsonConvert.SerializeObject(input, new HtmlElementSerializer());
+            var output = HtmlElementSerializer.WriteJson(input);
+            VisioShapeDataHelper.AddShapeData(_shapeID, output, "Input " + _inputNum);
         }
 
-        private void cancelButton_Click(object sender, EventArgs e)
+        private void CancelButton_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
-        private void saveButton_Click(object sender, EventArgs e)
+        private void SaveButton_Click(object sender, EventArgs e)
         {
             UpdateShapeData();
-            this.Close();
+            Close();
         }
     }
 }
