@@ -20,6 +20,11 @@ namespace ShapeHandler.Database.Input
 
         private void AnchorAttributesForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+
+        }
+
+        private void UpdateShapeData()
+        {
             StringBuilder schema = new StringBuilder("{");
             schema.Append("{\"\"type\"\": \"\"" + typeTextBox.Text + "\"\", ");
             schema.Append("{\"\"id\"\": \"\"" + typeTextBox.Text + "\"\", ");
@@ -35,6 +40,17 @@ namespace ShapeHandler.Database.Input
                     (short)VisRowIndices.visRowFirst,
                     (short)VisCellIndices.visCustPropsValue
                 ).FormulaU = "\"" + schema + "\"";
+        }
+
+        private void cancelButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void saveButton_Click(object sender, EventArgs e)
+        {
+            UpdateShapeData();
+            this.Close();
         }
     }
 }
