@@ -203,22 +203,20 @@ namespace ShapeHandler.ShapeTransformation
                             JArray schema = JsonConvert.DeserializeObject<JArray>(shapeData[index]);
                             if (schema[0].First.First.ToString() == "INPUT")
                             {
+                                var lol = schema[0]["attributes"];
                                 IHtmlInputElement input = document.CreateElement("input") as IHtmlInputElement;
-                                //input.Type = schema[0].First.Childre;
-                                //input.Id = schema.GetProperty("TagType");
-                                //input.Minimum = schema.GetProperty("TagType");
-                                //input.Maximum = schema.GetProperty("TagType");
-                                //input.ClassList.Add(schema.GetProperty("TagType"));
+                                //input.Type = schema[0].;
+                                input.Id = schema[0].First.Next.First.ToString();
+                                input.Minimum = schema[0]["attributes"]["min"].ToString();
+                                input.Maximum = schema[0]["attributes"]["max"].ToString();
+                                //foreach (var _class in schema[0]["classList"].ToArray())
+                                //{
+                                    //input.ClassList.Add(_class.ToString());
+                                    //input.ClassList.Add(schema[0]["classList"].ToArray<string>());
+                                //}
                                 htmlNode = new HtmlNode(input.Id, input, Objects.NodeType.Input);
 
                             }
-                            //else if (schema[0].First.First.ToString() == "BUTTON")
-                            //{
-                            //    IHtmlButtonElement button = document.CreateElement("button") as IHtmlButtonElement;
-                            //    button.Type = schema["type"].ToString();
-                            //    button.Id = schema["id"].ToString();
-                            //    htmlNode = new HtmlNode(button.Id, button, Objects.NodeType.Button);
-                            //}
                             //else if (schema[0].First.First.ToString() == "ANCHOR")
                             //{
                             //    IHtmlAnchorElement anchor = document.CreateElement("a") as IHtmlAnchorElement;
