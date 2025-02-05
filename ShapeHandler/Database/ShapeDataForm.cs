@@ -76,6 +76,7 @@ namespace ShapeHandler.Database
                         y = 20;
                     Label label = new Label
                     {
+                        Name = "controlLabel_" + (count + 1),
                         Text = "Input " + (count + 1),
                         AutoSize = true,
                         //Size = new Size(100, 32),
@@ -84,6 +85,7 @@ namespace ShapeHandler.Database
                     };
                     ComboBox comboBox = new ComboBox
                     {
+                        Name = "controlOptionsComboBox_" + (count + 1),
                         Size = new Size(160, 40),
                         Margin = new Padding(4),
                         Location = new Point(135, y),
@@ -100,20 +102,22 @@ namespace ShapeHandler.Database
                     {
                         Location = new Point(303, y),
                         Margin = new Padding(4),
-                        Name = "AddElement",
+                        Name = "controlAttributes_" + (count + 1),
                         Size = new Size(79, 41),
                         TabIndex = 15,
                         Text = "...",
                         UseVisualStyleBackColor = true
-                        //Click += new System.EventHandler(this.AddElement_Click);
                     };
+                    attributesButton.Click += new EventHandler(ControlAttributes_Click);
                     Button deleteButton = new Button
                     {
+                        Name = "deleteControl_" + (count + 1),
                         Location = new Point(390, y),
                         Margin = new Padding(4),
                         Size = new Size(105, 40),
                         Text = "Delete",
                     };
+                    deleteButton.Click += new EventHandler(DeleteControlButton_Click);
                     Controls.Add(label);
                     Controls.Add(comboBox);
                     Controls.Add(attributesButton);
@@ -139,21 +143,25 @@ namespace ShapeHandler.Database
             _shapeDataForm = null;
         }
 
-        private void AddElement_Click(object sender, EventArgs e)
+        private void ControlAttributes_Click(object sender, EventArgs e)
         {
-            //if (HTMLOptions.SelectedItem != null) {
-            //    var htmlElement = HTMLOptions.SelectedItem.ToString();
-            //    InputForm inputForm = new InputForm(_shapeID);
-            //    ButtonAttributesForm buttonAttributesForm = new ButtonAttributesForm();
-            //    switch (htmlElement)
-            //    {
-            //        case "<input>": inputForm.ShowDialog(); break;
-            //        case "<button>": buttonAttributesForm.ShowDialog(); break;
-            //        case "<select>": inputForm.ShowDialog(); break;
-            //        case "<a>": inputForm.ShowDialog(); break;
-            //        case "<image>": inputForm.ShowDialog(); break;
-            //    }
-            //}
+            Button button = sender as Button;
+            int index = int.Parse(button.Name.Split('_')[1]);
+            ComboBox lol = (ComboBox)Controls.Find("controlOptionsComboBox_" + index, true)[0];
+            if (lol.SelectedItem != null)
+            {
+                var htmlElement = lol.SelectedItem.ToString();
+                InputForm inputForm = new InputForm(_shapeID, index);
+                ButtonAttributesForm buttonAttributesForm = new ButtonAttributesForm(_shapeID, index);
+                switch (htmlElement)
+                {
+                    case "<input>": inputForm.ShowDialog(); break;
+                    case "<button>": buttonAttributesForm.ShowDialog(); break;
+                    case "<select>": inputForm.ShowDialog(); break;
+                    case "<a>": inputForm.ShowDialog(); break;
+                    case "<image>": inputForm.ShowDialog(); break;
+                }
+            }
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
@@ -163,14 +171,41 @@ namespace ShapeHandler.Database
 
         private void DeleteControlButton_Click(object sender, EventArgs e)
         {
-            //Globals.ShapeDetector.Application.ActivePage.Cells
-            foreach (Control label in Controls.OfType<Label>().ToList())
+            Button button = sender as Button;
+            int index = int.Parse(button.Name.Split('_')[1]);
+            Controls.Remove(Controls.Find("controlLabel_" + index, true)[0]);
+            Controls.Remove(Controls.Find("controlOptionsComboBox_" + index, true)[0]);
+            Controls.Remove(Controls.Find("controlAttributes_" + index, true)[0]);
+            Controls.Remove(button);
+
+            int lol = 0;
+            //Rearranging the Location controls.
+            foreach (Button btn in this.Controls.OfType<Button>())
             {
-                Controls.Remove(label);
+                if (btn != addControlButton && btn != okayButton && btn != cancelButton && btn.Name.Split('_')[0] != "controlAttributes")
+                {
+                    int controlIndex = int.Parse(btn.Name.Split('_')[1]);
+                    if (controlIndex > index)
+                    {
+                        Label label = (Label)Controls.Find("controlLabel_" + controlIndex, true)[0];
+                        ComboBox comboBox = (ComboBox)Controls.Find("controlOptionsComboBox_" + controlIndex, true)[0];
+                        Button attributes = (Button)Controls.Find("controlAttributes_" + controlIndex, true)[0];
+                        label.Top = label.Top - 30;
+                        comboBox.Top = comboBox.Top - 30;
+                        attributes.Top = attributes.Top - 30;
+                        btn.Top = btn.Top - 30;
+                        label.Name = "controlLabel_" + (index + lol);
+                        label.Text = "Input " + (index + lol);
+                        label.Name = "controlOptionsComboBox_" + (index + lol);
+                        attributes.Name = "controlAttributes_" + (index + lol);
+                        btn.Name = "deleteControl_" + (index + lol);
+                        lol++;
+                    }
+                }
             }
         }
 
-        private void addControlButton_Click(object sender, EventArgs e)
+        private void AddControlButton_Click(object sender, EventArgs e)
         {
             int count = Controls.OfType<Label>().ToList().Count;
             int y;
@@ -180,6 +215,7 @@ namespace ShapeHandler.Database
                 y = 20;
             Label label = new Label
             {
+                Name = "controlLabel_" + (count + 1),
                 Text = "Input " + (count + 1),
                 AutoSize = true,
                 //Size = new Size(100, 32),
@@ -188,6 +224,7 @@ namespace ShapeHandler.Database
             };
             ComboBox comboBox = new ComboBox
             {
+                Name = "controlOptionsComboBox_" + (count + 1),
                 Size = new Size(160, 40),
                 Margin = new Padding(4),
                 Location = new Point(135, y),
@@ -202,23 +239,24 @@ namespace ShapeHandler.Database
                     });
             Button attributesButton = new Button
             {
+                Name = "controlAttributes_" + (count + 1),
                 Location = new Point(303, y),
                 Margin = new Padding(4),
-                Name = "AddElement",
                 Size = new Size(79, 41),
                 TabIndex = 15,
                 Text = "...",
                 UseVisualStyleBackColor = true
-                //Click += new System.EventHandler(this.AddElement_Click);
             };
+            attributesButton.Click += new System.EventHandler(this.ControlAttributes_Click);
             Button deleteButton = new Button
             {
+                Name = "deleteControl_" + (count + 1),
                 Location = new Point(390, y),
                 Margin = new Padding(4),
                 Size = new Size(105, 40),
                 Text = "Delete",
-                //Click += EventHandler(DeleteControlButton_Click)
             };
+            deleteButton.Click += new EventHandler(DeleteControlButton_Click);
             Controls.Add(label);
             Controls.Add(comboBox);
             Controls.Add(attributesButton);

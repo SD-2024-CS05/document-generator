@@ -7,15 +7,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using AngleSharp.Dom;
+using AngleSharp.Html.Dom;
+using AngleSharp;
 using Microsoft.Office.Interop.Visio;
+using ShapeHandler.Helpers;
+using ShapeHandler.Objects;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using Newtonsoft.Json;
 
 namespace ShapeHandler.Database.Input
 {
     public partial class ButtonAttributesForm : Form
     {
-        public ButtonAttributesForm()
+        private static int _shapeID;
+        private static int _inputNum;
+        public ButtonAttributesForm(int shapeID, int inputNum)
         {
+            _shapeID = shapeID;
+            _inputNum = inputNum;
             InitializeComponent();
         }
 
@@ -25,22 +35,28 @@ namespace ShapeHandler.Database.Input
 
         private void UpdateShapeData()
         {
-            StringBuilder schema = new StringBuilder("{");
-            schema.Append("{\"\"type\"\": \"\"" + typeTextBox.Text + "\"\", ");
-            schema.Append("\"\"form\"\": \"\"" + formTextBox.Text + "\"\", ");
-            schema.Append("\"\"form_action\"\": \"\"" + formActionTextBox.Text + "\"\", ");
-            schema.Append("\"\"form_method\"\": \"\"" + formMethodTextBox.Text + "\"\", ");
-            schema.Append("\"\"name\"\": \"\"" + nameTextBox.Text + "\"\"}}");
-            Globals.ShapeDetector.Application.ActivePage.Shapes[1].get_CellsSRC(
-                (short)VisSectionIndices.visSectionProp,
-                (short)VisRowIndices.visRowFirst,
-                (short)VisCellIndices.visCustPropsLabel
-            ).FormulaU = "\"" + "Input 1" + "\"";
-            Globals.ShapeDetector.Application.ActivePage.Shapes[1].get_CellsSRC(
-                    (short)VisSectionIndices.visSectionProp,
-                    (short)VisRowIndices.visRowFirst,
-                    (short)VisCellIndices.visCustPropsValue
-                ).FormulaU = "\"" + schema + "\"";
+            BrowsingContext context = new BrowsingContext(Configuration.Default);
+            IDocument document = context.OpenNewAsync().Result;
+            IHtmlButtonElement button = document.CreateElement("button") as IHtmlButtonElement;
+            button.Type = typeTextBox.Text;
+            button.Id = idTextBox.Text;
+            button.Name = nameTextBox.Text;
+            //button.Form = formTextBox.Text;
+            button.FormAction = formActionTextBox.Text;
+            button.FormMethod = formMethodTextBox.Text;
+            button.Value = valueTextBox.Text;
+            var classList = classTextBox.Text.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var className in classList)
+            {
+                 button.ClassList.Add(className);
+            }
+            ////// GET OUTPUT
+            //var output = button.OuterHtml;
+            //// OR UPDATE/USE CUSTOM SERIALIZATION (UPDATE TO YOUR NEEDS)
+            var output = JsonConvert.SerializeObject(button, new HtmlElementSerializer());
+            output = output.Replace("\"", "\"\"");
+            //var output = HtmlElementSerializer.WriteJson(button);
+            VisioShapeDataHelper.AddShapeData(_shapeID, output, "Input " + _inputNum);
         }
 
         private void saveButton_Click(object sender, EventArgs e)

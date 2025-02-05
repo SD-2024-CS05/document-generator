@@ -22,6 +22,13 @@ namespace ShapeHandler.Objects
                     (short)Visio.VisRowIndices.visRowFirst, 
                     (short)Visio.VisRowTags.visTagDefault);
             }
+            else
+            {
+                _activeShape.AddRow(
+                    (short)Visio.VisSectionIndices.visSectionProp,
+                    (short)Visio.VisRowIndices.visRowLast,
+                    (short)Visio.VisRowTags.visTagDefault);
+            }
             try
             {
                 SetShapeData(Visio.VisCellIndices.visCustPropsLabel, label);
@@ -33,12 +40,18 @@ namespace ShapeHandler.Objects
             }
         }
 
+        public static bool CheckIfRowsExist(int shapeId)
+        {
+            _activeShape = Globals.ShapeDetector.Application.ActivePage.Shapes[shapeId];
+            return _activeShape.get_RowCount((short)Visio.VisSectionIndices.visSectionProp) != 0;
+        }
+
         private static void SetShapeData(Visio.VisCellIndices cellIndex, string value)
         {
 
             _activeShape.get_CellsSRC(
                 (short)Visio.VisSectionIndices.visSectionProp,
-                (short)Visio.VisRowIndices.visRowFirst,
+                (short)Visio.VisRowIndices.visRowLast,
                 (short)cellIndex
             ).FormulaU = FormatVal(value);
         }
