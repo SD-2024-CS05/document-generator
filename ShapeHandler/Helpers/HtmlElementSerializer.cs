@@ -18,15 +18,15 @@ namespace ShapeHandler.Helpers
             if (value is IHtmlElement element)
             {
                 writer.WriteStartObject();
-                writer.WritePropertyName("\"\"tagName\"\"");
-                writer.WriteValue("\"\"" + element.TagName + "\"\"");
+                writer.WritePropertyName("tagName");
+                writer.WriteValue(element.TagName);
                 writer.WritePropertyName("id");
                 writer.WriteValue(element.Id);
                 writer.WritePropertyName("classList");
                 writer.WriteStartArray();
                 foreach (var className in element.ClassList)
                 {
-                    writer.WriteValue(className);
+                    writer.WriteValue("className");
                 }
                 writer.WriteEndArray();
                 writer.WritePropertyName("attributes");
@@ -55,7 +55,7 @@ namespace ShapeHandler.Helpers
             if (value is IHtmlElement element)
             {
                 writer.Append("{");
-                writer.Append("{\"\"tagName\"\": \"\"" + element.TagName + "\"\", ");
+                writer.Append("\"\"tagName\"\": \"\"" + element.TagName + "\"\", ");
                 writer.Append("\"\"id\"\": \"\"" + element.Id + "\"\", ");
                 writer.Append("\"\"classList\"\": [");
                 foreach (var className in element.ClassList)

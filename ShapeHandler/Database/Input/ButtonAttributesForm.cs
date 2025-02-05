@@ -14,6 +14,7 @@ using Microsoft.Office.Interop.Visio;
 using ShapeHandler.Helpers;
 using ShapeHandler.Objects;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using Newtonsoft.Json;
 
 namespace ShapeHandler.Database.Input
 {
@@ -50,10 +51,11 @@ namespace ShapeHandler.Database.Input
                  button.ClassList.Add(className);
             }
             ////// GET OUTPUT
-            //var output = input.OuterHtml;
+            //var output = button.OuterHtml;
             //// OR UPDATE/USE CUSTOM SERIALIZATION (UPDATE TO YOUR NEEDS)
-            //var output = JsonConvert.SerializeObject(input, new HtmlElementSerializer());
-            var output = HtmlElementSerializer.WriteJson(button);
+            var output = JsonConvert.SerializeObject(button, new HtmlElementSerializer());
+            output = output.Replace("\"", "\"\"");
+            //var output = HtmlElementSerializer.WriteJson(button);
             VisioShapeDataHelper.AddShapeData(_shapeID, output, "Input " + _inputNum);
         }
 

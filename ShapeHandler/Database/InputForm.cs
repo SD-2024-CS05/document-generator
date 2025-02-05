@@ -40,26 +40,26 @@ namespace ShapeHandler.Database
         private void InputForm_Load(object sender, EventArgs e)
         {
             var lol = _inputNum;
-            if (VisioShapeDataHelper.CheckIfRowsExist(_shapeID))
-            {
-                IDictionary<string, string> attributes = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(
-                    //Globals.ShapeDetector.Application.ActivePage.Shapes[_shapeID].get_CellsSRC(
-                    //    (short)VisSectionIndices.visSectionProp,
-                    //    (short)VisRowIndices.visRowLast,
-                    //    (short)VisCellIndices.visCustPropsValue
-                    //).get_ResultStr(VisUnitCodes.visNoCast)
-                    Globals.ShapeDetector.Application.ActivePage.Shapes[_shapeID]
-                    .Cells["Input " + _inputNum.ToString()]
-                    .ResultStr[VisCellIndices.visCustPropsValue]
-                );
-                typeTextBox.Text = attributes["type"];
-                idTextBox.Text = attributes["id"];
-                nameTextBox.Text = attributes["name"];
-                valueTextBox.Text = attributes["value"];
-                minTextBox.Text = attributes["min"];
-                maxTextBox.Text = attributes["max"];
-                classesTextBox.Text = attributes["class"];
-            }
+            //if (VisioShapeDataHelper.CheckIfRowsExist(_shapeID))
+            //{
+            //    IDictionary<string, string> attriutes = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, string>>(
+            //        //Globals.ShapeDetector.Application.ActivePage.Shapes[_shapeID].get_CellsSRC(
+            //        //    (short)VisSectionIndices.visSectionProp,
+            //        //    (short)VisRowIndices.visRowLast,
+            //        //    (short)VisCellIndices.visCustPropsValue
+            //        //).get_ResultStr(VisUnitCodes.visNoCast)
+            //        Globals.ShapeDetector.Application.ActivePage.Shapes[_shapeID]
+            //        .Cells["Input " + _inputNum.ToString()]
+            //        .ResultStr[VisCellIndices.visCustPropsValue]
+            //    );
+            //    typeTextBox.Text = attributes["type"];
+            //    idTextBox.Text = attributes["id"];
+            //    nameTextBox.Text = attributes["name"];
+            //    valueTextBox.Text = attributes["value"];
+            //    minTextBox.Text = attributes["min"];
+            //    maxTextBox.Text = attributes["max"];
+            //    classesTextBox.Text = attributes["class"];
+            //}
         }
 
         private void InputForm_Closing(object sender, FormClosingEventArgs e)
@@ -87,8 +87,9 @@ namespace ShapeHandler.Database
             //// GET OUTPUT
             //var output = input.OuterHtml;
             //// OR UPDATE/USE CUSTOM SERIALIZATION (UPDATE TO YOUR NEEDS)
-            //var output = JsonConvert.SerializeObject(input, new HtmlElementSerializer());
-            var output = HtmlElementSerializer.WriteJson(input);
+            var output = JsonConvert.SerializeObject(input, new HtmlElementSerializer());
+            output = output.Replace("\"", "\"\"");
+            //var output = HtmlElementSerializer.WriteJson(input);
             VisioShapeDataHelper.AddShapeData(_shapeID, output, "Input " + _inputNum);
         }
 

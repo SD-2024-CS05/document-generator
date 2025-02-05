@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
+using Newtonsoft.Json;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using AngleSharp;
@@ -11,6 +11,7 @@ using AngleSharp.Html.Dom;
 using AngleSharp.Text;
 using Microsoft.Office.Interop.Visio;
 using ShapeHandler.Objects;
+using Newtonsoft.Json.Linq;
 
 namespace ShapeHandler.ShapeTransformation
 {
@@ -194,25 +195,47 @@ namespace ShapeHandler.ShapeTransformation
                 case Objects.NodeType.DataInput:
                     {
                         node = new DataInputNode(shape.Text);
-                        IDictionary schema = JsonSerializer.Deserialize<Dictionary<string, string>>(shapeData["Input 1"]);
-                        IHtmlButtonElement button = document.CreateElement("button") as IHtmlButtonElement;
-                        button.Type = schema["type"].ToString();
-                        button.Id = schema["id"].ToString();
-                        HtmlNode buttonNode = new HtmlNode(button.Id, button, Objects.NodeType.Button);
-                        node.DataInputNodes.Add(buttonNode);
-                        IHtmlInputElement input = document.CreateElement("input") as IHtmlInputElement;
-                        input.Type = schema["type"].ToString();
-                        input.Id = schema["id"].ToString();
-                        input.Minimum = schema["min"].ToString();
-                        input.Maximum = schema["max"].ToString();
-                        input.ClassList.Add(schema["class"].ToString());
-                        HtmlNode inputNode = new HtmlNode(input.Id, input, Objects.NodeType.Input);
-                        node.DataInputNodes.Add(inputNode);
-                        IHtmlAnchorElement anchor = document.CreateElement("a") as IHtmlAnchorElement;
-                        anchor.Id = schema["id"].ToString();
-                        anchor.Href = schema["href"].ToString();
-                        HtmlNode anchorNode = new HtmlNode(anchor.Id, anchor, Objects.NodeType.Anchor);
-                        node.DataInputNodes.Add(anchorNode);
+                        List<string> indexes = shapeData.Keys.Where(k => k.StartsWith("Input")).ToList();
+
+                        foreach (var index in indexes)
+                        {
+                            HtmlNode htmlNode = null;
+                            JArray schema = JsonConvert.DeserializeObject<JArray>(shapeData[index]);
+                            if (schema[0].First.First.ToString() == "INPUT")
+                            {
+                                IHtmlInputElement input = document.CreateElement("input") as IHtmlInputElement;
+                                //input.Type = schema[0].First.Childre;
+                                //input.Id = schema.GetProperty("TagType");
+                                //input.Minimum = schema.GetProperty("TagType");
+                                //input.Maximum = schema.GetProperty("TagType");
+                                //input.ClassList.Add(schema.GetProperty("TagType"));
+                                htmlNode = new HtmlNode(input.Id, input, Objects.NodeType.Input);
+
+                            }
+                            //else if (schema[0].First.First.ToString() == "BUTTON")
+                            //{
+                            //    IHtmlButtonElement button = document.CreateElement("button") as IHtmlButtonElement;
+                            //    button.Type = schema["type"].ToString();
+                            //    button.Id = schema["id"].ToString();
+                            //    htmlNode = new HtmlNode(button.Id, button, Objects.NodeType.Button);
+                            //}
+                            //else if (schema[0].First.First.ToString() == "ANCHOR")
+                            //{
+                            //    IHtmlAnchorElement anchor = document.CreateElement("a") as IHtmlAnchorElement;
+                            //    anchor.Id = schema["id"].ToString();
+                            //    anchor.Href = schema["href"].ToString();
+                            //    htmlNode = new HtmlNode(anchor.Id, anchor, Objects.NodeType.Anchor);
+                            //}
+
+                            // Sebastian, your time to shine
+                            //else if (schema[0].First.First.ToString() == "SELECT")
+                            //{
+                            //    htmlNode = new HtmlNode(anchor.Id, anchor, Objects.NodeType.Select);
+                            //}
+
+
+                            node.DataInputNodes.Add(htmlNode);
+                        }
                         break;
                     }
                 case Objects.NodeType.UserProcess: node = new ProcessNode(shape.Text); break;
