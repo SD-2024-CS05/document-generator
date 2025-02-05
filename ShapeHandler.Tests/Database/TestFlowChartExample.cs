@@ -11,6 +11,9 @@ using ShapeHandler.Tests.Helpers;
 namespace ShapeHandler.Tests.Database
 {
     [TestClass()]
+#if GITHUB_ACTIONS
+    [Ignore]
+#endif
     public class TestFlowChartExample
     {
 
@@ -356,7 +359,7 @@ namespace ShapeHandler.Tests.Database
         [TestMethod()]
         public void WriteTestFlowchartToFile1()
         {
-            if (TestHelper.IsGithubActionRun) { Assert.Inconclusive(); return; }
+            //if (TestHelper.IsGithubActionRun) { Assert.Inconclusive(); return; }
 
             DatabaseConnector connector = new KeyVaultManager().ConnectToDatabase();
 
