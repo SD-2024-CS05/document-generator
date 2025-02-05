@@ -441,7 +441,8 @@
     <Compile Include="Database\ShapeDataForm.Designer.cs">
       <DependentUpon>ShapeDataForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Database\Neo4JSerializer.cs" />
+    <Compile Include="Helpers\HtmlElementSerializer.cs" />
+    <Compile Include="Helpers\Neo4JSerializer.cs" />
     <Compile Include="Identity\KeyVaultManager.cs" />
     <Compile Include="Objects\FileManager.cs" />
     <Compile Include="Objects\Graph\Conditions.cs" />
@@ -455,6 +456,7 @@
     <Compile Include="Objects\Graph\PageNode.cs" />
     <Compile Include="Objects\Graph\ProcessNode.cs" />
     <Compile Include="Objects\Graph\StartEndNode.cs" />
+    <Compile Include="Helpers\VisioShapeDataHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -520,6 +522,7 @@
   <ItemGroup>
     <Content Include="ILLink\ILLink.Descriptors.LibraryBuild.xml" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
