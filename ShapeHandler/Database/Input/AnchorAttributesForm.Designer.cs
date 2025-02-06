@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AnchorAttributesForm));
             this.typeLabel = new System.Windows.Forms.Label();
             this.hrefLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -47,47 +48,44 @@
             // typeLabel
             // 
             this.typeLabel.AutoSize = true;
-            this.typeLabel.Location = new System.Drawing.Point(21, 35);
-            this.typeLabel.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.typeLabel.Location = new System.Drawing.Point(56, 83);
             this.typeLabel.Name = "typeLabel";
-            this.typeLabel.Size = new System.Drawing.Size(31, 13);
+            this.typeLabel.Size = new System.Drawing.Size(77, 32);
             this.typeLabel.TabIndex = 0;
             this.typeLabel.Text = "Type";
             // 
             // hrefLabel
             // 
             this.hrefLabel.AutoSize = true;
-            this.hrefLabel.Location = new System.Drawing.Point(21, 59);
-            this.hrefLabel.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.hrefLabel.Location = new System.Drawing.Point(56, 141);
             this.hrefLabel.Name = "hrefLabel";
-            this.hrefLabel.Size = new System.Drawing.Size(27, 13);
+            this.hrefLabel.Size = new System.Drawing.Size(67, 32);
             this.hrefLabel.TabIndex = 1;
             this.hrefLabel.Text = "Href";
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(21, 81);
-            this.label1.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.label1.Location = new System.Drawing.Point(56, 193);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(23, 13);
+            this.label1.Size = new System.Drawing.Size(57, 32);
             this.label1.TabIndex = 2;
             this.label1.Text = "Rel";
             // 
             // typeTextBox
             // 
-            this.typeTextBox.Location = new System.Drawing.Point(138, 32);
-            this.typeTextBox.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.typeTextBox.Location = new System.Drawing.Point(368, 76);
+            this.typeTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.typeTextBox.Name = "typeTextBox";
-            this.typeTextBox.Size = new System.Drawing.Size(100, 20);
+            this.typeTextBox.Size = new System.Drawing.Size(260, 38);
             this.typeTextBox.TabIndex = 0;
             // 
             // hrefTextBox
             // 
-            this.hrefTextBox.Location = new System.Drawing.Point(138, 56);
-            this.hrefTextBox.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.hrefTextBox.Location = new System.Drawing.Point(368, 134);
+            this.hrefTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.hrefTextBox.Name = "hrefTextBox";
-            this.hrefTextBox.Size = new System.Drawing.Size(100, 20);
+            this.hrefTextBox.Size = new System.Drawing.Size(260, 38);
             this.hrefTextBox.TabIndex = 2;
             // 
             // relTextBox
@@ -108,54 +106,55 @@
             "tag"});
             this.relTextBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.relTextBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
-            this.relTextBox.Location = new System.Drawing.Point(138, 78);
-            this.relTextBox.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.relTextBox.Location = new System.Drawing.Point(368, 186);
+            this.relTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.relTextBox.Name = "relTextBox";
-            this.relTextBox.Size = new System.Drawing.Size(100, 20);
+            this.relTextBox.Size = new System.Drawing.Size(260, 38);
             this.relTextBox.TabIndex = 3;
             // 
             // idTextBox
             // 
-            this.idTextBox.Location = new System.Drawing.Point(138, 10);
-            this.idTextBox.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.idTextBox.Location = new System.Drawing.Point(368, 24);
+            this.idTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.idTextBox.Name = "idTextBox";
-            this.idTextBox.Size = new System.Drawing.Size(100, 20);
+            this.idTextBox.Size = new System.Drawing.Size(260, 38);
             this.idTextBox.TabIndex = 1;
             // 
             // idLabel
             // 
             this.idLabel.AutoSize = true;
-            this.idLabel.Location = new System.Drawing.Point(21, 13);
-            this.idLabel.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
+            this.idLabel.Location = new System.Drawing.Point(56, 31);
             this.idLabel.Name = "idLabel";
-            this.idLabel.Size = new System.Drawing.Size(18, 13);
+            this.idLabel.Size = new System.Drawing.Size(41, 32);
             this.idLabel.TabIndex = 6;
             this.idLabel.Text = "ID";
             // 
             // downloadLabel
             // 
             this.downloadLabel.AutoSize = true;
-            this.downloadLabel.Location = new System.Drawing.Point(21, 103);
+            this.downloadLabel.Location = new System.Drawing.Point(56, 246);
+            this.downloadLabel.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
             this.downloadLabel.Name = "downloadLabel";
-            this.downloadLabel.Size = new System.Drawing.Size(55, 13);
+            this.downloadLabel.Size = new System.Drawing.Size(141, 32);
             this.downloadLabel.TabIndex = 7;
             this.downloadLabel.Text = "Download";
             // 
             // targetLabel
             // 
             this.targetLabel.AutoSize = true;
-            this.targetLabel.Location = new System.Drawing.Point(21, 125);
+            this.targetLabel.Location = new System.Drawing.Point(56, 298);
+            this.targetLabel.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
             this.targetLabel.Name = "targetLabel";
-            this.targetLabel.Size = new System.Drawing.Size(38, 13);
+            this.targetLabel.Size = new System.Drawing.Size(96, 32);
             this.targetLabel.TabIndex = 8;
             this.targetLabel.Text = "Target";
             // 
             // downloadTextBox
             // 
-            this.downloadTextBox.Location = new System.Drawing.Point(138, 100);
-            this.downloadTextBox.Margin = new System.Windows.Forms.Padding(1);
+            this.downloadTextBox.Location = new System.Drawing.Point(368, 238);
+            this.downloadTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.downloadTextBox.Name = "downloadTextBox";
-            this.downloadTextBox.Size = new System.Drawing.Size(100, 20);
+            this.downloadTextBox.Size = new System.Drawing.Size(260, 38);
             this.downloadTextBox.TabIndex = 9;
             // 
             // targetTextBox
@@ -167,17 +166,18 @@
             "_top"});
             this.targetTextBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.targetTextBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
-            this.targetTextBox.Location = new System.Drawing.Point(138, 122);
-            this.targetTextBox.Margin = new System.Windows.Forms.Padding(1);
+            this.targetTextBox.Location = new System.Drawing.Point(368, 291);
+            this.targetTextBox.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.targetTextBox.Name = "targetTextBox";
-            this.targetTextBox.Size = new System.Drawing.Size(100, 20);
+            this.targetTextBox.Size = new System.Drawing.Size(260, 38);
             this.targetTextBox.TabIndex = 10;
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(12, 154);
+            this.cancelButton.Location = new System.Drawing.Point(32, 367);
+            this.cancelButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(75, 23);
+            this.cancelButton.Size = new System.Drawing.Size(200, 55);
             this.cancelButton.TabIndex = 11;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
@@ -185,9 +185,10 @@
             // 
             // saveButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(163, 154);
+            this.saveButton.Location = new System.Drawing.Point(435, 367);
+            this.saveButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(75, 23);
+            this.saveButton.Size = new System.Drawing.Size(200, 55);
             this.saveButton.TabIndex = 12;
             this.saveButton.Text = "Save";
             this.saveButton.UseVisualStyleBackColor = true;
@@ -195,9 +196,9 @@
             // 
             // AnchorAttributesForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(256, 189);
+            this.ClientSize = new System.Drawing.Size(779, 451);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.targetTextBox);
@@ -212,7 +213,8 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.hrefLabel);
             this.Controls.Add(this.typeLabel);
-            this.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "AnchorAttributesForm";
             this.Text = "Attributes";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AnchorAttributesForm_FormClosing);

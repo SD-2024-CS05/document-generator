@@ -17,20 +17,20 @@ using ShapeHandler.Helpers;
 using ShapeHandler.Objects;
 using Visio = Microsoft.Office.Interop.Visio;
 
-namespace ShapeHandler.Database
+namespace ShapeHandler.Database.Input
 {
-    public partial class InputForm : Form
+    public partial class InputAttributesForm : Form
     {
         private static int _shapeID;
         private static int _inputNum;
 
-        public InputForm(int shapeID)
+        public InputAttributesForm(int shapeID)
         {
             _shapeID = shapeID;
             InitializeComponent();
         }
 
-        public InputForm(int shapeID, int inputNum)
+        public InputAttributesForm(int shapeID, int inputNum)
         {
             _shapeID = shapeID;
             _inputNum = inputNum;
@@ -78,18 +78,13 @@ namespace ShapeHandler.Database
             input.Value = valueTextBox.Text;
             input.Minimum = minTextBox.Text;
             input.Maximum = maxTextBox.Text;
-
             var classList = classesTextBox.Text.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var className in classList)
             {
                 input.ClassList.Add(className);
             }
-            //// GET OUTPUT
-            //var output = input.OuterHtml;
-            //// OR UPDATE/USE CUSTOM SERIALIZATION (UPDATE TO YOUR NEEDS)
             var output = JsonConvert.SerializeObject(input, new HtmlElementSerializer());
             output = output.Replace("\"", "\"\"");
-            //var output = HtmlElementSerializer.WriteJson(input);
             VisioShapeDataHelper.AddShapeData(_shapeID, output, "Input " + _inputNum);
         }
 

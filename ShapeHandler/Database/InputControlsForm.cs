@@ -8,12 +8,12 @@ using ShapeHandler.Database.Input;
 
 namespace ShapeHandler.Database
 {
-    public partial class ShapeDataForm : Form
+    public partial class InputControlsForm : Form
     {
         private static int _shapeID;
-        private static ShapeDataForm _shapeDataForm = null;
+        private static InputControlsForm _shapeDataForm = null;
 
-        public ShapeDataForm(int shapeID)
+        public InputControlsForm(int shapeID)
         {
             InitializeComponent();
             _shapeID = shapeID;
@@ -126,13 +126,13 @@ namespace ShapeHandler.Database
             }
         }
 
-        public static ShapeDataForm Instance
+        public static InputControlsForm Instance
         {
             get
             {
                 if (_shapeDataForm == null)
                 {
-                    _shapeDataForm = new ShapeDataForm(_shapeID);
+                    _shapeDataForm = new InputControlsForm(_shapeID);
                 }
                 return _shapeDataForm;
             }
@@ -147,18 +147,19 @@ namespace ShapeHandler.Database
         {
             Button button = sender as Button;
             int index = int.Parse(button.Name.Split('_')[1]);
-            ComboBox lol = (ComboBox)Controls.Find("controlOptionsComboBox_" + index, true)[0];
-            if (lol.SelectedItem != null)
+            ComboBox options = (ComboBox)Controls.Find("controlOptionsComboBox_" + index, true)[0];
+            if (options.SelectedItem != null)
             {
-                var htmlElement = lol.SelectedItem.ToString();
-                InputForm inputForm = new InputForm(_shapeID, index);
+                var htmlElement = options.SelectedItem.ToString();
+                InputAttributesForm inputForm = new InputAttributesForm(_shapeID, index);
                 ButtonAttributesForm buttonAttributesForm = new ButtonAttributesForm(_shapeID, index);
+                AnchorAttributesForm anchorAttributesForm = new AnchorAttributesForm(_shapeID, index);
                 switch (htmlElement)
                 {
                     case "<input>": inputForm.ShowDialog(); break;
                     case "<button>": buttonAttributesForm.ShowDialog(); break;
                     case "<select>": inputForm.ShowDialog(); break;
-                    case "<a>": inputForm.ShowDialog(); break;
+                    case "<a>": anchorAttributesForm.ShowDialog(); break;
                     case "<image>": inputForm.ShowDialog(); break;
                 }
             }

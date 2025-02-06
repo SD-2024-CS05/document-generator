@@ -1,6 +1,6 @@
 ﻿namespace ShapeHandler.Database
 {
-    partial class ShapeDataForm
+    partial class InputControlsForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ShapeDataForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InputControlsForm));
             this.okayButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.addControlButton = new System.Windows.Forms.Button();
@@ -67,7 +67,7 @@
             this.addControlButton.UseVisualStyleBackColor = true;
             this.addControlButton.Click += new System.EventHandler(this.AddControlButton_Click);
             // 
-            // ShapeDataForm
+            // InputControlsForm
             // 
             this.AcceptButton = this.okayButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
@@ -78,7 +78,7 @@
             this.Controls.Add(this.okayButton);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "ShapeDataForm";
+            this.Name = "InputControlsForm";
             this.Text = "Controls";
             this.Load += new System.EventHandler(this.ShapeDataForm_Load);
             this.ResumeLayout(false);

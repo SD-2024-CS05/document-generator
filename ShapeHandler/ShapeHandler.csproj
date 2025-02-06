@@ -424,11 +424,11 @@
   -->
   <ItemGroup>
     <Compile Include="Database\DatabaseConnector.cs" />
-    <Compile Include="Database\InputForm.cs">
+    <Compile Include="Database\Input\InputAttributesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Database\InputForm.Designer.cs">
-      <DependentUpon>InputForm.cs</DependentUpon>
+    <Compile Include="Database\Input\InputAttributesForm.Designer.cs">
+      <DependentUpon>InputAttributesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Database\Input\AnchorAttributesForm.cs">
       <SubType>Form</SubType>
@@ -442,11 +442,11 @@
     <Compile Include="Database\Input\ButtonAttributesForm.Designer.cs">
       <DependentUpon>ButtonAttributesForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Database\ShapeDataForm.cs">
+    <Compile Include="Database\InputControlsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Database\ShapeDataForm.Designer.cs">
-      <DependentUpon>ShapeDataForm.cs</DependentUpon>
+    <Compile Include="Database\InputControlsForm.Designer.cs">
+      <DependentUpon>InputControlsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\HtmlElementSerializer.cs" />
     <Compile Include="Helpers\Neo4JSerializer.cs" />
@@ -474,8 +474,8 @@
     <Compile Include="TestGenerator.Designer.cs">
       <DependentUpon>TestGenerator.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Database\InputForm.resx">
-      <DependentUpon>InputForm.cs</DependentUpon>
+    <EmbeddedResource Include="Database\Input\InputAttributesForm.resx">
+      <DependentUpon>InputAttributesForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Database\Input\AnchorAttributesForm.resx">
@@ -484,8 +484,8 @@
     <EmbeddedResource Include="Database\Input\ButtonAttributesForm.resx">
       <DependentUpon>ButtonAttributesForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Database\ShapeDataForm.resx">
-      <DependentUpon>ShapeDataForm.cs</DependentUpon>
+    <EmbeddedResource Include="Database\InputControlsForm.resx">
+      <DependentUpon>InputControlsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
