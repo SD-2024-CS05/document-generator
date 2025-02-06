@@ -203,32 +203,29 @@ namespace ShapeHandler.ShapeTransformation
                             JArray schema = JsonConvert.DeserializeObject<JArray>(shapeData[index]);
                             if (schema[0].First.First.ToString() == "INPUT")
                             {
-                                var lol = schema[0]["attributes"];
                                 IHtmlInputElement input = document.CreateElement("input") as IHtmlInputElement;
-                                //input.Type = schema[0].;
                                 input.Id = schema[0].First.Next.First.ToString();
                                 input.Minimum = schema[0]["attributes"]["min"].ToString();
                                 input.Maximum = schema[0]["attributes"]["max"].ToString();
-                                //foreach (var _class in schema[0]["classList"].ToArray())
-                                //{
-                                    //input.ClassList.Add(_class.ToString());
-                                    //input.ClassList.Add(schema[0]["classList"].ToArray<string>());
-                                //}
+                                foreach (var _class in schema[0]["classList"].ToArray())
+                                {
+                                    input.ClassList.Add(_class.ToString());
+                                }
                                 htmlNode = new HtmlNode(input.Id, input, Objects.NodeType.Input);
 
                             }
-                            //else if (schema[0].First.First.ToString() == "ANCHOR")
-                            //{
-                            //    IHtmlAnchorElement anchor = document.CreateElement("a") as IHtmlAnchorElement;
-                            //    anchor.Id = schema["id"].ToString();
-                            //    anchor.Href = schema["href"].ToString();
-                            //    htmlNode = new HtmlNode(anchor.Id, anchor, Objects.NodeType.Anchor);
-                            //}
+                            else if (schema[0].First.First.ToString() == "A")
+                            {
+                                IHtmlAnchorElement anchor = document.CreateElement("a") as IHtmlAnchorElement;
+                                anchor.Id = schema[0]["id"].ToString();
+                                anchor.Href = schema[0]["attributes"]["href"].ToString();
+                                htmlNode = new HtmlNode(anchor.Id, anchor, Objects.NodeType.Anchor);
+                            }
 
                             // Sebastian, your time to shine
                             //else if (schema[0].First.First.ToString() == "SELECT")
                             //{
-                            //    htmlNode = new HtmlNode(anchor.Id, anchor, Objects.NodeType.Select);
+                            //    htmlNode = new HtmlNode(select.Id, select, Objects.NodeType.Select);
                             //}
 
 

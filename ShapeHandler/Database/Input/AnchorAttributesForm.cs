@@ -7,14 +7,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using AngleSharp.Dom;
+using AngleSharp.Html.Dom;
+using AngleSharp;
 using Microsoft.Office.Interop.Visio;
+using Newtonsoft.Json;
+using ShapeHandler.Helpers;
+using ShapeHandler.Objects;
 
 namespace ShapeHandler.Database.Input
 {
     public partial class AnchorAttributesForm : Form
     {
-        public AnchorAttributesForm()
+        private static int _shapeID;
+        private static int _inputNum;
+
+        public AnchorAttributesForm(int shapeID, int inputNum)
         {
+            _shapeID = shapeID;
+            _inputNum = inputNum;
             InitializeComponent();
         }
 
@@ -25,21 +36,16 @@ namespace ShapeHandler.Database.Input
 
         private void UpdateShapeData()
         {
-            StringBuilder schema = new StringBuilder("{");
-            schema.Append("{\"\"type\"\": \"\"" + typeTextBox.Text + "\"\", ");
-            schema.Append("{\"\"id\"\": \"\"" + typeTextBox.Text + "\"\", ");
-            schema.Append("\"\"href\"\": \"\"" + hrefTextBox.Text + "\"\", ");
-            schema.Append("\"\"rel\"\": \"\"" + relTextBox.Text + "\"\"}}");
-            Globals.ShapeDetector.Application.ActivePage.Shapes[1].get_CellsSRC(
-                (short)VisSectionIndices.visSectionProp,
-                (short)VisRowIndices.visRowFirst,
-                (short)VisCellIndices.visCustPropsLabel
-            ).FormulaU = "\"" + "Input 1" + "\"";
-            Globals.ShapeDetector.Application.ActivePage.Shapes[1].get_CellsSRC(
-                    (short)VisSectionIndices.visSectionProp,
-                    (short)VisRowIndices.visRowFirst,
-                    (short)VisCellIndices.visCustPropsValue
-                ).FormulaU = "\"" + schema + "\"";
+            BrowsingContext context = new BrowsingContext(Configuration.Default);
+            IDocument document = context.OpenNewAsync().Result;
+            IHtmlAnchorElement anchor = document.CreateElement("a") as IHtmlAnchorElement;
+            anchor.Id = idTextBox.Text;
+            anchor.Href = hrefTextBox.Text;
+            anchor.Download = downloadTextBox.Text;
+            anchor.Target = targetTextBox.Text;
+            var output = JsonConvert.SerializeObject(anchor, new HtmlElementSerializer());
+            output = output.Replace("\"", "\"\"");
+            VisioShapeDataHelper.AddShapeData(_shapeID, output, "Input " + _inputNum);
         }
 
         private void cancelButton_Click(object sender, EventArgs e)
