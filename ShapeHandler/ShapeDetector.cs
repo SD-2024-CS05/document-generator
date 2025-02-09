@@ -15,6 +15,22 @@ namespace ShapeHandler
             // Uncomment for local testing
             //ShapeDetector.CreateGraphFromFlowchart(Globals.ShapeDetector.Application);
             this.Application.DocumentOpened += new Visio.EApplication_DocumentOpenedEventHandler(Application_DocumentOpened);
+            this.Application.DocumentCreated += new Visio.EApplication_DocumentCreatedEventHandler(Application_DocumentCreated);
+        }
+
+        private void Application_DocumentCreated(Visio.Document doc)
+        {
+            var stencilPath = FileManager.GetFilePath("Stencil/CS05-stencil.vssx");
+
+            if (!string.IsNullOrEmpty(stencilPath))
+            {
+                var stencil = this.Application.Documents.OpenEx(stencilPath, (short)VisOpenSaveArgs.visOpenDocked);
+            }
+            else
+            {
+                MessageBox.Show("Could not find the stencil");
+            }
+            Application_DocumentOpened(doc);
         }
 
         private void Application_DocumentOpened(Visio.Document doc)
@@ -34,7 +50,7 @@ namespace ShapeHandler
 
         private void ShapeDetector_Shutdown(object sender, System.EventArgs e)
         {
-            
+
         }
 
         public static HtmlGraph CreateGraphFromFlowchart(Visio.Application application)
