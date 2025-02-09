@@ -24,7 +24,7 @@ namespace ShapeHandler
 
             if (!string.IsNullOrEmpty(stencilPath))
             {
-                var stencil = this.Application.Documents.OpenEx(stencilPath, (short)VisOpenSaveArgs.visOpenDocked);
+                this.Application.Documents.OpenEx(stencilPath, (short)VisOpenSaveArgs.visOpenDocked);
             }
             else
             {
