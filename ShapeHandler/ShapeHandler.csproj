@@ -424,6 +424,18 @@
   -->
   <ItemGroup>
     <Compile Include="Database\DatabaseConnector.cs" />
+    <Compile Include="Database\DecisionControlsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Database\DecisionControlsForm.Designer.cs">
+      <DependentUpon>DecisionControlsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Database\Decision\ButtonAttributesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Database\Decision\ButtonAttributesForm.Designer.cs">
+      <DependentUpon>ButtonAttributesForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Database\InputForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -474,6 +486,12 @@
     <Compile Include="TestGenerator.Designer.cs">
       <DependentUpon>TestGenerator.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Database\DecisionControlsForm.resx">
+      <DependentUpon>DecisionControlsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Database\Decision\ButtonAttributesForm.resx">
+      <DependentUpon>ButtonAttributesForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Database\InputForm.resx">
       <DependentUpon>InputForm.cs</DependentUpon>
       <SubType>Designer</SubType>

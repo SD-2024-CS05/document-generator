@@ -8,12 +8,12 @@ using ShapeHandler.Database.Input;
 
 namespace ShapeHandler.Database
 {
-    public partial class ShapeDataForm : Form
+    public partial class DaForm : Form
     {
         private static int _shapeID;
-        private static ShapeDataForm _shapeDataForm = null;
+        private static DaForm _shapeDataForm = null;
 
-        public ShapeDataForm(int shapeID)
+        public DaForm(int shapeID)
         {
             InitializeComponent();
             _shapeID = shapeID;
@@ -126,7 +126,7 @@ namespace ShapeHandler.Database
             }
         }
 
-        public static ShapeDataForm Instance
+        public static DaForm Instance
         {
             get
             {

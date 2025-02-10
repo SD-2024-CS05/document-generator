@@ -191,7 +191,24 @@ namespace ShapeHandler.ShapeTransformation
                             node = new StartEndNode("End");
                     }
                     break;
-                case Objects.NodeType.Decision: node = new DecisionNode(shape.Text); break;
+                case Objects.NodeType.Decision:
+                    {
+                        node = new DecisionNode(shape.Text);
+                        List<string> indexes = shapeData.Keys.Where(k => k.StartsWith("Decision")).ToList();
+                        foreach (var index in indexes)
+                        {
+                            HtmlNode htmlNode = null;
+                            JArray schema = JsonConvert.DeserializeObject<JArray>(shapeData[index]);
+                            if (schema[0].First.First.ToString() == "BUTTON")
+                            {
+                                IHtmlButtonElement button = document.CreateElement("button") as IHtmlButtonElement;
+                                button.Id = schema[0]["attributes"]["id"].ToString();
+                                button.Type = schema[0]["attributes"]["type"].ToString();
+                                htmlNode = new HtmlNode(button.Id, button, Objects.NodeType.Button);
+                            }
+                        }
+                        break;
+                    }
                 case Objects.NodeType.DataInput:
                     {
                         node = new DataInputNode(shape.Text);

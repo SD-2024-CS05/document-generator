@@ -28,7 +28,7 @@ namespace ShapeHandler
             //this.Application.ActivePage.Shapes[1].AddRow((short)VisSectionIndices.visSectionProp, (short)VisRowIndices.visRowFirst, (short)VisRowTags.visTagDefault);
 
             //ShapeDataForm.Instance.Show();
-            ShapeDataForm shapeDataForm = new ShapeDataForm(shape.ID);
+            DaForm shapeDataForm = new ShapeDataForm(shape.ID);
             shapeDataForm.ShowDialog();
         }
 
