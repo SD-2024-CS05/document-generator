@@ -7,15 +7,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using AngleSharp.Dom;
+using AngleSharp;
 using Microsoft.Office.Interop.Visio;
+using AngleSharp.Html.Dom;
 
 namespace ShapeHandler.Database.Input
 {
     public partial class AnchorAttributesForm : Form
     {
-        public AnchorAttributesForm()
+        private static int _shapeID;
+
+        private IDocument _document;
+
+        public AnchorAttributesForm(int shapeId)
         {
+            _shapeID = shapeId;
             InitializeComponent();
+
+            BrowsingContext context = new BrowsingContext(Configuration.Default);
+            _document = context.OpenNewAsync().Result;
+
+            IHtmlAnchorElement anchor = _document.CreateElement("a") as IHtmlAnchorElement;
+
+            iHtmlAnchorElementBindingSource.Add(anchor);
         }
 
         private void AnchorAttributesForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -25,21 +40,10 @@ namespace ShapeHandler.Database.Input
 
         private void UpdateShapeData()
         {
-            StringBuilder schema = new StringBuilder("{");
-            schema.Append("{\"\"type\"\": \"\"" + typeTextBox.Text + "\"\", ");
-            schema.Append("{\"\"id\"\": \"\"" + typeTextBox.Text + "\"\", ");
-            schema.Append("\"\"href\"\": \"\"" + hrefTextBox.Text + "\"\", ");
-            schema.Append("\"\"rel\"\": \"\"" + relTextBox.Text + "\"\"}}");
-            Globals.ShapeDetector.Application.ActivePage.Shapes[1].get_CellsSRC(
-                (short)VisSectionIndices.visSectionProp,
-                (short)VisRowIndices.visRowFirst,
-                (short)VisCellIndices.visCustPropsLabel
-            ).FormulaU = "\"" + "Input 1" + "\"";
-            Globals.ShapeDetector.Application.ActivePage.Shapes[1].get_CellsSRC(
-                    (short)VisSectionIndices.visSectionProp,
-                    (short)VisRowIndices.visRowFirst,
-                    (short)VisCellIndices.visCustPropsValue
-                ).FormulaU = "\"" + schema + "\"";
+            BrowsingContext context = new BrowsingContext(Configuration.Default);
+            IDocument document = context.OpenNewAsync().Result;
+
+            IHtmlAnchorElement anchor = document.CreateElement("a") as IHtmlAnchorElement;
         }
 
         private void cancelButton_Click(object sender, EventArgs e)
@@ -51,6 +55,23 @@ namespace ShapeHandler.Database.Input
         {
             UpdateShapeData();
             this.Close();
+        }
+
+        private void AddAnchorButton_Click(object sender, EventArgs e)
+        {
+            var newAnchor = _document.CreateElement("a") as IHtmlAnchorElement;
+            iHtmlAnchorElementBindingSource.Add(newAnchor);
+        }
+
+        private void RemoveAnchorButton_Click(object sender, EventArgs e)
+        {
+            // get the selected anchor
+            var selectedAnchor = iHtmlAnchorElementBindingSource.Current as IHtmlAnchorElement;
+            if (selectedAnchor != null)
+            {
+                iHtmlAnchorElementBindingSource.Remove(selectedAnchor);
+
+            }
         }
     }
 }

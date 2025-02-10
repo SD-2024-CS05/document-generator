@@ -28,71 +28,116 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.typeLabel = new System.Windows.Forms.Label();
-            this.hrefLabel = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.typeTextBox = new System.Windows.Forms.TextBox();
-            this.hrefTextBox = new System.Windows.Forms.TextBox();
-            this.relTextBox = new System.Windows.Forms.TextBox();
-            this.idTextBox = new System.Windows.Forms.TextBox();
-            this.idLabel = new System.Windows.Forms.Label();
-            this.downloadLabel = new System.Windows.Forms.Label();
-            this.targetLabel = new System.Windows.Forms.Label();
-            this.downloadTextBox = new System.Windows.Forms.TextBox();
-            this.targetTextBox = new System.Windows.Forms.TextBox();
-            this.cancelButton = new System.Windows.Forms.Button();
-            this.saveButton = new System.Windows.Forms.Button();
+            this.components = new System.ComponentModel.Container();
+            this.iHtmlAnchorElementBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.CancelButton = new System.Windows.Forms.Button();
+            this.SaveButton = new System.Windows.Forms.Button();
+            this.iValidityStateBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.iHtmlSelectElementBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.iHtmlAnchorElementBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.anchorAttributeDataGrid = new System.Windows.Forms.DataGridView();
+            this.iHtmlAnchorElementBindingSource2 = new System.Windows.Forms.BindingSource(this.components);
+            this.IdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.HrefColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.typeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.downloadDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.relationDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.targetDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.ClassesColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AddAnchorButton = new System.Windows.Forms.Button();
+            this.RemoveAnchorButton = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.iHtmlAnchorElementBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iValidityStateBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iHtmlSelectElementBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iHtmlAnchorElementBindingSource1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.anchorAttributeDataGrid)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iHtmlAnchorElementBindingSource2)).BeginInit();
             this.SuspendLayout();
             // 
-            // typeLabel
+            // iHtmlAnchorElementBindingSource
             // 
-            this.typeLabel.AutoSize = true;
-            this.typeLabel.Location = new System.Drawing.Point(21, 35);
-            this.typeLabel.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
-            this.typeLabel.Name = "typeLabel";
-            this.typeLabel.Size = new System.Drawing.Size(31, 13);
-            this.typeLabel.TabIndex = 0;
-            this.typeLabel.Text = "Type";
+            this.iHtmlAnchorElementBindingSource.DataSource = typeof(AngleSharp.Html.Dom.IHtmlAnchorElement);
             // 
-            // hrefLabel
+            // CancelButton
             // 
-            this.hrefLabel.AutoSize = true;
-            this.hrefLabel.Location = new System.Drawing.Point(21, 59);
-            this.hrefLabel.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
-            this.hrefLabel.Name = "hrefLabel";
-            this.hrefLabel.Size = new System.Drawing.Size(27, 13);
-            this.hrefLabel.TabIndex = 1;
-            this.hrefLabel.Text = "Href";
+            this.CancelButton.Location = new System.Drawing.Point(12, 189);
+            this.CancelButton.Name = "CancelButton";
+            this.CancelButton.Size = new System.Drawing.Size(75, 23);
+            this.CancelButton.TabIndex = 1;
+            this.CancelButton.Text = "Cancel";
+            this.CancelButton.UseVisualStyleBackColor = true;
+            this.CancelButton.Click += new System.EventHandler(this.cancelButton_Click);
             // 
-            // label1
+            // SaveButton
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(21, 81);
-            this.label1.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(23, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Rel";
+            this.SaveButton.Location = new System.Drawing.Point(329, 189);
+            this.SaveButton.Name = "SaveButton";
+            this.SaveButton.Size = new System.Drawing.Size(75, 23);
+            this.SaveButton.TabIndex = 2;
+            this.SaveButton.Text = "Save";
+            this.SaveButton.UseVisualStyleBackColor = true;
+            this.SaveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
-            // typeTextBox
+            // iValidityStateBindingSource
             // 
-            this.typeTextBox.Location = new System.Drawing.Point(138, 32);
-            this.typeTextBox.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
-            this.typeTextBox.Name = "typeTextBox";
-            this.typeTextBox.Size = new System.Drawing.Size(100, 20);
-            this.typeTextBox.TabIndex = 0;
+            this.iValidityStateBindingSource.DataSource = typeof(AngleSharp.Html.Dom.IValidityState);
             // 
-            // hrefTextBox
+            // iHtmlSelectElementBindingSource
             // 
-            this.hrefTextBox.Location = new System.Drawing.Point(138, 56);
-            this.hrefTextBox.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
-            this.hrefTextBox.Name = "hrefTextBox";
-            this.hrefTextBox.Size = new System.Drawing.Size(100, 20);
-            this.hrefTextBox.TabIndex = 2;
+            this.iHtmlSelectElementBindingSource.DataSource = typeof(AngleSharp.Html.Dom.IHtmlSelectElement);
             // 
-            // relTextBox
+            // iHtmlAnchorElementBindingSource1
             // 
-            this.relTextBox.AutoCompleteCustomSource.AddRange(new string[] {
+            this.iHtmlAnchorElementBindingSource1.DataSource = typeof(AngleSharp.Html.Dom.IHtmlAnchorElement);
+            // 
+            // anchorAttributeDataGrid
+            // 
+            this.anchorAttributeDataGrid.AutoGenerateColumns = false;
+            this.anchorAttributeDataGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.IdColumn,
+            this.HrefColumn,
+            this.typeDataGridViewTextBoxColumn,
+            this.downloadDataGridViewTextBoxColumn,
+            this.relationDataGridViewTextBoxColumn,
+            this.targetDataGridViewTextBoxColumn,
+            this.ClassesColumn});
+            this.anchorAttributeDataGrid.DataSource = this.iHtmlAnchorElementBindingSource;
+            this.anchorAttributeDataGrid.Location = new System.Drawing.Point(13, 18);
+            this.anchorAttributeDataGrid.Name = "anchorAttributeDataGrid";
+            this.anchorAttributeDataGrid.Size = new System.Drawing.Size(394, 165);
+            this.anchorAttributeDataGrid.TabIndex = 3;
+            // 
+            // iHtmlAnchorElementBindingSource2
+            // 
+            this.iHtmlAnchorElementBindingSource2.DataSource = typeof(AngleSharp.Html.Dom.IHtmlAnchorElement);
+            // 
+            // IdColumn
+            // 
+            this.IdColumn.HeaderText = "ID";
+            this.IdColumn.Name = "IdColumn";
+            // 
+            // HrefColumn
+            // 
+            this.HrefColumn.HeaderText = "Href";
+            this.HrefColumn.Name = "HrefColumn";
+            // 
+            // typeDataGridViewTextBoxColumn
+            // 
+            this.typeDataGridViewTextBoxColumn.HeaderText = "Type";
+            this.typeDataGridViewTextBoxColumn.Name = "typeDataGridViewTextBoxColumn";
+            this.typeDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // downloadDataGridViewTextBoxColumn
+            // 
+            this.downloadDataGridViewTextBoxColumn.DataPropertyName = "Download";
+            this.downloadDataGridViewTextBoxColumn.HeaderText = "Download";
+            this.downloadDataGridViewTextBoxColumn.Name = "downloadDataGridViewTextBoxColumn";
+            // 
+            // relationDataGridViewTextBoxColumn
+            // 
+            this.relationDataGridViewTextBoxColumn.DataPropertyName = "Relation";
+            this.relationDataGridViewTextBoxColumn.HeaderText = "Rel";
+            this.relationDataGridViewTextBoxColumn.Items.AddRange(new object[] {
             "alternate",
             "author",
             "bookmark",
@@ -106,136 +151,90 @@
             "prev",
             "search",
             "tag"});
-            this.relTextBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-            this.relTextBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
-            this.relTextBox.Location = new System.Drawing.Point(138, 78);
-            this.relTextBox.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
-            this.relTextBox.Name = "relTextBox";
-            this.relTextBox.Size = new System.Drawing.Size(100, 20);
-            this.relTextBox.TabIndex = 3;
+            this.relationDataGridViewTextBoxColumn.Name = "relationDataGridViewTextBoxColumn";
+            this.relationDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.relationDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
-            // idTextBox
+            // targetDataGridViewTextBoxColumn
             // 
-            this.idTextBox.Location = new System.Drawing.Point(138, 10);
-            this.idTextBox.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
-            this.idTextBox.Name = "idTextBox";
-            this.idTextBox.Size = new System.Drawing.Size(100, 20);
-            this.idTextBox.TabIndex = 1;
-            // 
-            // idLabel
-            // 
-            this.idLabel.AutoSize = true;
-            this.idLabel.Location = new System.Drawing.Point(21, 13);
-            this.idLabel.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
-            this.idLabel.Name = "idLabel";
-            this.idLabel.Size = new System.Drawing.Size(18, 13);
-            this.idLabel.TabIndex = 6;
-            this.idLabel.Text = "ID";
-            // 
-            // downloadLabel
-            // 
-            this.downloadLabel.AutoSize = true;
-            this.downloadLabel.Location = new System.Drawing.Point(21, 103);
-            this.downloadLabel.Name = "downloadLabel";
-            this.downloadLabel.Size = new System.Drawing.Size(55, 13);
-            this.downloadLabel.TabIndex = 7;
-            this.downloadLabel.Text = "Download";
-            // 
-            // targetLabel
-            // 
-            this.targetLabel.AutoSize = true;
-            this.targetLabel.Location = new System.Drawing.Point(21, 125);
-            this.targetLabel.Name = "targetLabel";
-            this.targetLabel.Size = new System.Drawing.Size(38, 13);
-            this.targetLabel.TabIndex = 8;
-            this.targetLabel.Text = "Target";
-            // 
-            // downloadTextBox
-            // 
-            this.downloadTextBox.Location = new System.Drawing.Point(138, 100);
-            this.downloadTextBox.Margin = new System.Windows.Forms.Padding(1);
-            this.downloadTextBox.Name = "downloadTextBox";
-            this.downloadTextBox.Size = new System.Drawing.Size(100, 20);
-            this.downloadTextBox.TabIndex = 9;
-            // 
-            // targetTextBox
-            // 
-            this.targetTextBox.AutoCompleteCustomSource.AddRange(new string[] {
+            this.targetDataGridViewTextBoxColumn.HeaderText = "Target";
+            this.targetDataGridViewTextBoxColumn.Items.AddRange(new object[] {
             "_blank",
             "_parent",
             "_self",
             "_top"});
-            this.targetTextBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-            this.targetTextBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
-            this.targetTextBox.Location = new System.Drawing.Point(138, 122);
-            this.targetTextBox.Margin = new System.Windows.Forms.Padding(1);
-            this.targetTextBox.Name = "targetTextBox";
-            this.targetTextBox.Size = new System.Drawing.Size(100, 20);
-            this.targetTextBox.TabIndex = 10;
+            this.targetDataGridViewTextBoxColumn.Name = "targetDataGridViewTextBoxColumn";
+            this.targetDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.targetDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
-            // cancelButton
+            // ClassesColumn
             // 
-            this.cancelButton.Location = new System.Drawing.Point(12, 154);
-            this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(75, 23);
-            this.cancelButton.TabIndex = 11;
-            this.cancelButton.Text = "Cancel";
-            this.cancelButton.UseVisualStyleBackColor = true;
-            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
+            this.ClassesColumn.DataPropertyName = "Target";
+            this.ClassesColumn.HeaderText = "Classes";
+            this.ClassesColumn.Name = "ClassesColumn";
+            this.ClassesColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             // 
-            // saveButton
+            // AddAnchorButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(163, 154);
-            this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(75, 23);
-            this.saveButton.TabIndex = 12;
-            this.saveButton.Text = "Save";
-            this.saveButton.UseVisualStyleBackColor = true;
-            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
+            this.AddAnchorButton.Location = new System.Drawing.Point(248, 189);
+            this.AddAnchorButton.Name = "AddAnchorButton";
+            this.AddAnchorButton.Size = new System.Drawing.Size(75, 23);
+            this.AddAnchorButton.TabIndex = 4;
+            this.AddAnchorButton.Text = "Add";
+            this.AddAnchorButton.UseVisualStyleBackColor = true;
+            this.AddAnchorButton.Click += new System.EventHandler(this.AddAnchorButton_Click);
+            // 
+            // RemoveAnchorButton
+            // 
+            this.RemoveAnchorButton.Location = new System.Drawing.Point(94, 190);
+            this.RemoveAnchorButton.Name = "RemoveAnchorButton";
+            this.RemoveAnchorButton.Size = new System.Drawing.Size(75, 23);
+            this.RemoveAnchorButton.TabIndex = 5;
+            this.RemoveAnchorButton.Text = "Remove";
+            this.RemoveAnchorButton.UseVisualStyleBackColor = true;
+            this.RemoveAnchorButton.Click += new System.EventHandler(this.RemoveAnchorButton_Click);
             // 
             // AnchorAttributesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(256, 189);
-            this.Controls.Add(this.saveButton);
-            this.Controls.Add(this.cancelButton);
-            this.Controls.Add(this.targetTextBox);
-            this.Controls.Add(this.downloadTextBox);
-            this.Controls.Add(this.targetLabel);
-            this.Controls.Add(this.downloadLabel);
-            this.Controls.Add(this.idTextBox);
-            this.Controls.Add(this.idLabel);
-            this.Controls.Add(this.relTextBox);
-            this.Controls.Add(this.hrefTextBox);
-            this.Controls.Add(this.typeTextBox);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.hrefLabel);
-            this.Controls.Add(this.typeLabel);
-            this.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.ClientSize = new System.Drawing.Size(418, 224);
+            this.Controls.Add(this.RemoveAnchorButton);
+            this.Controls.Add(this.AddAnchorButton);
+            this.Controls.Add(this.anchorAttributeDataGrid);
+            this.Controls.Add(this.SaveButton);
+            this.Controls.Add(this.CancelButton);
+            this.Margin = new System.Windows.Forms.Padding(1);
             this.Name = "AnchorAttributesForm";
             this.Text = "Attributes";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AnchorAttributesForm_FormClosing);
+            ((System.ComponentModel.ISupportInitialize)(this.iHtmlAnchorElementBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iValidityStateBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iHtmlSelectElementBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iHtmlAnchorElementBindingSource1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.anchorAttributeDataGrid)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iHtmlAnchorElementBindingSource2)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Label typeLabel;
-        private System.Windows.Forms.Label hrefLabel;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox typeTextBox;
-        private System.Windows.Forms.TextBox hrefTextBox;
-        private System.Windows.Forms.TextBox relTextBox;
-        private System.Windows.Forms.TextBox idTextBox;
-        private System.Windows.Forms.Label idLabel;
-        private System.Windows.Forms.Label downloadLabel;
-        private System.Windows.Forms.Label targetLabel;
-        private System.Windows.Forms.TextBox downloadTextBox;
-        private System.Windows.Forms.TextBox targetTextBox;
-        private System.Windows.Forms.Button cancelButton;
-        private System.Windows.Forms.Button saveButton;
+        private System.Windows.Forms.BindingSource iHtmlAnchorElementBindingSource;
+        private System.Windows.Forms.Button CancelButton;
+        private System.Windows.Forms.Button SaveButton;
+        private System.Windows.Forms.BindingSource iValidityStateBindingSource;
+        private System.Windows.Forms.BindingSource iHtmlAnchorElementBindingSource1;
+        private System.Windows.Forms.BindingSource iHtmlSelectElementBindingSource;
+        private System.Windows.Forms.BindingSource iHtmlAnchorElementBindingSource2;
+        private System.Windows.Forms.DataGridView anchorAttributeDataGrid;
+        private System.Windows.Forms.DataGridViewTextBoxColumn IdColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn HrefColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn typeDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn downloadDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewComboBoxColumn relationDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewComboBoxColumn targetDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn ClassesColumn;
+        private System.Windows.Forms.Button AddAnchorButton;
+        private System.Windows.Forms.Button RemoveAnchorButton;
     }
 }
