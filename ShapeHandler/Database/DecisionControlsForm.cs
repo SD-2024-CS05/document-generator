@@ -12,8 +12,10 @@ namespace ShapeHandler.Database
 {
     public partial class DecisionControlsForm : Form
     {
-        public DecisionControlsForm()
+        private static int _shapeID;
+        public DecisionControlsForm(int shapeID)
         {
+            _shapeID = shapeID;
             InitializeComponent();
         }
     }

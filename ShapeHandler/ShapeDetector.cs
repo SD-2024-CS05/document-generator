@@ -5,6 +5,7 @@ using ShapeHandler.ShapeTransformation;
 using System;
 using ShapeHandler.Database;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace ShapeHandler
 {
@@ -28,8 +29,16 @@ namespace ShapeHandler
             //this.Application.ActivePage.Shapes[1].AddRow((short)VisSectionIndices.visSectionProp, (short)VisRowIndices.visRowFirst, (short)VisRowTags.visTagDefault);
 
             //ShapeDataForm.Instance.Show();
-            DaForm shapeDataForm = new DaForm(shape.ID);
-            shapeDataForm.ShowDialog();
+            if (Regex.IsMatch(shape.Name, "\\W*((?i)Input Data(?-i))\\W*"))
+            {
+                DaForm shapeDataForm = new DaForm(shape.ID);
+                shapeDataForm.ShowDialog();
+            }
+            else if (Regex.IsMatch(shape.Name, "\\W*((?i)Decision(?-i))\\W*"))
+            {
+                DecisionControlsForm decisionControlsForm = new DecisionControlsForm(shape.ID);
+                decisionControlsForm.ShowDialog();
+            }
         }
 
         private void ShapeDetector_Shutdown(object sender, System.EventArgs e)
