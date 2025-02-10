@@ -36,7 +36,6 @@
             this.iHtmlSelectElementBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.iHtmlAnchorElementBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.anchorAttributeDataGrid = new System.Windows.Forms.DataGridView();
-            this.iHtmlAnchorElementBindingSource2 = new System.Windows.Forms.BindingSource(this.components);
             this.IdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.HrefColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.typeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -44,14 +43,17 @@
             this.relationDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.targetDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.ClassesColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.iHtmlAnchorElementBindingSource2 = new System.Windows.Forms.BindingSource(this.components);
             this.AddAnchorButton = new System.Windows.Forms.Button();
             this.RemoveAnchorButton = new System.Windows.Forms.Button();
+            this.iHtmlInputElementBindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.iHtmlAnchorElementBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iValidityStateBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iHtmlSelectElementBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iHtmlAnchorElementBindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.anchorAttributeDataGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iHtmlAnchorElementBindingSource2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iHtmlInputElementBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // iHtmlAnchorElementBindingSource
@@ -106,10 +108,6 @@
             this.anchorAttributeDataGrid.Name = "anchorAttributeDataGrid";
             this.anchorAttributeDataGrid.Size = new System.Drawing.Size(394, 165);
             this.anchorAttributeDataGrid.TabIndex = 3;
-            // 
-            // iHtmlAnchorElementBindingSource2
-            // 
-            this.iHtmlAnchorElementBindingSource2.DataSource = typeof(AngleSharp.Html.Dom.IHtmlAnchorElement);
             // 
             // IdColumn
             // 
@@ -169,10 +167,13 @@
             // 
             // ClassesColumn
             // 
-            this.ClassesColumn.DataPropertyName = "Target";
             this.ClassesColumn.HeaderText = "Classes";
             this.ClassesColumn.Name = "ClassesColumn";
             this.ClassesColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            // 
+            // iHtmlAnchorElementBindingSource2
+            // 
+            this.iHtmlAnchorElementBindingSource2.DataSource = typeof(AngleSharp.Html.Dom.IHtmlAnchorElement);
             // 
             // AddAnchorButton
             // 
@@ -194,11 +195,15 @@
             this.RemoveAnchorButton.UseVisualStyleBackColor = true;
             this.RemoveAnchorButton.Click += new System.EventHandler(this.RemoveAnchorButton_Click);
             // 
+            // iHtmlInputElementBindingSource
+            // 
+            this.iHtmlInputElementBindingSource.DataSource = typeof(AngleSharp.Html.Dom.IHtmlInputElement);
+            // 
             // AnchorAttributesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(418, 224);
+            this.ClientSize = new System.Drawing.Size(426, 224);
             this.Controls.Add(this.RemoveAnchorButton);
             this.Controls.Add(this.AddAnchorButton);
             this.Controls.Add(this.anchorAttributeDataGrid);
@@ -214,6 +219,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.iHtmlAnchorElementBindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.anchorAttributeDataGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.iHtmlAnchorElementBindingSource2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iHtmlInputElementBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -227,6 +233,8 @@
         private System.Windows.Forms.BindingSource iHtmlSelectElementBindingSource;
         private System.Windows.Forms.BindingSource iHtmlAnchorElementBindingSource2;
         private System.Windows.Forms.DataGridView anchorAttributeDataGrid;
+        private System.Windows.Forms.Button AddAnchorButton;
+        private System.Windows.Forms.Button RemoveAnchorButton;
         private System.Windows.Forms.DataGridViewTextBoxColumn IdColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn HrefColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn typeDataGridViewTextBoxColumn;
@@ -234,7 +242,6 @@
         private System.Windows.Forms.DataGridViewComboBoxColumn relationDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewComboBoxColumn targetDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn ClassesColumn;
-        private System.Windows.Forms.Button AddAnchorButton;
-        private System.Windows.Forms.Button RemoveAnchorButton;
+        private System.Windows.Forms.BindingSource iHtmlInputElementBindingSource;
     }
 }

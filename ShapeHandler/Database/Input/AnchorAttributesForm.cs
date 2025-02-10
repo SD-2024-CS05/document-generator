@@ -43,7 +43,22 @@ namespace ShapeHandler.Database.Input
             BrowsingContext context = new BrowsingContext(Configuration.Default);
             IDocument document = context.OpenNewAsync().Result;
 
-            IHtmlAnchorElement anchor = document.CreateElement("a") as IHtmlAnchorElement;
+            // get all anchor elements added, note that not all the columns are bound to the data source
+            var anchors = iHtmlAnchorElementBindingSource.List.OfType<IHtmlAnchorElement>().ToList();
+
+            foreach (var anchor in anchors)
+            {
+                var gridRow = anchorAttributeDataGrid.Rows.Cast<DataGridViewRow>()
+                    .FirstOrDefault(r => r.DataBoundItem == anchor);
+                if (gridRow != null)
+                {
+                    anchor.Id = gridRow.Cells["idDataGridViewTextBoxColumn"].Value?.ToString();
+                    anchor.Target = gridRow.Cells["targetDataGridViewTextBoxColumn"].Value?.ToString();
+                    anchor.ClassName = gridRow.Cells["classesDataGridViewTextBoxColumn"].Value?.ToString();
+                }
+            }
+
+            return;
         }
 
         private void cancelButton_Click(object sender, EventArgs e)
@@ -65,13 +80,16 @@ namespace ShapeHandler.Database.Input
 
         private void RemoveAnchorButton_Click(object sender, EventArgs e)
         {
-            // get the selected anchor
-            var selectedAnchor = iHtmlAnchorElementBindingSource.Current as IHtmlAnchorElement;
-            if (selectedAnchor != null)
+            if (iHtmlAnchorElementBindingSource.Current is IHtmlAnchorElement selectedAnchor 
+                && selectedAnchor != null)
             {
                 iHtmlAnchorElementBindingSource.Remove(selectedAnchor);
-
             }
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }
