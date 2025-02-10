@@ -132,7 +132,7 @@ namespace ShapeHandler.Database
             {
                 if (_shapeDataForm == null)
                 {
-                    _shapeDataForm = new ShapeDataForm(_shapeID);
+                    _shapeDataForm = new DaForm(_shapeID);
                 }
                 return _shapeDataForm;
             }
