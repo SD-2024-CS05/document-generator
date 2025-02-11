@@ -46,7 +46,7 @@ namespace ShapeHandler.Database.Input
                 var row = ImageDataGridView.Rows.Cast<DataGridViewRow>().FirstOrDefault(r => r.DataBoundItem == imageElement);
                 if (row != null)
                 {
-                    imageElement.Id = row.Cells["IdColumn"].Value.ToString();
+                    imageElement.Id = row.Cells["IdColumn"]?.Value?.ToString();
                 }
             }
             Elements = imageElements;
@@ -59,7 +59,10 @@ namespace ShapeHandler.Database.Input
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            UpdateShapeData();
+            if (iHtmlImageElementBindingSource.List.Count > 0)
+            {
+                UpdateShapeData();
+            }
             this.Close();
         }
 

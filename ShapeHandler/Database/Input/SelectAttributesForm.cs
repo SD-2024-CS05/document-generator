@@ -45,7 +45,7 @@ namespace ShapeHandler.Database.Input
                 var selectRow = SelectDataGridView.Rows.Cast<DataGridViewRow>().FirstOrDefault(r => r.DataBoundItem == selectElement);
                 if (selectRow != null)
                 {
-                    selectElement.Id = selectRow.Cells["IdColumn"].Value.ToString();
+                    selectElement.Id = selectRow.Cells["IdColumn"]?.Value?.ToString();
                 }
 
                 // get options for select element
@@ -56,10 +56,10 @@ namespace ShapeHandler.Database.Input
                     var optionRow = OptionDataGridView.Rows.Cast<DataGridViewRow>().FirstOrDefault(r => r.DataBoundItem == selectOption);
                     if (optionRow != null)
                     {
-                        selectOption.Id = optionRow.Cells["OptionIdColumn"].Value.ToString();
+                        selectOption.Id = optionRow.Cells["OptionIdColumn"]?.Value?.ToString();
 
                         // parents are not bound, so there is a column called SelectIdColumn that contains the id of the parent select element
-                        var parentSelectId = optionRow.Cells["SelectIdColumn"].Value.ToString();
+                        var parentSelectId = optionRow.Cells["SelectIdColumn"]?.Value?.ToString();
                         var parentSelect = selectElements.FirstOrDefault(s => s.Id == parentSelectId);
                         parentSelect.AddOption(selectOption);
 
@@ -77,7 +77,10 @@ namespace ShapeHandler.Database.Input
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            UpdateShapeData();
+            if (iHtmlSelectElementBindingSource.List.Count > 0)
+            {
+                UpdateShapeData();
+            }
             this.Close();
         }
 

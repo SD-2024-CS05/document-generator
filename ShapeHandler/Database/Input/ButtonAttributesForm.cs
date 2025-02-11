@@ -46,7 +46,7 @@ namespace ShapeHandler.Database.Input
                 var row = ButtonDataGridView.Rows.Cast<DataGridViewRow>().FirstOrDefault(r => r.DataBoundItem == buttonElement);
                 if (row != null)
                 {
-                    buttonElement.Id = row.Cells["IdColumn"].Value.ToString();
+                    buttonElement.Id = row.Cells["IdColumn"]?.Value?.ToString();
                 }
             }
             Elements = buttonElements;
@@ -59,7 +59,10 @@ namespace ShapeHandler.Database.Input
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            UpdateShapeData();
+            if (iHtmlButtonElementBindingSource.List.Count > 0)
+            {
+                UpdateShapeData();
+            }
             this.Close();
         }
 

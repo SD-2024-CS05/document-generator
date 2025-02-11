@@ -59,27 +59,25 @@ namespace ShapeHandler.Database
                 {
                     case "InputGroup":
                         parsedElement = parsedElement.GetElementsByTagName("input").First() as IHtmlInputElement;
-                        label = $"<input> {++inputNum}";
+                        label = $"input {++inputNum}";
                         break;
                     case "AnchorGroup":
                         parsedElement = parsedElement.GetElementsByTagName("a").First() as IHtmlAnchorElement;
-                        label = $"<a> {++anchorNum}";
+                        label = $"a {++anchorNum}";
                         break;
                     case "ImageGroup":
                         parsedElement = parsedElement.GetElementsByTagName("img").First() as IHtmlImageElement;
-                        label = $"<img> {++imageNum}";
+                        label = $"img {++imageNum}";
                         break;
                     case "SelectGroup":
                         parsedElement = parsedElement.GetElementsByTagName("select").First() as IHtmlSelectElement;
-                        label = $"<select> {++selectNum}";
+                        label = $"select {++selectNum}";
                         break;
                     default:
                         break;
                 }
 
                 var output = JsonConvert.SerializeObject(parsedElement, new HtmlElementSerializer());
-
-
                 VisioShapeDataHelper.AddShapeData(_shapeID, output, label);
             }
         }

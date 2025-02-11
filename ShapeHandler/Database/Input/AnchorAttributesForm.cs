@@ -45,7 +45,7 @@ namespace ShapeHandler.Database.Input
                 var row = AnchorDataGridView.Rows.Cast<DataGridViewRow>().FirstOrDefault(r => r.DataBoundItem == anchorElement);
                 if (row != null)
                 {
-                    anchorElement.Id = row.Cells["IdColumn"].Value.ToString();
+                    anchorElement.Id = row.Cells["IdColumn"]?.Value?.ToString();
                 }
             }
             Elements = anchorElements;
@@ -58,7 +58,10 @@ namespace ShapeHandler.Database.Input
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            UpdateShapeData();
+            if (iHtmlAnchorElementBindingSource.Count > 0)
+            {
+                UpdateShapeData();
+            }
             this.Close();
         }
 
