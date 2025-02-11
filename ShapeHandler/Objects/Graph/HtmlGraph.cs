@@ -1,5 +1,4 @@
-﻿using Neo4jClient.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -68,17 +67,26 @@ namespace ShapeHandler.Objects
                     }
                     break;
                 case DataInputNode diNode:
-                    // check if dataInputNodes exist, if not add them, and then add connections
+                    // check if dataInputNodesConnected exist, if not add them, and then add connections
                     foreach (var dataInputNode in diNode.DataInputNodes)
                     {
-                        if(!OutEdges.ContainsKey(dataInputNode))
+                        if (!OutEdges.ContainsKey(dataInputNode))
                         {
                             AddNode(dataInputNode);
                         }
                         AddConnection(dataInputNode, diNode, new Connection(dataInputNode.Element.Id ?? dataInputNode.Id, ConnectionType.INPUT_FOR));
                     }
                     break;
-
+                case DecisionNode deNode:
+                    foreach (var submissionNode in deNode.SubmissionNodes)
+                    {
+                        if (!OutEdges.ContainsKey(submissionNode))
+                        {
+                            AddNode(submissionNode);
+                        }
+                        AddConnection(submissionNode, deNode, new Connection(submissionNode.Element.Id ?? submissionNode.Id, ConnectionType.SUBMITS));
+                    }
+                    break;
                 default:
                     break;
             }
@@ -133,24 +141,31 @@ namespace ShapeHandler.Objects
 
         private void ValidateDecisionNodeConnection(DecisionNode decisionNode, Connection connection)
         {
-            var dataInputNodes = InEdges[decisionNode] // Get all nodes connected to the decision node with 'VALIDATES' connection
+            var dataInputNodesConnected = InEdges[decisionNode] // Get all nodes connected to the decision node with 'VALIDATES' connection
                 .Where(x => x.Key is DataInputNode && x.Value.Any(c => c.Type == ConnectionType.VALIDATES))
                 .Select(x => x.Key as DataInputNode)
                 .ToList();
 
-            if (!dataInputNodes.Any())
+            var submissionNodesConnected = InEdges[decisionNode]
+                .Where(x => x.Key is HtmlNode && x.Value.Any(c => c.Type == ConnectionType.SUBMITS))
+                .Select(x => x.Key as HtmlNode)
+                .ToList();
+
+            if (!dataInputNodesConnected.Any() && !submissionNodesConnected.Any())
             {
-                throw new Exception($"No DataInput node found for decision node id: {decisionNode.Id}");
+                throw new Exception($"No Validation nodes found for Decision Node: {decisionNode.Id}");
             }
 
             var condition = connection.Conditions;
-            var dataInputNodeIds = dataInputNodes.SelectMany(x => x.DataInputNodes.Select(y => y.Id)).ToHashSet();
+            var dataInputNodeIds = dataInputNodesConnected.SelectMany(x => x.DataInputNodes.Select(y => y.Id)).ToHashSet();
+            var submissionIds = submissionNodesConnected.Select(x => x.Id).ToHashSet();
 
             while (condition != null)
             {
-                if (condition.NodeIds.Any() && !condition.NodeIds.All(x => dataInputNodeIds.Contains(x)))
+                var ConditionWithoutNodeId = condition.NodeIds.Any() && !condition.NodeIds.All(x => dataInputNodeIds.Contains(x) || submissionIds.Contains(x));
+                if (ConditionWithoutNodeId)
                 {
-                    throw new Exception($"Condition node ids do not match data input node ids for decision node id: {decisionNode.Id}");
+                    throw new Exception($"Condition node ids do not match data input node ids or submission ids for decision node id: {decisionNode.Id}");
                 }
                 condition = condition.InnerConditions;
             }
