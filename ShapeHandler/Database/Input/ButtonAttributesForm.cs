@@ -38,18 +38,18 @@ namespace ShapeHandler.Database.Input
         private void UpdateShapeData()
         {
             // get all the image elements
-            var imageElements = iHtmlButtonElementBindingSource.List.Cast<IHtmlButtonElement>().ToList();
+            var buttonElements = iHtmlButtonElementBindingSource.List.Cast<IHtmlButtonElement>().ToList();
 
             // id isn't bound so need to grab it from the datagridview
-            foreach (var imageElement in imageElements)
+            foreach (var buttonElement in buttonElements)
             {
-                var row = ButtonDataGridView.Rows.Cast<DataGridViewRow>().FirstOrDefault(r => r.DataBoundItem == imageElement);
+                var row = ButtonDataGridView.Rows.Cast<DataGridViewRow>().FirstOrDefault(r => r.DataBoundItem == buttonElement);
                 if (row != null)
                 {
-                    imageElement.Id = row.Cells["IdColumn"].Value.ToString();
+                    buttonElement.Id = row.Cells["IdColumn"].Value.ToString();
                 }
             }
-            Elements = imageElements;
+            Elements = buttonElements;
         }
 
         private void cancelButton_Click(object sender, EventArgs e)

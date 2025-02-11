@@ -61,7 +61,7 @@ namespace ShapeHandler.Database
             switch (selectedItem)
             {
                 case "<input>":
-                    var inputForm = new InputForm();
+                    var inputForm = new InputAttributesForm();
                     inputForm.ShowDialog();
 
                     if (inputForm.Elements.Any())
@@ -89,7 +89,7 @@ namespace ShapeHandler.Database
                     }
                     break;
                 case "<img>":
-                    var imageForm = new ImageAttributesForm(_shapeID);
+                    var imageForm = new ImageAttributesForm();
                     imageForm.ShowDialog();
                     if (imageForm.Elements.Any())
                     {
