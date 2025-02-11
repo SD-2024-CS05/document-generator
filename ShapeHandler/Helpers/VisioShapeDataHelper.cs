@@ -58,7 +58,7 @@ namespace ShapeHandler.Objects
 
         private static string FormatVal(string val)
         {
-            return "\"" + val + "\"";
+            return "\"" + val.Replace("\"", "\"\"") + "\"";
         }
     }
 }
