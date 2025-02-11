@@ -10,6 +10,7 @@ namespace ShapeHandler
 {
     public partial class ShapeDetector
     {
+        private Visio.Document _activeDocument = null;
         private void ShapeDetector_Startup(object sender, System.EventArgs e)
         {
             // Uncomment for local testing
@@ -35,15 +36,22 @@ namespace ShapeHandler
 
         private void Application_DocumentOpened(Visio.Document doc)
         {
-            this.Application.ActiveDocument.ShapeAdded += new Microsoft.Office.Interop.Visio.EDocument_ShapeAddedEventHandler(ActiveDocument_ShapeAdded);
+            if (_activeDocument != this.Application.ActiveDocument)
+            {
+                _activeDocument = this.Application.ActiveDocument;
+                try
+                {
+                    _activeDocument.ShapeAdded += new Visio.EDocument_ShapeAddedEventHandler(ActiveDocument_ShapeAdded);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+            }
         }
 
         private void ActiveDocument_ShapeAdded(Visio.IVShape shape)
         {
-            // Show the form when the specific shape is added
-            //this.Application.ActivePage.Shapes[1].AddRow((short)VisSectionIndices.visSectionProp, (short)VisRowIndices.visRowFirst, (short)VisRowTags.visTagDefault);
-
-            //ShapeDataForm.Instance.Show();
             ShapeDataForm shapeDataForm = new ShapeDataForm(shape.ID);
             shapeDataForm.ShowDialog();
         }

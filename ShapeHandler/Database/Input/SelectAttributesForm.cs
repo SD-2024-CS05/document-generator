@@ -81,14 +81,24 @@ namespace ShapeHandler.Database.Input
             this.Close();
         }
 
-        private void AddButton_Click(object sender, EventArgs e)
+        private void AddSelectButton_Click(object sender, EventArgs e)
         {
             iHtmlSelectElementBindingSource.Add(_document.CreateElement<IHtmlSelectElement>());
         }
 
-        private void RemoveButton_Click(object sender, EventArgs e)
+        private void RemoveSelectButton_Click(object sender, EventArgs e)
         {
             iHtmlSelectElementBindingSource.RemoveCurrent();
+        }
+
+        private void RemoveOptionButton_Click(object sender, EventArgs e)
+        {
+            iHtmlOptionElementBindingSource.RemoveCurrent();
+        }
+
+        private void AddOptionButton_Click(object sender, EventArgs e)
+        {
+            iHtmlOptionElementBindingSource.Add(_document.CreateElement<IHtmlOptionElement>());
         }
     }
 }

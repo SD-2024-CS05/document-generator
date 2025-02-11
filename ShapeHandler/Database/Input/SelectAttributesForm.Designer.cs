@@ -32,8 +32,8 @@
             this.cancelButton = new System.Windows.Forms.Button();
             this.saveButton = new System.Windows.Forms.Button();
             this.SelectDataGridView = new System.Windows.Forms.DataGridView();
-            this.RemoveButton = new System.Windows.Forms.Button();
-            this.AddButton = new System.Windows.Forms.Button();
+            this.RemoveSelectButton = new System.Windows.Forms.Button();
+            this.AddSelectButton = new System.Windows.Forms.Button();
             this.iHtmlSelectElementBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.IdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.autofocusDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
@@ -58,6 +58,8 @@
             this.valueDataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.textDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.indexDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.RemoveOptionButton = new System.Windows.Forms.Button();
+            this.AddOptionButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.SelectDataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iHtmlSelectElementBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.OptionDataGridView)).BeginInit();
@@ -66,7 +68,7 @@
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(12, 270);
+            this.cancelButton.Location = new System.Drawing.Point(15, 308);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 11;
@@ -76,7 +78,7 @@
             // 
             // saveButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(323, 270);
+            this.saveButton.Location = new System.Drawing.Point(326, 308);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(75, 23);
             this.saveButton.TabIndex = 12;
@@ -106,25 +108,25 @@
             this.SelectDataGridView.Size = new System.Drawing.Size(386, 137);
             this.SelectDataGridView.TabIndex = 13;
             // 
-            // RemoveButton
+            // RemoveSelectButton
             // 
-            this.RemoveButton.Location = new System.Drawing.Point(93, 270);
-            this.RemoveButton.Name = "RemoveButton";
-            this.RemoveButton.Size = new System.Drawing.Size(75, 23);
-            this.RemoveButton.TabIndex = 14;
-            this.RemoveButton.Text = "Remove";
-            this.RemoveButton.UseVisualStyleBackColor = true;
-            this.RemoveButton.Click += new System.EventHandler(this.RemoveButton_Click);
+            this.RemoveSelectButton.Location = new System.Drawing.Point(15, 155);
+            this.RemoveSelectButton.Name = "RemoveSelectButton";
+            this.RemoveSelectButton.Size = new System.Drawing.Size(75, 23);
+            this.RemoveSelectButton.TabIndex = 14;
+            this.RemoveSelectButton.Text = "Remove";
+            this.RemoveSelectButton.UseVisualStyleBackColor = true;
+            this.RemoveSelectButton.Click += new System.EventHandler(this.RemoveSelectButton_Click);
             // 
-            // AddButton
+            // AddSelectButton
             // 
-            this.AddButton.Location = new System.Drawing.Point(242, 270);
-            this.AddButton.Name = "AddButton";
-            this.AddButton.Size = new System.Drawing.Size(75, 23);
-            this.AddButton.TabIndex = 15;
-            this.AddButton.Text = "Add";
-            this.AddButton.UseVisualStyleBackColor = true;
-            this.AddButton.Click += new System.EventHandler(this.AddButton_Click);
+            this.AddSelectButton.Location = new System.Drawing.Point(326, 155);
+            this.AddSelectButton.Name = "AddSelectButton";
+            this.AddSelectButton.Size = new System.Drawing.Size(75, 23);
+            this.AddSelectButton.TabIndex = 15;
+            this.AddSelectButton.Text = "Add";
+            this.AddSelectButton.UseVisualStyleBackColor = true;
+            this.AddSelectButton.Click += new System.EventHandler(this.AddSelectButton_Click);
             // 
             // iHtmlSelectElementBindingSource
             // 
@@ -213,7 +215,7 @@
             this.textDataGridViewTextBoxColumn,
             this.indexDataGridViewTextBoxColumn});
             this.OptionDataGridView.DataSource = this.iHtmlOptionElementBindingSource;
-            this.OptionDataGridView.Location = new System.Drawing.Point(16, 168);
+            this.OptionDataGridView.Location = new System.Drawing.Point(16, 191);
             this.OptionDataGridView.Name = "OptionDataGridView";
             this.OptionDataGridView.Size = new System.Drawing.Size(385, 96);
             this.OptionDataGridView.TabIndex = 16;
@@ -225,7 +227,7 @@
             // OptionsLabel
             // 
             this.OptionsLabel.AutoSize = true;
-            this.OptionsLabel.Location = new System.Drawing.Point(174, 152);
+            this.OptionsLabel.Location = new System.Drawing.Point(185, 175);
             this.OptionsLabel.Name = "OptionsLabel";
             this.OptionsLabel.Size = new System.Drawing.Size(43, 13);
             this.OptionsLabel.TabIndex = 17;
@@ -288,15 +290,37 @@
             this.indexDataGridViewTextBoxColumn.Name = "indexDataGridViewTextBoxColumn";
             this.indexDataGridViewTextBoxColumn.ReadOnly = true;
             // 
+            // RemoveOptionButton
+            // 
+            this.RemoveOptionButton.Location = new System.Drawing.Point(105, 293);
+            this.RemoveOptionButton.Name = "RemoveOptionButton";
+            this.RemoveOptionButton.Size = new System.Drawing.Size(75, 23);
+            this.RemoveOptionButton.TabIndex = 18;
+            this.RemoveOptionButton.Text = "Remove";
+            this.RemoveOptionButton.UseVisualStyleBackColor = true;
+            this.RemoveOptionButton.Click += new System.EventHandler(this.RemoveOptionButton_Click);
+            // 
+            // AddOptionButton
+            // 
+            this.AddOptionButton.Location = new System.Drawing.Point(235, 293);
+            this.AddOptionButton.Name = "AddOptionButton";
+            this.AddOptionButton.Size = new System.Drawing.Size(75, 23);
+            this.AddOptionButton.TabIndex = 19;
+            this.AddOptionButton.Text = "Add";
+            this.AddOptionButton.UseVisualStyleBackColor = true;
+            this.AddOptionButton.Click += new System.EventHandler(this.AddOptionButton_Click);
+            // 
             // SelectAttributesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(413, 305);
+            this.ClientSize = new System.Drawing.Size(417, 343);
+            this.Controls.Add(this.AddOptionButton);
+            this.Controls.Add(this.RemoveOptionButton);
             this.Controls.Add(this.OptionsLabel);
             this.Controls.Add(this.OptionDataGridView);
-            this.Controls.Add(this.AddButton);
-            this.Controls.Add(this.RemoveButton);
+            this.Controls.Add(this.AddSelectButton);
+            this.Controls.Add(this.RemoveSelectButton);
             this.Controls.Add(this.SelectDataGridView);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.cancelButton);
@@ -317,8 +341,8 @@
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Button saveButton;
         private System.Windows.Forms.DataGridView SelectDataGridView;
-        private System.Windows.Forms.Button RemoveButton;
-        private System.Windows.Forms.Button AddButton;
+        private System.Windows.Forms.Button RemoveSelectButton;
+        private System.Windows.Forms.Button AddSelectButton;
         private System.Windows.Forms.BindingSource iHtmlSelectElementBindingSource;
         private System.Windows.Forms.DataGridViewTextBoxColumn IdColumn;
         private System.Windows.Forms.DataGridViewCheckBoxColumn autofocusDataGridViewCheckBoxColumn;
@@ -343,5 +367,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn valueDataGridViewTextBoxColumn1;
         private System.Windows.Forms.DataGridViewTextBoxColumn textDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn indexDataGridViewTextBoxColumn;
+        private System.Windows.Forms.Button RemoveOptionButton;
+        private System.Windows.Forms.Button AddOptionButton;
     }
 }
