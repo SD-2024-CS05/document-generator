@@ -517,12 +517,12 @@
     <EmbeddedResource Include="TestGenerator.resx">
       <DependentUpon>TestGenerator.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="AngleSharp.Html.Dom.IHtmlAnchorElement.datasource" />
-    <None Include="AngleSharp.Html.Dom.IHtmlButtonElement.datasource" />
-    <None Include="AngleSharp.Html.Dom.IHtmlImageElement.datasource" />
-    <None Include="AngleSharp.Html.Dom.IHtmlInputElement.datasource" />
-    <None Include="AngleSharp.Html.Dom.IHtmlOptionElement.datasource" />
-    <None Include="AngleSharp.Html.Dom.IHtmlSelectElement.datasource" />
+    <None Include="Data Sources\AngleSharp.Html.Dom.IHtmlAnchorElement.datasource" />
+    <None Include="Data Sources\AngleSharp.Html.Dom.IHtmlButtonElement.datasource" />
+    <None Include="Data Sources\AngleSharp.Html.Dom.IHtmlImageElement.datasource" />
+    <None Include="Data Sources\AngleSharp.Html.Dom.IHtmlInputElement.datasource" />
+    <None Include="Data Sources\AngleSharp.Html.Dom.IHtmlOptionElement.datasource" />
+    <None Include="Data Sources\AngleSharp.Html.Dom.IHtmlSelectElement.datasource" />
     <None Include="app.config" />
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
