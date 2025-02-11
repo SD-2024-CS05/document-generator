@@ -393,7 +393,7 @@
             this.Margin = new System.Windows.Forms.Padding(1);
             this.Name = "InputAttributesForm";
             this.Text = "Attributes";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AnchorAttributesForm_FormClosing);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.InputAttributesForm_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.InputDataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.iHtmlInputElementBindingSource)).EndInit();
             this.ResumeLayout(false);

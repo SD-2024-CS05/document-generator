@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Office.Interop.Visio;
 using ShapeHandler.Database.Input;
+using ShapeHandler.Objects;
 
 namespace ShapeHandler.Database
 {
@@ -28,6 +29,8 @@ namespace ShapeHandler.Database
 
         private void UpdateShapeData()
         {
+            // get all elements in the controllist view and use VisioShapeDataHelper to write them to the shape
+            var elements = ControlListView.Items.Cast<ListViewItem>().ToList();
 
         }
 
@@ -102,6 +105,17 @@ namespace ShapeHandler.Database
                     }
                     break;
                 case "<select>":
+                    var selectForm = new SelectAttributesForm();
+                    selectForm.ShowDialog();
+                    if (selectForm.Elements.Any())
+                    {
+                        foreach (var element in selectForm.Elements)
+                        {
+                            var item = new ListViewItem(new[] { element.Id, element.OuterHtml });
+                            item.Group = ControlListView.Groups["SelectGroup"];
+                            ControlListView.Items.Add(item);
+                        }
+                    }
                     break;
                 default:
                     break;

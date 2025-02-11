@@ -214,7 +214,7 @@
             this.Margin = new System.Windows.Forms.Padding(1);
             this.Name = "ButtonAttributesForm";
             this.Text = "Attributes";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AnchorAttributesForm_FormClosing);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ButtonAttributesForm_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.ButtonDataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.iHtmlButtonElementBindingSource)).EndInit();
             this.ResumeLayout(false);

@@ -30,7 +30,7 @@ namespace ShapeHandler.Database.Input
             iHtmlInputElementBindingSource.Add(_document.CreateElement<IHtmlInputElement>());
         }
 
-        private void AnchorAttributesForm_FormClosing(object sender, FormClosingEventArgs e)
+        private void InputAttributesForm_FormClosing(object sender, FormClosingEventArgs e)
         {
 
         }

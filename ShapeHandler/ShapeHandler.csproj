@@ -424,6 +424,12 @@
   -->
   <ItemGroup>
     <Compile Include="Database\DatabaseConnector.cs" />
+    <Compile Include="Database\Input\SelectAttributesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Database\Input\SelectAttributesForm.Designer.cs">
+      <DependentUpon>SelectAttributesForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Database\Input\AnchorAttributesForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -480,6 +486,9 @@
     <Compile Include="TestGenerator.Designer.cs">
       <DependentUpon>TestGenerator.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Database\Input\SelectAttributesForm.resx">
+      <DependentUpon>SelectAttributesForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Database\Input\AnchorAttributesForm.resx">
       <DependentUpon>AnchorAttributesForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -512,6 +521,8 @@
     <None Include="AngleSharp.Html.Dom.IHtmlButtonElement.datasource" />
     <None Include="AngleSharp.Html.Dom.IHtmlImageElement.datasource" />
     <None Include="AngleSharp.Html.Dom.IHtmlInputElement.datasource" />
+    <None Include="AngleSharp.Html.Dom.IHtmlOptionElement.datasource" />
+    <None Include="AngleSharp.Html.Dom.IHtmlSelectElement.datasource" />
     <None Include="app.config" />
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

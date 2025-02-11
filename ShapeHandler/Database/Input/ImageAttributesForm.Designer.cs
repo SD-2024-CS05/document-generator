@@ -163,7 +163,7 @@
             this.Margin = new System.Windows.Forms.Padding(1);
             this.Name = "ImageAttributesForm";
             this.Text = "Attributes";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AnchorAttributesForm_FormClosing);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ImageAttributesForm_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.ImageDataGridView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.iHtmlImageElementBindingSource)).EndInit();
             this.ResumeLayout(false);
