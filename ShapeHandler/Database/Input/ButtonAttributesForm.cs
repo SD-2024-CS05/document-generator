@@ -15,6 +15,7 @@ using ShapeHandler.Helpers;
 using ShapeHandler.Objects;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using Newtonsoft.Json;
+using System.Xml.Linq;
 
 namespace ShapeHandler.Database.Input
 {
@@ -22,11 +23,17 @@ namespace ShapeHandler.Database.Input
     {
         private static int _shapeID;
         private static int _inputNum;
+        private IDocument _document;
         public ButtonAttributesForm(int shapeID, int inputNum)
         {
             _shapeID = shapeID;
             _inputNum = inputNum;
             InitializeComponent();
+            BrowsingContext context = new BrowsingContext(Configuration.Default);
+            _document = context.OpenNewAsync().Result;
+
+            IHtmlButtonElement button = _document.CreateElement("button") as IHtmlButtonElement;
+            iHtmlButtonElementBindingSouce.Add(button);
         }
 
         private void ButtonAttributesForm_Closing(object sender, FormClosingEventArgs e)
@@ -38,25 +45,25 @@ namespace ShapeHandler.Database.Input
             BrowsingContext context = new BrowsingContext(Configuration.Default);
             IDocument document = context.OpenNewAsync().Result;
             IHtmlButtonElement button = document.CreateElement("button") as IHtmlButtonElement;
-            button.Type = typeTextBox.Text;
-            button.Id = idTextBox.Text;
-            button.Name = nameTextBox.Text;
-            //button.Form = formTextBox.Text;
-            button.FormAction = formActionTextBox.Text;
-            button.FormMethod = formMethodTextBox.Text;
-            button.Value = valueTextBox.Text;
-            var classList = classTextBox.Text.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (var className in classList)
-            {
-                 button.ClassList.Add(className);
-            }
-            ////// GET OUTPUT
-            //var output = button.OuterHtml;
-            //// OR UPDATE/USE CUSTOM SERIALIZATION (UPDATE TO YOUR NEEDS)
-            var output = JsonConvert.SerializeObject(button, new HtmlElementSerializer());
-            output = output.Replace("\"", "\"\"");
-            //var output = HtmlElementSerializer.WriteJson(button);
-            VisioShapeDataHelper.AddShapeData(_shapeID, output, "Input " + _inputNum);
+            //button.Type = typeTextBox.Text;
+            //button.Id = idTextBox.Text;
+            //button.Name = nameTextBox.Text;
+            ////button.Form = formTextBox.Text;
+            //button.FormAction = formActionTextBox.Text;
+            //button.FormMethod = formMethodTextBox.Text;
+            //button.Value = valueTextBox.Text;
+            //var classList = classTextBox.Text.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            //foreach (var className in classList)
+            //{
+            //     button.ClassList.Add(className);
+            //}
+            //////// GET OUTPUT
+            ////var output = button.OuterHtml;
+            ////// OR UPDATE/USE CUSTOM SERIALIZATION (UPDATE TO YOUR NEEDS)
+            //var output = JsonConvert.SerializeObject(button, new HtmlElementSerializer());
+            //output = output.Replace("\"", "\"\"");
+            ////var output = HtmlElementSerializer.WriteJson(button);
+            //VisioShapeDataHelper.AddShapeData(_shapeID, output, "Input " + _inputNum);
         }
 
         private void saveButton_Click(object sender, EventArgs e)
@@ -68,6 +75,12 @@ namespace ShapeHandler.Database.Input
         private void cancelButton_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            IHtmlButtonElement button = _document.CreateElement("button") as IHtmlButtonElement;
+            iHtmlButtonElementBindingSouce.Add(button);
         }
     }
 }

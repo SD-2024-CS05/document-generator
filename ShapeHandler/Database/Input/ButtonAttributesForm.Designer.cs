@@ -28,192 +28,34 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.formMethodLabel = new System.Windows.Forms.Label();
-            this.formActionLabel = new System.Windows.Forms.Label();
-            this.nameTextBox = new System.Windows.Forms.TextBox();
-            this.formTextBox = new System.Windows.Forms.TextBox();
-            this.typeTextBox = new System.Windows.Forms.TextBox();
-            this.nameLabel = new System.Windows.Forms.Label();
-            this.formLabel = new System.Windows.Forms.Label();
-            this.typeLabel = new System.Windows.Forms.Label();
-            this.formMethodTextBox = new System.Windows.Forms.TextBox();
-            this.formActionTextBox = new System.Windows.Forms.TextBox();
-            this.idLabel = new System.Windows.Forms.Label();
-            this.disabledCheckbox = new System.Windows.Forms.CheckBox();
-            this.valueLabel = new System.Windows.Forms.Label();
-            this.valueTextBox = new System.Windows.Forms.TextBox();
-            this.idTextBox = new System.Windows.Forms.TextBox();
-            this.classTextBox = new System.Windows.Forms.TextBox();
-            this.classesLabel = new System.Windows.Forms.Label();
+            this.components = new System.ComponentModel.Container();
             this.cancelButton = new System.Windows.Forms.Button();
             this.saveButton = new System.Windows.Forms.Button();
+            this.iHtmlButtonElementBindingSouce = new System.Windows.Forms.BindingSource(this.components);
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.autofocusDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.isDisabledDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.formDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.labelsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.nameDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.typeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.valueDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.formActionDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.formEncTypeDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.formMethodDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.formNoValidateDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.formTargetDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.button1 = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.iHtmlButtonElementBindingSouce)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // formMethodLabel
-            // 
-            this.formMethodLabel.AutoSize = true;
-            this.formMethodLabel.Location = new System.Drawing.Point(25, 104);
-            this.formMethodLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.formMethodLabel.Name = "formMethodLabel";
-            this.formMethodLabel.Size = new System.Drawing.Size(69, 13);
-            this.formMethodLabel.TabIndex = 34;
-            this.formMethodLabel.Text = "Form Method";
-            // 
-            // formActionLabel
-            // 
-            this.formActionLabel.AutoSize = true;
-            this.formActionLabel.Location = new System.Drawing.Point(25, 80);
-            this.formActionLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.formActionLabel.Name = "formActionLabel";
-            this.formActionLabel.Size = new System.Drawing.Size(63, 13);
-            this.formActionLabel.TabIndex = 32;
-            this.formActionLabel.Text = "Form Action";
-            // 
-            // nameTextBox
-            // 
-            this.nameTextBox.Location = new System.Drawing.Point(136, 125);
-            this.nameTextBox.Margin = new System.Windows.Forms.Padding(2);
-            this.nameTextBox.Name = "nameTextBox";
-            this.nameTextBox.Size = new System.Drawing.Size(104, 20);
-            this.nameTextBox.TabIndex = 28;
-            // 
-            // formTextBox
-            // 
-            this.formTextBox.Location = new System.Drawing.Point(136, 53);
-            this.formTextBox.Margin = new System.Windows.Forms.Padding(2);
-            this.formTextBox.Name = "formTextBox";
-            this.formTextBox.Size = new System.Drawing.Size(104, 20);
-            this.formTextBox.TabIndex = 27;
-            // 
-            // typeTextBox
-            // 
-            this.typeTextBox.AutoCompleteCustomSource.AddRange(new string[] {
-            "button",
-            "submit",
-            "reset"});
-            this.typeTextBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-            this.typeTextBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
-            this.typeTextBox.Location = new System.Drawing.Point(136, 29);
-            this.typeTextBox.Margin = new System.Windows.Forms.Padding(2);
-            this.typeTextBox.Name = "typeTextBox";
-            this.typeTextBox.Size = new System.Drawing.Size(104, 20);
-            this.typeTextBox.TabIndex = 26;
-            // 
-            // nameLabel
-            // 
-            this.nameLabel.AutoSize = true;
-            this.nameLabel.Location = new System.Drawing.Point(25, 128);
-            this.nameLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.nameLabel.Name = "nameLabel";
-            this.nameLabel.Size = new System.Drawing.Size(35, 13);
-            this.nameLabel.TabIndex = 22;
-            this.nameLabel.Text = "Name";
-            // 
-            // formLabel
-            // 
-            this.formLabel.AutoSize = true;
-            this.formLabel.Location = new System.Drawing.Point(25, 56);
-            this.formLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.formLabel.Name = "formLabel";
-            this.formLabel.Size = new System.Drawing.Size(30, 13);
-            this.formLabel.TabIndex = 21;
-            this.formLabel.Text = "Form";
-            // 
-            // typeLabel
-            // 
-            this.typeLabel.AutoSize = true;
-            this.typeLabel.Location = new System.Drawing.Point(25, 32);
-            this.typeLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.typeLabel.Name = "typeLabel";
-            this.typeLabel.Size = new System.Drawing.Size(31, 13);
-            this.typeLabel.TabIndex = 20;
-            this.typeLabel.Text = "Type";
-            // 
-            // formMethodTextBox
-            // 
-            this.formMethodTextBox.AutoCompleteCustomSource.AddRange(new string[] {
-            "get",
-            "post"});
-            this.formMethodTextBox.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
-            this.formMethodTextBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
-            this.formMethodTextBox.Location = new System.Drawing.Point(137, 101);
-            this.formMethodTextBox.Margin = new System.Windows.Forms.Padding(2);
-            this.formMethodTextBox.Name = "formMethodTextBox";
-            this.formMethodTextBox.Size = new System.Drawing.Size(104, 20);
-            this.formMethodTextBox.TabIndex = 35;
-            // 
-            // formActionTextBox
-            // 
-            this.formActionTextBox.Location = new System.Drawing.Point(136, 77);
-            this.formActionTextBox.Margin = new System.Windows.Forms.Padding(2);
-            this.formActionTextBox.Name = "formActionTextBox";
-            this.formActionTextBox.Size = new System.Drawing.Size(104, 20);
-            this.formActionTextBox.TabIndex = 33;
-            // 
-            // idLabel
-            // 
-            this.idLabel.AutoSize = true;
-            this.idLabel.Location = new System.Drawing.Point(25, 9);
-            this.idLabel.Name = "idLabel";
-            this.idLabel.Size = new System.Drawing.Size(18, 13);
-            this.idLabel.TabIndex = 36;
-            this.idLabel.Text = "ID";
-            // 
-            // disabledCheckbox
-            // 
-            this.disabledCheckbox.AutoSize = true;
-            this.disabledCheckbox.Location = new System.Drawing.Point(28, 205);
-            this.disabledCheckbox.Name = "disabledCheckbox";
-            this.disabledCheckbox.Size = new System.Drawing.Size(73, 17);
-            this.disabledCheckbox.TabIndex = 37;
-            this.disabledCheckbox.Text = "Disabled?";
-            this.disabledCheckbox.UseVisualStyleBackColor = true;
-            // 
-            // valueLabel
-            // 
-            this.valueLabel.AutoSize = true;
-            this.valueLabel.Location = new System.Drawing.Point(25, 152);
-            this.valueLabel.Name = "valueLabel";
-            this.valueLabel.Size = new System.Drawing.Size(34, 13);
-            this.valueLabel.TabIndex = 38;
-            this.valueLabel.Text = "Value";
-            // 
-            // valueTextBox
-            // 
-            this.valueTextBox.Location = new System.Drawing.Point(137, 149);
-            this.valueTextBox.Margin = new System.Windows.Forms.Padding(2);
-            this.valueTextBox.Name = "valueTextBox";
-            this.valueTextBox.Size = new System.Drawing.Size(104, 20);
-            this.valueTextBox.TabIndex = 39;
-            // 
-            // idTextBox
-            // 
-            this.idTextBox.Location = new System.Drawing.Point(137, 6);
-            this.idTextBox.Name = "idTextBox";
-            this.idTextBox.Size = new System.Drawing.Size(104, 20);
-            this.idTextBox.TabIndex = 40;
-            // 
-            // classTextBox
-            // 
-            this.classTextBox.Location = new System.Drawing.Point(136, 174);
-            this.classTextBox.Name = "classTextBox";
-            this.classTextBox.Size = new System.Drawing.Size(105, 20);
-            this.classTextBox.TabIndex = 41;
-            // 
-            // classesLabel
-            // 
-            this.classesLabel.AutoSize = true;
-            this.classesLabel.Location = new System.Drawing.Point(25, 177);
-            this.classesLabel.Name = "classesLabel";
-            this.classesLabel.Size = new System.Drawing.Size(43, 13);
-            this.classesLabel.TabIndex = 42;
-            this.classesLabel.Text = "Classes";
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(12, 234);
+            this.cancelButton.Location = new System.Drawing.Point(32, 558);
+            this.cancelButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(75, 23);
+            this.cancelButton.Size = new System.Drawing.Size(200, 55);
             this.cancelButton.TabIndex = 43;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
@@ -221,66 +63,188 @@
             // 
             // saveButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(182, 234);
+            this.saveButton.Location = new System.Drawing.Point(328, 558);
+            this.saveButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(75, 23);
+            this.saveButton.Size = new System.Drawing.Size(200, 55);
             this.saveButton.TabIndex = 44;
             this.saveButton.Text = "Save";
             this.saveButton.UseVisualStyleBackColor = true;
             this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
+            // iHtmlButtonElementBindingSouce
+            // 
+            this.iHtmlButtonElementBindingSouce.DataSource = typeof(AngleSharp.Html.Dom.IHtmlButtonElement);
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AutoGenerateColumns = false;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.autofocusDataGridViewCheckBoxColumn,
+            this.isDisabledDataGridViewCheckBoxColumn,
+            this.formDataGridViewTextBoxColumn,
+            this.labelsDataGridViewTextBoxColumn,
+            this.nameDataGridViewTextBoxColumn,
+            this.typeDataGridViewTextBoxColumn,
+            this.valueDataGridViewTextBoxColumn,
+            this.formActionDataGridViewTextBoxColumn,
+            this.formEncTypeDataGridViewTextBoxColumn,
+            this.formMethodDataGridViewTextBoxColumn,
+            this.formNoValidateDataGridViewCheckBoxColumn,
+            this.formTargetDataGridViewTextBoxColumn});
+            this.dataGridView1.DataSource = this.iHtmlButtonElementBindingSouce;
+            this.dataGridView1.Location = new System.Drawing.Point(12, 12);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowHeadersWidth = 102;
+            this.dataGridView1.RowTemplate.Height = 40;
+            this.dataGridView1.Size = new System.Drawing.Size(755, 392);
+            this.dataGridView1.TabIndex = 45;
+            // 
+            // autofocusDataGridViewCheckBoxColumn
+            // 
+            this.autofocusDataGridViewCheckBoxColumn.DataPropertyName = "Autofocus";
+            this.autofocusDataGridViewCheckBoxColumn.HeaderText = "Autofocus";
+            this.autofocusDataGridViewCheckBoxColumn.MinimumWidth = 12;
+            this.autofocusDataGridViewCheckBoxColumn.Name = "autofocusDataGridViewCheckBoxColumn";
+            this.autofocusDataGridViewCheckBoxColumn.Width = 250;
+            // 
+            // isDisabledDataGridViewCheckBoxColumn
+            // 
+            this.isDisabledDataGridViewCheckBoxColumn.DataPropertyName = "IsDisabled";
+            this.isDisabledDataGridViewCheckBoxColumn.HeaderText = "IsDisabled";
+            this.isDisabledDataGridViewCheckBoxColumn.MinimumWidth = 12;
+            this.isDisabledDataGridViewCheckBoxColumn.Name = "isDisabledDataGridViewCheckBoxColumn";
+            this.isDisabledDataGridViewCheckBoxColumn.Width = 250;
+            // 
+            // formDataGridViewTextBoxColumn
+            // 
+            this.formDataGridViewTextBoxColumn.DataPropertyName = "Form";
+            this.formDataGridViewTextBoxColumn.HeaderText = "Form";
+            this.formDataGridViewTextBoxColumn.MinimumWidth = 12;
+            this.formDataGridViewTextBoxColumn.Name = "formDataGridViewTextBoxColumn";
+            this.formDataGridViewTextBoxColumn.ReadOnly = true;
+            this.formDataGridViewTextBoxColumn.Width = 250;
+            // 
+            // labelsDataGridViewTextBoxColumn
+            // 
+            this.labelsDataGridViewTextBoxColumn.DataPropertyName = "Labels";
+            this.labelsDataGridViewTextBoxColumn.HeaderText = "Labels";
+            this.labelsDataGridViewTextBoxColumn.MinimumWidth = 12;
+            this.labelsDataGridViewTextBoxColumn.Name = "labelsDataGridViewTextBoxColumn";
+            this.labelsDataGridViewTextBoxColumn.ReadOnly = true;
+            this.labelsDataGridViewTextBoxColumn.Width = 250;
+            // 
+            // nameDataGridViewTextBoxColumn
+            // 
+            this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
+            this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
+            this.nameDataGridViewTextBoxColumn.MinimumWidth = 12;
+            this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
+            this.nameDataGridViewTextBoxColumn.Width = 250;
+            // 
+            // typeDataGridViewTextBoxColumn
+            // 
+            this.typeDataGridViewTextBoxColumn.DataPropertyName = "Type";
+            this.typeDataGridViewTextBoxColumn.HeaderText = "Type";
+            this.typeDataGridViewTextBoxColumn.MinimumWidth = 12;
+            this.typeDataGridViewTextBoxColumn.Name = "typeDataGridViewTextBoxColumn";
+            this.typeDataGridViewTextBoxColumn.Width = 250;
+            // 
+            // valueDataGridViewTextBoxColumn
+            // 
+            this.valueDataGridViewTextBoxColumn.DataPropertyName = "Value";
+            this.valueDataGridViewTextBoxColumn.HeaderText = "Value";
+            this.valueDataGridViewTextBoxColumn.MinimumWidth = 12;
+            this.valueDataGridViewTextBoxColumn.Name = "valueDataGridViewTextBoxColumn";
+            this.valueDataGridViewTextBoxColumn.Width = 250;
+            // 
+            // formActionDataGridViewTextBoxColumn
+            // 
+            this.formActionDataGridViewTextBoxColumn.DataPropertyName = "FormAction";
+            this.formActionDataGridViewTextBoxColumn.HeaderText = "FormAction";
+            this.formActionDataGridViewTextBoxColumn.MinimumWidth = 12;
+            this.formActionDataGridViewTextBoxColumn.Name = "formActionDataGridViewTextBoxColumn";
+            this.formActionDataGridViewTextBoxColumn.Width = 250;
+            // 
+            // formEncTypeDataGridViewTextBoxColumn
+            // 
+            this.formEncTypeDataGridViewTextBoxColumn.DataPropertyName = "FormEncType";
+            this.formEncTypeDataGridViewTextBoxColumn.HeaderText = "FormEncType";
+            this.formEncTypeDataGridViewTextBoxColumn.MinimumWidth = 12;
+            this.formEncTypeDataGridViewTextBoxColumn.Name = "formEncTypeDataGridViewTextBoxColumn";
+            this.formEncTypeDataGridViewTextBoxColumn.Width = 250;
+            // 
+            // formMethodDataGridViewTextBoxColumn
+            // 
+            this.formMethodDataGridViewTextBoxColumn.DataPropertyName = "FormMethod";
+            this.formMethodDataGridViewTextBoxColumn.HeaderText = "FormMethod";
+            this.formMethodDataGridViewTextBoxColumn.MinimumWidth = 12;
+            this.formMethodDataGridViewTextBoxColumn.Name = "formMethodDataGridViewTextBoxColumn";
+            this.formMethodDataGridViewTextBoxColumn.Width = 250;
+            // 
+            // formNoValidateDataGridViewCheckBoxColumn
+            // 
+            this.formNoValidateDataGridViewCheckBoxColumn.DataPropertyName = "FormNoValidate";
+            this.formNoValidateDataGridViewCheckBoxColumn.HeaderText = "FormNoValidate";
+            this.formNoValidateDataGridViewCheckBoxColumn.MinimumWidth = 12;
+            this.formNoValidateDataGridViewCheckBoxColumn.Name = "formNoValidateDataGridViewCheckBoxColumn";
+            this.formNoValidateDataGridViewCheckBoxColumn.Width = 250;
+            // 
+            // formTargetDataGridViewTextBoxColumn
+            // 
+            this.formTargetDataGridViewTextBoxColumn.DataPropertyName = "FormTarget";
+            this.formTargetDataGridViewTextBoxColumn.HeaderText = "FormTarget";
+            this.formTargetDataGridViewTextBoxColumn.MinimumWidth = 12;
+            this.formTargetDataGridViewTextBoxColumn.Name = "formTargetDataGridViewTextBoxColumn";
+            this.formTargetDataGridViewTextBoxColumn.Width = 250;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(564, 542);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(146, 70);
+            this.button1.TabIndex = 46;
+            this.button1.Text = "Add";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
             // ButtonAttributesForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(269, 269);
+            this.ClientSize = new System.Drawing.Size(779, 641);
+            this.Controls.Add(this.button1);
+            this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.cancelButton);
-            this.Controls.Add(this.classesLabel);
-            this.Controls.Add(this.classTextBox);
-            this.Controls.Add(this.idTextBox);
-            this.Controls.Add(this.valueTextBox);
-            this.Controls.Add(this.valueLabel);
-            this.Controls.Add(this.disabledCheckbox);
-            this.Controls.Add(this.idLabel);
-            this.Controls.Add(this.formMethodTextBox);
-            this.Controls.Add(this.formMethodLabel);
-            this.Controls.Add(this.formActionTextBox);
-            this.Controls.Add(this.formActionLabel);
-            this.Controls.Add(this.nameTextBox);
-            this.Controls.Add(this.formTextBox);
-            this.Controls.Add(this.typeTextBox);
-            this.Controls.Add(this.nameLabel);
-            this.Controls.Add(this.formLabel);
-            this.Controls.Add(this.typeLabel);
-            this.Margin = new System.Windows.Forms.Padding(1);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "ButtonAttributesForm";
             this.Text = "Attributes";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ButtonAttributesForm_Closing);
+            ((System.ComponentModel.ISupportInitialize)(this.iHtmlButtonElementBindingSouce)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-        private System.Windows.Forms.Label formMethodLabel;
-        private System.Windows.Forms.Label formActionLabel;
-        private System.Windows.Forms.TextBox nameTextBox;
-        private System.Windows.Forms.TextBox formTextBox;
-        public System.Windows.Forms.TextBox typeTextBox;
-        private System.Windows.Forms.Label nameLabel;
-        private System.Windows.Forms.Label formLabel;
-        private System.Windows.Forms.Label typeLabel;
-        private System.Windows.Forms.TextBox formMethodTextBox;
-        private System.Windows.Forms.TextBox formActionTextBox;
-        private System.Windows.Forms.Label idLabel;
-        private System.Windows.Forms.CheckBox disabledCheckbox;
-        private System.Windows.Forms.Label valueLabel;
-        private System.Windows.Forms.TextBox valueTextBox;
-        private System.Windows.Forms.TextBox idTextBox;
-        private System.Windows.Forms.TextBox classTextBox;
-        private System.Windows.Forms.Label classesLabel;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Button saveButton;
+        private System.Windows.Forms.BindingSource iHtmlButtonElementBindingSouce;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn autofocusDataGridViewCheckBoxColumn;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn isDisabledDataGridViewCheckBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn formDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn labelsDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn nameDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn typeDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn valueDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn formActionDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn formEncTypeDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn formMethodDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn formNoValidateDataGridViewCheckBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn formTargetDataGridViewTextBoxColumn;
+        private System.Windows.Forms.Button button1;
     }
 }

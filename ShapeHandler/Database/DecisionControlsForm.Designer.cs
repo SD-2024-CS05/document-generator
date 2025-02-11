@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DecisionControlsForm));
             this.addControlButton = new System.Windows.Forms.Button();
+            this.controlsView = new System.Windows.Forms.ListView();
             this.SuspendLayout();
             // 
             // addControlButton
@@ -40,12 +41,23 @@
             this.addControlButton.TabIndex = 0;
             this.addControlButton.Text = "Add Control";
             this.addControlButton.UseVisualStyleBackColor = true;
+            this.addControlButton.Click += new System.EventHandler(this.addControlButton_Click);
+            // 
+            // controlsView
+            // 
+            this.controlsView.HideSelection = false;
+            this.controlsView.Location = new System.Drawing.Point(12, 12);
+            this.controlsView.Name = "controlsView";
+            this.controlsView.Size = new System.Drawing.Size(776, 241);
+            this.controlsView.TabIndex = 1;
+            this.controlsView.UseCompatibleStateImageBehavior = false;
             // 
             // DecisionControlsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.controlsView);
             this.Controls.Add(this.addControlButton);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "DecisionControlsForm";
@@ -57,5 +69,6 @@
         #endregion
 
         private System.Windows.Forms.Button addControlButton;
+        private System.Windows.Forms.ListView controlsView;
     }
 }

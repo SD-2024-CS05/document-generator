@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ShapeHandler.Database.Input;
 
 namespace ShapeHandler.Database
 {
@@ -17,6 +18,12 @@ namespace ShapeHandler.Database
         {
             _shapeID = shapeID;
             InitializeComponent();
+        }
+
+        private void addControlButton_Click(object sender, EventArgs e)
+        {
+            ButtonAttributesForm buttonAttributesForm = new ButtonAttributesForm(_shapeID, 1);
+            buttonAttributesForm.ShowDialog();
         }
     }
 }
