@@ -1,4 +1,7 @@
-﻿using System;
+﻿using AngleSharp.Html.Dom;
+using Newtonsoft.Json;
+using ShapeHandler.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,7 +22,7 @@ namespace ShapeHandler.Objects
             {
                 _activeShape.AddRow(
                     (short)Visio.VisSectionIndices.visSectionProp,
-                    (short)Visio.VisRowIndices.visRowFirst, 
+                    (short)Visio.VisRowIndices.visRowFirst,
                     (short)Visio.VisRowTags.visTagDefault);
             }
             else
@@ -36,8 +39,54 @@ namespace ShapeHandler.Objects
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message); 
+                MessageBox.Show(e.Message);
             }
+        }
+
+        public static Dictionary<string, object> GetShapeData(int shapeId)
+        {
+            var shapeData = new Dictionary<string, object>();
+            _activeShape = Globals.ShapeDetector.Application.ActivePage.Shapes[shapeId];
+
+            int rowCount = _activeShape.get_RowCount((short)Visio.VisSectionIndices.visSectionProp);
+            for (int i = 0; i < rowCount; i++)
+            {
+                string label = _activeShape.get_CellsSRC(
+                    (short)Visio.VisSectionIndices.visSectionProp,
+                    (short)i,
+                    (short)Visio.VisCellIndices.visCustPropsLabel).ResultStrU["Value"];
+
+                string value = _activeShape.get_CellsSRC(
+                    (short)Visio.VisSectionIndices.visSectionProp,
+                    (short)i,
+                    (short)Visio.VisCellIndices.visCustPropsValue).ResultStrU["Value"];
+
+                shapeData[label] = value;
+            }
+
+            return shapeData;
+        }
+
+        public static List<IHtmlElement> GetHtmlElements(int shapeId)
+        {
+            var shapeData = GetShapeData(shapeId);
+            var htmlElements = new List<IHtmlElement>();
+            foreach (var data in shapeData)
+            {
+                try
+                {
+                    var htmlElement = JsonConvert.DeserializeObject<IHtmlElement>(data.Value.ToString(), new HtmlElementSerializer());
+                    if (htmlElement != null)
+                    {
+                        htmlElements.Add(htmlElement);
+                    }
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
+            }
+            return htmlElements;
         }
 
         public static bool CheckIfRowsExist(int shapeId)
@@ -48,7 +97,6 @@ namespace ShapeHandler.Objects
 
         private static void SetShapeData(Visio.VisCellIndices cellIndex, string value)
         {
-
             _activeShape.get_CellsSRC(
                 (short)Visio.VisSectionIndices.visSectionProp,
                 (short)Visio.VisRowIndices.visRowLast,
@@ -58,7 +106,8 @@ namespace ShapeHandler.Objects
 
         private static string FormatVal(string val)
         {
-            return "\"" + val + "\"";
+            return "\"" + val.Replace("\"", "\"\"") + "\"";
         }
+
     }
 }

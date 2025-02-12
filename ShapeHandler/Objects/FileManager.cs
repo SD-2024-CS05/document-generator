@@ -11,14 +11,25 @@ namespace ShapeHandler.Objects
     {
         public static string GetFilePath(string fileName)
         {
-            var dir = AppDomain.CurrentDomain.BaseDirectory;
-
-            if (!File.Exists(Path.Combine(dir, fileName)))
+            try
             {
-                dir = Path.Combine(dir, "bin");
-            }
+                var dir = AppDomain.CurrentDomain.BaseDirectory;
 
-            return dir;
+                if (!File.Exists(Path.Combine(dir, fileName)))
+                {
+                    dir = Path.Combine(dir, "bin", fileName);
+                } else
+                {
+                    dir = Path.Combine(dir, fileName);
+                }
+
+                return dir;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return null;
+            }
         }
     }
 }

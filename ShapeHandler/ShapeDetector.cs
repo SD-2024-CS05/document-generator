@@ -11,39 +11,55 @@ namespace ShapeHandler
 {
     public partial class ShapeDetector
     {
+        private Visio.Document _activeDocument = null;
         private void ShapeDetector_Startup(object sender, System.EventArgs e)
         {
             // Uncomment for local testing
             //ShapeDetector.CreateGraphFromFlowchart(Globals.ShapeDetector.Application);
             this.Application.DocumentOpened += new Visio.EApplication_DocumentOpenedEventHandler(Application_DocumentOpened);
+            this.Application.DocumentCreated += new Visio.EApplication_DocumentCreatedEventHandler(Application_DocumentCreated);
+        }
+
+        private void Application_DocumentCreated(Visio.Document doc)
+        {
+            var stencilPath = FileManager.GetFilePath("Stencil/CS05-stencil.vssx");
+
+            if (!string.IsNullOrEmpty(stencilPath))
+            {
+                this.Application.Documents.OpenEx(stencilPath, (short)VisOpenSaveArgs.visOpenDocked);
+            }
+            else
+            {
+                MessageBox.Show("Could not find the stencil");
+            }
+            Application_DocumentOpened(doc);
         }
 
         private void Application_DocumentOpened(Visio.Document doc)
         {
-            this.Application.ActiveDocument.ShapeAdded += new Microsoft.Office.Interop.Visio.EDocument_ShapeAddedEventHandler(ActiveDocument_ShapeAdded);
+            if (_activeDocument != this.Application.ActiveDocument)
+            {
+                _activeDocument = this.Application.ActiveDocument;
+                try
+                {
+                    _activeDocument.ShapeAdded += new Visio.EDocument_ShapeAddedEventHandler(ActiveDocument_ShapeAdded);
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+            }
         }
 
         private void ActiveDocument_ShapeAdded(Visio.IVShape shape)
         {
-            // Show the form when the specific shape is added
-            //this.Application.ActivePage.Shapes[1].AddRow((short)VisSectionIndices.visSectionProp, (short)VisRowIndices.visRowFirst, (short)VisRowTags.visTagDefault);
-
-            //ShapeDataForm.Instance.Show();
-            if (Regex.IsMatch(shape.Name, "\\W*((?i)Input Data(?-i))\\W*"))
-            {
-                DaForm shapeDataForm = new DaForm(shape.ID);
-                shapeDataForm.ShowDialog();
-            }
-            else if (Regex.IsMatch(shape.Name, "\\W*((?i)Decision(?-i))\\W*"))
-            {
-                DecisionControlsForm decisionControlsForm = new DecisionControlsForm(shape.ID);
-                decisionControlsForm.ShowDialog();
-            }
+            ShapeDataForm shapeDataForm = new ShapeDataForm(shape.ID);
+            shapeDataForm.ShowDialog();
         }
 
         private void ShapeDetector_Shutdown(object sender, System.EventArgs e)
         {
-            
+
         }
 
         public static HtmlGraph CreateGraphFromFlowchart(Visio.Application application)
