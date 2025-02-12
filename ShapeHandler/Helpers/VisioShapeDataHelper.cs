@@ -46,7 +46,13 @@ namespace ShapeHandler.Objects
         public static Dictionary<string, object> GetShapeData(int shapeId)
         {
             var shapeData = new Dictionary<string, object>();
-            _activeShape = Globals.ShapeDetector.Application.ActivePage.Shapes[shapeId];
+            try
+            {
+                _activeShape = Globals.ShapeDetector.Application.ActivePage.Shapes[shapeId];
+            } catch (Exception)
+            {
+                return shapeData;
+            }
 
             int rowCount = _activeShape.get_RowCount((short)Visio.VisSectionIndices.visSectionProp);
             for (int i = 0; i < rowCount; i++)

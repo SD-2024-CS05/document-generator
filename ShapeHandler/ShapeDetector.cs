@@ -72,6 +72,7 @@ namespace ShapeHandler
                         StartEndForm startEndForm = new StartEndForm();
                         startEndForm.ShowDialog();
                         VisioShapeDataHelper.AddShapeData(shape.ID, startEndForm.URL, "URL");
+                        VisioShapeDataHelper.AddShapeData(shape.ID, true.ToString(), "IsStart");
                         MessageBox.Show("Start node added");
                     }
                     else if (!_hasEndNode)
@@ -80,6 +81,8 @@ namespace ShapeHandler
                         StartEndForm startEndForm = new StartEndForm();
                         startEndForm.ShowDialog();
                         VisioShapeDataHelper.AddShapeData(shape.ID, startEndForm.URL, "URL");
+                        VisioShapeDataHelper.AddShapeData(shape.ID, false.ToString(), "IsStart");
+
                         MessageBox.Show("End node added");
                     }
                     else
@@ -89,12 +92,17 @@ namespace ShapeHandler
                     }
                     break;
                 case NodeType.Decision:
+                    DecisionControlsForm decisionControlsForm = new DecisionControlsForm(shape.ID);
+                    decisionControlsForm.ShowDialog();
                     break;
                 case NodeType.UserProcess:
                     break;
                 case NodeType.BackgroundProcess:
                     break;
                 case NodeType.Page:
+                    StartEndForm pageUrlForm = new StartEndForm();
+                    pageUrlForm.ShowDialog();
+                    VisioShapeDataHelper.AddShapeData(shape.ID, pageUrlForm.URL, "URL");
                     break;
                 default:
                     break;
