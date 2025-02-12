@@ -30,10 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ButtonAttributesForm));
-            this.cancelButton = new System.Windows.Forms.Button();
-            this.saveButton = new System.Windows.Forms.Button();
-            this.iHtmlButtonElementBindingSouce = new System.Windows.Forms.BindingSource(this.components);
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.iHtmlButtonElementBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.ButtonDataGridView = new System.Windows.Forms.DataGridView();
             this.autofocusDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.isDisabledDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.formDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -46,42 +44,23 @@
             this.formMethodDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.formNoValidateDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.formTargetDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.button1 = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.iHtmlButtonElementBindingSouce)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.AddButton = new System.Windows.Forms.Button();
+            this.RemoveButton = new System.Windows.Forms.Button();
+            this.saveButton = new System.Windows.Forms.Button();
+            this.cancelButton = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.iHtmlButtonElementBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ButtonDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
-            // cancelButton
+            // iHtmlButtonElementBindingSource
             // 
-            this.cancelButton.Location = new System.Drawing.Point(32, 558);
-            this.cancelButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
-            this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(200, 55);
-            this.cancelButton.TabIndex = 43;
-            this.cancelButton.Text = "Cancel";
-            this.cancelButton.UseVisualStyleBackColor = true;
-            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
+            this.iHtmlButtonElementBindingSource.DataSource = typeof(AngleSharp.Html.Dom.IHtmlButtonElement);
             // 
-            // saveButton
+            // ButtonDataGridView
             // 
-            this.saveButton.Location = new System.Drawing.Point(328, 558);
-            this.saveButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
-            this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(200, 55);
-            this.saveButton.TabIndex = 44;
-            this.saveButton.Text = "Save";
-            this.saveButton.UseVisualStyleBackColor = true;
-            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
-            // 
-            // iHtmlButtonElementBindingSouce
-            // 
-            this.iHtmlButtonElementBindingSouce.DataSource = typeof(AngleSharp.Html.Dom.IHtmlButtonElement);
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.AutoGenerateColumns = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ButtonDataGridView.AutoGenerateColumns = false;
+            this.ButtonDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.ButtonDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.autofocusDataGridViewCheckBoxColumn,
             this.isDisabledDataGridViewCheckBoxColumn,
             this.formDataGridViewTextBoxColumn,
@@ -94,13 +73,13 @@
             this.formMethodDataGridViewTextBoxColumn,
             this.formNoValidateDataGridViewCheckBoxColumn,
             this.formTargetDataGridViewTextBoxColumn});
-            this.dataGridView1.DataSource = this.iHtmlButtonElementBindingSouce;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 12);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersWidth = 102;
-            this.dataGridView1.RowTemplate.Height = 40;
-            this.dataGridView1.Size = new System.Drawing.Size(755, 392);
-            this.dataGridView1.TabIndex = 45;
+            this.ButtonDataGridView.DataSource = this.iHtmlButtonElementBindingSource;
+            this.ButtonDataGridView.Location = new System.Drawing.Point(12, 12);
+            this.ButtonDataGridView.Name = "ButtonDataGridView";
+            this.ButtonDataGridView.RowHeadersWidth = 102;
+            this.ButtonDataGridView.RowTemplate.Height = 40;
+            this.ButtonDataGridView.Size = new System.Drawing.Size(1029, 353);
+            this.ButtonDataGridView.TabIndex = 45;
             // 
             // autofocusDataGridViewCheckBoxColumn
             // 
@@ -200,41 +179,74 @@
             this.formTargetDataGridViewTextBoxColumn.Name = "formTargetDataGridViewTextBoxColumn";
             this.formTargetDataGridViewTextBoxColumn.Width = 250;
             // 
-            // button1
+            // AddButton
             // 
-            this.button1.Location = new System.Drawing.Point(564, 542);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(146, 70);
-            this.button1.TabIndex = 46;
-            this.button1.Text = "Add";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.AddButton.Location = new System.Drawing.Point(625, 375);
+            this.AddButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.AddButton.Name = "AddButton";
+            this.AddButton.Size = new System.Drawing.Size(200, 55);
+            this.AddButton.TabIndex = 49;
+            this.AddButton.Text = "Add";
+            this.AddButton.UseVisualStyleBackColor = true;
+            this.AddButton.Click += new System.EventHandler(this.AddButton_Click);
+            // 
+            // RemoveButton
+            // 
+            this.RemoveButton.Location = new System.Drawing.Point(228, 375);
+            this.RemoveButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.RemoveButton.Name = "RemoveButton";
+            this.RemoveButton.Size = new System.Drawing.Size(200, 55);
+            this.RemoveButton.TabIndex = 48;
+            this.RemoveButton.Text = "Remove";
+            this.RemoveButton.UseVisualStyleBackColor = true;
+            this.RemoveButton.Click += new System.EventHandler(this.RemoveButton_Click);
+            // 
+            // saveButton
+            // 
+            this.saveButton.Location = new System.Drawing.Point(841, 375);
+            this.saveButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.saveButton.Name = "saveButton";
+            this.saveButton.Size = new System.Drawing.Size(200, 55);
+            this.saveButton.TabIndex = 47;
+            this.saveButton.Text = "Save";
+            this.saveButton.UseVisualStyleBackColor = true;
+            this.saveButton.Click += new System.EventHandler(this.SaveButton_Click);
+            // 
+            // cancelButton
+            // 
+            this.cancelButton.Location = new System.Drawing.Point(12, 375);
+            this.cancelButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.cancelButton.Name = "cancelButton";
+            this.cancelButton.Size = new System.Drawing.Size(200, 55);
+            this.cancelButton.TabIndex = 46;
+            this.cancelButton.Text = "Cancel";
+            this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // ButtonAttributesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(779, 641);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.dataGridView1);
+            this.ClientSize = new System.Drawing.Size(1054, 443);
+            this.Controls.Add(this.AddButton);
+            this.Controls.Add(this.RemoveButton);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.cancelButton);
+            this.Controls.Add(this.ButtonDataGridView);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "ButtonAttributesForm";
             this.Text = "Attributes";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ButtonAttributesForm_Closing);
-            ((System.ComponentModel.ISupportInitialize)(this.iHtmlButtonElementBindingSouce)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.iHtmlButtonElementBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ButtonDataGridView)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private System.Windows.Forms.Button cancelButton;
-        private System.Windows.Forms.Button saveButton;
-        private System.Windows.Forms.BindingSource iHtmlButtonElementBindingSouce;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.BindingSource iHtmlButtonElementBindingSource;
+        private System.Windows.Forms.DataGridView ButtonDataGridView;
         private System.Windows.Forms.DataGridViewCheckBoxColumn autofocusDataGridViewCheckBoxColumn;
         private System.Windows.Forms.DataGridViewCheckBoxColumn isDisabledDataGridViewCheckBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn formDataGridViewTextBoxColumn;
@@ -247,6 +259,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn formMethodDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewCheckBoxColumn formNoValidateDataGridViewCheckBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn formTargetDataGridViewTextBoxColumn;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button AddButton;
+        private System.Windows.Forms.Button RemoveButton;
+        private System.Windows.Forms.Button saveButton;
+        private System.Windows.Forms.Button cancelButton;
     }
 }
