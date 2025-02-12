@@ -32,5 +32,20 @@ namespace ShapeHandler.Database
             }
             
         }
+
+        private void okayButton_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void controlsView_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cancelButton_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }
