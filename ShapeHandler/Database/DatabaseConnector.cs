@@ -15,7 +15,13 @@ namespace ShapeHandler.Database
 
         public DatabaseConnector(string uri, string user, string password)
         {
-            _driver = GraphDatabase.Driver(uri, AuthTokens.Basic(user, password));
+            var auth = AuthTokens.Basic(user, password);
+            _driver = GraphDatabase.Driver(uri, auth);
+
+            if (_driver.VerifyAuthenticationAsync(auth).Result == false)
+            {
+                throw new Exception("Authentication to the database failed");
+            }   
 
             if (_driver.TryVerifyConnectivityAsync().Result == false)
             {
@@ -69,12 +75,12 @@ namespace ShapeHandler.Database
             {
                 if (!visited.Contains(node))
                 {
-                    await DepthFirstSearch(tx, graph, visited, node);
+                    await DFS_CreateGraph(tx, graph, visited, node);
                 }
             }
         }
 
-        private async Task DepthFirstSearch(IAsyncTransaction tx, HtmlGraph graph, HashSet<FlowchartNode> visited, FlowchartNode node)
+        private async Task DFS_CreateGraph(IAsyncTransaction tx, HtmlGraph graph, HashSet<FlowchartNode> visited, FlowchartNode node)
         {
             visited.Add(node);
             await CreateNode(tx, node);
@@ -84,7 +90,7 @@ namespace ShapeHandler.Database
             {
                 if (!visited.Contains(neighbor))
                 {
-                    await DepthFirstSearch(tx, graph, visited, neighbor);
+                    await DFS_CreateGraph(tx, graph, visited, neighbor);
                 }
             }
 

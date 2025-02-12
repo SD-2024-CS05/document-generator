@@ -1,5 +1,4 @@
-﻿using Visio = Microsoft.Office.Interop.Visio;
-namespace ShapeHandler.Database
+﻿namespace ShapeHandler.Database
 {
     partial class ShapeDataForm
     {
@@ -29,160 +28,131 @@ namespace ShapeHandler.Database
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Value = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Inputs", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Anchors", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("Selects", System.Windows.Forms.HorizontalAlignment.Left);
+            System.Windows.Forms.ListViewGroup listViewGroup4 = new System.Windows.Forms.ListViewGroup("Images", System.Windows.Forms.HorizontalAlignment.Left);
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ShapeDataForm));
+            this.SaveButton = new System.Windows.Forms.Button();
+            this.CancelButton = new System.Windows.Forms.Button();
+            this.ControlListView = new System.Windows.Forms.ListView();
+            this.IdColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.HtmlColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.RemoveControlButton = new System.Windows.Forms.Button();
+            this.AddControlComboBox = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
-            // textBox1
+            // SaveButton
             // 
-            this.textBox1.Location = new System.Drawing.Point(85, 49);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 31);
-            this.textBox1.TabIndex = 0;
+            this.SaveButton.Location = new System.Drawing.Point(334, 173);
+            this.SaveButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.SaveButton.Name = "SaveButton";
+            this.SaveButton.Size = new System.Drawing.Size(60, 23);
+            this.SaveButton.TabIndex = 13;
+            this.SaveButton.Text = "Save";
+            this.SaveButton.UseVisualStyleBackColor = true;
+            this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
             // 
-            // label1
+            // CancelButton
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(9, 49);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(32, 25);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "ID";
+            this.CancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.CancelButton.Location = new System.Drawing.Point(11, 173);
+            this.CancelButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.CancelButton.Name = "CancelButton";
+            this.CancelButton.Size = new System.Drawing.Size(49, 22);
+            this.CancelButton.TabIndex = 14;
+            this.CancelButton.Text = "Cancel";
+            this.CancelButton.UseVisualStyleBackColor = true;
+            this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
-            // label2
+            // ControlListView
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(9, 83);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(68, 25);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Name";
+            this.ControlListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.IdColumn,
+            this.HtmlColumn});
+            listViewGroup1.Header = "Inputs";
+            listViewGroup1.Name = "InputGroup";
+            listViewGroup2.Header = "Anchors";
+            listViewGroup2.Name = "AnchorGroup";
+            listViewGroup3.Header = "Selects";
+            listViewGroup3.Name = "SelectGroup";
+            listViewGroup4.Header = "Images";
+            listViewGroup4.Name = "ImageGroup";
+            this.ControlListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
+            listViewGroup1,
+            listViewGroup2,
+            listViewGroup3,
+            listViewGroup4});
+            this.ControlListView.HideSelection = false;
+            this.ControlListView.Location = new System.Drawing.Point(11, 12);
+            this.ControlListView.MultiSelect = false;
+            this.ControlListView.Name = "ControlListView";
+            this.ControlListView.Size = new System.Drawing.Size(382, 156);
+            this.ControlListView.TabIndex = 17;
+            this.ControlListView.UseCompatibleStateImageBehavior = false;
+            this.ControlListView.View = System.Windows.Forms.View.Details;
             // 
-            // textBox2
+            // IdColumn
             // 
-            this.textBox2.Location = new System.Drawing.Point(85, 83);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(100, 31);
-            this.textBox2.TabIndex = 2;
+            this.IdColumn.Text = "ID";
+            this.IdColumn.Width = 135;
             // 
-            // label3
+            // HtmlColumn
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(9, 355);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(66, 25);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "Class";
+            this.HtmlColumn.Text = "HTML";
+            this.HtmlColumn.Width = 243;
             // 
-            // textBox3
+            // RemoveControlButton
             // 
-            this.textBox3.Location = new System.Drawing.Point(85, 349);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(100, 31);
-            this.textBox3.TabIndex = 4;
+            this.RemoveControlButton.Location = new System.Drawing.Point(65, 173);
+            this.RemoveControlButton.Name = "RemoveControlButton";
+            this.RemoveControlButton.Size = new System.Drawing.Size(94, 23);
+            this.RemoveControlButton.TabIndex = 18;
+            this.RemoveControlButton.Text = "Remove Control";
+            this.RemoveControlButton.UseVisualStyleBackColor = true;
+            this.RemoveControlButton.Click += new System.EventHandler(this.RemoveControlButton_Click);
             // 
-            // label5
+            // AddControlComboBox
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(9, 12);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(60, 25);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "Type";
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(85, 12);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 33);
-            this.comboBox1.TabIndex = 10;
-            this.comboBox1.Text = "Select";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(9, 120);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(67, 25);
-            this.label6.TabIndex = 11;
-            this.label6.Text = "Value";
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Value});
-            this.dataGridView1.Location = new System.Drawing.Point(85, 120);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersWidth = 82;
-            this.dataGridView1.RowTemplate.Height = 33;
-            this.dataGridView1.Size = new System.Drawing.Size(484, 223);
-            this.dataGridView1.TabIndex = 12;
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "Key";
-            this.Column1.MinimumWidth = 10;
-            this.Column1.Name = "Column1";
-            this.Column1.Width = 200;
-            // 
-            // Value
-            // 
-            this.Value.HeaderText = "Value";
-            this.Value.MinimumWidth = 10;
-            this.Value.Name = "Value";
-            this.Value.Width = 200;
+            this.AddControlComboBox.FormattingEnabled = true;
+            this.AddControlComboBox.Items.AddRange(new object[] {
+            "<input>",
+            "<a>",
+            "<select>",
+            "<img>"});
+            this.AddControlComboBox.Location = new System.Drawing.Point(208, 175);
+            this.AddControlComboBox.Name = "AddControlComboBox";
+            this.AddControlComboBox.Size = new System.Drawing.Size(121, 21);
+            this.AddControlComboBox.TabIndex = 19;
+            this.AddControlComboBox.SelectionChangeCommitted += new System.EventHandler(this.AddControlComboBox_SelectionChangeCommitted);
             // 
             // ShapeDataForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AcceptButton = this.SaveButton;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 389);
-            this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.comboBox1);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.textBox3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.textBox2);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.textBox1);
+            this.ClientSize = new System.Drawing.Size(405, 202);
+            this.Controls.Add(this.AddControlComboBox);
+            this.Controls.Add(this.RemoveControlButton);
+            this.Controls.Add(this.ControlListView);
+            this.Controls.Add(this.CancelButton);
+            this.Controls.Add(this.SaveButton);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "ShapeDataForm";
-            this.Text = "Form1";
+            this.Text = "Controls";
             this.Load += new System.EventHandler(this.ShapeDataForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Value;
+        private System.Windows.Forms.Button SaveButton;
+        private System.Windows.Forms.Button CancelButton;
+        private System.Windows.Forms.ListView ControlListView;
+        private System.Windows.Forms.ColumnHeader IdColumn;
+        private System.Windows.Forms.ColumnHeader HtmlColumn;
+        private System.Windows.Forms.Button RemoveControlButton;
+        private System.Windows.Forms.ComboBox AddControlComboBox;
     }
 }

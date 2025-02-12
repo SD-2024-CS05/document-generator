@@ -11,6 +11,7 @@ namespace ShapeHandler.Objects
     {
         public string Id { get; }
         public string Label { get; set; }
+        public string URL { get; set; }
         public NodeType Type { get; set; }
 
         protected FlowchartNode(string label, NodeType type)

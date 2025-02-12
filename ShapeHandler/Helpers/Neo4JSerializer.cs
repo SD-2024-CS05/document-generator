@@ -31,13 +31,22 @@ namespace ShapeHandler.Database
                     obj.Add("type", decisionNode.Type.ToString().ToUpper());
                 }
                 obj.Add("Label", node.Label ?? node.Id);
-            } else if (value is Connection connection)
+                if (!string.IsNullOrEmpty(node.URL))
+                {
+                    obj.Add("URL", node.URL);
+                }
+            }
+            else if (value is Connection connection)
             {
                 obj.Add("Label", connection.Label);
                 obj.Add("type", connection.Type.ToString().ToUpper());
-                if (connection.SubmissionId != null)
+                if (!string.IsNullOrEmpty(connection.URL))
                 {
                     obj.Add("submissionId", connection.SubmissionId);
+                }
+                if (!string.IsNullOrEmpty(connection.URL))
+                {
+                    obj.Add("URL", connection.URL);
                 }
             }
 

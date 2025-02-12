@@ -9,7 +9,7 @@ namespace ShapeHandler.Objects
 {
     public class DataInputNode : FlowchartNode
     {
-        public List<HtmlNode> DataInputNodes { get; set; }
+        public List<HtmlNode> DataInputNodes { get; set; } = new List<HtmlNode>();
 
         public DataInputNode(string label, NodeType type = NodeType.DataInput) : base(label, type)
         {
