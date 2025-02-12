@@ -6,13 +6,15 @@ using System;
 using ShapeHandler.Database;
 using System.Windows.Forms;
 using ShapeHandler.Database.Input;
+using ShapeHandler.Database.StartEnd;
 
 namespace ShapeHandler
 {
     public partial class ShapeDetector
     {
         private Visio.Document _activeDocument = null;
-        private bool? _hasStartNode = null;
+        private bool _hasStartNode = false;
+        private bool _hasEndNode = false;
 
         private void ShapeDetector_Startup(object sender, System.EventArgs e)
         {
@@ -64,18 +66,26 @@ namespace ShapeHandler
                     shapeDataForm.ShowDialog();
                     break;
                 case NodeType.StartEnd:
-                    if (_hasStartNode == null)
+                    if (!_hasStartNode)
                     {
+                        _hasStartNode = true;
                         StartEndForm startEndForm = new StartEndForm();
                         startEndForm.ShowDialog();
-                        _hasStartNode = startEndForm.IsStart;
-                        VisioShapeDataHelper.AddShapeData(shape.ID, _hasStartNode.Value.ToString(), "IsStart");
+                        VisioShapeDataHelper.AddShapeData(shape.ID, startEndForm.URL, "URL");
+                        MessageBox.Show("Start node added");
+                    }
+                    else if (!_hasEndNode)
+                    {
+                        _hasEndNode = true;
+                        StartEndForm startEndForm = new StartEndForm();
+                        startEndForm.ShowDialog();
+                        VisioShapeDataHelper.AddShapeData(shape.ID, startEndForm.URL, "URL");
+                        MessageBox.Show("End node added");
                     }
                     else
                     {
-                        var msg = !_hasStartNode.Value ? "This is the Start Node" : "This is the End Node";
-                        VisioShapeDataHelper.AddShapeData(shape.ID, (!_hasStartNode).ToString(), "IsStart");
-                        MessageBox.Show(msg);
+                        MessageBox.Show("There can only be one start and end node");
+                        shape.Delete();
                     }
                     break;
                 case NodeType.Decision:
@@ -83,8 +93,6 @@ namespace ShapeHandler
                 case NodeType.UserProcess:
                     break;
                 default:
-                    ShapeDataForm temp = new ShapeDataForm(shape.ID);
-                    temp.ShowDialog();
                     break;
             }
         }

@@ -454,17 +454,17 @@
     <Compile Include="Database\Input\ImageAttributesForm.Designer.cs">
       <DependentUpon>ImageAttributesForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Database\Input\StartEndForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Database\Input\StartEndForm.Designer.cs">
-      <DependentUpon>StartEndForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Database\ShapeDataForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Database\ShapeDataForm.Designer.cs">
       <DependentUpon>ShapeDataForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Database\StartEnd\StartEndForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Database\StartEnd\StartEndForm.Designer.cs">
+      <DependentUpon>StartEndForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\HtmlElementSerializer.cs" />
     <Compile Include="Helpers\Neo4JSerializer.cs" />
@@ -507,11 +507,11 @@
     <EmbeddedResource Include="Database\Input\ImageAttributesForm.resx">
       <DependentUpon>ImageAttributesForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Database\Input\StartEndForm.resx">
-      <DependentUpon>StartEndForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Database\ShapeDataForm.resx">
       <DependentUpon>ShapeDataForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Database\StartEnd\StartEndForm.resx">
+      <DependentUpon>StartEndForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

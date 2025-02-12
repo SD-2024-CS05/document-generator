@@ -129,16 +129,22 @@ namespace ShapeHandler.ShapeTransformation
             {
                 case Objects.NodeType.StartEnd:
                     bool isStart = shapeData["IsStart"].ToString().ToBoolean();
+                    string url = shapeData["URL"].ToString();
                     if (isStart)
                     {
                         node = new StartEndNode("Start")
                         {
-                            IsStart = true
+                            IsStart = true,
+                            URL = url
                         };
                     }
                     else
                     {
-                        node = new StartEndNode("End");
+                        node = new StartEndNode("End")
+                        {
+                            IsStart = false,
+                            URL = url
+                        };
                     }
                     break;
                 case Objects.NodeType.Decision:
