@@ -110,7 +110,7 @@ namespace ShapeHandler.Database
                 {
                     var selectElement = (IHtmlSelectElement)htmlNode.Element;
                     var options = selectElement.Options.Select(option => new { option.OuterHtml }).ToList();
-                    elementAttributes.Add("Options", options);
+                    elementAttributes.Add("Options", JsonConvert.SerializeObject(options));
                 }
 
                 await tx.RunAsync(@"
