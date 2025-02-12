@@ -92,6 +92,10 @@ namespace ShapeHandler
                     break;
                 case NodeType.UserProcess:
                     break;
+                case NodeType.BackgroundProcess:
+                    break;
+                case NodeType.Page:
+                    break;
                 default:
                     break;
             }
