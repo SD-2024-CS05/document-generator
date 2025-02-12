@@ -79,7 +79,7 @@ namespace ShapeHandler.Objects
                 }
                 catch (Exception)
                 {
-                    return NodeType.DataInput;
+                    return NodeType.None;
                 }
             }
             return NodeType.None;
@@ -89,7 +89,8 @@ namespace ShapeHandler.Objects
         {
             var shapeData = GetShapeData(shapeId);
             var htmlElements = new List<IHtmlElement>();
-            foreach (var data in shapeData)
+            // skip the first row since it is the node type
+            foreach (var data in shapeData.Skip(1))
             {
                 try
                 {

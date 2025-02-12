@@ -34,7 +34,9 @@ namespace ShapeHandler.ShapeTransformation
 
             foreach (Shape shape in shapes)
             {
-                if (!Regex.IsMatch(shape.Name, "\\W*((?i)Dynamic connector(?-i))\\W*") && !Regex.IsMatch(shape.Name, "\\W*((?i)Sheet(?-i))\\W*"))
+                var isSpecialConnector = VisioShapeDataHelper.GetShapeData(shape.ID)["Node Type"]?.ToString() == "Special Connector";
+                var isSheet = Regex.IsMatch(shape.Name, "\\W*((?i)Sheet(?-i))\\W*");
+                if (!isSpecialConnector && !isSheet)
                 {
                     FlowchartNode node = ConvertShapeToNode(shape);
                     if (node != null)
@@ -53,7 +55,9 @@ namespace ShapeHandler.ShapeTransformation
             // Add the connections of the nodes
             foreach (Shape shape in shapes)
             {
-                if (!Regex.IsMatch(shape.Name, "\\W*((?i)Dynamic connector(?-i))\\W*") && !Regex.IsMatch(shape.Name, "\\W*((?i)Sheet(?-i))\\W*"))
+                var isSpecialConnector = VisioShapeDataHelper.GetShapeData(shape.ID)["Node Type"]?.ToString() == "Special Connector";
+                var isSheet = Regex.IsMatch(shape.Name, "\\W*((?i)Sheet(?-i))\\W*");
+                if (!isSpecialConnector && !isSheet)
                 {
                     IDictionary<string, string> connected = GetConnected(shape, visioIDToGuid);
                     connections[visioIDToGuid[shape.ID]] = connected;
@@ -124,7 +128,7 @@ namespace ShapeHandler.ShapeTransformation
             switch (type)
             {
                 case Objects.NodeType.StartEnd:
-                    bool isStart = shapeData["Is Start"].ToString().ToBoolean();
+                    bool isStart = shapeData["IsStart"].ToString().ToBoolean();
                     if (isStart)
                     {
                         node = new StartEndNode("Start")

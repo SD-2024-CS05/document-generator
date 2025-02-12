@@ -5,12 +5,15 @@ using ShapeHandler.ShapeTransformation;
 using System;
 using ShapeHandler.Database;
 using System.Windows.Forms;
+using ShapeHandler.Database.Input;
 
 namespace ShapeHandler
 {
     public partial class ShapeDetector
     {
         private Visio.Document _activeDocument = null;
+        private bool? _hasStartNode = null;
+
         private void ShapeDetector_Startup(object sender, System.EventArgs e)
         {
             // Uncomment for local testing
@@ -61,6 +64,19 @@ namespace ShapeHandler
                     shapeDataForm.ShowDialog();
                     break;
                 case NodeType.StartEnd:
+                    if (_hasStartNode == null)
+                    {
+                        StartEndForm startEndForm = new StartEndForm();
+                        startEndForm.ShowDialog();
+                        _hasStartNode = startEndForm.IsStart;
+                        VisioShapeDataHelper.AddShapeData(shape.ID, _hasStartNode.Value.ToString(), "IsStart");
+                    }
+                    else
+                    {
+                        var msg = !_hasStartNode.Value ? "This is the Start Node" : "This is the End Node";
+                        VisioShapeDataHelper.AddShapeData(shape.ID, (!_hasStartNode).ToString(), "IsStart");
+                        MessageBox.Show(msg);
+                    }
                     break;
                 case NodeType.Decision:
                     break;
