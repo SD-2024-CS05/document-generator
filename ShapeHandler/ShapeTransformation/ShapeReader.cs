@@ -123,6 +123,7 @@ namespace ShapeHandler.ShapeTransformation
         private static FlowchartNode ConvertShapeToNode(Shape shape)
         {
             var shapeData = VisioShapeDataHelper.GetShapeData(shape.ID);
+            var htmlElements = VisioShapeDataHelper.GetHtmlElements(shape.ID);
             var type = VisioShapeDataHelper.GetNodeType(shape.ID);
             dynamic node = null;
             switch (type)
@@ -150,27 +151,15 @@ namespace ShapeHandler.ShapeTransformation
                 case Objects.NodeType.Decision:
                     {
                         node = new DecisionNode(shape.Text);
-                        List<string> indexes = shapeData.Keys.Where(k => k.StartsWith("Decision")).ToList();
-                        foreach (var index in indexes)
+                        htmlElements.ForEach(he =>
                         {
-                            HtmlNode htmlNode = null;
-                            JArray schema = JsonConvert.DeserializeObject<JArray>(shapeData[index]);
-                            if (schema[0].First.First.ToString() == "BUTTON")
-                            {
-                                IHtmlButtonElement button = document.CreateElement("button") as IHtmlButtonElement;
-                                button.Id = schema[0]["attributes"]["id"].ToString();
-                                button.Type = schema[0]["attributes"]["type"].ToString();
-                                htmlNode = new HtmlNode(button.Id, button, Objects.NodeType.Button);
-                            }
-                        }
+                            HtmlNode htmlNode = new HtmlNode(he.Id, he);
+                            node.SubmissionNodes.Add(htmlNode);
+                        });
                         break;
                     }
-                case Objects.NodeType.Decision:
-                    node = new DecisionNode(shape.Text);
-                    break;
                 case Objects.NodeType.DataInput:
                     node = new DataInputNode(shape.Text);
-                    var htmlElements = VisioShapeDataHelper.GetHtmlElements(shape.ID);
                     htmlElements.ForEach(he =>
                     {
                         HtmlNode htmlNode = new HtmlNode(he.Id, he);
