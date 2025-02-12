@@ -5,6 +5,7 @@ using ShapeHandler.ShapeTransformation;
 using System;
 using ShapeHandler.Database;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace ShapeHandler
 {
@@ -52,8 +53,16 @@ namespace ShapeHandler
 
         private void ActiveDocument_ShapeAdded(Visio.IVShape shape)
         {
-            ShapeDataForm shapeDataForm = new ShapeDataForm(shape.ID);
-            shapeDataForm.ShowDialog();
+            if (Regex.IsMatch(shape.Name, "\\W*((?i)Input Data(?-i))\\W*"))
+            {
+                ShapeDataForm shapeDataForm = new ShapeDataForm(shape.ID);
+                shapeDataForm.ShowDialog();
+            }
+            else if (Regex.IsMatch(shape.Name, "\\W*((?i)Decision(?-i))\\W*"))
+            {
+                DecisionControlsForm decisionControlsForm = new DecisionControlsForm(shape.ID);
+                decisionControlsForm.ShowDialog();
+            }
         }
 
         private void ShapeDetector_Shutdown(object sender, System.EventArgs e)
