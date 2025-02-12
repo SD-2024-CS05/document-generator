@@ -14,11 +14,11 @@ using ShapeHandler.Objects;
 
 namespace ShapeHandler.Database
 {
-    public partial class DaForm : Form
+    public partial class ShapeDataForm : Form
     {
         private static int _shapeID;
 
-        public DaForm(int shapeID)
+        public ShapeDataForm(int shapeID)
         {
             InitializeComponent();
             _shapeID = shapeID;

@@ -1,6 +1,6 @@
 ﻿namespace ShapeHandler.Database
 {
-    partial class DaForm
+    partial class ShapeDataForm
     {
         /// <summary>
         /// Required designer variable.
@@ -32,7 +32,7 @@
             System.Windows.Forms.ListViewGroup listViewGroup2 = new System.Windows.Forms.ListViewGroup("Anchors", System.Windows.Forms.HorizontalAlignment.Left);
             System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("Selects", System.Windows.Forms.HorizontalAlignment.Left);
             System.Windows.Forms.ListViewGroup listViewGroup4 = new System.Windows.Forms.ListViewGroup("Images", System.Windows.Forms.HorizontalAlignment.Left);
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DaForm));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ShapeDataForm));
             this.SaveButton = new System.Windows.Forms.Button();
             this.CancelButton = new System.Windows.Forms.Button();
             this.ControlListView = new System.Windows.Forms.ListView();
@@ -44,10 +44,10 @@
             // 
             // SaveButton
             // 
-            this.SaveButton.Location = new System.Drawing.Point(334, 173);
-            this.SaveButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.SaveButton.Location = new System.Drawing.Point(891, 413);
+            this.SaveButton.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
             this.SaveButton.Name = "SaveButton";
-            this.SaveButton.Size = new System.Drawing.Size(60, 23);
+            this.SaveButton.Size = new System.Drawing.Size(160, 55);
             this.SaveButton.TabIndex = 13;
             this.SaveButton.Text = "Save";
             this.SaveButton.UseVisualStyleBackColor = true;
@@ -56,10 +56,10 @@
             // CancelButton
             // 
             this.CancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CancelButton.Location = new System.Drawing.Point(11, 173);
-            this.CancelButton.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.CancelButton.Location = new System.Drawing.Point(29, 413);
+            this.CancelButton.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
             this.CancelButton.Name = "CancelButton";
-            this.CancelButton.Size = new System.Drawing.Size(49, 22);
+            this.CancelButton.Size = new System.Drawing.Size(131, 52);
             this.CancelButton.TabIndex = 14;
             this.CancelButton.Text = "Cancel";
             this.CancelButton.UseVisualStyleBackColor = true;
@@ -84,10 +84,11 @@
             listViewGroup3,
             listViewGroup4});
             this.ControlListView.HideSelection = false;
-            this.ControlListView.Location = new System.Drawing.Point(11, 12);
+            this.ControlListView.Location = new System.Drawing.Point(29, 29);
+            this.ControlListView.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.ControlListView.MultiSelect = false;
             this.ControlListView.Name = "ControlListView";
-            this.ControlListView.Size = new System.Drawing.Size(382, 156);
+            this.ControlListView.Size = new System.Drawing.Size(1012, 366);
             this.ControlListView.TabIndex = 17;
             this.ControlListView.UseCompatibleStateImageBehavior = false;
             this.ControlListView.View = System.Windows.Forms.View.Details;
@@ -104,9 +105,10 @@
             // 
             // RemoveControlButton
             // 
-            this.RemoveControlButton.Location = new System.Drawing.Point(65, 173);
+            this.RemoveControlButton.Location = new System.Drawing.Point(173, 413);
+            this.RemoveControlButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.RemoveControlButton.Name = "RemoveControlButton";
-            this.RemoveControlButton.Size = new System.Drawing.Size(94, 23);
+            this.RemoveControlButton.Size = new System.Drawing.Size(251, 55);
             this.RemoveControlButton.TabIndex = 18;
             this.RemoveControlButton.Text = "Remove Control";
             this.RemoveControlButton.UseVisualStyleBackColor = true;
@@ -120,25 +122,26 @@
             "<a>",
             "<select>",
             "<img>"});
-            this.AddControlComboBox.Location = new System.Drawing.Point(208, 175);
+            this.AddControlComboBox.Location = new System.Drawing.Point(555, 417);
+            this.AddControlComboBox.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.AddControlComboBox.Name = "AddControlComboBox";
-            this.AddControlComboBox.Size = new System.Drawing.Size(121, 21);
+            this.AddControlComboBox.Size = new System.Drawing.Size(316, 39);
             this.AddControlComboBox.TabIndex = 19;
             this.AddControlComboBox.SelectionChangeCommitted += new System.EventHandler(this.AddControlComboBox_SelectionChangeCommitted);
             // 
             // ShapeDataForm
             // 
             this.AcceptButton = this.SaveButton;
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(405, 202);
+            this.ClientSize = new System.Drawing.Size(1080, 482);
             this.Controls.Add(this.AddControlComboBox);
             this.Controls.Add(this.RemoveControlButton);
             this.Controls.Add(this.ControlListView);
             this.Controls.Add(this.CancelButton);
             this.Controls.Add(this.SaveButton);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
             this.Name = "ShapeDataForm";
             this.Text = "Controls";
             this.Load += new System.EventHandler(this.ShapeDataForm_Load);

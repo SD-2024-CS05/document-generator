@@ -21,13 +21,9 @@ namespace ShapeHandler.Database.Input
 {
     public partial class ButtonAttributesForm : Form
     {
-        private static int _shapeID;
-        private static int _inputNum;
         private IDocument _document;
-        public ButtonAttributesForm(int shapeID, int inputNum)
+        public ButtonAttributesForm()
         {
-            _shapeID = shapeID;
-            _inputNum = inputNum;
             InitializeComponent();
             BrowsingContext context = new BrowsingContext(Configuration.Default);
             _document = context.OpenNewAsync().Result;
