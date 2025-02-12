@@ -7,7 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using AngleSharp.Html.Dom;
+using AngleSharp.Html.Parser;
+using AngleSharp;
+using Newtonsoft.Json;
 using ShapeHandler.Database.Input;
+using ShapeHandler.Helpers;
+using ShapeHandler.Objects;
+using AngleSharp.Dom;
 
 namespace ShapeHandler.Database
 {
@@ -16,36 +23,77 @@ namespace ShapeHandler.Database
         private static int _shapeID;
         public DecisionControlsForm(int shapeID)
         {
-            _shapeID = shapeID;
             InitializeComponent();
+            _shapeID = shapeID;
         }
 
-        private void optionsComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void UpdateShapeData()
         {
-            var selected = optionsComboBox.SelectedIndex;
-            switch (selected)
+            List<ListViewItem> elements = ControlListView.Items.Cast<ListViewItem>().ToList();
+            int buttonNum = 0;
+            string label = "<UNKNOWN>";
+            foreach (var element in elements)
             {
-                case 0:
-                    ButtonAttributesForm buttonAttributesForm = new ButtonAttributesForm(_shapeID, 1);
+                string html = element.SubItems[1].Text;
+                string group = element.Group.Name;
+                HtmlParser parser = new HtmlParser();
+                IHtmlElement parsedElement = parser.ParseFragment(html, null).First() as IHtmlElement;
+                switch (group)
+                {
+                    case "ButtonGroup":
+                        parsedElement = parsedElement.GetElementsByTagName("button").First() as IHtmlButtonElement;
+                        label = $"button {++buttonNum}";
+                        break;
+                    default:
+                        break;
+                }
+
+                string output = JsonConvert.SerializeObject(parsedElement, new HtmlElementSerializer());
+                VisioShapeDataHelper.AddShapeData(_shapeID, output, label);
+            }
+        }
+
+        private void CancelButton_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void SaveButton_Click(object sender, EventArgs e)
+        {
+            UpdateShapeData();
+            Close();
+        }
+
+        private void RemoveControlButton_Click(object sender, EventArgs e)
+        {
+            if (ControlListView.SelectedItems.Count != 0)
+            {
+                ControlListView.Items.Remove(ControlListView.SelectedItems[0]);
+            }
+        }
+
+        private void AddControlComboBox_SelectionChangeCommitted(object sender, EventArgs e)
+        {
+            string selectedItem = AddControlComboBox.SelectedItem.ToString();
+            switch (selectedItem)
+            {
+                case "<button>":
+                    ButtonAttributesForm buttonAttributesForm = new ButtonAttributesForm();
                     buttonAttributesForm.ShowDialog();
+
+                    if (buttonAttributesForm.Elements.Any())
+                    {
+                        foreach (var element in buttonAttributesForm.Elements)
+                        {
+                            ListViewItem item = new ListViewItem(new[] {element.Id, element.OuterHtml});
+                            item.Group = ControlListView.Groups["ButtonGroup"];
+                            ControlListView.Items.Add(item);
+                        }
+                    }
+                    break;
+                default:
                     break;
             }
-            
-        }
-
-        private void okayButton_Click(object sender, EventArgs e)
-        {
-            Close();
-        }
-
-        private void controlsView_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void cancelButton_Click(object sender, EventArgs e)
-        {
-            Close();
         }
     }
 }

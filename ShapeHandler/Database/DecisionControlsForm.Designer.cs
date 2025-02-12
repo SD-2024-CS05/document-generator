@@ -28,67 +28,103 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("Inputs", System.Windows.Forms.HorizontalAlignment.Left);
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DecisionControlsForm));
-            this.controlsView = new System.Windows.Forms.ListView();
-            this.optionsComboBox = new System.Windows.Forms.ComboBox();
-            this.okayButton = new System.Windows.Forms.Button();
-            this.cancelButton = new System.Windows.Forms.Button();
+            this.ControlListView = new System.Windows.Forms.ListView();
+            this.IdColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.HtmlColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.CancelButton = new System.Windows.Forms.Button();
+            this.SaveButton = new System.Windows.Forms.Button();
+            this.AddControlComboBox = new System.Windows.Forms.ComboBox();
+            this.RemoveControlButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // controlsView
+            // ControlListView
             // 
-            this.controlsView.HideSelection = false;
-            this.controlsView.Location = new System.Drawing.Point(1, 11);
-            this.controlsView.Margin = new System.Windows.Forms.Padding(2);
-            this.controlsView.Name = "controlsView";
-            this.controlsView.Size = new System.Drawing.Size(438, 157);
-            this.controlsView.TabIndex = 1;
-            this.controlsView.UseCompatibleStateImageBehavior = false;
-            this.controlsView.SelectedIndexChanged += new System.EventHandler(this.controlsView_SelectedIndexChanged);
+            this.ControlListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.IdColumn,
+            this.HtmlColumn});
+            listViewGroup1.Header = "Inputs";
+            listViewGroup1.Name = "ButtonGroup";
+            this.ControlListView.Groups.AddRange(new System.Windows.Forms.ListViewGroup[] {
+            listViewGroup1});
+            this.ControlListView.HideSelection = false;
+            this.ControlListView.Location = new System.Drawing.Point(17, 16);
+            this.ControlListView.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.ControlListView.MultiSelect = false;
+            this.ControlListView.Name = "ControlListView";
+            this.ControlListView.Size = new System.Drawing.Size(1012, 366);
+            this.ControlListView.TabIndex = 22;
+            this.ControlListView.UseCompatibleStateImageBehavior = false;
+            this.ControlListView.View = System.Windows.Forms.View.Details;
             // 
-            // optionsComboBox
+            // IdColumn
             // 
-            this.optionsComboBox.FormattingEnabled = true;
-            this.optionsComboBox.Items.AddRange(new object[] {
+            this.IdColumn.Text = "ID";
+            this.IdColumn.Width = 135;
+            // 
+            // HtmlColumn
+            // 
+            this.HtmlColumn.Text = "HTML";
+            this.HtmlColumn.Width = 243;
+            // 
+            // CancelButton
+            // 
+            this.CancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.CancelButton.Location = new System.Drawing.Point(17, 400);
+            this.CancelButton.Margin = new System.Windows.Forms.Padding(5);
+            this.CancelButton.Name = "CancelButton";
+            this.CancelButton.Size = new System.Drawing.Size(131, 52);
+            this.CancelButton.TabIndex = 21;
+            this.CancelButton.Text = "Cancel";
+            this.CancelButton.UseVisualStyleBackColor = true;
+            this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
+            // 
+            // SaveButton
+            // 
+            this.SaveButton.Location = new System.Drawing.Point(879, 400);
+            this.SaveButton.Margin = new System.Windows.Forms.Padding(5);
+            this.SaveButton.Name = "SaveButton";
+            this.SaveButton.Size = new System.Drawing.Size(160, 55);
+            this.SaveButton.TabIndex = 20;
+            this.SaveButton.Text = "Save";
+            this.SaveButton.UseVisualStyleBackColor = true;
+            this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
+            // 
+            // AddControlComboBox
+            // 
+            this.AddControlComboBox.FormattingEnabled = true;
+            this.AddControlComboBox.Items.AddRange(new object[] {
             "<button>"});
-            this.optionsComboBox.Location = new System.Drawing.Point(78, 236);
-            this.optionsComboBox.Margin = new System.Windows.Forms.Padding(2);
-            this.optionsComboBox.Name = "optionsComboBox";
-            this.optionsComboBox.Size = new System.Drawing.Size(70, 28);
-            this.optionsComboBox.TabIndex = 2;
-            this.optionsComboBox.SelectedIndexChanged += new System.EventHandler(this.optionsComboBox_SelectedIndexChanged);
+            this.AddControlComboBox.Location = new System.Drawing.Point(543, 404);
+            this.AddControlComboBox.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.AddControlComboBox.Name = "AddControlComboBox";
+            this.AddControlComboBox.Size = new System.Drawing.Size(316, 39);
+            this.AddControlComboBox.TabIndex = 24;
+            this.AddControlComboBox.SelectionChangeCommitted += new System.EventHandler(this.AddControlComboBox_SelectionChangeCommitted);
             // 
-            // okayButton
+            // RemoveControlButton
             // 
-            this.okayButton.Location = new System.Drawing.Point(363, 241);
-            this.okayButton.Name = "okayButton";
-            this.okayButton.Size = new System.Drawing.Size(75, 28);
-            this.okayButton.TabIndex = 3;
-            this.okayButton.Text = "Okay";
-            this.okayButton.UseVisualStyleBackColor = true;
-            this.okayButton.Click += new System.EventHandler(this.okayButton_Click);
-            // 
-            // cancelButton
-            // 
-            this.cancelButton.Location = new System.Drawing.Point(273, 241);
-            this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(75, 28);
-            this.cancelButton.TabIndex = 4;
-            this.cancelButton.Text = "Cancel";
-            this.cancelButton.UseVisualStyleBackColor = true;
-            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
+            this.RemoveControlButton.Location = new System.Drawing.Point(161, 400);
+            this.RemoveControlButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.RemoveControlButton.Name = "RemoveControlButton";
+            this.RemoveControlButton.Size = new System.Drawing.Size(251, 55);
+            this.RemoveControlButton.TabIndex = 23;
+            this.RemoveControlButton.Text = "Remove Control";
+            this.RemoveControlButton.UseVisualStyleBackColor = true;
+            this.RemoveControlButton.Click += new System.EventHandler(this.RemoveControlButton_Click);
             // 
             // DecisionControlsForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(450, 290);
-            this.Controls.Add(this.cancelButton);
-            this.Controls.Add(this.okayButton);
-            this.Controls.Add(this.optionsComboBox);
-            this.Controls.Add(this.controlsView);
+            this.ClientSize = new System.Drawing.Size(1054, 485);
+            this.Controls.Add(this.ControlListView);
+            this.Controls.Add(this.CancelButton);
+            this.Controls.Add(this.SaveButton);
+            this.Controls.Add(this.AddControlComboBox);
+            this.Controls.Add(this.RemoveControlButton);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "DecisionControlsForm";
             this.Text = "Controls";
             this.ResumeLayout(false);
@@ -96,9 +132,13 @@
         }
 
         #endregion
-        private System.Windows.Forms.ListView controlsView;
-        private System.Windows.Forms.ComboBox optionsComboBox;
-        private System.Windows.Forms.Button okayButton;
-        private System.Windows.Forms.Button cancelButton;
+
+        private System.Windows.Forms.ListView ControlListView;
+        private System.Windows.Forms.ColumnHeader IdColumn;
+        private System.Windows.Forms.ColumnHeader HtmlColumn;
+        private System.Windows.Forms.Button CancelButton;
+        private System.Windows.Forms.Button SaveButton;
+        private System.Windows.Forms.ComboBox AddControlComboBox;
+        private System.Windows.Forms.Button RemoveControlButton;
     }
 }
