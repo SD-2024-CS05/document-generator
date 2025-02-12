@@ -430,12 +430,6 @@
     <Compile Include="Database\DecisionControlsForm.Designer.cs">
       <DependentUpon>DecisionControlsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Database\Decision\ButtonAttributesForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Database\Decision\ButtonAttributesForm.Designer.cs">
-      <DependentUpon>ButtonAttributesForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Database\InputForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -448,10 +442,10 @@
     <Compile Include="Database\Input\AnchorAttributesForm.Designer.cs">
       <DependentUpon>AnchorAttributesForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Database\Input\ButtonAttributesForm.cs">
+    <Compile Include="Database\Decision\ButtonAttributesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Database\Input\ButtonAttributesForm.Designer.cs">
+    <Compile Include="Database\Decision\ButtonAttributesForm.Designer.cs">
       <DependentUpon>ButtonAttributesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Database\ShapeDataForm.cs">
@@ -489,9 +483,6 @@
     <EmbeddedResource Include="Database\DecisionControlsForm.resx">
       <DependentUpon>DecisionControlsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Database\Decision\ButtonAttributesForm.resx">
-      <DependentUpon>ButtonAttributesForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Database\InputForm.resx">
       <DependentUpon>InputForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -499,7 +490,7 @@
     <EmbeddedResource Include="Database\Input\AnchorAttributesForm.resx">
       <DependentUpon>AnchorAttributesForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Database\Input\ButtonAttributesForm.resx">
+    <EmbeddedResource Include="Database\Decision\ButtonAttributesForm.resx">
       <DependentUpon>ButtonAttributesForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Database\ShapeDataForm.resx">
