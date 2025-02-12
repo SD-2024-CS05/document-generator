@@ -53,7 +53,7 @@ namespace ShapeHandler
 
         private void ActiveDocument_ShapeAdded(Visio.IVShape shape)
         {
-            ShapeDataForm shapeDataForm = new ShapeDataForm(shape.ID);
+            DaForm shapeDataForm = new DaForm(shape.ID);
             shapeDataForm.ShowDialog();
         }
 
