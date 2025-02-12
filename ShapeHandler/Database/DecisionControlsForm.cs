@@ -20,10 +20,17 @@ namespace ShapeHandler.Database
             InitializeComponent();
         }
 
-        private void addControlButton_Click(object sender, EventArgs e)
+        private void optionsComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ButtonAttributesForm buttonAttributesForm = new ButtonAttributesForm(_shapeID, 1);
-            buttonAttributesForm.ShowDialog();
+            var selected = optionsComboBox.SelectedIndex;
+            switch (selected)
+            {
+                case 0:
+                    ButtonAttributesForm buttonAttributesForm = new ButtonAttributesForm(_shapeID, 1);
+                    buttonAttributesForm.ShowDialog();
+                    break;
+            }
+            
         }
     }
 }
