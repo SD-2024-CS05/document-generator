@@ -14,41 +14,42 @@ using Microsoft.Office.Interop.Visio;
 
 namespace ShapeHandler.Database.Input
 {
-    public partial class AnchorAttributesForm : Form
+    public partial class InputAttributesForm : Form
     {
         private IDocument _document;
 
-        public List<IHtmlAnchorElement> Elements { get; private set; } = new List<IHtmlAnchorElement>();
+        public List<IHtmlInputElement> Elements { get; private set; } = new List<IHtmlInputElement>();
 
-        public AnchorAttributesForm()
+        public InputAttributesForm()
         {
             InitializeComponent();
             BrowsingContext context = new BrowsingContext(Configuration.Default);
             IDocument document = context.OpenNewAsync().Result;
             _document = document;
 
-            iHtmlAnchorElementBindingSource.Add(_document.CreateElement<IHtmlAnchorElement>());
+            iHtmlInputElementBindingSource.Add(_document.CreateElement<IHtmlInputElement>());
         }
 
-        private void AnchorAttributesForm_FormClosing(object sender, FormClosingEventArgs e)
+        private void InputAttributesForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+
         }
 
         private void UpdateShapeData()
         {
             // get all the image elements
-            var anchorElements = iHtmlAnchorElementBindingSource.List.Cast<IHtmlAnchorElement>().ToList();
+            var inputElements = iHtmlInputElementBindingSource.List.Cast<IHtmlInputElement>().ToList();
 
             // id isn't bound so need to grab it from the datagridview
-            foreach (var anchorElement in anchorElements)
+            foreach (var inputElement in inputElements)
             {
-                var row = AnchorDataGridView.Rows.Cast<DataGridViewRow>().FirstOrDefault(r => r.DataBoundItem == anchorElement);
+                var row = InputDataGridView.Rows.Cast<DataGridViewRow>().FirstOrDefault(r => r.DataBoundItem == inputElement);
                 if (row != null)
                 {
-                    anchorElement.Id = row.Cells["IdColumn"]?.Value?.ToString();
+                    inputElement.Id = row.Cells["IdColumn"]?.Value?.ToString();
                 }
             }
-            Elements = anchorElements;
+            Elements = inputElements;
         }
 
         private void cancelButton_Click(object sender, EventArgs e)
@@ -58,7 +59,7 @@ namespace ShapeHandler.Database.Input
 
         private void saveButton_Click(object sender, EventArgs e)
         {
-            if (iHtmlAnchorElementBindingSource.Count > 0)
+            if (iHtmlInputElementBindingSource.List.Count > 0)
             {
                 UpdateShapeData();
             }
@@ -67,12 +68,12 @@ namespace ShapeHandler.Database.Input
 
         private void AddButton_Click(object sender, EventArgs e)
         {
-            iHtmlAnchorElementBindingSource.Add(_document.CreateElement<IHtmlAnchorElement>());
+            iHtmlInputElementBindingSource.Add(_document.CreateElement<IHtmlInputElement>());
         }
 
         private void RemoveButton_Click(object sender, EventArgs e)
         {
-            iHtmlAnchorElementBindingSource.RemoveCurrent();
+            iHtmlInputElementBindingSource.RemoveCurrent();
         }
     }
 }

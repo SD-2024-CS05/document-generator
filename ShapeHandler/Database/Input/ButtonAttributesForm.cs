@@ -11,63 +11,69 @@ using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
 using AngleSharp;
 using Microsoft.Office.Interop.Visio;
-using ShapeHandler.Helpers;
-using ShapeHandler.Objects;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using Newtonsoft.Json;
 
 namespace ShapeHandler.Database.Input
 {
     public partial class ButtonAttributesForm : Form
     {
-        private static int _shapeID;
-        private static int _inputNum;
-        public ButtonAttributesForm(int shapeID, int inputNum)
+        private IDocument _document;
+
+        public List<IHtmlButtonElement> Elements { get; private set; } = new List<IHtmlButtonElement>();
+
+        public ButtonAttributesForm()
         {
-            _shapeID = shapeID;
-            _inputNum = inputNum;
             InitializeComponent();
+            BrowsingContext context = new BrowsingContext(Configuration.Default);
+            IDocument document = context.OpenNewAsync().Result;
+            _document = document;
+
+            iHtmlButtonElementBindingSource.Add(_document.CreateElement<IHtmlButtonElement>());
         }
 
-        private void ButtonAttributesForm_Closing(object sender, FormClosingEventArgs e)
+        private void ButtonAttributesForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+
         }
 
         private void UpdateShapeData()
         {
-            BrowsingContext context = new BrowsingContext(Configuration.Default);
-            IDocument document = context.OpenNewAsync().Result;
-            IHtmlButtonElement button = document.CreateElement("button") as IHtmlButtonElement;
-            button.Type = typeTextBox.Text;
-            button.Id = idTextBox.Text;
-            button.Name = nameTextBox.Text;
-            //button.Form = formTextBox.Text;
-            button.FormAction = formActionTextBox.Text;
-            button.FormMethod = formMethodTextBox.Text;
-            button.Value = valueTextBox.Text;
-            var classList = classTextBox.Text.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (var className in classList)
-            {
-                 button.ClassList.Add(className);
-            }
-            ////// GET OUTPUT
-            //var output = button.OuterHtml;
-            //// OR UPDATE/USE CUSTOM SERIALIZATION (UPDATE TO YOUR NEEDS)
-            var output = JsonConvert.SerializeObject(button, new HtmlElementSerializer());
-            output = output.Replace("\"", "\"\"");
-            //var output = HtmlElementSerializer.WriteJson(button);
-            VisioShapeDataHelper.AddShapeData(_shapeID, output, "Input " + _inputNum);
-        }
+            // get all the image elements
+            var buttonElements = iHtmlButtonElementBindingSource.List.Cast<IHtmlButtonElement>().ToList();
 
-        private void saveButton_Click(object sender, EventArgs e)
-        {
-            UpdateShapeData();
-            this.Close();
+            // id isn't bound so need to grab it from the datagridview
+            foreach (var buttonElement in buttonElements)
+            {
+                var row = ButtonDataGridView.Rows.Cast<DataGridViewRow>().FirstOrDefault(r => r.DataBoundItem == buttonElement);
+                if (row != null)
+                {
+                    buttonElement.Id = row.Cells["IdColumn"]?.Value?.ToString();
+                }
+            }
+            Elements = buttonElements;
         }
 
         private void cancelButton_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void saveButton_Click(object sender, EventArgs e)
+        {
+            if (iHtmlButtonElementBindingSource.List.Count > 0)
+            {
+                UpdateShapeData();
+            }
+            this.Close();
+        }
+
+        private void AddButton_Click(object sender, EventArgs e)
+        {
+            iHtmlButtonElementBindingSource.Add(_document.CreateElement<IHtmlButtonElement>());
+        }
+
+        private void RemoveButton_Click(object sender, EventArgs e)
+        {
+            iHtmlButtonElementBindingSource.RemoveCurrent();
         }
     }
 }
