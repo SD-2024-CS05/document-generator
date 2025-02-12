@@ -103,5 +103,35 @@ namespace ShapeHandler.Database.Input
         {
             iHtmlOptionElementBindingSource.Add(_document.CreateElement<IHtmlOptionElement>());
         }
+
+        private void SelectDataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == SelectIdColumn.Index)
+            {
+                // update the combobox list items with all of the select ids
+                var selectIds = SelectDataGridView.Rows.Cast<DataGridViewRow>().Select(r => r.Cells[SelectIdColumn.Index].Value?.ToString()).Distinct().ToList();
+                var selectColumn = (DataGridViewComboBoxColumn)OptionDataGridView.Columns["SelectIdColumn"];
+                selectColumn.Items.Clear();
+                selectColumn.Items.AddRange(selectIds.ToArray());
+            }
+        }
+
+        private void SelectDataGridView_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+        {
+            // update the combobox list items with all of the select ids
+            var selectIds = SelectDataGridView.Rows.Cast<DataGridViewRow>().Select(r => r.Cells[SelectIdColumn.Index].Value?.ToString()).Distinct().ToList();
+            var selectColumn = (DataGridViewComboBoxColumn)OptionDataGridView.Columns["SelectIdColumn"];
+            selectColumn.Items.Clear();
+            selectColumn.Items.AddRange(selectIds.ToArray());
+
+            // remove any select-ids from options that no longer exist
+            foreach (DataGridViewRow row in OptionDataGridView.Rows)
+            {
+                if (!selectIds.Contains(row.Cells["SelectIdColumn"].Value?.ToString()))
+                {
+                    row.Cells["SelectIdColumn"].Value = null;
+                }
+            }
+        }
     }
 }

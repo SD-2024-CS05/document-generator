@@ -67,6 +67,24 @@ namespace ShapeHandler.Objects
             return shapeData;
         }
 
+        public static NodeType GetNodeType(int shapeId)
+        {
+            // node type is the first row of the shape data
+            var shapeData = GetShapeData(shapeId);
+            if (shapeData.ContainsKey("Node Type"))
+            {
+                try
+                {
+                    return (NodeType)Enum.Parse(typeof(NodeType), shapeData["Node Type"].ToString());
+                }
+                catch (Exception)
+                {
+                    return NodeType.DataInput;
+                }
+            }
+            return NodeType.None;
+        }
+
         public static List<IHtmlElement> GetHtmlElements(int shapeId)
         {
             var shapeData = GetShapeData(shapeId);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AngleSharp.Html.Dom;
 using Neo4j.Driver;
 using Neo4jClient.Transactions;
 using Newtonsoft.Json;
@@ -21,7 +22,7 @@ namespace ShapeHandler.Database
             if (_driver.VerifyAuthenticationAsync(auth).Result == false)
             {
                 throw new Exception("Authentication to the database failed");
-            }   
+            }
 
             if (_driver.TryVerifyConnectivityAsync().Result == false)
             {
@@ -104,11 +105,19 @@ namespace ShapeHandler.Database
                 var elementAttributes = htmlNode.Element.Attributes.ToDictionary(attr => attr.Name, attr => (object)attr.Value);
                 elementAttributes.Remove("id");
                 elementAttributes.Add("ElementId", htmlNode.Element.Id);
+
+                if (typeof(IHtmlSelectElement).IsAssignableFrom(htmlNode.Element.GetType()))
+                {
+                    var selectElement = (IHtmlSelectElement)htmlNode.Element;
+                    var options = selectElement.Options.Select(option => new { option.OuterHtml }).ToList();
+                    elementAttributes.Add("Options", options);
+                }
+
                 await tx.RunAsync(@"
                     UNWIND $attributes AS attribute
                     MERGE (n:" + node.Type.ToString() + @" {id: $id})
                     ON CREATE SET n += attribute, n.Label = $label",
-                    new { id = htmlNode.Id, attributes = elementAttributes, label = htmlNode.Label });
+                new { id = htmlNode.Id, attributes = elementAttributes, label = htmlNode.Label });
             }
             //else if (node is DecisionNode decisionNode)
             //{

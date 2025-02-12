@@ -52,8 +52,25 @@ namespace ShapeHandler
 
         private void ActiveDocument_ShapeAdded(Visio.IVShape shape)
         {
-            ShapeDataForm shapeDataForm = new ShapeDataForm(shape.ID);
-            shapeDataForm.ShowDialog();
+            var shapeType = VisioShapeDataHelper.GetNodeType(shape.ID);
+
+            switch (shapeType)
+            {
+                case NodeType.DataInput:
+                    ShapeDataForm shapeDataForm = new ShapeDataForm(shape.ID);
+                    shapeDataForm.ShowDialog();
+                    break;
+                case NodeType.StartEnd:
+                    break;
+                case NodeType.Decision:
+                    break;
+                case NodeType.UserProcess:
+                    break;
+                default:
+                    ShapeDataForm temp = new ShapeDataForm(shape.ID);
+                    temp.ShowDialog();
+                    break;
+            }
         }
 
         private void ShapeDetector_Shutdown(object sender, System.EventArgs e)
