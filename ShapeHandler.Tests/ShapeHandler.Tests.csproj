@@ -331,12 +331,6 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ShapeHandler\ShapeHandler.csproj">
-      <Project>{1389BE90-2BBB-4FA4-8E16-A148E13005D3}</Project>
-      <Name>ShapeHandler</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Database\DatabaseConnectorTests.cs" />
     <Compile Include="Database\TestFlowChartExample.cs" />
     <Compile Include="Helpers\TestHelper.cs" />
