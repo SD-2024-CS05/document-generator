@@ -5,13 +5,17 @@ using ShapeHandler.ShapeTransformation;
 using System;
 using ShapeHandler.Database;
 using System.Windows.Forms;
-using System.Text.RegularExpressions;
+using ShapeHandler.Database.Input;
+using ShapeHandler.Database.StartEnd;
 
 namespace ShapeHandler
 {
     public partial class ShapeDetector
     {
         private Visio.Document _activeDocument = null;
+        private bool _hasStartNode = false;
+        private bool _hasEndNode = false;
+
         private void ShapeDetector_Startup(object sender, System.EventArgs e)
         {
             // Uncomment for local testing
@@ -53,15 +57,55 @@ namespace ShapeHandler
 
         private void ActiveDocument_ShapeAdded(Visio.IVShape shape)
         {
-            if (Regex.IsMatch(shape.Name, "\\W*((?i)Input Data(?-i))\\W*"))
+            var shapeType = VisioShapeDataHelper.GetNodeType(shape.ID);
+
+            switch (shapeType)
             {
-                ShapeDataForm shapeDataForm = new ShapeDataForm(shape.ID);
-                shapeDataForm.ShowDialog();
-            }
-            else if (Regex.IsMatch(shape.Name, "\\W*((?i)Decision(?-i))\\W*"))
-            {
-                DecisionControlsForm decisionControlsForm = new DecisionControlsForm(shape.ID);
-                decisionControlsForm.ShowDialog();
+                case NodeType.DataInput:
+                    ShapeDataForm shapeDataForm = new ShapeDataForm(shape.ID);
+                    shapeDataForm.ShowDialog();
+                    break;
+                case NodeType.StartEnd:
+                    if (!_hasStartNode)
+                    {
+                        _hasStartNode = true;
+                        StartEndForm startEndForm = new StartEndForm();
+                        startEndForm.ShowDialog();
+                        VisioShapeDataHelper.AddShapeData(shape.ID, startEndForm.URL, "URL");
+                        VisioShapeDataHelper.AddShapeData(shape.ID, true.ToString(), "IsStart");
+                        MessageBox.Show("Start node added");
+                    }
+                    else if (!_hasEndNode)
+                    {
+                        _hasEndNode = true;
+                        StartEndForm startEndForm = new StartEndForm();
+                        startEndForm.ShowDialog();
+                        VisioShapeDataHelper.AddShapeData(shape.ID, startEndForm.URL, "URL");
+                        VisioShapeDataHelper.AddShapeData(shape.ID, false.ToString(), "IsStart");
+
+                        MessageBox.Show("End node added");
+                    }
+                    else
+                    {
+                        MessageBox.Show("There can only be one start and end node");
+                        shape.Delete();
+                    }
+                    break;
+                case NodeType.Decision:
+                    DecisionControlsForm decisionControlsForm = new DecisionControlsForm(shape.ID);
+                    decisionControlsForm.ShowDialog();
+                    break;
+                case NodeType.UserProcess:
+                    break;
+                case NodeType.BackgroundProcess:
+                    break;
+                case NodeType.Page:
+                    StartEndForm pageUrlForm = new StartEndForm();
+                    pageUrlForm.ShowDialog();
+                    VisioShapeDataHelper.AddShapeData(shape.ID, pageUrlForm.URL, "URL");
+                    break;
+                default:
+                    break;
             }
         }
 

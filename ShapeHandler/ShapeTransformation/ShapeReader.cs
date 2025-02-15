@@ -34,11 +34,16 @@ namespace ShapeHandler.ShapeTransformation
 
             foreach (Shape shape in shapes)
             {
-                if (!Regex.IsMatch(shape.Name, "\\W*((?i)Dynamic connector(?-i))\\W*") && !Regex.IsMatch(shape.Name, "\\W*((?i)Sheet(?-i))\\W*"))
+                var isSpecialConnector = VisioShapeDataHelper.GetShapeData(shape.ID)["Node Type"]?.ToString() == "Special Connector";
+                var isSheet = Regex.IsMatch(shape.Name, "\\W*((?i)Sheet(?-i))\\W*");
+                if (!isSpecialConnector && !isSheet)
                 {
                     FlowchartNode node = ConvertShapeToNode(shape);
-                    visioIDToGuid[shape.ID] = node.Id;
-                    nodes.Add(node);
+                    if (node != null)
+                    {
+                        visioIDToGuid[shape.ID] = node.Id;
+                        nodes.Add(node);
+                    }
                 }
             }
 
@@ -50,7 +55,9 @@ namespace ShapeHandler.ShapeTransformation
             // Add the connections of the nodes
             foreach (Shape shape in shapes)
             {
-                if (!Regex.IsMatch(shape.Name, "\\W*((?i)Dynamic connector(?-i))\\W*") && !Regex.IsMatch(shape.Name, "\\W*((?i)Sheet(?-i))\\W*"))
+                var isSpecialConnector = VisioShapeDataHelper.GetShapeData(shape.ID)["Node Type"]?.ToString() == "Special Connector";
+                var isSheet = Regex.IsMatch(shape.Name, "\\W*((?i)Sheet(?-i))\\W*");
+                if (!isSpecialConnector && !isSheet)
                 {
                     IDictionary<string, string> connected = GetConnected(shape, visioIDToGuid);
                     connections[visioIDToGuid[shape.ID]] = connected;
@@ -83,42 +90,6 @@ namespace ShapeHandler.ShapeTransformation
         }
 
         /// <summary>
-        /// Reads shape data from a given Visio shape
-        /// </summary>
-        /// <param name="shape">Visio shape</param>
-        /// <returns>Dictionary of a shape data's labels as keys and values as values</returns>
-        public static IDictionary<string, string> ReadShapeData(Shape shape)
-        {
-            IDictionary<string, string> properties = new Dictionary<string, string>();
-            short iRow = (short)VisRowIndices.visRowFirst;
-            while (
-                shape.get_CellsSRCExists
-                (
-                    (short)VisSectionIndices.visSectionProp,
-                    iRow,
-                    (short)VisCellIndices.visCustPropsValue,
-                    0
-                ) < 0)
-            {
-                string label = shape.get_CellsSRC(
-                        (short)VisSectionIndices.visSectionProp,
-                        iRow,
-                        (short)VisCellIndices.visCustPropsLabel
-                    ).get_ResultStr(VisUnitCodes.visNoCast);
-                string value = shape.get_CellsSRC(
-                        (short)VisSectionIndices.visSectionProp,
-                        iRow,
-                        (short)VisCellIndices.visCustPropsValue
-                    ).get_ResultStr(VisUnitCodes.visNoCast);
-                // This is here until I can figure out how to add only one row to shape data
-                if (!string.IsNullOrEmpty(label))
-                    properties.Add(label, value);
-                iRow++;
-            }
-            return properties;
-        }
-
-        /// <summary>
         /// Converts nodes to graph
         /// </summary>
         /// <param name="nodes">List of nodes</param>
@@ -145,118 +116,68 @@ namespace ShapeHandler.ShapeTransformation
         }
 
         /// <summary>
-        /// Takes a shape's type and provides a NodeType enum 
-        /// </summary>
-        /// <param name="type">Shape type</param>
-        /// <returns>Enum of node type</returns>
-        private static Objects.NodeType DetermineNodeType(string type)
-        {
-            if (type == "Start/End")
-                return Objects.NodeType.StartEnd;
-            if (type == "Decision")
-                return Objects.NodeType.Decision;
-            if (type == "Input Data")
-                return Objects.NodeType.DataInput;
-            if (type == "Process")
-                return Objects.NodeType.UserProcess;
-            if (type == "Page")
-                return Objects.NodeType.Page;
-            // TODO: Special Connector
-            if (type == "Subprocess")
-                return Objects.NodeType.BackgroundProcess;
-            return Objects.NodeType.HtmlElement;
-        }
-
-        /// <summary>
         /// Converts a transformed shape to a node
         /// </summary>
         /// <param name="shape">Transformed shape</param>
         /// <returns>The node to be added to an HTML graph</returns>
         private static FlowchartNode ConvertShapeToNode(Shape shape)
         {
-            IDictionary<string, string> shapeData = ReadShapeData(shape);
-            Objects.NodeType type = DetermineNodeType(shapeData["Node Type"]);
+            var shapeData = VisioShapeDataHelper.GetShapeData(shape.ID);
+            var htmlElements = VisioShapeDataHelper.GetHtmlElements(shape.ID);
+            var type = VisioShapeDataHelper.GetNodeType(shape.ID);
             dynamic node = null;
             switch (type)
             {
                 case Objects.NodeType.StartEnd:
+                    bool isStart = shapeData["IsStart"].ToString().ToBoolean();
+                    string url = shapeData["URL"].ToString();
+                    if (isStart)
                     {
-                        bool isStart = shapeData["Is Start"].ToBoolean();
-                        if (isStart)
+                        node = new StartEndNode("Start")
                         {
-                            node = new StartEndNode("Start");
-                            node.IsStart = true;
-                        }
-                        else
-                            node = new StartEndNode("End");
+                            IsStart = true,
+                            URL = url
+                        };
+                    }
+                    else
+                    {
+                        node = new StartEndNode("End")
+                        {
+                            IsStart = false,
+                            URL = url
+                        };
                     }
                     break;
                 case Objects.NodeType.Decision:
                     {
                         node = new DecisionNode(shape.Text);
-                        List<string> indexes = shapeData.Keys.Where(k => k.StartsWith("Decision")).ToList();
-                        foreach (var index in indexes)
+                        htmlElements.ForEach(he =>
                         {
-                            HtmlNode htmlNode = null;
-                            JArray schema = JsonConvert.DeserializeObject<JArray>(shapeData[index]);
-                            if (schema[0].First.First.ToString() == "BUTTON")
-                            {
-                                IHtmlButtonElement button = document.CreateElement("button") as IHtmlButtonElement;
-                                button.Id = schema[0]["attributes"]["id"].ToString();
-                                button.Type = schema[0]["attributes"]["type"].ToString();
-                                htmlNode = new HtmlNode(button.Id, button, Objects.NodeType.Button);
-                            }
-                        }
+                            HtmlNode htmlNode = new HtmlNode(he.Id, he);
+                            node.SubmissionNodes.Add(htmlNode);
+                        });
                         break;
                     }
                 case Objects.NodeType.DataInput:
+                    node = new DataInputNode(shape.Text);
+                    htmlElements.ForEach(he =>
                     {
-                        node = new DataInputNode(shape.Text);
-                        List<string> indexes = shapeData.Keys.Where(k => k.StartsWith("Input")).ToList();
+                        HtmlNode htmlNode = new HtmlNode(he.Id, he);
+                        node.DataInputNodes.Add(htmlNode);
+                    });
 
-                        foreach (var index in indexes)
-                        {
-                            HtmlNode htmlNode = null;
-                            JArray schema = JsonConvert.DeserializeObject<JArray>(shapeData[index]);
-                            if (schema[0].First.First.ToString() == "INPUT")
-                            {
-                                var lol = schema[0]["attributes"];
-                                IHtmlInputElement input = document.CreateElement("input") as IHtmlInputElement;
-                                //input.Type = schema[0].;
-                                input.Id = schema[0].First.Next.First.ToString();
-                                input.Minimum = schema[0]["attributes"]["min"].ToString();
-                                input.Maximum = schema[0]["attributes"]["max"].ToString();
-                                //foreach (var _class in schema[0]["classList"].ToArray())
-                                //{
-                                    //input.ClassList.Add(_class.ToString());
-                                    //input.ClassList.Add(schema[0]["classList"].ToArray<string>());
-                                //}
-                                htmlNode = new HtmlNode(input.Id, input, Objects.NodeType.Input);
-
-                            }
-                            //else if (schema[0].First.First.ToString() == "ANCHOR")
-                            //{
-                            //    IHtmlAnchorElement anchor = document.CreateElement("a") as IHtmlAnchorElement;
-                            //    anchor.Id = schema["id"].ToString();
-                            //    anchor.Href = schema["href"].ToString();
-                            //    htmlNode = new HtmlNode(anchor.Id, anchor, Objects.NodeType.Anchor);
-                            //}
-
-                            // Sebastian, your time to shine
-                            //else if (schema[0].First.First.ToString() == "SELECT")
-                            //{
-                            //    htmlNode = new HtmlNode(anchor.Id, anchor, Objects.NodeType.Select);
-                            //}
-
-
-                            node.DataInputNodes.Add(htmlNode);
-                        }
-                        break;
-                    }
-                case Objects.NodeType.UserProcess: node = new ProcessNode(shape.Text); break;
-                case Objects.NodeType.Page: node = new PageNode(shape.Text); break;
-                // TODO: Special connector
-                case Objects.NodeType.BackgroundProcess: node = new ProcessNode(shape.Text, true); break;
+                    break;
+                case Objects.NodeType.UserProcess:
+                    node = new ProcessNode(shape.Text);
+                    break;
+                case Objects.NodeType.BackgroundProcess:
+                    node = new ProcessNode(shape.Text, true);
+                    break;
+                case Objects.NodeType.Page:
+                    node = new PageNode(shape.Text);
+                    break;
+                default:
+                    break;
             }
             return node;
         }

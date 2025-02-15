@@ -46,7 +46,13 @@ namespace ShapeHandler.Objects
         public static Dictionary<string, object> GetShapeData(int shapeId)
         {
             var shapeData = new Dictionary<string, object>();
-            _activeShape = Globals.ShapeDetector.Application.ActivePage.Shapes[shapeId];
+            try
+            {
+                _activeShape = Globals.ShapeDetector.Application.ActivePage.Shapes[shapeId];
+            } catch (Exception)
+            {
+                return shapeData;
+            }
 
             int rowCount = _activeShape.get_RowCount((short)Visio.VisSectionIndices.visSectionProp);
             for (int i = 0; i < rowCount; i++)
@@ -67,11 +73,30 @@ namespace ShapeHandler.Objects
             return shapeData;
         }
 
+        public static NodeType GetNodeType(int shapeId)
+        {
+            // node type is the first row of the shape data
+            var shapeData = GetShapeData(shapeId);
+            if (shapeData.ContainsKey("Node Type"))
+            {
+                try
+                {
+                    return (NodeType)Enum.Parse(typeof(NodeType), shapeData["Node Type"].ToString());
+                }
+                catch (Exception)
+                {
+                    return NodeType.None;
+                }
+            }
+            return NodeType.None;
+        }
+
         public static List<IHtmlElement> GetHtmlElements(int shapeId)
         {
             var shapeData = GetShapeData(shapeId);
             var htmlElements = new List<IHtmlElement>();
-            foreach (var data in shapeData)
+            // skip the first row since it is the node type
+            foreach (var data in shapeData.Skip(1))
             {
                 try
                 {
