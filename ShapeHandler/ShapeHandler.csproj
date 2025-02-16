@@ -430,6 +430,12 @@
     <Compile Include="Database\DecisionControlsForm.Designer.cs">
       <DependentUpon>DecisionControlsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Database\Decision\ConditionsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Database\Decision\ConditionsForm.Designer.cs">
+      <DependentUpon>ConditionsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Database\Decision\ConnectionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -506,6 +512,9 @@
     </Compile>
     <EmbeddedResource Include="Database\DecisionControlsForm.resx">
       <DependentUpon>DecisionControlsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Database\Decision\ConditionsForm.resx">
+      <DependentUpon>ConditionsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Database\Decision\ConnectionForm.resx">
       <DependentUpon>ConnectionForm.cs</DependentUpon>

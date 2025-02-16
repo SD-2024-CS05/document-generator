@@ -97,17 +97,27 @@ namespace ShapeHandler
                     decisionControlsForm.ShowDialog();
                     break;
                 case NodeType.Connection:
-                    bool valid = ShapeReader.IsValidConnection((Shape)shape);
-                    DecisionNode decisionNode = ShapeReader.GetBoundDecisionNode((Shape)shape);
+                    var decisionId = ShapeReader.IsConnectionFromDecisionNode((Shape)shape);
 
-                    if(!valid || decisionNode == null)
+                    if (decisionId == -1)
+                    {
+                        break;
+                    }
+
+                    bool validDecision = ShapeReader.IsValidDecisionConnection((Shape)shape);
+                    Shape decisionShape = Globals.ShapeDetector.Application.ActivePage.Shapes.get_ItemFromID(decisionId);
+
+                    DecisionNode decisionNode = ShapeReader.GetBoundDecisionNode((Shape)shape);
+                    DataInputNode dataInputNode = ShapeReader.GetBoundDataInputNode(decisionShape);
+
+                    if (!validDecision || decisionNode == null)
                     {
                         MessageBox.Show("Invalid connection");
                         shape.Delete();
                     }
                     else
                     {
-                        ConnectionForm connectionForm = new ConnectionForm(decisionNode);
+                        ConnectionForm connectionForm = new ConnectionForm(decisionNode, dataInputNode);
                         connectionForm.ShowDialog();
 
                         if (connectionForm.Connection == null)

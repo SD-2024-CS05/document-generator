@@ -14,12 +14,19 @@ namespace ShapeHandler.Database.Decision
     public partial class ConnectionForm : Form
     {
         private DecisionNode _decisionNode;
+        private DataInputNode _dataInputNode;
         public Connection Connection { get; private set; } = null;
-        public ConnectionForm(DecisionNode decisionNode)
+        public ConnectionForm(DecisionNode decisionNode, DataInputNode dataInputNode)
         {
             InitializeComponent();
             _decisionNode = decisionNode;
             FillSubmissionItems();
+            _dataInputNode = dataInputNode;
+
+            if (_dataInputNode == null)
+            {
+                AddConditionButton.Enabled = false;
+            }
         }
 
         private void FillSubmissionItems()
@@ -35,9 +42,38 @@ namespace ShapeHandler.Database.Decision
                     SubmissionComboBox.Items.Add(node.Element.OuterHtml);
                 }
             }
+
+            // add default "None" option
+            SubmissionComboBox.Items.Add("NONE");
         }
 
         private void UpdateShapeData()
+        {
+            Connection = new Connection("");
+            UpdateSubmissionId();
+            UpdateUrl();
+            UpdateConditions();
+        }
+
+        private void UpdateSubmissionId()
+        {
+            var selectedSubmission = SubmissionComboBox.SelectedItem as string;
+            var selectedNode = _decisionNode.SubmissionNodes.FirstOrDefault(x =>
+            x.Element.Id == selectedSubmission ||
+            x.Element.OuterHtml == selectedSubmission);
+
+            if (selectedNode != null)
+            {
+                Connection.SubmissionId = selectedNode.Id;
+            }
+        }
+
+        private void UpdateUrl()
+        {
+            Connection.URL = UrlTextBox.Text;
+        }
+
+        private void UpdateConditions()
         {
 
         }
@@ -51,6 +87,12 @@ namespace ShapeHandler.Database.Decision
         {
             UpdateShapeData();
             this.Close();
+        }
+        private void AddConditionButton_Click(object sender, EventArgs e)
+        {
+            var htmlElements = _dataInputNode.DataInputNodes;
+            var conditionForm = new ConditionsForm(htmlElements);
+            conditionForm.ShowDialog();
         }
     }
 }

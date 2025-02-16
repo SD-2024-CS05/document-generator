@@ -81,7 +81,7 @@ namespace ShapeHandler.ShapeTransformation
         /// </summary>
         /// <param name="shape">The Visio shape to check.</param>
         /// <returns>True if the shape is a valid connection, otherwise false.</returns>
-        public static bool IsValidConnection(Shape shape)
+        public static bool IsValidDecisionConnection(Shape shape)
         {
             // Check if the shape is of NodeType.Connection
             if (VisioShapeDataHelper.GetNodeType(shape.ID) != Objects.NodeType.Connection)
@@ -126,12 +126,47 @@ namespace ShapeHandler.ShapeTransformation
             return node as DecisionNode;
         }
 
+        public static DataInputNode GetBoundDataInputNode(Shape shape)
+        {
+
+            if (VisioShapeDataHelper.GetNodeType(shape.ID) != Objects.NodeType.Decision)
+            {
+                return null;
+            }
+
+            // a decision node may or may not be connected to a data input node by a connection
+            var connectedShapeArrayTargetIDs = shape.GluedShapes(VisGluedShapesFlags.visGluedShapesIncoming1D, "");
+            if (connectedShapeArrayTargetIDs.Length == 0)
+            {
+                return null;
+            }
+
+            // for each incoming connection, check if the source is a data input
+            for (int i = connectedShapeArrayTargetIDs.GetLowerBound(0); i <= connectedShapeArrayTargetIDs.GetUpperBound(0); i++)
+            {
+                var connectionShape = shape.ContainingPage.Shapes.ItemFromID[(int)connectedShapeArrayTargetIDs.GetValue(i)];
+                var connectedShapeArraySourceIDs = connectionShape.GluedShapes(VisGluedShapesFlags.visGluedShapesIncoming2D, "");
+                if (connectedShapeArraySourceIDs.Length == 0)
+                {
+                    continue;
+                }
+
+                var connectedShape = shape.ContainingPage.Shapes.ItemFromID[(int)connectedShapeArraySourceIDs.GetValue(0)];
+                if (VisioShapeDataHelper.GetNodeType(connectedShape.ID) == Objects.NodeType.DataInput)
+                {
+                    return ConvertShapeToNode(connectedShape) as DataInputNode;
+                }
+            }
+
+            return null;
+        }
+
         /// <summary>
         /// Checks if the given connection shape is from a DecisionNode.
         /// </summary>
         /// <param name="shape">The Visio shape to check.</param>
         /// <returns>ID of the Decision Node Shape the connection is coming from or -1 otherwise</returns>
-        private static int IsConnectionFromDecisionNode(Shape shape)
+        public static int IsConnectionFromDecisionNode(Shape shape)
         {
             // Check if the shape is of NodeType.Connection
             if (VisioShapeDataHelper.GetNodeType(shape.ID) == Objects.NodeType.Connection)
