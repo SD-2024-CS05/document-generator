@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using ShapeHandler.Helpers;
 using ShapeHandler.Objects;
 using System;
 using System.Collections.Generic;
@@ -52,12 +53,15 @@ namespace ShapeHandler.Database.Decision
 
         private void UpdateShapeData()
         {
-            Connection = new Connection("");
             UpdateSubmissionId();
             UpdateUrl();
+            if (Connection == null)
+            {
+                Connection = new Connection("");
+            }
 
             // serialize connection
-            var connectionJson = JsonConvert.SerializeObject(Connection, new Neo4JSerializer());
+            var connectionJson = JsonConvert.SerializeObject(Connection, new ConnectionSerializer());
             VisioShapeDataHelper.AddShapeData(_shapeId, connectionJson, "Connection");
         }
 
@@ -95,6 +99,10 @@ namespace ShapeHandler.Database.Decision
             var conditionForm = new ConditionsForm(htmlElements);
             conditionForm.ShowDialog();
 
+            if (Connection == null)
+            {
+                Connection = new Connection("");
+            }
             if (conditionForm.Conditions != null)
             {
                 Connection.Conditions = conditionForm.Conditions;

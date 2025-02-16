@@ -484,6 +484,7 @@
     <Compile Include="Database\StartEnd\StartEndForm.Designer.cs">
       <DependentUpon>StartEndForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ConnectionSerializer.cs" />
     <Compile Include="Helpers\HtmlElementSerializer.cs" />
     <Compile Include="Helpers\Neo4JSerializer.cs" />
     <Compile Include="Identity\KeyVaultManager.cs" />
