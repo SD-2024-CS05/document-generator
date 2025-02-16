@@ -53,12 +53,12 @@ namespace ShapeHandler.Database.Decision
 
         private void UpdateShapeData()
         {
-            UpdateSubmissionId();
-            UpdateUrl();
             if (Connection == null)
             {
                 Connection = new Connection("");
             }
+            UpdateSubmissionId();
+            UpdateUrl();
 
             // serialize connection
             var connectionJson = JsonConvert.SerializeObject(Connection, new ConnectionSerializer());

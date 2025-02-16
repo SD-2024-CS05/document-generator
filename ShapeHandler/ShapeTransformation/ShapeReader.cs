@@ -12,6 +12,7 @@ using AngleSharp.Text;
 using Microsoft.Office.Interop.Visio;
 using ShapeHandler.Objects;
 using Newtonsoft.Json.Linq;
+using Neo4jClient.Cypher;
 
 namespace ShapeHandler.ShapeTransformation
 {
@@ -33,16 +34,23 @@ namespace ShapeHandler.ShapeTransformation
             // Connections between nodes - Inner dictionary because 1st key is the node's ID,
             // 2nd key(s) are IDs of nodes connected to the original node, the value is the
             // label of the connection
-            IDictionary<string, IDictionary<string, string>> connections = new Dictionary<string, IDictionary<string, string>>();
+            IDictionary<string, IDictionary<string, Connection>> connections = new Dictionary<string, IDictionary<string, Connection>>();
+
+            // function that does the isSpecialConnector and isSheet check
+            Func<Shape, bool> isSpecialConnectorOrSheet = (shape) =>
+            {
+                var isSpecialConnector = VisioShapeDataHelper.GetNodeType(shape.ID) == Objects.NodeType.Connection;
+                var isSheet = Regex.IsMatch(shape.Name, "\\W*((?i)Sheet(?-i))\\W*");
+                return isSpecialConnector || isSheet;
+            };
 
             // Nodes
             List<FlowchartNode> nodes = new List<FlowchartNode>();
 
             foreach (Shape shape in shapes)
             {
-                var isSpecialConnector = VisioShapeDataHelper.GetShapeData(shape.ID)["Node Type"]?.ToString() == "Special Connector";
-                var isSheet = Regex.IsMatch(shape.Name, "\\W*((?i)Sheet(?-i))\\W*");
-                if (!isSpecialConnector && !isSheet)
+                // skip special connectors and sheets
+                if (!isSpecialConnectorOrSheet(shape))
                 {
                     FlowchartNode node = ConvertShapeToNode(shape);
                     if (node != null)
@@ -61,11 +69,9 @@ namespace ShapeHandler.ShapeTransformation
             // Add the connections of the nodes
             foreach (Shape shape in shapes)
             {
-                var isSpecialConnector = VisioShapeDataHelper.GetShapeData(shape.ID)["Node Type"]?.ToString() == "Special Connector";
-                var isSheet = Regex.IsMatch(shape.Name, "\\W*((?i)Sheet(?-i))\\W*");
-                if (!isSpecialConnector && !isSheet)
+                if (!isSpecialConnectorOrSheet(shape))
                 {
-                    IDictionary<string, string> connected = GetConnected(shape, visioIDToGuid);
+                    IDictionary<string, Connection> connected = GetConnected(shape, visioIDToGuid);
                     connections[visioIDToGuid[shape.ID]] = connected;
                 }
             }
@@ -192,16 +198,27 @@ namespace ShapeHandler.ShapeTransformation
         /// </summary>
         /// <param name="shape">Visio shape</param>
         /// <returns>List of connected shapes to a shape</returns>
-        private static IDictionary<string, string> GetConnected(Shape shape, IDictionary<int, string> visioIDToGuid)
+        private static IDictionary<string, Connection> GetConnected(Shape shape, IDictionary<int, string> visioIDToGuid)
         {
-            IDictionary<string, string> connections = new Dictionary<string, string>();
+            IDictionary<string, Connection> connections = new Dictionary<string, Connection>();
             Array connectedShapeArrayTargetIDs = shape.ConnectedShapes(VisConnectedShapesFlags.visConnectedShapesOutgoingNodes, "");
             Array connectorArrayTargetIDs = shape.GluedShapes(VisGluedShapesFlags.visGluedShapesOutgoing1D, "");
             for (int i = connectedShapeArrayTargetIDs.GetLowerBound(0); i <= connectedShapeArrayTargetIDs.GetUpperBound(0); i++)
             {
                 Shape connector = shape.ContainingPage.Shapes.ItemFromID[(int)connectorArrayTargetIDs.GetValue(i)];
                 Shape connectedShape = shape.ContainingPage.Shapes.ItemFromID[(int)connectedShapeArrayTargetIDs.GetValue(i)];
-                connections.Add(visioIDToGuid[connectedShape.ID], connector.Text);
+
+                var shapeData = VisioShapeDataHelper.GetShapeData(connector.ID);
+
+                var connection = new Connection(connector.Text);
+                if (shapeData.ContainsKey("Connection"))
+                {
+                    var serializedData = shapeData["Connection"].ToString();
+                    connection = JsonConvert.DeserializeObject<Connection>(serializedData);
+                    connection.Label = connector.Text;
+                }
+
+                connections.Add(visioIDToGuid[connectedShape.ID], connection);
             }
             return connections;
         }
@@ -211,7 +228,7 @@ namespace ShapeHandler.ShapeTransformation
         /// </summary>
         /// <param name="nodes">List of nodes</param>
         /// <returns>HTML graph</returns>
-        private static HtmlGraph ConvertNodesToGraph(List<FlowchartNode> nodes, IDictionary<string, IDictionary<string, string>> connections)
+        private static HtmlGraph ConvertNodesToGraph(List<FlowchartNode> nodes, IDictionary<string, IDictionary<string, Connection>> connections)
         {
             HtmlGraph htmlGraph = new HtmlGraph();
             foreach (FlowchartNode node in nodes)
@@ -220,12 +237,12 @@ namespace ShapeHandler.ShapeTransformation
             }
             foreach (FlowchartNode node in nodes)
             {
-                foreach (KeyValuePair<string, string> connection in connections[node.Id])
+                foreach (KeyValuePair<string, Connection> connection in connections[node.Id])
                 {
                     htmlGraph.AddConnection(
                         node,
                         nodes.Find(x => x.Id == connection.Key),
-                        new Connection(connection.Value)
+                        connection.Value
                     );
                 }
             }
