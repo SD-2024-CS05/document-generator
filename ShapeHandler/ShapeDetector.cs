@@ -7,6 +7,7 @@ using ShapeHandler.Database;
 using System.Windows.Forms;
 using ShapeHandler.Database.Input;
 using ShapeHandler.Database.StartEnd;
+using ShapeHandler.Database.Decision;
 
 namespace ShapeHandler
 {
@@ -94,6 +95,29 @@ namespace ShapeHandler
                 case NodeType.Decision:
                     DecisionControlsForm decisionControlsForm = new DecisionControlsForm(shape.ID);
                     decisionControlsForm.ShowDialog();
+                    break;
+                case NodeType.Connection:
+                    bool valid = ShapeReader.IsValidConnection((Shape)shape);
+                    DecisionNode decisionNode = ShapeReader.GetBoundDecisionNode((Shape)shape);
+
+                    if(!valid || decisionNode == null)
+                    {
+                        MessageBox.Show("Invalid connection");
+                        shape.Delete();
+                    }
+                    else
+                    {
+                        ConnectionForm connectionForm = new ConnectionForm(decisionNode);
+                        connectionForm.ShowDialog();
+
+                        if (connectionForm.Connection == null)
+                        {
+                            MessageBox.Show("Connection not saved");
+                            shape.Delete();
+                        }
+
+                    }
+
                     break;
                 case NodeType.UserProcess:
                     break;

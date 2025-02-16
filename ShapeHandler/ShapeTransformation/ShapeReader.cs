@@ -19,6 +19,12 @@ namespace ShapeHandler.ShapeTransformation
     {
         private static IBrowsingContext context = BrowsingContext.New(Configuration.Default);
         private static IDocument document = context.OpenNewAsync().Result;
+
+        /// <summary>
+        /// Converts Visio shapes to an HTML graph
+        /// </summary>
+        /// <param name="shapes">Visio shapes</param>
+        /// <returns>HTML graph</returns>
         public static HtmlGraph ConvertShapesToGraph(Shapes shapes)
         {
             // Mapping between Visio Shape IDs and Node Guids
@@ -69,6 +75,82 @@ namespace ShapeHandler.ShapeTransformation
 
             return htmlGraph;
         }
+
+        /// <summary>
+        /// Checks if the given shape is a valid connection.
+        /// </summary>
+        /// <param name="shape">The Visio shape to check.</param>
+        /// <returns>True if the shape is a valid connection, otherwise false.</returns>
+        public static bool IsValidConnection(Shape shape)
+        {
+            // Check if the shape is of NodeType.Connection
+            if (VisioShapeDataHelper.GetNodeType(shape.ID) != Objects.NodeType.Connection)
+            {
+                return false;
+            }
+
+            // Check if the connection is from a DecisionNode
+            var decisionNodeID = IsConnectionFromDecisionNode(shape);
+            if (decisionNodeID == -1)
+            {
+                return false;
+            }
+
+            // check if decision node has at most 2 connections already
+            var decisionNode = shape.ContainingPage.Shapes.ItemFromID[decisionNodeID];
+            var connectedShapeArrayTargetIDs = decisionNode.GluedShapes(VisGluedShapesFlags.visGluedShapesOutgoing1D, "");
+
+            return connectedShapeArrayTargetIDs.Length <= 2;
+        }
+
+        /// <summary>
+        /// Gets the DecisionNode that the connection is coming from.
+        /// </summary>
+        /// <param name="shape">The Visio shape to check.</param>
+        /// <returns>The DecisionNode that the connection is coming from or null otherwise.</returns>
+        public static DecisionNode GetBoundDecisionNode(Shape shape)
+        {
+            if (VisioShapeDataHelper.GetNodeType(shape.ID) != Objects.NodeType.Connection)
+            {
+                return null;
+            }
+
+            var decisionNodeID = IsConnectionFromDecisionNode(shape);
+            if (decisionNodeID == -1)
+            {
+                return null;
+            }
+
+            var decisionNode = shape.ContainingPage.Shapes.ItemFromID[decisionNodeID];
+            var node = ConvertShapeToNode(decisionNode);
+            return node as DecisionNode;
+        }
+
+        /// <summary>
+        /// Checks if the given connection shape is from a DecisionNode.
+        /// </summary>
+        /// <param name="shape">The Visio shape to check.</param>
+        /// <returns>ID of the Decision Node Shape the connection is coming from or -1 otherwise</returns>
+        private static int IsConnectionFromDecisionNode(Shape shape)
+        {
+            // Check if the shape is of NodeType.Connection
+            if (VisioShapeDataHelper.GetNodeType(shape.ID) == Objects.NodeType.Connection)
+            {
+                // Get the connected shapes
+                Array connectedShapeArraySourceIDs = shape.GluedShapes(VisGluedShapesFlags.visGluedShapesIncoming2D, "");
+                for (int i = connectedShapeArraySourceIDs.GetLowerBound(0); i <= connectedShapeArraySourceIDs.GetUpperBound(0); i++)
+                {
+                    Shape connectedShape = shape.ContainingPage.Shapes.ItemFromID[(int)connectedShapeArraySourceIDs.GetValue(i)];
+                    // Check if the connected shape is a DecisionNode
+                    if (VisioShapeDataHelper.GetNodeType(connectedShape.ID) == Objects.NodeType.Decision)
+                    {
+                        return connectedShape.ID;
+                    }
+                }
+            }
+            return -1;
+        }
+
 
         /// <summary>
         /// Gets the connected shapes of a shape
