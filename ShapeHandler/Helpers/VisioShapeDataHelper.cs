@@ -133,6 +133,5 @@ namespace ShapeHandler.Objects
         {
             return "\"" + val.Replace("\"", "\"\"") + "\"";
         }
-
     }
 }

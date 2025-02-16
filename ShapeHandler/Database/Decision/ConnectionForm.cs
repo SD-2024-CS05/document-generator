@@ -1,4 +1,5 @@
-﻿using ShapeHandler.Objects;
+﻿using Newtonsoft.Json;
+using ShapeHandler.Objects;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,15 +14,17 @@ namespace ShapeHandler.Database.Decision
 {
     public partial class ConnectionForm : Form
     {
+        private int _shapeId;
         private DecisionNode _decisionNode;
         private DataInputNode _dataInputNode;
         public Connection Connection { get; private set; } = null;
-        public ConnectionForm(DecisionNode decisionNode, DataInputNode dataInputNode)
+        public ConnectionForm(int shapeId, DecisionNode decisionNode, DataInputNode dataInputNode)
         {
             InitializeComponent();
+            _shapeId = shapeId;
             _decisionNode = decisionNode;
-            FillSubmissionItems();
             _dataInputNode = dataInputNode;
+            FillSubmissionItems();
 
             if (_dataInputNode == null)
             {
@@ -52,7 +55,10 @@ namespace ShapeHandler.Database.Decision
             Connection = new Connection("");
             UpdateSubmissionId();
             UpdateUrl();
-            UpdateConditions();
+
+            // serialize connection
+            var connectionJson = JsonConvert.SerializeObject(Connection, new Neo4JSerializer());
+            VisioShapeDataHelper.AddShapeData(_shapeId, connectionJson, "Connection");
         }
 
         private void UpdateSubmissionId()
@@ -73,11 +79,6 @@ namespace ShapeHandler.Database.Decision
             Connection.URL = UrlTextBox.Text;
         }
 
-        private void UpdateConditions()
-        {
-
-        }
-
         private void CancelButton_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -93,6 +94,11 @@ namespace ShapeHandler.Database.Decision
             var htmlElements = _dataInputNode.DataInputNodes;
             var conditionForm = new ConditionsForm(htmlElements);
             conditionForm.ShowDialog();
+
+            if (conditionForm.Conditions != null)
+            {
+                Connection.Conditions = conditionForm.Conditions;
+            }
         }
     }
 }

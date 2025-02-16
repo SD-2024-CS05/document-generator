@@ -110,24 +110,23 @@ namespace ShapeHandler
                     DecisionNode decisionNode = ShapeReader.GetBoundDecisionNode((Shape)shape);
                     DataInputNode dataInputNode = ShapeReader.GetBoundDataInputNode(decisionShape);
 
+                    // if the decision node is not valid or the decision node is null
                     if (!validDecision || decisionNode == null)
                     {
                         MessageBox.Show("Invalid connection");
                         shape.Delete();
+                        break;
                     }
-                    else
+
+                    ConnectionForm connectionForm = new ConnectionForm(shape.ID, decisionNode, dataInputNode);
+                    connectionForm.ShowDialog();
+
+                    // if connection not saved
+                    if (connectionForm.Connection == null)
                     {
-                        ConnectionForm connectionForm = new ConnectionForm(decisionNode, dataInputNode);
-                        connectionForm.ShowDialog();
-
-                        if (connectionForm.Connection == null)
-                        {
-                            MessageBox.Show("Connection not saved");
-                            shape.Delete();
-                        }
-
+                        MessageBox.Show("Connection not saved");
+                        shape.Delete();
                     }
-
                     break;
                 case NodeType.UserProcess:
                     break;
