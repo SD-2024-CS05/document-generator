@@ -149,15 +149,20 @@ namespace ShapeHandler.ShapeTransformation
                     }
                     break;
                 case Objects.NodeType.Decision:
+                    node = new DecisionNode(shape.Text);
+                    htmlElements.ForEach(he =>
                     {
-                        node = new DecisionNode(shape.Text);
-                        htmlElements.ForEach(he =>
+                        HtmlNode htmlNode = new HtmlNode(he.Id, he);
+                        int buttonCount = node.SubmissionNodes.OfType<IHtmlButtonElement>().Count();
+                        int anchorCount = node.SubmissionNodes.OfType<IHtmlAnchorElement>().Count();
+                        int count = buttonCount + anchorCount;
+                        // Element will only be added if there is less than two anchors and/or buttons
+                        if (count < 2)
                         {
-                            HtmlNode htmlNode = new HtmlNode(he.Id, he);
                             node.SubmissionNodes.Add(htmlNode);
-                        });
-                        break;
-                    }
+                        }
+                    });
+                    break;
                 case Objects.NodeType.DataInput:
                     node = new DataInputNode(shape.Text);
                     htmlElements.ForEach(he =>
