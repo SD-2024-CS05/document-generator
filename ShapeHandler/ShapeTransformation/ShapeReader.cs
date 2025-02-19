@@ -238,9 +238,10 @@ namespace ShapeHandler.ShapeTransformation
             {
                 foreach (KeyValuePair<string, Connection> connection in connections[node.Id])
                 {
-                    if (node is DataInputNode)
+                    if (node is DataInputNode di)
                     {
-                        if (htmlGraph.GetConnectedNodesTo(nodes.Find(x => x.Id == connection.Key)).Keys.OfType<DataInputNode>().Count() < 1 && !htmlGraph.GetConnectedNodesTo(nodes.Find(x => x.Id == connection.Key)).ContainsKey(node))
+                        int htmlElementCount = di.DataInputNodes.Count();
+                        if (htmlGraph.GetConnectedNodesTo(nodes.Find(x => x.Id == connection.Key)).Keys.OfType<DataInputNode>().Count() < 1 && !htmlGraph.GetConnectedNodesTo(nodes.Find(x => x.Id == connection.Key)).ContainsKey(node) && htmlElementCount != 0)
                         {
                             htmlGraph.AddConnection(
                                 node,
