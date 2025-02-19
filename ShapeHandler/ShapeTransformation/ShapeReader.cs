@@ -246,7 +246,7 @@ namespace ShapeHandler.ShapeTransformation
                             htmlGraph.AddConnection(
                                 node,
                                 nodes.Find(x => x.Id == connection.Key),
-                                new Connection(connection.Value)
+                                connection.Value
                             );
                         }
                         else if (htmlGraph.GetConnectedNodesTo(nodes.Find(x => x.Id == connection.Key)).OfType<DataInputNode>().Count() < 1)
@@ -254,7 +254,7 @@ namespace ShapeHandler.ShapeTransformation
                             htmlGraph.AddConnection(
                                 node,
                                 nodes.Find(x => x.Id == connection.Key),
-                                new Connection(connection.Value)
+                                connection.Value
                             );
                         }
                     }
@@ -263,7 +263,7 @@ namespace ShapeHandler.ShapeTransformation
                         htmlGraph.AddConnection(
                             node,
                             nodes.Find(x => x.Id == connection.Key),
-                            new Connection(connection.Value)
+                            connection.Value
                         );
                     }
                 }
