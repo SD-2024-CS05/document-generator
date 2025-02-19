@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using ShapeHandler.Helpers;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ namespace ShapeHandler.Objects
         private static Visio.Shape _activeShape;
         public static void AddShapeData(int shapeId, string schema, string label = "Input 1")
         {
-            _activeShape = Globals.ShapeDetector.Application.ActivePage.Shapes[shapeId];
+            _activeShape = Globals.ShapeDetector.Application.ActivePage.Shapes.get_ItemFromID(shapeId);
             // check first if there is a row available
             if (_activeShape.get_RowCount((short)Visio.VisSectionIndices.visSectionProp) == 0)
             {
@@ -48,7 +49,7 @@ namespace ShapeHandler.Objects
             var shapeData = new Dictionary<string, object>();
             try
             {
-                _activeShape = Globals.ShapeDetector.Application.ActivePage.Shapes[shapeId];
+                _activeShape = Globals.ShapeDetector.Application.ActivePage.Shapes.get_ItemFromID(shapeId);
             } catch (Exception)
             {
                 return shapeData;
@@ -133,6 +134,5 @@ namespace ShapeHandler.Objects
         {
             return "\"" + val.Replace("\"", "\"\"") + "\"";
         }
-
     }
 }

@@ -7,6 +7,7 @@ using ShapeHandler.Database;
 using System.Windows.Forms;
 using ShapeHandler.Database.Input;
 using ShapeHandler.Database.StartEnd;
+using ShapeHandler.Database.Decision;
 
 namespace ShapeHandler
 {
@@ -66,34 +67,14 @@ namespace ShapeHandler
                     shapeDataForm.ShowDialog();
                     break;
                 case NodeType.StartEnd:
-                    if (!_hasStartNode)
-                    {
-                        _hasStartNode = true;
-                        StartEndForm startEndForm = new StartEndForm();
-                        startEndForm.ShowDialog();
-                        VisioShapeDataHelper.AddShapeData(shape.ID, startEndForm.URL, "URL");
-                        VisioShapeDataHelper.AddShapeData(shape.ID, true.ToString(), "IsStart");
-                        MessageBox.Show("Start node added");
-                    }
-                    else if (!_hasEndNode)
-                    {
-                        _hasEndNode = true;
-                        StartEndForm startEndForm = new StartEndForm();
-                        startEndForm.ShowDialog();
-                        VisioShapeDataHelper.AddShapeData(shape.ID, startEndForm.URL, "URL");
-                        VisioShapeDataHelper.AddShapeData(shape.ID, false.ToString(), "IsStart");
-
-                        MessageBox.Show("End node added");
-                    }
-                    else
-                    {
-                        MessageBox.Show("There can only be one start and end node");
-                        shape.Delete();
-                    }
+                    HandleStartEndNode(shape);
                     break;
                 case NodeType.Decision:
                     DecisionControlsForm decisionControlsForm = new DecisionControlsForm(shape.ID);
                     decisionControlsForm.ShowDialog();
+                    break;
+                case NodeType.Connection:
+                    HandleConnectionNode(shape);
                     break;
                 case NodeType.UserProcess:
                     break;
@@ -106,6 +87,68 @@ namespace ShapeHandler
                     break;
                 default:
                     break;
+            }
+        }
+
+        private void HandleStartEndNode(Visio.IVShape shape)
+        {
+            if (!_hasStartNode)
+            {
+                _hasStartNode = true;
+                StartEndForm startEndForm = new StartEndForm();
+                startEndForm.ShowDialog();
+                VisioShapeDataHelper.AddShapeData(shape.ID, startEndForm.URL, "URL");
+                VisioShapeDataHelper.AddShapeData(shape.ID, true.ToString(), "IsStart");
+                MessageBox.Show("Start node added");
+            }
+            else if (!_hasEndNode)
+            {
+                _hasEndNode = true;
+                StartEndForm startEndForm = new StartEndForm();
+                startEndForm.ShowDialog();
+                VisioShapeDataHelper.AddShapeData(shape.ID, startEndForm.URL, "URL");
+                VisioShapeDataHelper.AddShapeData(shape.ID, false.ToString(), "IsStart");
+
+                MessageBox.Show("End node added");
+            }
+            else
+            {
+                MessageBox.Show("There can only be one start and end node");
+                shape.Delete();
+            }
+        }
+
+        private void HandleConnectionNode(Visio.IVShape shape)
+        {
+            var decisionId = ShapeReader.IsConnectionFromDecisionNode((Shape)shape);
+
+            if (decisionId == -1)
+            {
+                return;
+            }
+
+            bool validDecision = ShapeReader.IsValidDecisionConnection((Shape)shape);
+            Shape decisionShape = Globals.ShapeDetector.Application.ActivePage.Shapes.get_ItemFromID(decisionId);
+
+            DecisionNode decisionNode = ShapeReader.GetBoundDecisionNode((Shape)shape);
+            DataInputNode dataInputNode = ShapeReader.GetBoundDataInputNode(decisionShape);
+
+            // if the decision node is not valid or the decision node is null
+            if (!validDecision || decisionNode == null)
+            {
+                MessageBox.Show("Invalid connection");
+                shape.Delete();
+                return;
+            }
+
+            ConnectionForm connectionForm = new ConnectionForm(shape.ID, decisionNode, dataInputNode);
+            connectionForm.ShowDialog();
+
+            // if connection not saved
+            if (connectionForm.Connection == null)
+            {
+                MessageBox.Show("Connection not saved");
+                shape.Delete();
             }
         }
 

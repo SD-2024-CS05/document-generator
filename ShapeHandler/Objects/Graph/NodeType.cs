@@ -18,6 +18,7 @@ namespace ShapeHandler.Objects
         Decision,
         StartEnd,
         Page,
+        Connection,
         None
     }
 }
