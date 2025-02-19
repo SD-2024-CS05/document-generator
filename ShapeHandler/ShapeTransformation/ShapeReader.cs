@@ -105,11 +105,26 @@ namespace ShapeHandler.ShapeTransformation
             {
                 foreach (KeyValuePair<string, string> connection in connections[node.Id])
                 {
-                    htmlGraph.AddConnection(
-                        node,
-                        nodes.Find(x => x.Id == connection.Key),
-                        new Connection(connection.Value)
-                    );
+                    if (node is DataInputNode)
+                    {
+                        if (htmlGraph.GetConnectedNodesFrom(node).OfType<DecisionNode>().Count() < 2)
+                        {
+                            htmlGraph.AddConnection(
+                                node,
+                                nodes.Find(x => x.Id == connection.Key),
+                                new Connection(connection.Value)
+                            );
+                        }
+                    }
+                    else
+                    {
+                        htmlGraph.AddConnection(
+                            node,
+                            nodes.Find(x => x.Id == connection.Key),
+                            new Connection(connection.Value)
+                        );
+                    }
+                    
                 }
             }
             return htmlGraph;
@@ -162,19 +177,7 @@ namespace ShapeHandler.ShapeTransformation
                         {
                             node.SubmissionNodes.Add(htmlNode);
                         }
-                        // TODO: Maximum of one DataInputNode can be added
-                        if (node.SubmissionNodes.OfType<DataInputNode>().Count() < 1)
-                        {
-                            node.SubmissionNodes.Add(htmlNode);
-                        }
                     });
-                    // TODO: DataInputNode only required if and only if
-                    // the connections from the decision node contain
-                    // conditions that are not related to the buttons
-                    if (node.SubmissionNodes.OfType<DataInputNode>().Count() == 0)
-                    {
-                        node.SubmissionNodes.Add(new DataInputNode("something something"));
-                    }
                     break;
                 case Objects.NodeType.DataInput:
                     node = new DataInputNode(shape.Text);
