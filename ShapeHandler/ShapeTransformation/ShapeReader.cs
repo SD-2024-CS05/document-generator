@@ -241,15 +241,7 @@ namespace ShapeHandler.ShapeTransformation
                 {
                     if (node is DataInputNode)
                     {
-                        if (htmlGraph.GetConnectedNodesFrom(node).OfType<DecisionNode>().Count() < 2)
-                        {
-                            htmlGraph.AddConnection(
-                                node,
-                                nodes.Find(x => x.Id == connection.Key),
-                                connection.Value
-                            );
-                        }
-                        else if (htmlGraph.GetConnectedNodesTo(nodes.Find(x => x.Id == connection.Key)).OfType<DataInputNode>().Count() < 1)
+                        if (htmlGraph.GetConnectedNodesTo(nodes.Find(x => x.Id == connection.Key)).Keys.OfType<DataInputNode>().Count() < 1 && !htmlGraph.GetConnectedNodesTo(nodes.Find(x => x.Id == connection.Key)).ContainsKey(node))
                         {
                             htmlGraph.AddConnection(
                                 node,
