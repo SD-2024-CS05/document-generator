@@ -150,6 +150,7 @@ namespace ShapeHandler.ShapeTransformation
                     break;
                 case Objects.NodeType.Decision:
                     node = new DecisionNode(shape.Text);
+                    var lol = new DecisionNode("lol");
                     htmlElements.ForEach(he =>
                     {
                         HtmlNode htmlNode = new HtmlNode(he.Id, he);
@@ -161,7 +162,19 @@ namespace ShapeHandler.ShapeTransformation
                         {
                             node.SubmissionNodes.Add(htmlNode);
                         }
+                        // TODO: Maximum of one DataInputNode can be added
+                        if (node.SubmissionNodes.OfType<DataInputNode>().Count() < 1)
+                        {
+                            node.SubmissionNodes.Add(htmlNode);
+                        }
                     });
+                    // TODO: DataInputNode only required if and only if
+                    // the connections from the decision node contain
+                    // conditions that are not related to the buttons
+                    if (node.SubmissionNodes.OfType<DataInputNode>().Count() == 0)
+                    {
+                        node.SubmissionNodes.Add(new DataInputNode("something something"));
+                    }
                     break;
                 case Objects.NodeType.DataInput:
                     node = new DataInputNode(shape.Text);
