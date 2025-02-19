@@ -192,7 +192,6 @@ namespace ShapeHandler.ShapeTransformation
             return -1;
         }
 
-
         /// <summary>
         /// Gets the connected shapes of a shape
         /// </summary>
@@ -209,7 +208,7 @@ namespace ShapeHandler.ShapeTransformation
                 Shape connectedShape = shape.ContainingPage.Shapes.ItemFromID[(int)connectedShapeArrayTargetIDs.GetValue(i)];
 
                 var shapeData = VisioShapeDataHelper.GetShapeData(connector.ID);
-
+                
                 var connection = new Connection(connector.Text);
                 if (shapeData.ContainsKey("Connection"))
                 {
@@ -246,7 +245,7 @@ namespace ShapeHandler.ShapeTransformation
                             htmlGraph.AddConnection(
                                 node,
                                 nodes.Find(x => x.Id == connection.Key),
-                                connection.Value
+                                new Connection("lol", ConnectionType.VALIDATES) // Temporary
                             );
                         }
                     }
@@ -298,7 +297,6 @@ namespace ShapeHandler.ShapeTransformation
                     break;
                 case Objects.NodeType.Decision:
                     node = new DecisionNode(shape.Text);
-                    var lol = new DecisionNode("lol");
                     htmlElements.ForEach(he =>
                     {
                         HtmlNode htmlNode = new HtmlNode(he.Id, he);
