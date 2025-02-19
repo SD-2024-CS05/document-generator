@@ -115,6 +115,14 @@ namespace ShapeHandler.ShapeTransformation
                                 new Connection(connection.Value)
                             );
                         }
+                        else if (htmlGraph.GetConnectedNodesTo(nodes.Find(x => x.Id == connection.Key)).OfType<DataInputNode>().Count() < 1)
+                        {
+                            htmlGraph.AddConnection(
+                                node,
+                                nodes.Find(x => x.Id == connection.Key),
+                                new Connection(connection.Value)
+                            );
+                        }
                     }
                     else
                     {
