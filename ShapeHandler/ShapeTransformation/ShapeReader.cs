@@ -208,8 +208,18 @@ namespace ShapeHandler.ShapeTransformation
                 Shape connectedShape = shape.ContainingPage.Shapes.ItemFromID[(int)connectedShapeArrayTargetIDs.GetValue(i)];
 
                 var shapeData = VisioShapeDataHelper.GetShapeData(connector.ID);
-                
-                var connection = new Connection(connector.Text);
+
+                Connection connection;
+                // For connections between Data Input Nodes and Decision Nodes
+                if (VisioShapeDataHelper.GetNodeType(shape.ID) == Objects.NodeType.DataInput && VisioShapeDataHelper.GetNodeType(connectedShape.ID) == Objects.NodeType.Decision)
+                {
+                    connection = new Connection(connector.Text, ConnectionType.VALIDATES);
+                }
+                else
+                {
+                    connection = new Connection(connector.Text);
+                }
+
                 if (shapeData.ContainsKey("Connection"))
                 {
                     var serializedData = shapeData["Connection"].ToString();
@@ -238,15 +248,17 @@ namespace ShapeHandler.ShapeTransformation
             {
                 foreach (KeyValuePair<string, Connection> connection in connections[node.Id])
                 {
-                    if (node is DataInputNode di)
+                    if (node is DataInputNode dataInputNode)
                     {
-                        int htmlElementCount = di.DataInputNodes.Count();
-                        if (htmlGraph.GetConnectedNodesTo(nodes.Find(x => x.Id == connection.Key)).Keys.OfType<DataInputNode>().Count() < 1 && !htmlGraph.GetConnectedNodesTo(nodes.Find(x => x.Id == connection.Key)).ContainsKey(node) && htmlElementCount != 0)
+                        int dataInputNodeBoundToDecisionNodeCount = htmlGraph.GetConnectedNodesTo(nodes.Find(x => x.Id == connection.Key)).Keys.OfType<DataInputNode>().Count();
+                        bool dataInputNodeAlreadyConnected = htmlGraph.GetConnectedNodesTo(nodes.Find(x => x.Id == connection.Key)).ContainsKey(dataInputNode);
+                        bool hasElements = dataInputNode.DataInputNodes.Count() != 0;
+                        if (dataInputNodeBoundToDecisionNodeCount == 0 && !dataInputNodeAlreadyConnected && hasElements)
                         {
                             htmlGraph.AddConnection(
                                 node,
                                 nodes.Find(x => x.Id == connection.Key),
-                                new Connection("lol", ConnectionType.VALIDATES) // Temporary
+                                connection.Value
                             );
                         }
                     }
