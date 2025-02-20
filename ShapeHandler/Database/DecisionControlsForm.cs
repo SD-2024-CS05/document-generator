@@ -15,6 +15,7 @@ using ShapeHandler.Database.Input;
 using ShapeHandler.Helpers;
 using ShapeHandler.Objects;
 using AngleSharp.Dom;
+using System.Xml.Linq;
 
 namespace ShapeHandler.Database
 {
@@ -87,7 +88,16 @@ namespace ShapeHandler.Database
                         {
                             ListViewItem item = new ListViewItem(new[] {element.Id, element.OuterHtml});
                             item.Group = ControlListView.Groups["ButtonGroup"];
-                            ControlListView.Items.Add(item);
+                            // There can only be two button controls per decision node
+                            if (item.Group.Items.Count <= 2)
+                            {
+                                ControlListView.Items.Add(item);
+                            }
+                        }
+                        if (buttonAttributesForm.Elements.Count > 2)
+                        {
+                            buttonAttributesForm.Elements.RemoveRange(2, buttonAttributesForm.Elements.Count - 2);
+                            MessageBox.Show("There can only be two button controls.", "Error");
                         }
                     }
                     break;
