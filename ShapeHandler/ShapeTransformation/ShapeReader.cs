@@ -313,14 +313,7 @@ namespace ShapeHandler.ShapeTransformation
                     htmlElements.ForEach(he =>
                     {
                         HtmlNode htmlNode = new HtmlNode(he.Id, he);
-                        int buttonCount = node.SubmissionNodes.OfType<IHtmlButtonElement>().Count();
-                        int anchorCount = node.SubmissionNodes.OfType<IHtmlAnchorElement>().Count();
-                        int count = buttonCount + anchorCount;
-                        // Element will only be added if there is less than two anchors and/or buttons
-                        if (count < 2)
-                        {
-                            node.SubmissionNodes.Add(htmlNode);
-                        }
+                        node.SubmissionNodes.Add(htmlNode);
                     });
                     break;
                 case Objects.NodeType.DataInput:
