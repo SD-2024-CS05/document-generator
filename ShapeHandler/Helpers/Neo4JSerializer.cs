@@ -51,7 +51,7 @@ namespace ShapeHandler.Database
                 if (connection.Conditions != null)
                 {
                     // turn the Conditions object into a serialized JSON string
-                    obj.Add("Conditions", JToken.FromObject(connection.Conditions, serializer));
+                    obj.Add("Conditions", JToken.FromObject(connection.Conditions, serializer).ToString());
                 }
             }
 

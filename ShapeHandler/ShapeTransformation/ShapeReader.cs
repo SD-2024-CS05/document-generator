@@ -20,6 +20,8 @@ namespace ShapeHandler.ShapeTransformation
     {
         private static IBrowsingContext context = BrowsingContext.New(Configuration.Default);
         private static IDocument document = context.OpenNewAsync().Result;
+        private static Dictionary<int, FlowchartNode> visioIDToNode = new Dictionary<int, FlowchartNode>();
+
 
         /// <summary>
         /// Converts Visio shapes to an HTML graph
@@ -52,7 +54,7 @@ namespace ShapeHandler.ShapeTransformation
                 // skip special connectors and sheets
                 if (!isSpecialConnectorOrSheet(shape))
                 {
-                    FlowchartNode node = ConvertShapeToNode(shape);
+                    FlowchartNode node = ConvertShapeToNode<FlowchartNode>(shape);
                     if (node != null)
                     {
                         visioIDToGuid[shape.ID] = node.Id;
@@ -128,8 +130,8 @@ namespace ShapeHandler.ShapeTransformation
             }
 
             var decisionNode = shape.ContainingPage.Shapes.ItemFromID[decisionNodeID];
-            var node = ConvertShapeToNode(decisionNode);
-            return node as DecisionNode;
+            var node = ConvertShapeToNode<DecisionNode>(decisionNode);
+            return node;
         }
 
         public static DataInputNode GetBoundDataInputNode(Shape shape)
@@ -160,7 +162,7 @@ namespace ShapeHandler.ShapeTransformation
                 var connectedShape = shape.ContainingPage.Shapes.ItemFromID[(int)connectedShapeArraySourceIDs.GetValue(0)];
                 if (VisioShapeDataHelper.GetNodeType(connectedShape.ID) == Objects.NodeType.DataInput)
                 {
-                    return ConvertShapeToNode(connectedShape) as DataInputNode;
+                    return ConvertShapeToNode<DataInputNode>(connectedShape);
                 }
             }
 
@@ -197,6 +199,8 @@ namespace ShapeHandler.ShapeTransformation
         /// Gets the connected shapes of a shape
         /// </summary>
         /// <param name="shape">Visio shape</param>
+        /// <param name="visioIDToGuid">Mapping between Visio Shape IDs and Node Guids</param>
+        /// <param name="nodes">List of nodes</param>
         /// <returns>List of connected shapes to a shape</returns>
         private static IDictionary<string, Connection> GetConnected(Shape shape, IDictionary<int, string> visioIDToGuid)
         {
@@ -254,8 +258,13 @@ namespace ShapeHandler.ShapeTransformation
         /// </summary>
         /// <param name="shape">Transformed shape</param>
         /// <returns>The node to be added to an HTML graph</returns>
-        private static FlowchartNode ConvertShapeToNode(Shape shape)
+        private static T ConvertShapeToNode<T>(Shape shape) where T : FlowchartNode
         {
+            if (visioIDToNode.TryGetValue(shape.ID, out FlowchartNode fNode))
+            {
+                return fNode as T;
+            }
+
             var shapeData = VisioShapeDataHelper.GetShapeData(shape.ID);
             var htmlElements = VisioShapeDataHelper.GetHtmlElements(shape.ID);
             var type = VisioShapeDataHelper.GetNodeType(shape.ID);
@@ -313,7 +322,13 @@ namespace ShapeHandler.ShapeTransformation
                 default:
                     break;
             }
-            return node;
+
+            if (node != null)
+            {
+                visioIDToNode[shape.ID] = node;
+            }
+
+            return node as T;
         }
     }
 }
