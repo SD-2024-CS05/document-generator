@@ -192,7 +192,6 @@ namespace ShapeHandler.ShapeTransformation
             return -1;
         }
 
-
         /// <summary>
         /// Gets the connected shapes of a shape
         /// </summary>
@@ -210,7 +209,17 @@ namespace ShapeHandler.ShapeTransformation
 
                 var shapeData = VisioShapeDataHelper.GetShapeData(connector.ID);
 
-                var connection = new Connection(connector.Text);
+                Connection connection;
+                // For connections between Data Input Nodes and Decision Nodes
+                if (VisioShapeDataHelper.GetNodeType(shape.ID) == Objects.NodeType.DataInput && VisioShapeDataHelper.GetNodeType(connectedShape.ID) == Objects.NodeType.Decision)
+                {
+                    connection = new Connection(connector.Text, ConnectionType.VALIDATES);
+                }
+                else
+                {
+                    connection = new Connection(connector.Text);
+                }
+
                 if (shapeData.ContainsKey("Connection"))
                 {
                     var serializedData = shapeData["Connection"].ToString();
@@ -239,11 +248,28 @@ namespace ShapeHandler.ShapeTransformation
             {
                 foreach (KeyValuePair<string, Connection> connection in connections[node.Id])
                 {
-                    htmlGraph.AddConnection(
-                        node,
-                        nodes.Find(x => x.Id == connection.Key),
-                        connection.Value
-                    );
+                    if (node is DataInputNode dataInputNode)
+                    {
+                        int dataInputNodeBoundToDecisionNodeCount = htmlGraph.GetConnectedNodesTo(nodes.Find(x => x.Id == connection.Key)).Keys.OfType<DataInputNode>().Count();
+                        bool dataInputNodeAlreadyConnected = htmlGraph.GetConnectedNodesTo(nodes.Find(x => x.Id == connection.Key)).ContainsKey(dataInputNode);
+                        bool hasElements = dataInputNode.DataInputNodes.Count() != 0;
+                        if (dataInputNodeBoundToDecisionNodeCount == 0 && !dataInputNodeAlreadyConnected && hasElements)
+                        {
+                            htmlGraph.AddConnection(
+                                node,
+                                nodes.Find(x => x.Id == connection.Key),
+                                connection.Value
+                            );
+                        }
+                    }
+                    else
+                    {
+                        htmlGraph.AddConnection(
+                            node,
+                            nodes.Find(x => x.Id == connection.Key),
+                            connection.Value
+                        );
+                    }
                 }
             }
             return htmlGraph;
@@ -283,15 +309,13 @@ namespace ShapeHandler.ShapeTransformation
                     }
                     break;
                 case Objects.NodeType.Decision:
+                    node = new DecisionNode(shape.Text);
+                    htmlElements.ForEach(he =>
                     {
-                        node = new DecisionNode(shape.Text);
-                        htmlElements.ForEach(he =>
-                        {
-                            HtmlNode htmlNode = new HtmlNode(he.Id, he);
-                            node.SubmissionNodes.Add(htmlNode);
-                        });
-                        break;
-                    }
+                        HtmlNode htmlNode = new HtmlNode(he.Id, he);
+                        node.SubmissionNodes.Add(htmlNode);
+                    });
+                    break;
                 case Objects.NodeType.DataInput:
                     node = new DataInputNode(shape.Text);
                     htmlElements.ForEach(he =>
