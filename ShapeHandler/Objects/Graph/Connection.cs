@@ -12,6 +12,12 @@ namespace ShapeHandler.Objects
         public Conditions Conditions { get; set; }
         public ConnectionType Type { get; set; }
         public string SubmissionId { get; set; } // optional string for a submission event id
+        public string URL { get; set; } // optional string for a URL
+
+        public Connection()
+        {
+            Type = ConnectionType.GOES_TO;
+        }
 
         public Connection(string label)
         {

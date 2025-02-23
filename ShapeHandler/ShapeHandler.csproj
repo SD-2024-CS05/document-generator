@@ -169,8 +169,8 @@
     <Reference Include="Microsoft.Azure.KeyVault.WebKey, Version=3.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Azure.KeyVault.WebKey.3.0.5\lib\net461\Microsoft.Azure.KeyVault.WebKey.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.9.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=9.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.9.0.1\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Bcl.HashCode, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.HashCode.6.0.0\lib\net462\Microsoft.Bcl.HashCode.dll</HintPath>
@@ -269,6 +269,7 @@
     <Reference Include="System.Diagnostics.DiagnosticSource, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Diagnostics.DiagnosticSource.9.0.0\lib\net462\System.Diagnostics.DiagnosticSource.dll</HintPath>
     </Reference>
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IdentityModel" />
     <Reference Include="System.IO, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -279,8 +280,8 @@
     <Reference Include="System.IO.FileSystem.AccessControl, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.FileSystem.AccessControl.5.0.0\lib\net461\System.IO.FileSystem.AccessControl.dll</HintPath>
     </Reference>
-    <Reference Include="System.IO.Pipelines, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.IO.Pipelines.9.0.0\lib\net462\System.IO.Pipelines.dll</HintPath>
+    <Reference Include="System.IO.Pipelines, Version=9.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IO.Pipelines.9.0.1\lib\net462\System.IO.Pipelines.dll</HintPath>
     </Reference>
     <Reference Include="System.Memory, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.6.0\lib\net462\System.Memory.dll</HintPath>
@@ -332,11 +333,11 @@
     <Reference Include="System.Text.Encoding.CodePages, Version=9.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Text.Encoding.CodePages.9.0.0\lib\net462\System.Text.Encoding.CodePages.dll</HintPath>
     </Reference>
-    <Reference Include="System.Text.Encodings.Web, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Text.Encodings.Web.9.0.0\lib\net462\System.Text.Encodings.Web.dll</HintPath>
+    <Reference Include="System.Text.Encodings.Web, Version=9.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encodings.Web.9.0.1\lib\net462\System.Text.Encodings.Web.dll</HintPath>
     </Reference>
-    <Reference Include="System.Text.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Text.Json.9.0.0\lib\net462\System.Text.Json.dll</HintPath>
+    <Reference Include="System.Text.Json, Version=9.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Json.9.0.1\lib\net462\System.Text.Json.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Threading.Tasks.Extensions.4.6.0\lib\net462\System.Threading.Tasks.Extensions.dll</HintPath>
@@ -423,13 +424,69 @@
   -->
   <ItemGroup>
     <Compile Include="Database\DatabaseConnector.cs" />
+    <Compile Include="Database\DecisionControlsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Database\DecisionControlsForm.Designer.cs">
+      <DependentUpon>DecisionControlsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Database\Decision\ConditionsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Database\Decision\ConditionsForm.Designer.cs">
+      <DependentUpon>ConditionsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Database\Decision\ConnectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Database\Decision\ConnectionForm.Designer.cs">
+      <DependentUpon>ConnectionForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Database\Input\SelectAttributesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Database\Input\SelectAttributesForm.Designer.cs">
+      <DependentUpon>SelectAttributesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Database\Input\AnchorAttributesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Database\Input\AnchorAttributesForm.Designer.cs">
+      <DependentUpon>AnchorAttributesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Database\Decision\ButtonAttributesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Database\Decision\ButtonAttributesForm.Designer.cs">
+      <DependentUpon>ButtonAttributesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Database\Input\InputAttributesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Database\Input\InputAttributesForm.Designer.cs">
+      <DependentUpon>InputAttributesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Database\Input\ImageAttributesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Database\Input\ImageAttributesForm.Designer.cs">
+      <DependentUpon>ImageAttributesForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Database\ShapeDataForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Database\ShapeDataForm.Designer.cs">
       <DependentUpon>ShapeDataForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Database\Neo4JSerializer.cs" />
+    <Compile Include="Database\StartEnd\StartEndForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Database\StartEnd\StartEndForm.Designer.cs">
+      <DependentUpon>StartEndForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\ConnectionSerializer.cs" />
+    <Compile Include="Helpers\HtmlElementSerializer.cs" />
+    <Compile Include="Helpers\Neo4JSerializer.cs" />
     <Compile Include="Identity\KeyVaultManager.cs" />
     <Compile Include="Objects\FileManager.cs" />
     <Compile Include="Objects\Graph\Conditions.cs" />
@@ -443,6 +500,7 @@
     <Compile Include="Objects\Graph\PageNode.cs" />
     <Compile Include="Objects\Graph\ProcessNode.cs" />
     <Compile Include="Objects\Graph\StartEndNode.cs" />
+    <Compile Include="Helpers\VisioShapeDataHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -453,8 +511,35 @@
     <Compile Include="TestGenerator.Designer.cs">
       <DependentUpon>TestGenerator.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Database\DecisionControlsForm.resx">
+      <DependentUpon>DecisionControlsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Database\Decision\ConditionsForm.resx">
+      <DependentUpon>ConditionsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Database\Decision\ConnectionForm.resx">
+      <DependentUpon>ConnectionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Database\Input\SelectAttributesForm.resx">
+      <DependentUpon>SelectAttributesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Database\Input\AnchorAttributesForm.resx">
+      <DependentUpon>AnchorAttributesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Database\Decision\ButtonAttributesForm.resx">
+      <DependentUpon>ButtonAttributesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Database\Input\InputAttributesForm.resx">
+      <DependentUpon>InputAttributesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Database\Input\ImageAttributesForm.resx">
+      <DependentUpon>ImageAttributesForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Database\ShapeDataForm.resx">
       <DependentUpon>ShapeDataForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Database\StartEnd\StartEndForm.resx">
+      <DependentUpon>StartEndForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -469,10 +554,19 @@
     <EmbeddedResource Include="TestGenerator.resx">
       <DependentUpon>TestGenerator.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Data Sources\AngleSharp.Html.Dom.IHtmlAnchorElement.datasource" />
+    <None Include="Data Sources\AngleSharp.Html.Dom.IHtmlButtonElement.datasource" />
+    <None Include="Data Sources\AngleSharp.Html.Dom.IHtmlImageElement.datasource" />
+    <None Include="Data Sources\AngleSharp.Html.Dom.IHtmlInputElement.datasource" />
+    <None Include="Data Sources\AngleSharp.Html.Dom.IHtmlOptionElement.datasource" />
+    <None Include="Data Sources\AngleSharp.Html.Dom.IHtmlSelectElement.datasource" />
     <None Include="app.config" />
     <Content Include="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Stencil\CS05-stencil.vssx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -501,6 +595,7 @@
   <ItemGroup>
     <Content Include="ILLink\ILLink.Descriptors.LibraryBuild.xml" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -531,6 +626,12 @@
     <DefineConstants>VSTO40;UseOfficeInterop</DefineConstants>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
