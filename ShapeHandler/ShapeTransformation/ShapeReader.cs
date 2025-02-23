@@ -35,7 +35,7 @@ namespace ShapeHandler.ShapeTransformation
 
             // Connections between nodes - Inner dictionary because 1st key is the node's ID,
             // 2nd key(s) are IDs of nodes connected to the original node, the value is the
-            // label of the connectionPair
+            // label of the connection
             IDictionary<string, IDictionary<string, List<Connection>>> connections = new Dictionary<string, IDictionary<string, List<Connection>>>();
 
             // function that does the isSpecialConnector and isSheet check
@@ -85,10 +85,10 @@ namespace ShapeHandler.ShapeTransformation
         }
 
         /// <summary>
-        /// Checks if the given shape is a valid connectionPair.
+        /// Checks if the given shape is a valid connection.
         /// </summary>
         /// <param name="shape">The Visio shape to check.</param>
-        /// <returns>True if the shape is a valid connectionPair, otherwise false.</returns>
+        /// <returns>True if the shape is a valid connection, otherwise false.</returns>
         public static bool IsValidDecisionConnection(Shape shape)
         {
             // Check if the shape is of NodeType.Connection
@@ -97,7 +97,7 @@ namespace ShapeHandler.ShapeTransformation
                 return false;
             }
 
-            // Check if the connectionPair is from a DecisionNode
+            // Check if the connection is from a DecisionNode
             var decisionNodeID = IsConnectionFromDecisionNode(shape);
             if (decisionNodeID == -1)
             {
@@ -112,10 +112,10 @@ namespace ShapeHandler.ShapeTransformation
         }
 
         /// <summary>
-        /// Gets the DecisionNode that the connectionPair is coming from.
+        /// Gets the DecisionNode that the connection is coming from.
         /// </summary>
         /// <param name="shape">The Visio shape to check.</param>
-        /// <returns>The DecisionNode that the connectionPair is coming from or null otherwise.</returns>
+        /// <returns>The DecisionNode that the connection is coming from or null otherwise.</returns>
         public static DecisionNode GetBoundDecisionNode(Shape shape)
         {
             if (VisioShapeDataHelper.GetNodeType(shape.ID) != Objects.NodeType.Connection)
@@ -142,14 +142,14 @@ namespace ShapeHandler.ShapeTransformation
                 return null;
             }
 
-            // a decision node may or may not be connected to a data input node by a connectionPair
+            // a decision node may or may not be connected to a data input node by a connection
             var connectedShapeArrayTargetIDs = shape.GluedShapes(VisGluedShapesFlags.visGluedShapesIncoming1D, "");
             if (connectedShapeArrayTargetIDs.Length == 0)
             {
                 return null;
             }
 
-            // for each incoming connectionPair, check if the source is a data input
+            // for each incoming connection, check if the source is a data input
             for (int i = connectedShapeArrayTargetIDs.GetLowerBound(0); i <= connectedShapeArrayTargetIDs.GetUpperBound(0); i++)
             {
                 var connectionShape = shape.ContainingPage.Shapes.ItemFromID[(int)connectedShapeArrayTargetIDs.GetValue(i)];
@@ -170,10 +170,10 @@ namespace ShapeHandler.ShapeTransformation
         }
 
         /// <summary>
-        /// Checks if the given connectionPair shape is from a DecisionNode.
+        /// Checks if the given connection shape is from a DecisionNode.
         /// </summary>
         /// <param name="shape">The Visio shape to check.</param>
-        /// <returns>ID of the Decision Node Shape the connectionPair is coming from or -1 otherwise</returns>
+        /// <returns>ID of the Decision Node Shape the connection is coming from or -1 otherwise</returns>
         public static int IsConnectionFromDecisionNode(Shape shape)
         {
             // Check if the shape is of NodeType.Connection
