@@ -39,6 +39,7 @@ namespace ShapeHandler.Helpers
                 var selectElements = element.GetElementsByTagName("select");
                 var anchorElements = element.GetElementsByTagName("a");
                 var imageElements = element.GetElementsByTagName("img");
+                var buttonElements = element.GetElementsByTagName("button");
                 if (inputElements.Any())
                 {
                     return inputElements.FirstOrDefault() as IHtmlInputElement;
@@ -54,6 +55,10 @@ namespace ShapeHandler.Helpers
                 else if (selectElements.Any())
                 {
                     return selectElements.FirstOrDefault() as IHtmlSelectElement;
+                }
+                else if (buttonElements.Any())
+                {
+                    return buttonElements.FirstOrDefault() as IHtmlButtonElement;
                 }
 
                 return element;

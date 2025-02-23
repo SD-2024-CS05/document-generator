@@ -67,7 +67,7 @@ namespace ShapeHandler.Objects
                     }
                     break;
                 case DataInputNode diNode:
-                    // check if dataInputNodesConnected exist, if not add them, and then add connections
+                    // check if diValidatingNodes exist, if not add them, and then add connections
                     foreach (var dataInputNode in diNode.DataInputNodes)
                     {
                         if (!OutEdges.ContainsKey(dataInputNode))
@@ -141,24 +141,39 @@ namespace ShapeHandler.Objects
 
         private void ValidateDecisionNodeConnection(DecisionNode decisionNode, Connection connection)
         {
-            var dataInputNodesConnected = InEdges[decisionNode] // Get all nodes connected to the decision node with 'VALIDATES' connection
+            var diValidatingNodes = InEdges[decisionNode] // Get all nodes connected to the decision node
                 .Where(x => x.Key is DataInputNode && x.Value.Any(c => c.Type == ConnectionType.VALIDATES))
                 .Select(x => x.Key as DataInputNode)
                 .ToList();
 
-            var submissionNodesConnected = InEdges[decisionNode]
+            var diConnectedNodes = InEdges[decisionNode] // Get all nodes connected to the decision node
+                .Where(x => x.Key is DataInputNode && x.Value.Any(c => c.Type == ConnectionType.GOES_TO))
+                .Select(x => x.Key as DataInputNode)
+                .ToList();
+
+            // for any nodes in GOES_TO that aren't in VALIDATES, add a VALIDATES connection
+            foreach (var diNode in diConnectedNodes)
+            {
+                if (!diValidatingNodes.Contains(diNode))
+                {
+                    AddConnection(diNode, decisionNode, new Connection(ConnectionType.VALIDATES));
+                    diValidatingNodes.Add(diNode);
+                }
+            }
+
+            var connectedSubNodes = InEdges[decisionNode]
                 .Where(x => x.Key is HtmlNode && x.Value.Any(c => c.Type == ConnectionType.SUBMITS))
                 .Select(x => x.Key as HtmlNode)
                 .ToList();
 
-            if (!dataInputNodesConnected.Any() && !submissionNodesConnected.Any())
+            if (!diValidatingNodes.Any() && !connectedSubNodes.Any())
             {
                 throw new Exception($"No Validation nodes found for Decision Node: {decisionNode.Id}");
             }
 
             var condition = connection.Conditions;
-            var dataInputNodeIds = dataInputNodesConnected.SelectMany(x => x.DataInputNodes.Select(y => y.Id)).ToHashSet();
-            var submissionIds = submissionNodesConnected.Select(x => x.Id).ToHashSet();
+            var dataInputNodeIds = diValidatingNodes.SelectMany(x => x.DataInputNodes.Select(y => y.Id)).ToHashSet();
+            var submissionIds = connectedSubNodes.Select(x => x.Id).ToHashSet();
 
             while (condition != null)
             {

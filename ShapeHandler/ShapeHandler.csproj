@@ -424,6 +424,24 @@
   -->
   <ItemGroup>
     <Compile Include="Database\DatabaseConnector.cs" />
+    <Compile Include="Database\DecisionControlsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Database\DecisionControlsForm.Designer.cs">
+      <DependentUpon>DecisionControlsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Database\Decision\ConditionsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Database\Decision\ConditionsForm.Designer.cs">
+      <DependentUpon>ConditionsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Database\Decision\ConnectionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Database\Decision\ConnectionForm.Designer.cs">
+      <DependentUpon>ConnectionForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Database\Input\SelectAttributesForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -436,10 +454,10 @@
     <Compile Include="Database\Input\AnchorAttributesForm.Designer.cs">
       <DependentUpon>AnchorAttributesForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Database\Input\ButtonAttributesForm.cs">
+    <Compile Include="Database\Decision\ButtonAttributesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Database\Input\ButtonAttributesForm.Designer.cs">
+    <Compile Include="Database\Decision\ButtonAttributesForm.Designer.cs">
       <DependentUpon>ButtonAttributesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Database\Input\InputAttributesForm.cs">
@@ -460,6 +478,13 @@
     <Compile Include="Database\ShapeDataForm.Designer.cs">
       <DependentUpon>ShapeDataForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Database\StartEnd\StartEndForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Database\StartEnd\StartEndForm.Designer.cs">
+      <DependentUpon>StartEndForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\ConnectionSerializer.cs" />
     <Compile Include="Helpers\HtmlElementSerializer.cs" />
     <Compile Include="Helpers\Neo4JSerializer.cs" />
     <Compile Include="Identity\KeyVaultManager.cs" />
@@ -486,13 +511,22 @@
     <Compile Include="TestGenerator.Designer.cs">
       <DependentUpon>TestGenerator.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Database\DecisionControlsForm.resx">
+      <DependentUpon>DecisionControlsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Database\Decision\ConditionsForm.resx">
+      <DependentUpon>ConditionsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Database\Decision\ConnectionForm.resx">
+      <DependentUpon>ConnectionForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Database\Input\SelectAttributesForm.resx">
       <DependentUpon>SelectAttributesForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Database\Input\AnchorAttributesForm.resx">
       <DependentUpon>AnchorAttributesForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Database\Input\ButtonAttributesForm.resx">
+    <EmbeddedResource Include="Database\Decision\ButtonAttributesForm.resx">
       <DependentUpon>ButtonAttributesForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Database\Input\InputAttributesForm.resx">
@@ -503,6 +537,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Database\ShapeDataForm.resx">
       <DependentUpon>ShapeDataForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Database\StartEnd\StartEndForm.resx">
+      <DependentUpon>StartEndForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -589,6 +626,12 @@
     <DefineConstants>VSTO40;UseOfficeInterop</DefineConstants>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
