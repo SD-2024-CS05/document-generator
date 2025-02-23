@@ -49,6 +49,16 @@ namespace ShapeHandler.Database.Decision
             }
         }
 
+        private HtmlNode GetHtmlNodeById(string id)
+        {
+            return _elementNodes.FirstOrDefault(n => n.Element.Id == id);
+        }
+
+        private HtmlNode GetHtmlNodeByOuterHtml(string outerHtml)
+        {
+            return _elementNodes.FirstOrDefault(n => n.Element.OuterHtml == outerHtml);
+        }
+
         private void UpdateShapeData()
         {
             Conditions = new Conditions();
@@ -67,7 +77,13 @@ namespace ShapeHandler.Database.Decision
                 var operatorCombo = this.Controls.Find("OperatorComboBox" + i, true).FirstOrDefault() as ComboBox;
 
                 // add until an operator isn't AND
-                nodeIds.Add(elementCombo.SelectedItem as string);
+                var selectedItem = elementCombo.SelectedItem as string;
+
+                if (!string.IsNullOrEmpty(selectedItem))
+                {
+                    var node = GetHtmlNodeById(selectedItem) ?? GetHtmlNodeByOuterHtml(selectedItem);
+                    nodeIds.Add(node.Id);
+                }
 
                 // last operator won't have text associated with it
                 if (operatorCombo == null || string.IsNullOrEmpty(operatorCombo.SelectedItem as string))

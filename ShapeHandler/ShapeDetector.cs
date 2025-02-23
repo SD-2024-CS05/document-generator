@@ -161,7 +161,6 @@ namespace ShapeHandler
         {
             Page page = application.ActivePage;
             HtmlGraph htmlGraph = ShapeReader.ConvertShapesToGraph(page.Shapes);
-            // TODO: Implement
             return htmlGraph;
         }
         #region VSTO generated code
