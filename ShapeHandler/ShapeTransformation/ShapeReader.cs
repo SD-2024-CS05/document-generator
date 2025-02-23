@@ -35,8 +35,8 @@ namespace ShapeHandler.ShapeTransformation
 
             // Connections between nodes - Inner dictionary because 1st key is the node's ID,
             // 2nd key(s) are IDs of nodes connected to the original node, the value is the
-            // label of the connection
-            IDictionary<string, IDictionary<string, Connection>> connections = new Dictionary<string, IDictionary<string, Connection>>();
+            // label of the connectionPair
+            IDictionary<string, IDictionary<string, List<Connection>>> connections = new Dictionary<string, IDictionary<string, List<Connection>>>();
 
             // function that does the isSpecialConnector and isSheet check
             Func<Shape, bool> isSpecialConnectorOrSheet = (shape) =>
@@ -73,7 +73,7 @@ namespace ShapeHandler.ShapeTransformation
             {
                 if (!isSpecialConnectorOrSheet(shape))
                 {
-                    IDictionary<string, Connection> connected = GetConnected(shape, visioIDToGuid);
+                    IDictionary<string, List<Connection>> connected = GetConnected(shape, visioIDToGuid);
                     connections[visioIDToGuid[shape.ID]] = connected;
                 }
             }
@@ -85,10 +85,10 @@ namespace ShapeHandler.ShapeTransformation
         }
 
         /// <summary>
-        /// Checks if the given shape is a valid connection.
+        /// Checks if the given shape is a valid connectionPair.
         /// </summary>
         /// <param name="shape">The Visio shape to check.</param>
-        /// <returns>True if the shape is a valid connection, otherwise false.</returns>
+        /// <returns>True if the shape is a valid connectionPair, otherwise false.</returns>
         public static bool IsValidDecisionConnection(Shape shape)
         {
             // Check if the shape is of NodeType.Connection
@@ -97,7 +97,7 @@ namespace ShapeHandler.ShapeTransformation
                 return false;
             }
 
-            // Check if the connection is from a DecisionNode
+            // Check if the connectionPair is from a DecisionNode
             var decisionNodeID = IsConnectionFromDecisionNode(shape);
             if (decisionNodeID == -1)
             {
@@ -112,10 +112,10 @@ namespace ShapeHandler.ShapeTransformation
         }
 
         /// <summary>
-        /// Gets the DecisionNode that the connection is coming from.
+        /// Gets the DecisionNode that the connectionPair is coming from.
         /// </summary>
         /// <param name="shape">The Visio shape to check.</param>
-        /// <returns>The DecisionNode that the connection is coming from or null otherwise.</returns>
+        /// <returns>The DecisionNode that the connectionPair is coming from or null otherwise.</returns>
         public static DecisionNode GetBoundDecisionNode(Shape shape)
         {
             if (VisioShapeDataHelper.GetNodeType(shape.ID) != Objects.NodeType.Connection)
@@ -142,14 +142,14 @@ namespace ShapeHandler.ShapeTransformation
                 return null;
             }
 
-            // a decision node may or may not be connected to a data input node by a connection
+            // a decision node may or may not be connected to a data input node by a connectionPair
             var connectedShapeArrayTargetIDs = shape.GluedShapes(VisGluedShapesFlags.visGluedShapesIncoming1D, "");
             if (connectedShapeArrayTargetIDs.Length == 0)
             {
                 return null;
             }
 
-            // for each incoming connection, check if the source is a data input
+            // for each incoming connectionPair, check if the source is a data input
             for (int i = connectedShapeArrayTargetIDs.GetLowerBound(0); i <= connectedShapeArrayTargetIDs.GetUpperBound(0); i++)
             {
                 var connectionShape = shape.ContainingPage.Shapes.ItemFromID[(int)connectedShapeArrayTargetIDs.GetValue(i)];
@@ -170,10 +170,10 @@ namespace ShapeHandler.ShapeTransformation
         }
 
         /// <summary>
-        /// Checks if the given connection shape is from a DecisionNode.
+        /// Checks if the given connectionPair shape is from a DecisionNode.
         /// </summary>
         /// <param name="shape">The Visio shape to check.</param>
-        /// <returns>ID of the Decision Node Shape the connection is coming from or -1 otherwise</returns>
+        /// <returns>ID of the Decision Node Shape the connectionPair is coming from or -1 otherwise</returns>
         public static int IsConnectionFromDecisionNode(Shape shape)
         {
             // Check if the shape is of NodeType.Connection
@@ -201,9 +201,9 @@ namespace ShapeHandler.ShapeTransformation
         /// <param name="visioIDToGuid">Mapping between Visio Shape IDs and Node Guids</param>
         /// <param name="nodes">List of nodes</param>
         /// <returns>List of connected shapes to a shape</returns>
-        private static IDictionary<string, Connection> GetConnected(Shape shape, IDictionary<int, string> visioIDToGuid)
+        private static IDictionary<string, List<Connection>> GetConnected(Shape shape, IDictionary<int, string> visioIDToGuid)
         {
-            IDictionary<string, Connection> connections = new Dictionary<string, Connection>();
+            IDictionary<string, List<Connection>> connections = new Dictionary<string, List<Connection>>();
             Array connectedShapeArrayTargetIDs = shape.ConnectedShapes(VisConnectedShapesFlags.visConnectedShapesOutgoingNodes, "");
             Array connectorArrayTargetIDs = shape.GluedShapes(VisGluedShapesFlags.visGluedShapesOutgoing1D, "");
             for (int i = connectedShapeArrayTargetIDs.GetLowerBound(0); i <= connectedShapeArrayTargetIDs.GetUpperBound(0); i++)
@@ -215,9 +215,16 @@ namespace ShapeHandler.ShapeTransformation
 
                 Connection connection;
                 // For connections between Data Input Nodes and Decision Nodes
-                if (VisioShapeDataHelper.GetNodeType(shape.ID) == Objects.NodeType.DataInput && VisioShapeDataHelper.GetNodeType(connectedShape.ID) == Objects.NodeType.Decision)
+                if (VisioShapeDataHelper.GetNodeType(shape.ID) == Objects.NodeType.DataInput &&
+                    VisioShapeDataHelper.GetNodeType(connectedShape.ID) == Objects.NodeType.Decision)
                 {
                     connection = new Connection(connector.Text, ConnectionType.VALIDATES);
+                    if (!connections.ContainsKey(visioIDToGuid[connectedShape.ID]))
+                    {
+                        connections[visioIDToGuid[connectedShape.ID]] = new List<Connection>();
+                    }
+                    connections[visioIDToGuid[connectedShape.ID]].Add(connection);
+                    connection = new Connection(connector.Text, ConnectionType.GOES_TO);
                 }
                 else
                 {
@@ -231,7 +238,11 @@ namespace ShapeHandler.ShapeTransformation
                     connection.Label = connector.Text;
                 }
 
-                connections.Add(visioIDToGuid[connectedShape.ID], connection);
+                if (!connections.ContainsKey(visioIDToGuid[connectedShape.ID]))
+                {
+                    connections[visioIDToGuid[connectedShape.ID]] = new List<Connection>();
+                }
+                connections[visioIDToGuid[connectedShape.ID]].Add(connection);
             }
             return connections;
         }
@@ -241,7 +252,7 @@ namespace ShapeHandler.ShapeTransformation
         /// </summary>
         /// <param name="nodes">List of nodes</param>
         /// <returns>HTML graph</returns>
-        private static HtmlGraph ConvertNodesToGraph(List<FlowchartNode> nodes, IDictionary<string, IDictionary<string, Connection>> connections)
+        private static HtmlGraph ConvertNodesToGraph(List<FlowchartNode> nodes, IDictionary<string, IDictionary<string, List<Connection>>> connections)
         {
             HtmlGraph htmlGraph = new HtmlGraph();
             foreach (FlowchartNode node in nodes)
@@ -250,29 +261,35 @@ namespace ShapeHandler.ShapeTransformation
             }
             foreach (FlowchartNode node in nodes)
             {
-                foreach (KeyValuePair<string, Connection> connection in connections[node.Id])
+                foreach (KeyValuePair<string, List<Connection>> connectionPair in connections[node.Id])
                 {
                     if (node is DataInputNode dataInputNode)
                     {
-                        int dataInputNodeBoundToDecisionNodeCount = htmlGraph.GetConnectedNodesTo(nodes.Find(x => x.Id == connection.Key)).Keys.OfType<DataInputNode>().Count();
-                        bool dataInputNodeAlreadyConnected = htmlGraph.GetConnectedNodesTo(nodes.Find(x => x.Id == connection.Key)).ContainsKey(dataInputNode);
+                        int dataInputNodeBoundToDecisionNodeCount = htmlGraph.GetConnectedNodesTo(nodes.Find(x => x.Id == connectionPair.Key)).Keys.OfType<DataInputNode>().Count();
+                        bool dataInputNodeAlreadyConnected = htmlGraph.GetConnectedNodesTo(nodes.Find(x => x.Id == connectionPair.Key)).ContainsKey(dataInputNode);
                         bool hasElements = dataInputNode.DataInputNodes.Count() != 0;
                         if (dataInputNodeBoundToDecisionNodeCount == 0 && !dataInputNodeAlreadyConnected && hasElements)
                         {
-                            htmlGraph.AddConnection(
-                                node,
-                                nodes.Find(x => x.Id == connection.Key),
-                                connection.Value
-                            );
+                            foreach (Connection conn in connectionPair.Value)
+                            {
+                                htmlGraph.AddConnection(
+                                    node,
+                                    nodes.Find(x => x.Id == connectionPair.Key),
+                                    conn
+                                );
+                            }
                         }
                     }
                     else
                     {
-                        htmlGraph.AddConnection(
-                            node,
-                            nodes.Find(x => x.Id == connection.Key),
-                            connection.Value
-                        );
+                        foreach (Connection conn in connectionPair.Value)
+                        {
+                            htmlGraph.AddConnection(
+                                node,
+                                nodes.Find(x => x.Id == connectionPair.Key),
+                                conn
+                            );
+                        }
                     }
                 }
             }
