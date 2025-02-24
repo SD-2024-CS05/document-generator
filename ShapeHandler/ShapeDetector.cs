@@ -27,7 +27,7 @@ namespace ShapeHandler
 
         private void Application_DocumentCreated(Visio.Document doc)
         {
-            var stencilPath = FileManager.GetFilePath("Stencil/CS05-stencil.vssx");
+            var stencilPath = FileManager.GetFilePath("Resources/CS05-stencil.vssx");
 
             if (!string.IsNullOrEmpty(stencilPath))
             {
