@@ -50,7 +50,8 @@ namespace ShapeHandler.Objects
             try
             {
                 _activeShape = Globals.ShapeDetector.Application.ActivePage.Shapes.get_ItemFromID(shapeId);
-            } catch (Exception)
+            }
+            catch (Exception)
             {
                 return shapeData;
             }
@@ -113,6 +114,25 @@ namespace ShapeHandler.Objects
                 }
             }
             return htmlElements;
+        }
+
+        public static NodeType GetHtmlElementNodeType(IHtmlElement htmlElement)
+        {
+            switch (htmlElement)
+            {
+                case IHtmlButtonElement _:
+                    return NodeType.Button;
+                case IHtmlAnchorElement _:
+                    return NodeType.Anchor;
+                case IHtmlInputElement _:
+                    return NodeType.Input;
+                case IHtmlImageElement _:
+                    return NodeType.Image;
+                case IHtmlSelectElement _:
+                    return NodeType.Select;
+                default:
+                    return NodeType.HtmlElement;
+            }
         }
 
         public static bool CheckIfRowsExist(int shapeId)

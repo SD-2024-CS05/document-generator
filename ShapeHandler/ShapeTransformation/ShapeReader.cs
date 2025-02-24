@@ -21,6 +21,7 @@ namespace ShapeHandler.ShapeTransformation
         private static IBrowsingContext context = BrowsingContext.New(Configuration.Default);
         private static IDocument document = context.OpenNewAsync().Result;
         private static Dictionary<int, FlowchartNode> visioIDToNode = new Dictionary<int, FlowchartNode>();
+        private static HashSet<HtmlNode> htmlNodes = new HashSet<HtmlNode>();
 
 
         /// <summary>
@@ -338,7 +339,8 @@ namespace ShapeHandler.ShapeTransformation
                     node = new DecisionNode(shape.Text);
                     htmlElements.ForEach(he =>
                     {
-                        HtmlNode htmlNode = new HtmlNode(he.Id, he);
+                        var nodeType = VisioShapeDataHelper.GetHtmlElementNodeType(he);
+                        HtmlNode htmlNode = new HtmlNode(he.Id, he, nodeType);
                         node.SubmissionNodes.Add(htmlNode);
                     });
                     break;
@@ -346,7 +348,8 @@ namespace ShapeHandler.ShapeTransformation
                     node = new DataInputNode(shape.Text);
                     htmlElements.ForEach(he =>
                     {
-                        HtmlNode htmlNode = new HtmlNode(he.Id, he);
+                        var nodeType = VisioShapeDataHelper.GetHtmlElementNodeType(he);
+                        HtmlNode htmlNode = new HtmlNode(he.Id, he, nodeType);
                         node.DataInputNodes.Add(htmlNode);
                     });
 
