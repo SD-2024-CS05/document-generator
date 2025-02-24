@@ -891,12 +891,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_A228156A036E4954B71108193939CEE4"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_A502A0A902DED4A84F033D1FBAA4058F"
         "OwnerKey" = "8:_349690C37292EB92ACC1240BD10DA52F"
         "MsmSig" = "8:_UNDEFINED"
@@ -5614,26 +5608,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A228156A036E4954B71108193939CEE4"
-            {
-            "SourcePath" = "8:..\\ShapeHandler\\bin\\Setup\\Resources\\CS05-stencil.vssx"
-            "TargetName" = "8:CS05-stencil.vssx"
-            "Tag" = "8:"
-            "Folder" = "8:_153666EB416242929427CDE166C642F3"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A502A0A902DED4A84F033D1FBAA4058F"
             {
             "AssemblyRegister" = "3:1"
@@ -7946,7 +7920,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:ShapeHandlerSetup"
         "ProductCode" = "8:{BEA19580-4A38-4A54-A955-4D35BEBC7307}"
-        "PackageCode" = "8:{50A2CBE6-33D4-416D-8ABD-92CB364BE1EE}"
+        "PackageCode" = "8:{0DE89E59-CC1A-4073-938E-CDB1075B3219}"
         "UpgradeCode" = "8:{5845675D-6CA7-4BD1-AD05-339299D1D049}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
