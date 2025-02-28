@@ -29,12 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(InputAttributesForm));
             this.cancelButton = new System.Windows.Forms.Button();
             this.saveButton = new System.Windows.Forms.Button();
             this.InputDataGridView = new System.Windows.Forms.DataGridView();
-            this.RemoveButton = new System.Windows.Forms.Button();
-            this.AddButton = new System.Windows.Forms.Button();
-            this.iHtmlInputElementBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.IdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.autofocusDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.autocompleteDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
@@ -66,15 +64,19 @@
             this.maxLengthDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.minLengthDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.placeholderDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.iHtmlInputElementBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.RemoveButton = new System.Windows.Forms.Button();
+            this.AddButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.InputDataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iHtmlInputElementBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(12, 154);
+            this.cancelButton.Location = new System.Drawing.Point(32, 367);
+            this.cancelButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(75, 23);
+            this.cancelButton.Size = new System.Drawing.Size(200, 55);
             this.cancelButton.TabIndex = 11;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
@@ -82,9 +84,10 @@
             // 
             // saveButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(323, 154);
+            this.saveButton.Location = new System.Drawing.Point(861, 367);
+            this.saveButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(75, 23);
+            this.saveButton.Size = new System.Drawing.Size(200, 55);
             this.saveButton.TabIndex = 12;
             this.saveButton.Text = "Save";
             this.saveButton.UseVisualStyleBackColor = true;
@@ -127,45 +130,27 @@
             this.minLengthDataGridViewTextBoxColumn,
             this.placeholderDataGridViewTextBoxColumn});
             this.InputDataGridView.DataSource = this.iHtmlInputElementBindingSource;
-            this.InputDataGridView.Location = new System.Drawing.Point(12, 12);
+            this.InputDataGridView.Location = new System.Drawing.Point(32, 29);
+            this.InputDataGridView.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.InputDataGridView.Name = "InputDataGridView";
-            this.InputDataGridView.Size = new System.Drawing.Size(386, 136);
+            this.InputDataGridView.RowHeadersWidth = 102;
+            this.InputDataGridView.Size = new System.Drawing.Size(1029, 324);
             this.InputDataGridView.TabIndex = 13;
-            // 
-            // RemoveButton
-            // 
-            this.RemoveButton.Location = new System.Drawing.Point(93, 154);
-            this.RemoveButton.Name = "RemoveButton";
-            this.RemoveButton.Size = new System.Drawing.Size(75, 23);
-            this.RemoveButton.TabIndex = 14;
-            this.RemoveButton.Text = "Remove";
-            this.RemoveButton.UseVisualStyleBackColor = true;
-            this.RemoveButton.Click += new System.EventHandler(this.RemoveButton_Click);
-            // 
-            // AddButton
-            // 
-            this.AddButton.Location = new System.Drawing.Point(242, 154);
-            this.AddButton.Name = "AddButton";
-            this.AddButton.Size = new System.Drawing.Size(75, 23);
-            this.AddButton.TabIndex = 15;
-            this.AddButton.Text = "Add";
-            this.AddButton.UseVisualStyleBackColor = true;
-            this.AddButton.Click += new System.EventHandler(this.AddButton_Click);
-            // 
-            // iHtmlInputElementBindingSource
-            // 
-            this.iHtmlInputElementBindingSource.DataSource = typeof(AngleSharp.Html.Dom.IHtmlInputElement);
             // 
             // IdColumn
             // 
             this.IdColumn.HeaderText = "ID";
+            this.IdColumn.MinimumWidth = 12;
             this.IdColumn.Name = "IdColumn";
+            this.IdColumn.Width = 250;
             // 
             // autofocusDataGridViewCheckBoxColumn
             // 
             this.autofocusDataGridViewCheckBoxColumn.DataPropertyName = "Autofocus";
             this.autofocusDataGridViewCheckBoxColumn.HeaderText = "Autofocus";
+            this.autofocusDataGridViewCheckBoxColumn.MinimumWidth = 12;
             this.autofocusDataGridViewCheckBoxColumn.Name = "autofocusDataGridViewCheckBoxColumn";
+            this.autofocusDataGridViewCheckBoxColumn.Width = 250;
             // 
             // autocompleteDataGridViewTextBoxColumn
             // 
@@ -174,21 +159,27 @@
             this.autocompleteDataGridViewTextBoxColumn.Items.AddRange(new object[] {
             "on",
             "off"});
+            this.autocompleteDataGridViewTextBoxColumn.MinimumWidth = 12;
             this.autocompleteDataGridViewTextBoxColumn.Name = "autocompleteDataGridViewTextBoxColumn";
             this.autocompleteDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.autocompleteDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.autocompleteDataGridViewTextBoxColumn.Width = 250;
             // 
             // isDisabledDataGridViewCheckBoxColumn
             // 
             this.isDisabledDataGridViewCheckBoxColumn.DataPropertyName = "IsDisabled";
             this.isDisabledDataGridViewCheckBoxColumn.HeaderText = "IsDisabled";
+            this.isDisabledDataGridViewCheckBoxColumn.MinimumWidth = 12;
             this.isDisabledDataGridViewCheckBoxColumn.Name = "isDisabledDataGridViewCheckBoxColumn";
+            this.isDisabledDataGridViewCheckBoxColumn.Width = 250;
             // 
             // nameDataGridViewTextBoxColumn
             // 
             this.nameDataGridViewTextBoxColumn.DataPropertyName = "Name";
             this.nameDataGridViewTextBoxColumn.HeaderText = "Name";
+            this.nameDataGridViewTextBoxColumn.MinimumWidth = 12;
             this.nameDataGridViewTextBoxColumn.Name = "nameDataGridViewTextBoxColumn";
+            this.nameDataGridViewTextBoxColumn.Width = 250;
             // 
             // typeDataGridViewTextBoxColumn
             // 
@@ -217,75 +208,99 @@
             "time",
             "url",
             "week"});
+            this.typeDataGridViewTextBoxColumn.MinimumWidth = 12;
             this.typeDataGridViewTextBoxColumn.Name = "typeDataGridViewTextBoxColumn";
             this.typeDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.typeDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.typeDataGridViewTextBoxColumn.Width = 250;
             // 
             // isRequiredDataGridViewCheckBoxColumn
             // 
             this.isRequiredDataGridViewCheckBoxColumn.DataPropertyName = "IsRequired";
             this.isRequiredDataGridViewCheckBoxColumn.HeaderText = "IsRequired";
+            this.isRequiredDataGridViewCheckBoxColumn.MinimumWidth = 12;
             this.isRequiredDataGridViewCheckBoxColumn.Name = "isRequiredDataGridViewCheckBoxColumn";
+            this.isRequiredDataGridViewCheckBoxColumn.Width = 250;
             // 
             // isReadOnlyDataGridViewCheckBoxColumn
             // 
             this.isReadOnlyDataGridViewCheckBoxColumn.DataPropertyName = "IsReadOnly";
             this.isReadOnlyDataGridViewCheckBoxColumn.HeaderText = "IsReadOnly";
+            this.isReadOnlyDataGridViewCheckBoxColumn.MinimumWidth = 12;
             this.isReadOnlyDataGridViewCheckBoxColumn.Name = "isReadOnlyDataGridViewCheckBoxColumn";
+            this.isReadOnlyDataGridViewCheckBoxColumn.Width = 250;
             // 
             // alternativeTextDataGridViewTextBoxColumn
             // 
             this.alternativeTextDataGridViewTextBoxColumn.DataPropertyName = "AlternativeText";
             this.alternativeTextDataGridViewTextBoxColumn.HeaderText = "AlternativeText";
+            this.alternativeTextDataGridViewTextBoxColumn.MinimumWidth = 12;
             this.alternativeTextDataGridViewTextBoxColumn.Name = "alternativeTextDataGridViewTextBoxColumn";
+            this.alternativeTextDataGridViewTextBoxColumn.Width = 250;
             // 
             // sourceDataGridViewTextBoxColumn
             // 
             this.sourceDataGridViewTextBoxColumn.DataPropertyName = "Source";
             this.sourceDataGridViewTextBoxColumn.HeaderText = "Source";
+            this.sourceDataGridViewTextBoxColumn.MinimumWidth = 12;
             this.sourceDataGridViewTextBoxColumn.Name = "sourceDataGridViewTextBoxColumn";
+            this.sourceDataGridViewTextBoxColumn.Width = 250;
             // 
             // maximumDataGridViewTextBoxColumn
             // 
             this.maximumDataGridViewTextBoxColumn.DataPropertyName = "Maximum";
             this.maximumDataGridViewTextBoxColumn.HeaderText = "Maximum";
+            this.maximumDataGridViewTextBoxColumn.MinimumWidth = 12;
             this.maximumDataGridViewTextBoxColumn.Name = "maximumDataGridViewTextBoxColumn";
+            this.maximumDataGridViewTextBoxColumn.Width = 250;
             // 
             // minimumDataGridViewTextBoxColumn
             // 
             this.minimumDataGridViewTextBoxColumn.DataPropertyName = "Minimum";
             this.minimumDataGridViewTextBoxColumn.HeaderText = "Minimum";
+            this.minimumDataGridViewTextBoxColumn.MinimumWidth = 12;
             this.minimumDataGridViewTextBoxColumn.Name = "minimumDataGridViewTextBoxColumn";
+            this.minimumDataGridViewTextBoxColumn.Width = 250;
             // 
             // patternDataGridViewTextBoxColumn
             // 
             this.patternDataGridViewTextBoxColumn.DataPropertyName = "Pattern";
             this.patternDataGridViewTextBoxColumn.HeaderText = "Pattern";
+            this.patternDataGridViewTextBoxColumn.MinimumWidth = 12;
             this.patternDataGridViewTextBoxColumn.Name = "patternDataGridViewTextBoxColumn";
+            this.patternDataGridViewTextBoxColumn.Width = 250;
             // 
             // stepDataGridViewTextBoxColumn
             // 
             this.stepDataGridViewTextBoxColumn.DataPropertyName = "Step";
             this.stepDataGridViewTextBoxColumn.HeaderText = "Step";
+            this.stepDataGridViewTextBoxColumn.MinimumWidth = 12;
             this.stepDataGridViewTextBoxColumn.Name = "stepDataGridViewTextBoxColumn";
+            this.stepDataGridViewTextBoxColumn.Width = 250;
             // 
             // formActionDataGridViewTextBoxColumn
             // 
             this.formActionDataGridViewTextBoxColumn.DataPropertyName = "FormAction";
             this.formActionDataGridViewTextBoxColumn.HeaderText = "FormAction";
+            this.formActionDataGridViewTextBoxColumn.MinimumWidth = 12;
             this.formActionDataGridViewTextBoxColumn.Name = "formActionDataGridViewTextBoxColumn";
+            this.formActionDataGridViewTextBoxColumn.Width = 250;
             // 
             // formMethodDataGridViewTextBoxColumn
             // 
             this.formMethodDataGridViewTextBoxColumn.DataPropertyName = "FormMethod";
             this.formMethodDataGridViewTextBoxColumn.HeaderText = "FormMethod";
+            this.formMethodDataGridViewTextBoxColumn.MinimumWidth = 12;
             this.formMethodDataGridViewTextBoxColumn.Name = "formMethodDataGridViewTextBoxColumn";
+            this.formMethodDataGridViewTextBoxColumn.Width = 250;
             // 
             // formNoValidateDataGridViewCheckBoxColumn
             // 
             this.formNoValidateDataGridViewCheckBoxColumn.DataPropertyName = "FormNoValidate";
             this.formNoValidateDataGridViewCheckBoxColumn.HeaderText = "FormNoValidate";
+            this.formNoValidateDataGridViewCheckBoxColumn.MinimumWidth = 12;
             this.formNoValidateDataGridViewCheckBoxColumn.Name = "formNoValidateDataGridViewCheckBoxColumn";
+            this.formNoValidateDataGridViewCheckBoxColumn.Width = 250;
             // 
             // formTargetDataGridViewTextBoxColumn
             // 
@@ -297,100 +312,155 @@
             "_parent",
             "_top",
             "framename"});
+            this.formTargetDataGridViewTextBoxColumn.MinimumWidth = 12;
             this.formTargetDataGridViewTextBoxColumn.Name = "formTargetDataGridViewTextBoxColumn";
             this.formTargetDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.formTargetDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.formTargetDataGridViewTextBoxColumn.Width = 250;
             // 
             // defaultValueDataGridViewTextBoxColumn
             // 
             this.defaultValueDataGridViewTextBoxColumn.DataPropertyName = "DefaultValue";
             this.defaultValueDataGridViewTextBoxColumn.HeaderText = "DefaultValue";
+            this.defaultValueDataGridViewTextBoxColumn.MinimumWidth = 12;
             this.defaultValueDataGridViewTextBoxColumn.Name = "defaultValueDataGridViewTextBoxColumn";
+            this.defaultValueDataGridViewTextBoxColumn.Width = 250;
             // 
             // valueDataGridViewTextBoxColumn
             // 
             this.valueDataGridViewTextBoxColumn.DataPropertyName = "Value";
             this.valueDataGridViewTextBoxColumn.HeaderText = "Value";
+            this.valueDataGridViewTextBoxColumn.MinimumWidth = 12;
             this.valueDataGridViewTextBoxColumn.Name = "valueDataGridViewTextBoxColumn";
+            this.valueDataGridViewTextBoxColumn.Width = 250;
             // 
             // hasValueDataGridViewCheckBoxColumn
             // 
             this.hasValueDataGridViewCheckBoxColumn.DataPropertyName = "HasValue";
             this.hasValueDataGridViewCheckBoxColumn.HeaderText = "HasValue";
+            this.hasValueDataGridViewCheckBoxColumn.MinimumWidth = 12;
             this.hasValueDataGridViewCheckBoxColumn.Name = "hasValueDataGridViewCheckBoxColumn";
             this.hasValueDataGridViewCheckBoxColumn.ReadOnly = true;
+            this.hasValueDataGridViewCheckBoxColumn.Width = 250;
             // 
             // valueAsNumberDataGridViewTextBoxColumn
             // 
             this.valueAsNumberDataGridViewTextBoxColumn.DataPropertyName = "ValueAsNumber";
             this.valueAsNumberDataGridViewTextBoxColumn.HeaderText = "ValueAsNumber";
+            this.valueAsNumberDataGridViewTextBoxColumn.MinimumWidth = 12;
             this.valueAsNumberDataGridViewTextBoxColumn.Name = "valueAsNumberDataGridViewTextBoxColumn";
+            this.valueAsNumberDataGridViewTextBoxColumn.Width = 250;
             // 
             // valueAsDateDataGridViewTextBoxColumn
             // 
             this.valueAsDateDataGridViewTextBoxColumn.DataPropertyName = "ValueAsDate";
             this.valueAsDateDataGridViewTextBoxColumn.HeaderText = "ValueAsDate";
+            this.valueAsDateDataGridViewTextBoxColumn.MinimumWidth = 12;
             this.valueAsDateDataGridViewTextBoxColumn.Name = "valueAsDateDataGridViewTextBoxColumn";
+            this.valueAsDateDataGridViewTextBoxColumn.Width = 250;
             // 
             // isIndeterminateDataGridViewCheckBoxColumn
             // 
             this.isIndeterminateDataGridViewCheckBoxColumn.DataPropertyName = "IsIndeterminate";
             this.isIndeterminateDataGridViewCheckBoxColumn.HeaderText = "IsIndeterminate";
+            this.isIndeterminateDataGridViewCheckBoxColumn.MinimumWidth = 12;
             this.isIndeterminateDataGridViewCheckBoxColumn.Name = "isIndeterminateDataGridViewCheckBoxColumn";
+            this.isIndeterminateDataGridViewCheckBoxColumn.Width = 250;
             // 
             // isDefaultCheckedDataGridViewCheckBoxColumn
             // 
             this.isDefaultCheckedDataGridViewCheckBoxColumn.DataPropertyName = "IsDefaultChecked";
             this.isDefaultCheckedDataGridViewCheckBoxColumn.HeaderText = "IsDefaultChecked";
+            this.isDefaultCheckedDataGridViewCheckBoxColumn.MinimumWidth = 12;
             this.isDefaultCheckedDataGridViewCheckBoxColumn.Name = "isDefaultCheckedDataGridViewCheckBoxColumn";
+            this.isDefaultCheckedDataGridViewCheckBoxColumn.Width = 250;
             // 
             // isCheckedDataGridViewCheckBoxColumn
             // 
             this.isCheckedDataGridViewCheckBoxColumn.DataPropertyName = "IsChecked";
             this.isCheckedDataGridViewCheckBoxColumn.HeaderText = "IsChecked";
+            this.isCheckedDataGridViewCheckBoxColumn.MinimumWidth = 12;
             this.isCheckedDataGridViewCheckBoxColumn.Name = "isCheckedDataGridViewCheckBoxColumn";
+            this.isCheckedDataGridViewCheckBoxColumn.Width = 250;
             // 
             // sizeDataGridViewTextBoxColumn
             // 
             this.sizeDataGridViewTextBoxColumn.DataPropertyName = "Size";
             this.sizeDataGridViewTextBoxColumn.HeaderText = "Size";
+            this.sizeDataGridViewTextBoxColumn.MinimumWidth = 12;
             this.sizeDataGridViewTextBoxColumn.Name = "sizeDataGridViewTextBoxColumn";
+            this.sizeDataGridViewTextBoxColumn.Width = 250;
             // 
             // isMultipleDataGridViewCheckBoxColumn
             // 
             this.isMultipleDataGridViewCheckBoxColumn.DataPropertyName = "IsMultiple";
             this.isMultipleDataGridViewCheckBoxColumn.HeaderText = "IsMultiple";
+            this.isMultipleDataGridViewCheckBoxColumn.MinimumWidth = 12;
             this.isMultipleDataGridViewCheckBoxColumn.Name = "isMultipleDataGridViewCheckBoxColumn";
+            this.isMultipleDataGridViewCheckBoxColumn.Width = 250;
             // 
             // maxLengthDataGridViewTextBoxColumn
             // 
             this.maxLengthDataGridViewTextBoxColumn.DataPropertyName = "MaxLength";
             this.maxLengthDataGridViewTextBoxColumn.HeaderText = "MaxLength";
+            this.maxLengthDataGridViewTextBoxColumn.MinimumWidth = 12;
             this.maxLengthDataGridViewTextBoxColumn.Name = "maxLengthDataGridViewTextBoxColumn";
+            this.maxLengthDataGridViewTextBoxColumn.Width = 250;
             // 
             // minLengthDataGridViewTextBoxColumn
             // 
             this.minLengthDataGridViewTextBoxColumn.DataPropertyName = "MinLength";
             this.minLengthDataGridViewTextBoxColumn.HeaderText = "MinLength";
+            this.minLengthDataGridViewTextBoxColumn.MinimumWidth = 12;
             this.minLengthDataGridViewTextBoxColumn.Name = "minLengthDataGridViewTextBoxColumn";
+            this.minLengthDataGridViewTextBoxColumn.Width = 250;
             // 
             // placeholderDataGridViewTextBoxColumn
             // 
             this.placeholderDataGridViewTextBoxColumn.DataPropertyName = "Placeholder";
             this.placeholderDataGridViewTextBoxColumn.HeaderText = "Placeholder";
+            this.placeholderDataGridViewTextBoxColumn.MinimumWidth = 12;
             this.placeholderDataGridViewTextBoxColumn.Name = "placeholderDataGridViewTextBoxColumn";
+            this.placeholderDataGridViewTextBoxColumn.Width = 250;
+            // 
+            // iHtmlInputElementBindingSource
+            // 
+            this.iHtmlInputElementBindingSource.DataSource = typeof(AngleSharp.Html.Dom.IHtmlInputElement);
+            // 
+            // RemoveButton
+            // 
+            this.RemoveButton.Location = new System.Drawing.Point(248, 367);
+            this.RemoveButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.RemoveButton.Name = "RemoveButton";
+            this.RemoveButton.Size = new System.Drawing.Size(200, 55);
+            this.RemoveButton.TabIndex = 14;
+            this.RemoveButton.Text = "Remove";
+            this.RemoveButton.UseVisualStyleBackColor = true;
+            this.RemoveButton.Click += new System.EventHandler(this.RemoveButton_Click);
+            // 
+            // AddButton
+            // 
+            this.AddButton.Location = new System.Drawing.Point(645, 367);
+            this.AddButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.AddButton.Name = "AddButton";
+            this.AddButton.Size = new System.Drawing.Size(200, 55);
+            this.AddButton.TabIndex = 15;
+            this.AddButton.Text = "Add";
+            this.AddButton.UseVisualStyleBackColor = true;
+            this.AddButton.Click += new System.EventHandler(this.AddButton_Click);
             // 
             // InputAttributesForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(413, 189);
+            this.ClientSize = new System.Drawing.Size(1101, 451);
             this.Controls.Add(this.AddButton);
             this.Controls.Add(this.RemoveButton);
             this.Controls.Add(this.InputDataGridView);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.cancelButton);
-            this.Margin = new System.Windows.Forms.Padding(1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "InputAttributesForm";
             this.Text = "Attributes";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.InputAttributesForm_FormClosing);

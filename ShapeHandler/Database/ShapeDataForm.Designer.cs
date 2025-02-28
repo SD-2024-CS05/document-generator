@@ -45,7 +45,7 @@
             // SaveButton
             // 
             this.SaveButton.Location = new System.Drawing.Point(891, 413);
-            this.SaveButton.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.SaveButton.Margin = new System.Windows.Forms.Padding(5);
             this.SaveButton.Name = "SaveButton";
             this.SaveButton.Size = new System.Drawing.Size(160, 55);
             this.SaveButton.TabIndex = 13;
@@ -57,7 +57,7 @@
             // 
             this.CancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.CancelButton.Location = new System.Drawing.Point(29, 413);
-            this.CancelButton.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.CancelButton.Margin = new System.Windows.Forms.Padding(5);
             this.CancelButton.Name = "CancelButton";
             this.CancelButton.Size = new System.Drawing.Size(131, 52);
             this.CancelButton.TabIndex = 14;
@@ -141,7 +141,7 @@
             this.Controls.Add(this.CancelButton);
             this.Controls.Add(this.SaveButton);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "ShapeDataForm";
             this.Text = "Controls";
             this.Load += new System.EventHandler(this.ShapeDataForm_Load);

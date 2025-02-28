@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConditionsForm));
             this.SaveButton = new System.Windows.Forms.Button();
             this.ElementComboBox1 = new System.Windows.Forms.ComboBox();
             this.OperatorComboBox1 = new System.Windows.Forms.ComboBox();
@@ -36,9 +37,10 @@
             // 
             // SaveButton
             // 
-            this.SaveButton.Location = new System.Drawing.Point(242, 174);
+            this.SaveButton.Location = new System.Drawing.Point(645, 415);
+            this.SaveButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.SaveButton.Name = "SaveButton";
-            this.SaveButton.Size = new System.Drawing.Size(132, 23);
+            this.SaveButton.Size = new System.Drawing.Size(352, 55);
             this.SaveButton.TabIndex = 0;
             this.SaveButton.Text = "Save";
             this.SaveButton.UseVisualStyleBackColor = true;
@@ -47,25 +49,28 @@
             // ElementComboBox1
             // 
             this.ElementComboBox1.FormattingEnabled = true;
-            this.ElementComboBox1.Location = new System.Drawing.Point(13, 13);
+            this.ElementComboBox1.Location = new System.Drawing.Point(35, 31);
+            this.ElementComboBox1.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.ElementComboBox1.Name = "ElementComboBox1";
-            this.ElementComboBox1.Size = new System.Drawing.Size(121, 21);
+            this.ElementComboBox1.Size = new System.Drawing.Size(316, 39);
             this.ElementComboBox1.TabIndex = 1;
             // 
             // OperatorComboBox1
             // 
             this.OperatorComboBox1.FormattingEnabled = true;
-            this.OperatorComboBox1.Location = new System.Drawing.Point(140, 13);
+            this.OperatorComboBox1.Location = new System.Drawing.Point(373, 31);
+            this.OperatorComboBox1.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.OperatorComboBox1.Name = "OperatorComboBox1";
-            this.OperatorComboBox1.Size = new System.Drawing.Size(50, 21);
+            this.OperatorComboBox1.Size = new System.Drawing.Size(127, 39);
             this.OperatorComboBox1.TabIndex = 2;
             this.OperatorComboBox1.SelectionChangeCommitted += new System.EventHandler(this.OperatorComboBox1_SelectionChangeCommitted);
             // 
             // CancelButton
             // 
-            this.CancelButton.Location = new System.Drawing.Point(12, 174);
+            this.CancelButton.Location = new System.Drawing.Point(32, 415);
+            this.CancelButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.CancelButton.Name = "CancelButton";
-            this.CancelButton.Size = new System.Drawing.Size(132, 23);
+            this.CancelButton.Size = new System.Drawing.Size(352, 55);
             this.CancelButton.TabIndex = 3;
             this.CancelButton.Text = "Cancel";
             this.CancelButton.UseVisualStyleBackColor = true;
@@ -73,15 +78,17 @@
             // 
             // ConditionsForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(387, 209);
+            this.ClientSize = new System.Drawing.Size(1032, 498);
             this.Controls.Add(this.CancelButton);
             this.Controls.Add(this.OperatorComboBox1);
             this.Controls.Add(this.ElementComboBox1);
             this.Controls.Add(this.SaveButton);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.Name = "ConditionsForm";
-            this.Text = "ConditionsForm";
+            this.Text = "Conditions";
             this.ResumeLayout(false);
 
         }

@@ -29,26 +29,28 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AnchorAttributesForm));
             this.cancelButton = new System.Windows.Forms.Button();
             this.saveButton = new System.Windows.Forms.Button();
             this.AnchorDataGridView = new System.Windows.Forms.DataGridView();
-            this.RemoveButton = new System.Windows.Forms.Button();
-            this.AddButton = new System.Windows.Forms.Button();
-            this.iHtmlAnchorElementBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.IdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.downloadDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.relationDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.targetLanguageDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.textDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.iHtmlAnchorElementBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.RemoveButton = new System.Windows.Forms.Button();
+            this.AddButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.AnchorDataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iHtmlAnchorElementBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(12, 154);
+            this.cancelButton.Location = new System.Drawing.Point(32, 367);
+            this.cancelButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(75, 23);
+            this.cancelButton.Size = new System.Drawing.Size(200, 55);
             this.cancelButton.TabIndex = 11;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
@@ -56,9 +58,10 @@
             // 
             // saveButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(323, 154);
+            this.saveButton.Location = new System.Drawing.Point(861, 367);
+            this.saveButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(75, 23);
+            this.saveButton.Size = new System.Drawing.Size(200, 55);
             this.saveButton.TabIndex = 12;
             this.saveButton.Text = "Save";
             this.saveButton.UseVisualStyleBackColor = true;
@@ -75,45 +78,27 @@
             this.targetLanguageDataGridViewTextBoxColumn,
             this.textDataGridViewTextBoxColumn});
             this.AnchorDataGridView.DataSource = this.iHtmlAnchorElementBindingSource;
-            this.AnchorDataGridView.Location = new System.Drawing.Point(12, 12);
+            this.AnchorDataGridView.Location = new System.Drawing.Point(32, 29);
+            this.AnchorDataGridView.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.AnchorDataGridView.Name = "AnchorDataGridView";
-            this.AnchorDataGridView.Size = new System.Drawing.Size(386, 136);
+            this.AnchorDataGridView.RowHeadersWidth = 102;
+            this.AnchorDataGridView.Size = new System.Drawing.Size(1029, 324);
             this.AnchorDataGridView.TabIndex = 13;
-            // 
-            // RemoveButton
-            // 
-            this.RemoveButton.Location = new System.Drawing.Point(93, 154);
-            this.RemoveButton.Name = "RemoveButton";
-            this.RemoveButton.Size = new System.Drawing.Size(75, 23);
-            this.RemoveButton.TabIndex = 14;
-            this.RemoveButton.Text = "Remove";
-            this.RemoveButton.UseVisualStyleBackColor = true;
-            this.RemoveButton.Click += new System.EventHandler(this.RemoveButton_Click);
-            // 
-            // AddButton
-            // 
-            this.AddButton.Location = new System.Drawing.Point(242, 154);
-            this.AddButton.Name = "AddButton";
-            this.AddButton.Size = new System.Drawing.Size(75, 23);
-            this.AddButton.TabIndex = 15;
-            this.AddButton.Text = "Add";
-            this.AddButton.UseVisualStyleBackColor = true;
-            this.AddButton.Click += new System.EventHandler(this.AddButton_Click);
-            // 
-            // iHtmlAnchorElementBindingSource
-            // 
-            this.iHtmlAnchorElementBindingSource.DataSource = typeof(AngleSharp.Html.Dom.IHtmlAnchorElement);
             // 
             // IdColumn
             // 
             this.IdColumn.HeaderText = "ID";
+            this.IdColumn.MinimumWidth = 12;
             this.IdColumn.Name = "IdColumn";
+            this.IdColumn.Width = 250;
             // 
             // downloadDataGridViewTextBoxColumn
             // 
             this.downloadDataGridViewTextBoxColumn.DataPropertyName = "Download";
             this.downloadDataGridViewTextBoxColumn.HeaderText = "Download";
+            this.downloadDataGridViewTextBoxColumn.MinimumWidth = 12;
             this.downloadDataGridViewTextBoxColumn.Name = "downloadDataGridViewTextBoxColumn";
+            this.downloadDataGridViewTextBoxColumn.Width = 250;
             // 
             // relationDataGridViewTextBoxColumn
             // 
@@ -133,9 +118,11 @@
             "prev",
             "search",
             "tag"});
+            this.relationDataGridViewTextBoxColumn.MinimumWidth = 12;
             this.relationDataGridViewTextBoxColumn.Name = "relationDataGridViewTextBoxColumn";
             this.relationDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.relationDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.relationDataGridViewTextBoxColumn.Width = 250;
             // 
             // targetLanguageDataGridViewTextBoxColumn
             // 
@@ -146,28 +133,59 @@
             "_parent",
             "_self",
             "_top"});
+            this.targetLanguageDataGridViewTextBoxColumn.MinimumWidth = 12;
             this.targetLanguageDataGridViewTextBoxColumn.Name = "targetLanguageDataGridViewTextBoxColumn";
             this.targetLanguageDataGridViewTextBoxColumn.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.targetLanguageDataGridViewTextBoxColumn.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.targetLanguageDataGridViewTextBoxColumn.Width = 250;
             // 
             // textDataGridViewTextBoxColumn
             // 
             this.textDataGridViewTextBoxColumn.DataPropertyName = "Text";
             this.textDataGridViewTextBoxColumn.HeaderText = "Text";
+            this.textDataGridViewTextBoxColumn.MinimumWidth = 12;
             this.textDataGridViewTextBoxColumn.Name = "textDataGridViewTextBoxColumn";
             this.textDataGridViewTextBoxColumn.ReadOnly = true;
+            this.textDataGridViewTextBoxColumn.Width = 250;
+            // 
+            // iHtmlAnchorElementBindingSource
+            // 
+            this.iHtmlAnchorElementBindingSource.DataSource = typeof(AngleSharp.Html.Dom.IHtmlAnchorElement);
+            // 
+            // RemoveButton
+            // 
+            this.RemoveButton.Location = new System.Drawing.Point(248, 367);
+            this.RemoveButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.RemoveButton.Name = "RemoveButton";
+            this.RemoveButton.Size = new System.Drawing.Size(200, 55);
+            this.RemoveButton.TabIndex = 14;
+            this.RemoveButton.Text = "Remove";
+            this.RemoveButton.UseVisualStyleBackColor = true;
+            this.RemoveButton.Click += new System.EventHandler(this.RemoveButton_Click);
+            // 
+            // AddButton
+            // 
+            this.AddButton.Location = new System.Drawing.Point(645, 367);
+            this.AddButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.AddButton.Name = "AddButton";
+            this.AddButton.Size = new System.Drawing.Size(200, 55);
+            this.AddButton.TabIndex = 15;
+            this.AddButton.Text = "Add";
+            this.AddButton.UseVisualStyleBackColor = true;
+            this.AddButton.Click += new System.EventHandler(this.AddButton_Click);
             // 
             // AnchorAttributesForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(413, 189);
+            this.ClientSize = new System.Drawing.Size(1101, 451);
             this.Controls.Add(this.AddButton);
             this.Controls.Add(this.RemoveButton);
             this.Controls.Add(this.AnchorDataGridView);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.cancelButton);
-            this.Margin = new System.Windows.Forms.Padding(1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "AnchorAttributesForm";
             this.Text = "Attributes";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AnchorAttributesForm_FormClosing);
