@@ -13,15 +13,18 @@ using Microsoft.Office.Interop.Visio;
 using ShapeHandler.Objects;
 using Newtonsoft.Json.Linq;
 using Neo4jClient.Cypher;
+using Visio = Microsoft.Office.Interop.Visio;
+using System.Runtime.InteropServices;
+using System.Linq.Expressions;
+using ShapeHandler.Helpers;
 
 namespace ShapeHandler.ShapeTransformation
 {
     public class ShapeReader
     {
-        private static IBrowsingContext context = BrowsingContext.New(Configuration.Default);
-        private static IDocument document = context.OpenNewAsync().Result;
-        private static Dictionary<int, FlowchartNode> visioIDToNode = new Dictionary<int, FlowchartNode>();
-        private static HashSet<HtmlNode> htmlNodes = new HashSet<HtmlNode>();
+        private static IBrowsingContext Context = BrowsingContext.New(Configuration.Default);
+        private static IDocument Document = Context.OpenNewAsync().Result;
+        private static Dictionary<int, FlowchartNode> VisioIDToNode = new Dictionary<int, FlowchartNode>();
 
 
         /// <summary>
@@ -304,7 +307,7 @@ namespace ShapeHandler.ShapeTransformation
         /// <returns>The node to be added to an HTML graph</returns>
         private static T ConvertShapeToNode<T>(Shape shape) where T : FlowchartNode
         {
-            if (visioIDToNode.TryGetValue(shape.ID, out FlowchartNode fNode))
+            if (VisioIDToNode.TryGetValue(shape.ID, out FlowchartNode fNode))
             {
                 return fNode as T;
             }
@@ -369,10 +372,85 @@ namespace ShapeHandler.ShapeTransformation
 
             if (node != null)
             {
-                visioIDToNode[shape.ID] = node;
+                VisioIDToNode[shape.ID] = node;
             }
 
             return node as T;
+        }
+
+        public static void SaveNodeMappingToDocument(Visio.Document doc)
+        {
+            var documentSheet = doc.DocumentSheet;
+            try
+            {
+                string serializedData = SerializeFlowchartNodes();
+                Section section = documentSheet.Section[(short)VisSectionIndices.visSectionUser];
+                short rowIndex = FindNamedRow(section, "NodeMapping");
+
+                if (rowIndex == -1)
+                {
+                    rowIndex = documentSheet.AddNamedRow((short)VisSectionIndices.visSectionUser, "NodeMapping", (short)VisRowTags.visTagDefault);
+                }
+
+                var cell = documentSheet.CellsSRC[(short)VisSectionIndices.visSectionUser, rowIndex, (short)VisCellIndices.visCustPropsValue];
+                cell.FormulaU = $"\"{serializedData.Replace("\"", "\"\"")}\"";
+            }
+            catch { }
+        }
+
+        public static string SerializeFlowchartNodes()
+        {
+            var serializedDictionary = new Dictionary<int, string>();
+            foreach (var kvp in VisioIDToNode)
+            {
+                serializedDictionary[kvp.Key] = JsonConvert.SerializeObject(kvp.Value, new FlowchartNodeSerializer());
+            }
+
+            return JsonConvert.SerializeObject(serializedDictionary);
+        }
+
+        public static Dictionary<int, FlowchartNode> DeserializeFlowchartNodes(string serializedData)
+        {
+            // Create JsonSerializerSettings and add FlowchartNodeSerializer
+
+            var deserializedDictionary = JsonConvert.DeserializeObject<Dictionary<int, string>>(serializedData);
+            var result = new Dictionary<int, FlowchartNode>();
+            foreach (var kvp in deserializedDictionary)
+            {
+                result[kvp.Key] = JsonConvert.DeserializeObject<FlowchartNode>(kvp.Value, new FlowchartNodeSerializer());
+            }
+
+            return result;
+        }
+
+        private static short FindNamedRow(Visio.Section section, string name)
+        {
+
+            for (short i = 0; i < section.Count; i++)
+            {
+                if (section[i].Name == name)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
+        public static void LoadNodeMappingFromDocument(Visio.Document doc)
+        {
+            var documentSheet = doc.DocumentSheet;
+            try
+            {
+                var rowIndex = FindNamedRow(documentSheet.Section[(short)VisSectionIndices.visSectionUser], "NodeMapping");
+                if (rowIndex != -1)
+                {
+                    var cell = documentSheet.CellsSRC[(short)VisSectionIndices.visSectionUser, rowIndex, (short)VisCellIndices.visCustPropsValue];
+                    var serializedData = cell.ResultStrU["Value"];
+                    VisioIDToNode = DeserializeFlowchartNodes(serializedData);
+                }
+            }
+            catch { }
         }
     }
 }
