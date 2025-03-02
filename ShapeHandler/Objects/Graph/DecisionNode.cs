@@ -20,5 +20,11 @@ namespace ShapeHandler.Objects
             Label = label;
             SubmissionNodes = submissionNodes;
         }
+
+        public DecisionNode(Guid guid, string label, List<HtmlNode> submissionNodes) : base(guid, label, NodeType.Decision)
+        {
+            Label = label;
+            SubmissionNodes = submissionNodes;
+        }
     }
 }
