@@ -84,15 +84,6 @@ namespace ShapeHandler.Helpers
                     bool isStart = jsonObject["isStart"]?.ToObject<bool>() ?? false;
                     node = new StartEndNode(guid, label, isStart);
                     break;
-                case NodeType.HtmlElement:
-                case NodeType.Button:
-                case NodeType.Input:
-                case NodeType.Select:
-                case NodeType.Anchor:
-                case NodeType.Image:
-                    var element = JsonConvert.DeserializeObject<IHtmlElement>(jsonObject["Element"].ToString(), new HtmlElementSerializer());
-                    node = new HtmlNode(guid, label, element);
-                    break;
                 case NodeType.Decision:
                     var submissionNodes = new List<HtmlNode>();
                     foreach (var submissionNode in jsonObject["SubmissionNodes"])
@@ -120,6 +111,24 @@ namespace ShapeHandler.Helpers
                         dataInputNodes.Add(new HtmlNode(diGuid, diLabel, e, diType));
                     }
                     node = new DataInputNode(guid, label, dataInputNodes);
+                    break;
+                case NodeType.Page:
+                    node = new PageNode(guid, label);
+                    break;
+                case NodeType.BackgroundProcess:
+                    node = new ProcessNode(guid, label, true);
+                    break;
+                case NodeType.UserProcess:
+                    node = new ProcessNode(guid, label, false);
+                    break;
+                case NodeType.HtmlElement:
+                case NodeType.Button:
+                case NodeType.Input:
+                case NodeType.Select:
+                case NodeType.Anchor:
+                case NodeType.Image:
+                    var element = JsonConvert.DeserializeObject<IHtmlElement>(jsonObject["Element"].ToString(), new HtmlElementSerializer());
+                    node = new HtmlNode(guid, label, element);
                     break;
                 default:
                     throw new Exception("Unknown node type");

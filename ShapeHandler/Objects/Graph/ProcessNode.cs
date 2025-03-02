@@ -8,9 +8,12 @@ namespace ShapeHandler.Objects
 {
     public class ProcessNode : FlowchartNode
     {
-        public ProcessNode(string label, bool isBackground = false): base(label, isBackground ? NodeType.BackgroundProcess : NodeType.UserProcess)
+        public ProcessNode(string label, bool isBackground = false) : base(label, isBackground ? NodeType.BackgroundProcess : NodeType.UserProcess)
         {
-            Label = label;
+        }
+
+        public ProcessNode(Guid guid, string label, bool isBackground = false) : base(guid, label, isBackground ? NodeType.BackgroundProcess : NodeType.UserProcess)
+        {
         }
     }
 }

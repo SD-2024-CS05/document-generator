@@ -210,38 +210,6 @@ namespace ShapeHandler.ShapeTransformation
         }
 
         /// <summary>
-        /// Serializes the flowchart nodes to a JSON string.
-        /// </summary>
-        /// <returns>A JSON string representing the serialized flowchart nodes.</returns>
-        public static string SerializeFlowchartNodes()
-        {
-            var serializedDictionary = new Dictionary<int, string>();
-            foreach (var kvp in VisioIDToNode)
-            {
-                serializedDictionary[kvp.Key] = JsonConvert.SerializeObject(kvp.Value, new FlowchartNodeSerializer());
-            }
-
-            return JsonConvert.SerializeObject(serializedDictionary);
-        }
-
-        /// <summary>
-        /// Deserializes the flowchart nodes from a JSON string.
-        /// </summary>
-        /// <param name="serializedData">The JSON string representing the serialized flowchart nodes.</param>
-        /// <returns>A dictionary mapping Visio IDs to flowchart nodes.</returns>
-        public static Dictionary<int, FlowchartNode> DeserializeFlowchartNodes(string serializedData)
-        {
-            var deserializedDictionary = JsonConvert.DeserializeObject<Dictionary<int, string>>(serializedData);
-            var result = new Dictionary<int, FlowchartNode>();
-            foreach (var kvp in deserializedDictionary)
-            {
-                result[kvp.Key] = JsonConvert.DeserializeObject<FlowchartNode>(kvp.Value, new FlowchartNodeSerializer());
-            }
-
-            return result;
-        }
-
-        /// <summary>
         /// Loads the node mapping from a Visio document.
         /// </summary>
         /// <param name="doc">The Visio document to load the node mapping from.</param>
@@ -264,6 +232,38 @@ namespace ShapeHandler.ShapeTransformation
         #endregion Public Methods
 
         #region Private Methods
+
+        /// <summary>
+        /// Serializes the flowchart nodes to a JSON string.
+        /// </summary>
+        /// <returns>A JSON string representing the serialized flowchart nodes.</returns>
+        private static string SerializeFlowchartNodes()
+        {
+            var serializedDictionary = new Dictionary<int, string>();
+            foreach (var kvp in VisioIDToNode)
+            {
+                serializedDictionary[kvp.Key] = JsonConvert.SerializeObject(kvp.Value, new FlowchartNodeSerializer());
+            }
+
+            return JsonConvert.SerializeObject(serializedDictionary);
+        }
+
+        /// <summary>
+        /// Deserializes the flowchart nodes from a JSON string.
+        /// </summary>
+        /// <param name="serializedData">The JSON string representing the serialized flowchart nodes.</param>
+        /// <returns>A dictionary mapping Visio IDs to flowchart nodes.</returns>
+        private static Dictionary<int, FlowchartNode> DeserializeFlowchartNodes(string serializedData)
+        {
+            var deserializedDictionary = JsonConvert.DeserializeObject<Dictionary<int, string>>(serializedData);
+            var result = new Dictionary<int, FlowchartNode>();
+            foreach (var kvp in deserializedDictionary)
+            {
+                result[kvp.Key] = JsonConvert.DeserializeObject<FlowchartNode>(kvp.Value, new FlowchartNodeSerializer());
+            }
+
+            return result;
+        }
 
         /// <summary>
         /// Gets the connections for a given shape.
