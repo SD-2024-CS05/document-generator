@@ -119,14 +119,6 @@ namespace ShapeHandler.Database
                     ON CREATE SET n += attribute, n.Label = $label",
                 new { id = htmlNode.Id, attributes = elementAttributes, label = htmlNode.Label });
             }
-            //else if (node is DecisionNode decisionNode)
-            //{
-            //    var validationElements = decisionNode.Conditions.Select(ve => ve.ToString()).ToList();
-            //    await tx.RunAsync(@"
-            //        MERGE (n:" + node.Type.ToString() + @" {id: $id})
-            //        ON CREATE SET n += { ValidationElements: CASE WHEN size($elements) > 0 THEN $elements ELSE [] END, Label: $label }",
-            //        new { id = decisionNode.Id, elements = validationElements, label = decisionNode.Label });
-            //}
             else
             {
                 var nodeJson = JsonConvert.SerializeObject(node, new Neo4JSerializer());
