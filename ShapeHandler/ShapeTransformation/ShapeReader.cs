@@ -22,9 +22,9 @@ namespace ShapeHandler.ShapeTransformation
 {
     public class ShapeReader
     {
-        private static IBrowsingContext Context = BrowsingContext.New(Configuration.Default);
-        private static IDocument Document = Context.OpenNewAsync().Result;
         private static Dictionary<int, FlowchartNode> VisioIDToNode = new Dictionary<int, FlowchartNode>();
+
+        #region Public Methods
 
         /// <summary>
         /// Converts a collection of Visio shapes to an HTML graph representation.
@@ -184,6 +184,86 @@ namespace ShapeHandler.ShapeTransformation
             }
             return -1;
         }
+
+        /// <summary>
+        /// Saves the node mapping to the given Visio document.
+        /// </summary>
+        /// <param name="doc">The Visio document.</param>
+        public static void SaveNodeMappingToDocument(Visio.Document doc)
+        {
+            var documentSheet = doc.DocumentSheet;
+            try
+            {
+                string serializedData = SerializeFlowchartNodes();
+                var section = documentSheet.Section[(short)VisSectionIndices.visSectionUser];
+                short rowIndex = FindNamedRow(section, "NodeMapping");
+
+                if (rowIndex == -1)
+                {
+                    rowIndex = documentSheet.AddNamedRow((short)VisSectionIndices.visSectionUser, "NodeMapping", (short)VisRowTags.visTagDefault);
+                }
+
+                var cell = documentSheet.CellsSRC[(short)VisSectionIndices.visSectionUser, rowIndex, (short)VisCellIndices.visCustPropsValue];
+                cell.FormulaU = $"\"{serializedData.Replace("\"", "\"\"")}\"";
+            }
+            catch { }
+        }
+
+        /// <summary>
+        /// Serializes the flowchart nodes to a JSON string.
+        /// </summary>
+        /// <returns>A JSON string representing the serialized flowchart nodes.</returns>
+        public static string SerializeFlowchartNodes()
+        {
+            var serializedDictionary = new Dictionary<int, string>();
+            foreach (var kvp in VisioIDToNode)
+            {
+                serializedDictionary[kvp.Key] = JsonConvert.SerializeObject(kvp.Value, new FlowchartNodeSerializer());
+            }
+
+            return JsonConvert.SerializeObject(serializedDictionary);
+        }
+
+        /// <summary>
+        /// Deserializes the flowchart nodes from a JSON string.
+        /// </summary>
+        /// <param name="serializedData">The JSON string representing the serialized flowchart nodes.</param>
+        /// <returns>A dictionary mapping Visio IDs to flowchart nodes.</returns>
+        public static Dictionary<int, FlowchartNode> DeserializeFlowchartNodes(string serializedData)
+        {
+            var deserializedDictionary = JsonConvert.DeserializeObject<Dictionary<int, string>>(serializedData);
+            var result = new Dictionary<int, FlowchartNode>();
+            foreach (var kvp in deserializedDictionary)
+            {
+                result[kvp.Key] = JsonConvert.DeserializeObject<FlowchartNode>(kvp.Value, new FlowchartNodeSerializer());
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Loads the node mapping from a Visio document.
+        /// </summary>
+        /// <param name="doc">The Visio document to load the node mapping from.</param>
+        public static void LoadNodeMappingFromDocument(Visio.Document doc)
+        {
+            var documentSheet = doc.DocumentSheet;
+            try
+            {
+                var rowIndex = FindNamedRow(documentSheet.Section[(short)VisSectionIndices.visSectionUser], "NodeMapping");
+                if (rowIndex != -1)
+                {
+                    var cell = documentSheet.CellsSRC[(short)VisSectionIndices.visSectionUser, rowIndex, (short)VisCellIndices.visCustPropsValue];
+                    var serializedData = cell.ResultStrU["Value"];
+                    VisioIDToNode = DeserializeFlowchartNodes(serializedData);
+                }
+            }
+            catch { }
+        }
+
+        #endregion Public Methods
+
+        #region Private Methods
 
         /// <summary>
         /// Gets the connections for a given shape.
@@ -413,62 +493,6 @@ namespace ShapeHandler.ShapeTransformation
         }
 
         /// <summary>
-        /// Saves the node mapping to the given Visio document.
-        /// </summary>
-        /// <param name="doc">The Visio document.</param>
-        public static void SaveNodeMappingToDocument(Visio.Document doc)
-        {
-            var documentSheet = doc.DocumentSheet;
-            try
-            {
-                string serializedData = SerializeFlowchartNodes();
-                var section = documentSheet.Section[(short)VisSectionIndices.visSectionUser];
-                short rowIndex = FindNamedRow(section, "NodeMapping");
-
-                if (rowIndex == -1)
-                {
-                    rowIndex = documentSheet.AddNamedRow((short)VisSectionIndices.visSectionUser, "NodeMapping", (short)VisRowTags.visTagDefault);
-                }
-
-                var cell = documentSheet.CellsSRC[(short)VisSectionIndices.visSectionUser, rowIndex, (short)VisCellIndices.visCustPropsValue];
-                cell.FormulaU = $"\"{serializedData.Replace("\"", "\"\"")}\"";
-            }
-            catch { }
-        }
-
-        /// <summary>
-        /// Serializes the flowchart nodes to a JSON string.
-        /// </summary>
-        /// <returns>A JSON string representing the serialized flowchart nodes.</returns>
-        public static string SerializeFlowchartNodes()
-        {
-            var serializedDictionary = new Dictionary<int, string>();
-            foreach (var kvp in VisioIDToNode)
-            {
-                serializedDictionary[kvp.Key] = JsonConvert.SerializeObject(kvp.Value, new FlowchartNodeSerializer());
-            }
-
-            return JsonConvert.SerializeObject(serializedDictionary);
-        }
-
-        /// <summary>
-        /// Deserializes the flowchart nodes from a JSON string.
-        /// </summary>
-        /// <param name="serializedData">The JSON string representing the serialized flowchart nodes.</param>
-        /// <returns>A dictionary mapping Visio IDs to flowchart nodes.</returns>
-        public static Dictionary<int, FlowchartNode> DeserializeFlowchartNodes(string serializedData)
-        {
-            var deserializedDictionary = JsonConvert.DeserializeObject<Dictionary<int, string>>(serializedData);
-            var result = new Dictionary<int, FlowchartNode>();
-            foreach (var kvp in deserializedDictionary)
-            {
-                result[kvp.Key] = JsonConvert.DeserializeObject<FlowchartNode>(kvp.Value, new FlowchartNodeSerializer());
-            }
-
-            return result;
-        }
-
-        /// <summary>
         /// Finds a named row in a Visio section.
         /// </summary>
         /// <param name="section">The Visio section to search.</param>
@@ -487,26 +511,6 @@ namespace ShapeHandler.ShapeTransformation
         }
 
         /// <summary>
-        /// Loads the node mapping from a Visio document.
-        /// </summary>
-        /// <param name="doc">The Visio document to load the node mapping from.</param>
-        public static void LoadNodeMappingFromDocument(Visio.Document doc)
-        {
-            var documentSheet = doc.DocumentSheet;
-            try
-            {
-                var rowIndex = FindNamedRow(documentSheet.Section[(short)VisSectionIndices.visSectionUser], "NodeMapping");
-                if (rowIndex != -1)
-                {
-                    var cell = documentSheet.CellsSRC[(short)VisSectionIndices.visSectionUser, rowIndex, (short)VisCellIndices.visCustPropsValue];
-                    var serializedData = cell.ResultStrU["Value"];
-                    VisioIDToNode = DeserializeFlowchartNodes(serializedData);
-                }
-            }
-            catch { }
-        }
-
-        /// <summary>
         /// Determines if a given shape is a special connector or sheet.
         /// </summary>
         /// <param name="shape">The shape to check.</param>
@@ -517,5 +521,7 @@ namespace ShapeHandler.ShapeTransformation
             var isSheet = Regex.IsMatch(shape.Name, "\\W*((?i)Sheet(?-i))\\W*");
             return isSpecialConnector || isSheet;
         }
+
+        #endregion Private Methods
     }
 }
