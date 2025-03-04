@@ -15,26 +15,27 @@ namespace ShapeHandler.Objects
     public static class VisioShapeDataHelper
     {
         private static Visio.Shape _activeShape;
+
+        /// <summary>
+        /// Adds shape data to the specified shape.
+        /// </summary>
+        /// <param name="shapeId">The ID of the shape.</param>
+        /// <param name="schema">The schema to add to the shape.</param>
+        /// <param name="label">The label for the shape data. Default is "Input 1".</param>
         public static void AddShapeData(int shapeId, string schema, string label = "Input 1")
         {
             _activeShape = Globals.ShapeDetector.Application.ActivePage.Shapes.get_ItemFromID(shapeId);
             // check first if there is a row available
-            if (_activeShape.get_RowCount((short)Visio.VisSectionIndices.visSectionProp) == 0)
-            {
-                _activeShape.AddRow(
-                    (short)Visio.VisSectionIndices.visSectionProp,
-                    (short)Visio.VisRowIndices.visRowFirst,
-                    (short)Visio.VisRowTags.visTagDefault);
-            }
-            else
-            {
-                _activeShape.AddRow(
-                    (short)Visio.VisSectionIndices.visSectionProp,
-                    (short)Visio.VisRowIndices.visRowLast,
-                    (short)Visio.VisRowTags.visTagDefault);
-            }
+            short rowPlacement = _activeShape.get_RowCount((short)Visio.VisSectionIndices.visSectionProp) == 0
+                ? (short)Visio.VisRowIndices.visRowFirst
+                : (short)Visio.VisRowIndices.visRowLast;
+
             try
             {
+                _activeShape.AddRow(
+                    (short)Visio.VisSectionIndices.visSectionProp,
+                    rowPlacement,
+                    (short)Visio.VisRowTags.visTagDefault);
                 SetShapeData(Visio.VisCellIndices.visCustPropsLabel, label);
                 SetShapeData(Visio.VisCellIndices.visCustPropsValue, schema);
             }
@@ -44,6 +45,11 @@ namespace ShapeHandler.Objects
             }
         }
 
+        /// <summary>
+        /// Retrieves the shape data for the specified shape.
+        /// </summary>
+        /// <param name="shapeId">The ID of the shape.</param>
+        /// <returns>A dictionary containing the shape data.</returns>
         public static Dictionary<string, object> GetShapeData(int shapeId)
         {
             var shapeData = new Dictionary<string, object>();
@@ -75,6 +81,11 @@ namespace ShapeHandler.Objects
             return shapeData;
         }
 
+        /// <summary>
+        /// Gets the node type of the specified shape.
+        /// </summary>
+        /// <param name="shapeId">The ID of the shape.</param>
+        /// <returns>The node type of the shape.</returns>
         public static NodeType GetNodeType(int shapeId)
         {
             // node type is the first row of the shape data
@@ -83,7 +94,12 @@ namespace ShapeHandler.Objects
             {
                 try
                 {
-                    return (NodeType)Enum.Parse(typeof(NodeType), shapeData["Node Type"].ToString());
+                    if (NodeType.TryParse(shapeData["Node Type"].ToString(), true, out NodeType nodeType))
+                    {
+                        return nodeType;
+                    }
+
+                    return NodeType.None;
                 }
                 catch (Exception)
                 {
@@ -93,6 +109,11 @@ namespace ShapeHandler.Objects
             return NodeType.None;
         }
 
+        /// <summary>
+        /// Retrieves the HTML elements associated with the specified shape.
+        /// </summary>
+        /// <param name="shapeId">The ID of the shape.</param>
+        /// <returns>A list of HTML elements associated with the shape.</returns>
         public static List<IHtmlElement> GetHtmlElements(int shapeId)
         {
             var shapeData = GetShapeData(shapeId);
@@ -108,14 +129,16 @@ namespace ShapeHandler.Objects
                         htmlElements.Add(htmlElement);
                     }
                 }
-                catch (Exception)
-                {
-                    // ignored
-                }
+                catch { }
             }
             return htmlElements;
         }
 
+        /// <summary>
+        /// Gets the node type of the specified HTML element.
+        /// </summary>
+        /// <param name="htmlElement">The HTML element.</param>
+        /// <returns>The node type of the HTML element.</returns>
         public static NodeType GetHtmlElementNodeType(IHtmlElement htmlElement)
         {
             switch (htmlElement)
@@ -135,6 +158,11 @@ namespace ShapeHandler.Objects
             }
         }
 
+        /// <summary>
+        /// Checks if rows exist in the shape data for the specified shape.
+        /// </summary>
+        /// <param name="shapeId">The ID of the shape.</param>
+        /// <returns>True if rows exist, otherwise false.</returns>
         public static bool CheckIfRowsExist(int shapeId)
         {
             _activeShape = Globals.ShapeDetector.Application.ActivePage.Shapes[shapeId];
