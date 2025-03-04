@@ -35,30 +35,22 @@ namespace ShapeHandler.Helpers
                 var parser = new HtmlParser();
                 var element = parser.ParseFragment(html, null).First() as IHtmlElement;
 
-                var inputElements = element.GetElementsByTagName("input");
-                var selectElements = element.GetElementsByTagName("select");
-                var anchorElements = element.GetElementsByTagName("a");
-                var imageElements = element.GetElementsByTagName("img");
-                var buttonElements = element.GetElementsByTagName("button");
-                if (inputElements.Any())
+                var tagMappings = new Dictionary<string, Type>
                 {
-                    return inputElements.FirstOrDefault() as IHtmlInputElement;
-                }
-                else if (anchorElements.Any())
+                    { "input", typeof(IHtmlInputElement) },
+                    { "select", typeof(IHtmlSelectElement) },
+                    { "a", typeof(IHtmlAnchorElement) },
+                    { "img", typeof(IHtmlImageElement) },
+                    { "button", typeof(IHtmlButtonElement) }
+                };
+
+                foreach (var tagMapping in tagMappings)
                 {
-                    return anchorElements.FirstOrDefault() as IHtmlAnchorElement;
-                }
-                else if (imageElements.Any())
-                {
-                    return imageElements.FirstOrDefault() as IHtmlImageElement;
-                }
-                else if (selectElements.Any())
-                {
-                    return selectElements.FirstOrDefault() as IHtmlSelectElement;
-                }
-                else if (buttonElements.Any())
-                {
-                    return buttonElements.FirstOrDefault() as IHtmlButtonElement;
+                    var elements = element.GetElementsByTagName(tagMapping.Key);
+                    if (elements.Any())
+                    {
+                        return elements.FirstOrDefault();
+                    }
                 }
 
                 return element;
