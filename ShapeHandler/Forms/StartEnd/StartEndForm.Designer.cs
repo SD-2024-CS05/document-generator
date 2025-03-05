@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StartEndForm));
             this.UrlLabel = new System.Windows.Forms.Label();
             this.UrlTextBox = new System.Windows.Forms.TextBox();
             this.SaveButton = new System.Windows.Forms.Button();
@@ -37,25 +38,28 @@
             // UrlLabel
             // 
             this.UrlLabel.AutoSize = true;
-            this.UrlLabel.Location = new System.Drawing.Point(26, 18);
+            this.UrlLabel.Location = new System.Drawing.Point(69, 43);
+            this.UrlLabel.Margin = new System.Windows.Forms.Padding(8, 0, 8, 0);
             this.UrlLabel.Name = "UrlLabel";
-            this.UrlLabel.Size = new System.Drawing.Size(29, 13);
+            this.UrlLabel.Size = new System.Drawing.Size(70, 32);
             this.UrlLabel.TabIndex = 0;
             this.UrlLabel.Text = "URL";
             // 
             // UrlTextBox
             // 
             this.UrlTextBox.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.AllUrl;
-            this.UrlTextBox.Location = new System.Drawing.Point(61, 15);
+            this.UrlTextBox.Location = new System.Drawing.Point(163, 36);
+            this.UrlTextBox.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.UrlTextBox.Name = "UrlTextBox";
-            this.UrlTextBox.Size = new System.Drawing.Size(100, 20);
+            this.UrlTextBox.Size = new System.Drawing.Size(260, 38);
             this.UrlTextBox.TabIndex = 1;
             // 
             // SaveButton
             // 
-            this.SaveButton.Location = new System.Drawing.Point(114, 54);
+            this.SaveButton.Location = new System.Drawing.Point(304, 129);
+            this.SaveButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.SaveButton.Name = "SaveButton";
-            this.SaveButton.Size = new System.Drawing.Size(75, 23);
+            this.SaveButton.Size = new System.Drawing.Size(200, 55);
             this.SaveButton.TabIndex = 2;
             this.SaveButton.Text = "Save";
             this.SaveButton.UseVisualStyleBackColor = true;
@@ -63,9 +67,10 @@
             // 
             // CancelButton
             // 
-            this.CancelButton.Location = new System.Drawing.Point(12, 54);
+            this.CancelButton.Location = new System.Drawing.Point(32, 129);
+            this.CancelButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.CancelButton.Name = "CancelButton";
-            this.CancelButton.Size = new System.Drawing.Size(75, 23);
+            this.CancelButton.Size = new System.Drawing.Size(200, 55);
             this.CancelButton.TabIndex = 3;
             this.CancelButton.Text = "Cancel";
             this.CancelButton.UseVisualStyleBackColor = true;
@@ -73,15 +78,17 @@
             // 
             // StartEndForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(201, 89);
+            this.ClientSize = new System.Drawing.Size(779, 212);
             this.Controls.Add(this.CancelButton);
             this.Controls.Add(this.SaveButton);
             this.Controls.Add(this.UrlTextBox);
             this.Controls.Add(this.UrlLabel);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.Name = "StartEndForm";
-            this.Text = "StartEndForm";
+            this.Text = "Properties";
             this.ResumeLayout(false);
             this.PerformLayout();
 
