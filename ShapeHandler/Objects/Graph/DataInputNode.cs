@@ -21,6 +21,11 @@ namespace ShapeHandler.Objects
             DataInputNodes = dataInputNodes;
         }
 
+        public DataInputNode(Guid guid, string label, List<HtmlNode> dataInputNodes, NodeType type = NodeType.DataInput) : base(guid, label, type)
+        {
+            DataInputNodes = dataInputNodes;
+        }
+
         public DataInputNode(List<HtmlNode> dataInputNodes): base("", NodeType.DataInput)
         {
             DataInputNodes = dataInputNodes;

@@ -38,7 +38,10 @@ namespace ShapeHandler.Database
             }
             else if (value is Connection connection)
             {
-                obj.Add("Label", connection.Label);
+                if (!string.IsNullOrEmpty(connection.Label))
+                {
+                    obj.Add("Label", connection.Label);
+                }
                 obj.Add("type", connection.Type.ToString().ToUpper());
                 if (!string.IsNullOrEmpty(connection.SubmissionId))
                 {

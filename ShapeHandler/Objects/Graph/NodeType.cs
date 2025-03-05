@@ -8,17 +8,19 @@ namespace ShapeHandler.Objects
 {
     public enum NodeType
     {
-        HtmlElement,
-        Button,
-        UserProcess,
-        BackgroundProcess,
+        StartEnd,
+        Decision,
         DataInput,
+        Page,
+        BackgroundProcess,
+        UserProcess,
+        Connection,
+        HtmlElement,
         Input,
         Anchor,
-        Decision,
-        StartEnd,
-        Page,
-        Connection,
+        Button,
+        Select,
+        Image,
         None
     }
 }

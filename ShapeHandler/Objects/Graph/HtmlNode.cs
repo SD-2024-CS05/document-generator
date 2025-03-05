@@ -22,6 +22,15 @@ namespace ShapeHandler.Objects
             Element = element;
         }
 
+        public HtmlNode(Guid guid, string label, IHtmlElement element, NodeType type = NodeType.HtmlElement) : base(guid, label, type)
+        {
+            if (element == null)
+            {
+                throw new ArgumentNullException(nameof(element));
+            }
+            Element = element;
+        }
+
         public override bool Equals(object obj)
         {
             if (obj == null)

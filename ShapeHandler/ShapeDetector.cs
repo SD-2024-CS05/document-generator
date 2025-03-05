@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using ShapeHandler.Database.Input;
 using ShapeHandler.Database.StartEnd;
 using ShapeHandler.Database.Decision;
+using Microsoft.Extensions.Azure;
 
 namespace ShapeHandler
 {
@@ -23,6 +24,13 @@ namespace ShapeHandler
             //ShapeDetector.CreateGraphFromFlowchart(Globals.ShapeDetector.Application);
             this.Application.DocumentOpened += new Visio.EApplication_DocumentOpenedEventHandler(Application_DocumentOpened);
             this.Application.DocumentCreated += new Visio.EApplication_DocumentCreatedEventHandler(Application_DocumentCreated);
+            this.Application.BeforeDocumentSave += new Visio.EApplication_BeforeDocumentSaveEventHandler(Application_DocumentSave);
+            this.Application.BeforeDocumentSaveAs += new Visio.EApplication_BeforeDocumentSaveAsEventHandler(Application_DocumentSave);
+        }
+
+        private void Application_DocumentSave(Visio.Document doc)
+        {
+            ShapeReader.SaveNodeMappingToDocument(doc);
         }
 
         private void Application_DocumentCreated(Visio.Document doc)
@@ -47,6 +55,7 @@ namespace ShapeHandler
                 _activeDocument = this.Application.ActiveDocument;
                 try
                 {
+                    ShapeReader.LoadNodeMappingFromDocument(_activeDocument);
                     _activeDocument.ShapeAdded += new Visio.EDocument_ShapeAddedEventHandler(ActiveDocument_ShapeAdded);
                 }
                 catch (Exception e)
