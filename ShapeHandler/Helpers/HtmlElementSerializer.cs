@@ -26,12 +26,12 @@ namespace ShapeHandler.Helpers
         {
             try
             {
-                var obj = JObject.Load(reader);
-                var html = obj["OuterHtml"].Value<string>();
-                var parser = new HtmlParser();
-                var element = parser.ParseFragment(html, null).First() as IHtmlElement;
+                JObject obj = JObject.Load(reader);
+                string html = obj["OuterHtml"].Value<string>();
+                HtmlParser parser = new HtmlParser();
+                IHtmlElement element = parser.ParseFragment(html, null).First() as IHtmlElement;
 
-                var tagMappings = new Dictionary<string, Type>
+                Dictionary<string, Type> tagMappings = new Dictionary<string, Type>
                 {
                     { "input", typeof(IHtmlInputElement) },
                     { "select", typeof(IHtmlSelectElement) },
@@ -40,9 +40,9 @@ namespace ShapeHandler.Helpers
                     { "button", typeof(IHtmlButtonElement) }
                 };
 
-                foreach (var tagMapping in tagMappings)
+                foreach (KeyValuePair<string, Type> tagMapping in tagMappings)
                 {
-                    var elements = element.GetElementsByTagName(tagMapping.Key);
+                    AngleSharp.Dom.IHtmlCollection<AngleSharp.Dom.IElement> elements = element.GetElementsByTagName(tagMapping.Key);
                     if (elements.Any())
                     {
                         return elements.FirstOrDefault();

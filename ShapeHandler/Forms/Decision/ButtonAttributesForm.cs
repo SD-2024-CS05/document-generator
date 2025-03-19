@@ -28,10 +28,10 @@ namespace ShapeHandler.Database.Input
 
         private void UpdateShapeData()
         {
-            var buttonElements = iHtmlButtonElementBindingSource.List.Cast<IHtmlButtonElement>().ToList();
-            foreach (var buttonElement in buttonElements)
+            List<IHtmlButtonElement> buttonElements = iHtmlButtonElementBindingSource.List.Cast<IHtmlButtonElement>().ToList();
+            foreach (IHtmlButtonElement buttonElement in buttonElements)
             {
-                var row = ButtonDataGridView.Rows.Cast<DataGridViewRow>().FirstOrDefault(r => r.DataBoundItem == buttonElement);
+                DataGridViewRow row = ButtonDataGridView.Rows.Cast<DataGridViewRow>().FirstOrDefault(r => r.DataBoundItem == buttonElement);
                 if (row != null)
                 {
                     buttonElement.Id = row.Cells["IdColumn"]?.Value?.ToString();

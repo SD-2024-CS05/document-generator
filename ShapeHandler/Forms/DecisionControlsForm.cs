@@ -26,7 +26,7 @@ namespace ShapeHandler.Database
             List<ListViewItem> elements = ControlListView.Items.Cast<ListViewItem>().ToList();
             int buttonNum = 0;
             string label = "<UNKNOWN>";
-            foreach (var element in elements)
+            foreach (ListViewItem element in elements)
             {
                 string html = element.SubItems[1].Text;
                 string group = element.Group.Name;
@@ -77,7 +77,7 @@ namespace ShapeHandler.Database
 
                     if (buttonAttributesForm.Elements.Any())
                     {
-                        foreach (var element in buttonAttributesForm.Elements)
+                        foreach (IHtmlButtonElement element in buttonAttributesForm.Elements)
                         {
                             ListViewItem item = new ListViewItem(new[] { element.Id, element.OuterHtml });
                             item.Group = ControlListView.Groups["ButtonGroup"];

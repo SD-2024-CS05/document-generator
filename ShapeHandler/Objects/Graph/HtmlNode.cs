@@ -61,7 +61,7 @@ namespace ShapeHandler.Objects
                 $"id: \"{Element.Id}\", ");
             builder.Append($"tag: \"{Element.TagName}\", ");
             builder.Append($"attributes: {{");
-            foreach (var attribute in Element.Attributes)
+            foreach (AngleSharp.Dom.IAttr attribute in Element.Attributes)
             {
                 builder.Append($"{attribute.Name}: \"{attribute.Value}\", ");
             }

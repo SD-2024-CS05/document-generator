@@ -9,7 +9,7 @@ namespace ShapeHandler.Objects
         {
             try
             {
-                var dir = AppDomain.CurrentDomain.BaseDirectory;
+                string dir = AppDomain.CurrentDomain.BaseDirectory;
 
                 if (!File.Exists(Path.Combine(dir, fileName)))
                 {

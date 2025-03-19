@@ -49,7 +49,7 @@ namespace ShapeHandler.Objects
         /// <returns>A dictionary containing the shape data.</returns>
         public static Dictionary<string, object> GetShapeData(int shapeId)
         {
-            var shapeData = new Dictionary<string, object>();
+            Dictionary<string, object> shapeData = new Dictionary<string, object>();
             try
             {
                 _activeShape = Globals.ShapeDetector.Application.ActivePage.Shapes.get_ItemFromID(shapeId);
@@ -86,7 +86,7 @@ namespace ShapeHandler.Objects
         public static NodeType GetNodeType(int shapeId)
         {
             // node type is the first row of the shape data
-            var shapeData = GetShapeData(shapeId);
+            Dictionary<string, object> shapeData = GetShapeData(shapeId);
             if (shapeData.ContainsKey("Node Type"))
             {
                 try
@@ -113,14 +113,14 @@ namespace ShapeHandler.Objects
         /// <returns>A list of HTML elements associated with the shape.</returns>
         public static List<IHtmlElement> GetHtmlElements(int shapeId)
         {
-            var shapeData = GetShapeData(shapeId);
-            var htmlElements = new List<IHtmlElement>();
+            Dictionary<string, object> shapeData = GetShapeData(shapeId);
+            List<IHtmlElement> htmlElements = new List<IHtmlElement>();
             // skip the first row since it is the node type
-            foreach (var data in shapeData.Skip(1))
+            foreach (KeyValuePair<string, object> data in shapeData.Skip(1))
             {
                 try
                 {
-                    var htmlElement = JsonConvert.DeserializeObject<IHtmlElement>(data.Value.ToString(), new HtmlElementSerializer());
+                    IHtmlElement htmlElement = JsonConvert.DeserializeObject<IHtmlElement>(data.Value.ToString(), new HtmlElementSerializer());
                     if (htmlElement != null)
                     {
                         htmlElements.Add(htmlElement);

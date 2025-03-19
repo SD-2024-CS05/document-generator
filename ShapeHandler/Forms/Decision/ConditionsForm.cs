@@ -24,7 +24,7 @@ namespace ShapeHandler.Database.Decision
 
         private void FillOperatorItems(ComboBox combo)
         {
-            foreach (var op in Enum.GetNames(typeof(LogicalOperator)))
+            foreach (string op in Enum.GetNames(typeof(LogicalOperator)))
             {
                 combo.Items.Add(op);
             }
@@ -32,7 +32,7 @@ namespace ShapeHandler.Database.Decision
 
         private void FillElementItems(ComboBox combo)
         {
-            foreach (var node in _elementNodes)
+            foreach (HtmlNode node in _elementNodes)
             {
                 if (!string.IsNullOrEmpty(node.Element.Id))
                 {
@@ -60,7 +60,7 @@ namespace ShapeHandler.Database.Decision
             Conditions = new Conditions();
             List<string> nodeIds = new List<string>();
 
-            var currCond = Conditions;
+            Conditions currCond = Conditions;
             // should be ELEMENT OP ELEMENT OP ELEMENT OP ELEMENT
             // all nodeIds in the same level of Condition are presumed to be connected via an AND operator
             // if the operator is anything else, the innerCondition should be created with the operator and the current NodeId
@@ -69,15 +69,15 @@ namespace ShapeHandler.Database.Decision
 
             for (int i = 1; i <= _conditionCount; i++)
             {
-                var elementCombo = this.Controls.Find("ElementComboBox" + i, true).FirstOrDefault() as ComboBox;
-                var operatorCombo = this.Controls.Find("OperatorComboBox" + i, true).FirstOrDefault() as ComboBox;
+                ComboBox elementCombo = Controls.Find("ElementComboBox" + i, true).FirstOrDefault() as ComboBox;
+                ComboBox operatorCombo = Controls.Find("OperatorComboBox" + i, true).FirstOrDefault() as ComboBox;
 
                 // add until an operator isn't AND
-                var selectedItem = elementCombo.SelectedItem as string;
+                string selectedItem = elementCombo.SelectedItem as string;
 
                 if (!string.IsNullOrEmpty(selectedItem))
                 {
-                    var node = GetHtmlNodeById(selectedItem) ?? GetHtmlNodeByOuterHtml(selectedItem);
+                    HtmlNode node = GetHtmlNodeById(selectedItem) ?? GetHtmlNodeByOuterHtml(selectedItem);
                     nodeIds.Add(node.Id);
                 }
 
@@ -87,7 +87,7 @@ namespace ShapeHandler.Database.Decision
                     break;
                 }
 
-                var op = (LogicalOperator)Enum.Parse(typeof(LogicalOperator), operatorCombo.SelectedItem as string);
+                LogicalOperator op = (LogicalOperator)Enum.Parse(typeof(LogicalOperator), operatorCombo.SelectedItem as string);
                 if (op != LogicalOperator.AND)
                 {
                     currCond.Operator = op;
@@ -102,7 +102,7 @@ namespace ShapeHandler.Database.Decision
 
         private void OperatorComboBox1_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            var combo = sender as ComboBox;
+            ComboBox combo = sender as ComboBox;
 
             AddElementComboBox(combo);
         }
@@ -116,7 +116,7 @@ namespace ShapeHandler.Database.Decision
             int newY = operatorBox.Location.Y;
 
             // Check if the end of the new ComboBox would go past the GroupBox width + margin
-            if (newX + newElementComboBox.Width > this.Width - 50)
+            if (newX + newElementComboBox.Width > Width - 50)
             {
                 newX = 13;
                 newY += 30;
@@ -126,14 +126,14 @@ namespace ShapeHandler.Database.Decision
             if (newY + newElementComboBox.Height > SaveButton.Location.Y - 10)
             {
                 // remove the last operator combobox to indicate that nothing more may be added
-                this.Controls.Remove(operatorBox);
+                Controls.Remove(operatorBox);
                 return; // Do not add the ComboBox if it interferes
             }
 
             newElementComboBox.Location = new Point(newX, newY);
             newElementComboBox.Size = new Size(121, 21);
             FillElementItems(newElementComboBox);
-            this.Controls.Add(newElementComboBox);
+            Controls.Add(newElementComboBox);
             AddOperatorComboBox(newElementComboBox);
         }
 
@@ -146,7 +146,7 @@ namespace ShapeHandler.Database.Decision
             int newX = elementBox.Location.X + elementBox.Width + 6;
             int newY = elementBox.Location.Y;
 
-            if (newX + newOperatorComboBox.Width > this.Width - 50)
+            if (newX + newOperatorComboBox.Width > Width - 50)
             {
                 newX = 13;
                 newY += 30;
@@ -156,17 +156,17 @@ namespace ShapeHandler.Database.Decision
             newOperatorComboBox.Size = new Size(50, 21);
             FillOperatorItems(newOperatorComboBox);
             newOperatorComboBox.SelectionChangeCommitted += new EventHandler(OperatorComboBox1_SelectionChangeCommitted);
-            this.Controls.Add(newOperatorComboBox);
+            Controls.Add(newOperatorComboBox);
         }
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
-            this.UpdateShapeData();
-            this.Close();
+            UpdateShapeData();
+            Close();
         }
         private void CancelButton_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
     }
 }

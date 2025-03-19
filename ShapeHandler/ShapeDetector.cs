@@ -20,10 +20,10 @@ namespace ShapeHandler
         {
             // Uncomment for local testing
             //ShapeDetector.CreateGraphFromFlowchart(Globals.ShapeDetector.Application);
-            this.Application.DocumentOpened += new Visio.EApplication_DocumentOpenedEventHandler(Application_DocumentOpened);
-            this.Application.DocumentCreated += new Visio.EApplication_DocumentCreatedEventHandler(Application_DocumentCreated);
-            this.Application.BeforeDocumentSave += new Visio.EApplication_BeforeDocumentSaveEventHandler(Application_DocumentSave);
-            this.Application.BeforeDocumentSaveAs += new Visio.EApplication_BeforeDocumentSaveAsEventHandler(Application_DocumentSave);
+            Application.DocumentOpened += new Visio.EApplication_DocumentOpenedEventHandler(Application_DocumentOpened);
+            Application.DocumentCreated += new Visio.EApplication_DocumentCreatedEventHandler(Application_DocumentCreated);
+            Application.BeforeDocumentSave += new Visio.EApplication_BeforeDocumentSaveEventHandler(Application_DocumentSave);
+            Application.BeforeDocumentSaveAs += new Visio.EApplication_BeforeDocumentSaveAsEventHandler(Application_DocumentSave);
         }
 
         private void Application_DocumentSave(Visio.Document doc)
@@ -33,11 +33,11 @@ namespace ShapeHandler
 
         private void Application_DocumentCreated(Visio.Document doc)
         {
-            var stencilPath = FileManager.GetFilePath("Resources/CS05-stencil.vssx");
+            string stencilPath = FileManager.GetFilePath("Resources/CS05-stencil.vssx");
 
             if (!string.IsNullOrEmpty(stencilPath))
             {
-                this.Application.Documents.OpenEx(stencilPath, (short)VisOpenSaveArgs.visOpenDocked);
+                Application.Documents.OpenEx(stencilPath, (short)VisOpenSaveArgs.visOpenDocked);
             }
             else
             {
@@ -48,9 +48,9 @@ namespace ShapeHandler
 
         private void Application_DocumentOpened(Visio.Document doc)
         {
-            if (_activeDocument != this.Application.ActiveDocument)
+            if (_activeDocument != Application.ActiveDocument)
             {
-                _activeDocument = this.Application.ActiveDocument;
+                _activeDocument = Application.ActiveDocument;
                 try
                 {
                     ShapeReader.LoadNodeMappingFromDocument(_activeDocument);
@@ -65,7 +65,7 @@ namespace ShapeHandler
 
         private void ActiveDocument_ShapeAdded(Visio.IVShape shape)
         {
-            var shapeType = VisioShapeDataHelper.GetNodeType(shape.ID);
+            NodeType shapeType = VisioShapeDataHelper.GetNodeType(shape.ID);
 
             switch (shapeType)
             {
@@ -127,7 +127,7 @@ namespace ShapeHandler
 
         private void HandleConnectionNode(Visio.IVShape shape)
         {
-            var decisionId = ShapeReader.IsConnectionFromDecisionNode((Shape)shape);
+            int decisionId = ShapeReader.IsConnectionFromDecisionNode((Shape)shape);
 
             if (decisionId == -1)
             {
@@ -178,8 +178,8 @@ namespace ShapeHandler
         /// </summary>
         private void InternalStartup()
         {
-            this.Startup += new System.EventHandler(ShapeDetector_Startup);
-            this.Shutdown += new System.EventHandler(ShapeDetector_Shutdown);
+            Startup += new System.EventHandler(ShapeDetector_Startup);
+            Shutdown += new System.EventHandler(ShapeDetector_Shutdown);
         }
 
         #endregion

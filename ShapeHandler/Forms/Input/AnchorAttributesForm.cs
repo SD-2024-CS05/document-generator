@@ -32,12 +32,12 @@ namespace ShapeHandler.Database.Input
         private void UpdateShapeData()
         {
             // get all the image elements
-            var anchorElements = iHtmlAnchorElementBindingSource.List.Cast<IHtmlAnchorElement>().ToList();
+            List<IHtmlAnchorElement> anchorElements = iHtmlAnchorElementBindingSource.List.Cast<IHtmlAnchorElement>().ToList();
 
             // id isn't bound so need to grab it from the datagridview
-            foreach (var anchorElement in anchorElements)
+            foreach (IHtmlAnchorElement anchorElement in anchorElements)
             {
-                var row = AnchorDataGridView.Rows.Cast<DataGridViewRow>().FirstOrDefault(r => r.DataBoundItem == anchorElement);
+                DataGridViewRow row = AnchorDataGridView.Rows.Cast<DataGridViewRow>().FirstOrDefault(r => r.DataBoundItem == anchorElement);
                 if (row != null)
                 {
                     anchorElement.Id = row.Cells["IdColumn"]?.Value?.ToString();
@@ -48,7 +48,7 @@ namespace ShapeHandler.Database.Input
 
         private void cancelButton_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void saveButton_Click(object sender, EventArgs e)
@@ -57,7 +57,7 @@ namespace ShapeHandler.Database.Input
             {
                 UpdateShapeData();
             }
-            this.Close();
+            Close();
         }
 
         private void AddButton_Click(object sender, EventArgs e)

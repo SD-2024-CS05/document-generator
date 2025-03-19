@@ -33,12 +33,12 @@ namespace ShapeHandler.Database.Input
         private void UpdateShapeData()
         {
             // get all the image elements
-            var inputElements = iHtmlInputElementBindingSource.List.Cast<IHtmlInputElement>().ToList();
+            List<IHtmlInputElement> inputElements = iHtmlInputElementBindingSource.List.Cast<IHtmlInputElement>().ToList();
 
             // id isn't bound so need to grab it from the datagridview
-            foreach (var inputElement in inputElements)
+            foreach (IHtmlInputElement inputElement in inputElements)
             {
-                var row = InputDataGridView.Rows.Cast<DataGridViewRow>().FirstOrDefault(r => r.DataBoundItem == inputElement);
+                DataGridViewRow row = InputDataGridView.Rows.Cast<DataGridViewRow>().FirstOrDefault(r => r.DataBoundItem == inputElement);
                 if (row != null)
                 {
                     inputElement.Id = row.Cells["IdColumn"]?.Value?.ToString();
@@ -49,7 +49,7 @@ namespace ShapeHandler.Database.Input
 
         private void cancelButton_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void saveButton_Click(object sender, EventArgs e)
@@ -58,7 +58,7 @@ namespace ShapeHandler.Database.Input
             {
                 UpdateShapeData();
             }
-            this.Close();
+            Close();
         }
 
         private void AddButton_Click(object sender, EventArgs e)

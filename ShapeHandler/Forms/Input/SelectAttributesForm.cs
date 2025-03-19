@@ -32,30 +32,30 @@ namespace ShapeHandler.Database.Input
         private void UpdateShapeData()
         {
             // get all the image elements
-            var selectElements = iHtmlSelectElementBindingSource.List.Cast<IHtmlSelectElement>().ToList();
+            List<IHtmlSelectElement> selectElements = iHtmlSelectElementBindingSource.List.Cast<IHtmlSelectElement>().ToList();
 
             // id isn't bound so need to grab it from the datagridview
-            foreach (var selectElement in selectElements)
+            foreach (IHtmlSelectElement selectElement in selectElements)
             {
-                var selectRow = SelectDataGridView.Rows.Cast<DataGridViewRow>().FirstOrDefault(r => r.DataBoundItem == selectElement);
+                DataGridViewRow selectRow = SelectDataGridView.Rows.Cast<DataGridViewRow>().FirstOrDefault(r => r.DataBoundItem == selectElement);
                 if (selectRow != null)
                 {
                     selectElement.Id = selectRow.Cells["IdColumn"]?.Value?.ToString();
                 }
 
                 // get options for select element
-                var selectOptions = iHtmlOptionElementBindingSource.List.Cast<IHtmlOptionElement>().ToList();
+                List<IHtmlOptionElement> selectOptions = iHtmlOptionElementBindingSource.List.Cast<IHtmlOptionElement>().ToList();
 
-                foreach (var selectOption in selectOptions)
+                foreach (IHtmlOptionElement selectOption in selectOptions)
                 {
-                    var optionRow = OptionDataGridView.Rows.Cast<DataGridViewRow>().FirstOrDefault(r => r.DataBoundItem == selectOption);
+                    DataGridViewRow optionRow = OptionDataGridView.Rows.Cast<DataGridViewRow>().FirstOrDefault(r => r.DataBoundItem == selectOption);
                     if (optionRow != null)
                     {
                         selectOption.Id = optionRow.Cells["OptionIdColumn"]?.Value?.ToString();
 
                         // parents are not bound, so there is a column called SelectIdColumn that contains the id of the parent select element
-                        var parentSelectId = optionRow.Cells["SelectIdColumn"]?.Value?.ToString();
-                        var parentSelect = selectElements.FirstOrDefault(s => s.Id == parentSelectId);
+                        string parentSelectId = optionRow.Cells["SelectIdColumn"]?.Value?.ToString();
+                        IHtmlSelectElement parentSelect = selectElements.FirstOrDefault(s => s.Id == parentSelectId);
                         parentSelect.AddOption(selectOption);
 
                     }
@@ -67,7 +67,7 @@ namespace ShapeHandler.Database.Input
 
         private void cancelButton_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void saveButton_Click(object sender, EventArgs e)
@@ -76,7 +76,7 @@ namespace ShapeHandler.Database.Input
             {
                 UpdateShapeData();
             }
-            this.Close();
+            Close();
         }
 
         private void AddSelectButton_Click(object sender, EventArgs e)
@@ -104,8 +104,8 @@ namespace ShapeHandler.Database.Input
             if (e.ColumnIndex == SelectIdColumn.Index)
             {
                 // update the combobox list items with all of the select ids
-                var selectIds = SelectDataGridView.Rows.Cast<DataGridViewRow>().Select(r => r.Cells[SelectIdColumn.Index].Value?.ToString()).Distinct().ToList();
-                var selectColumn = (DataGridViewComboBoxColumn)OptionDataGridView.Columns["SelectIdColumn"];
+                List<string> selectIds = SelectDataGridView.Rows.Cast<DataGridViewRow>().Select(r => r.Cells[SelectIdColumn.Index].Value?.ToString()).Distinct().ToList();
+                DataGridViewComboBoxColumn selectColumn = (DataGridViewComboBoxColumn)OptionDataGridView.Columns["SelectIdColumn"];
                 selectColumn.Items.Clear();
                 selectColumn.Items.AddRange(selectIds.ToArray());
             }
@@ -114,8 +114,8 @@ namespace ShapeHandler.Database.Input
         private void SelectDataGridView_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
         {
             // update the combobox list items with all of the select ids
-            var selectIds = SelectDataGridView.Rows.Cast<DataGridViewRow>().Select(r => r.Cells[SelectIdColumn.Index].Value?.ToString()).Distinct().ToList();
-            var selectColumn = (DataGridViewComboBoxColumn)OptionDataGridView.Columns["SelectIdColumn"];
+            List<string> selectIds = SelectDataGridView.Rows.Cast<DataGridViewRow>().Select(r => r.Cells[SelectIdColumn.Index].Value?.ToString()).Distinct().ToList();
+            DataGridViewComboBoxColumn selectColumn = (DataGridViewComboBoxColumn)OptionDataGridView.Columns["SelectIdColumn"];
             selectColumn.Items.Clear();
             selectColumn.Items.AddRange(selectIds.ToArray());
 

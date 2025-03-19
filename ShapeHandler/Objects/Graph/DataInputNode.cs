@@ -57,7 +57,7 @@ namespace ShapeHandler.Objects
             builder.Append($"type: \"{Type.ToString().ToUpper()}\", ");
             builder.Append($"label: \"{Label}\", ");
             builder.Append($"dataInputNodes: [");
-            foreach (var node in DataInputNodes)
+            foreach (HtmlNode node in DataInputNodes)
             {
                 builder.Append($"{node}, ");
             }

@@ -11,7 +11,7 @@ namespace ShapeHandler.Helpers
     {
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            var htmlElementSerializer = new HtmlElementSerializer();
+            HtmlElementSerializer htmlElementSerializer = new HtmlElementSerializer();
             writer.WriteStartObject();
             if (value is FlowchartNode node)
             {
@@ -82,12 +82,12 @@ namespace ShapeHandler.Helpers
                     node = new StartEndNode(guid, label, isStart);
                     break;
                 case NodeType.Decision:
-                    var submissionNodes = new List<HtmlNode>();
-                    foreach (var submissionNode in jsonObject["SubmissionNodes"])
+                    List<HtmlNode> submissionNodes = new List<HtmlNode>();
+                    foreach (JToken submissionNode in jsonObject["SubmissionNodes"])
                     {
-                        var e = JsonConvert.DeserializeObject<IHtmlElement>(submissionNode["Element"].ToString(), new HtmlElementSerializer());
-                        var subId = submissionNode["Id"]?.ToString();
-                        var subLabel = submissionNode["Label"]?.ToString();
+                        IHtmlElement e = JsonConvert.DeserializeObject<IHtmlElement>(submissionNode["Element"].ToString(), new HtmlElementSerializer());
+                        string subId = submissionNode["Id"]?.ToString();
+                        string subLabel = submissionNode["Label"]?.ToString();
                         NodeType.TryParse(submissionNode["Type"]?.ToString(), out NodeType subType);
                         Guid.TryParse(subId, out Guid subGuid);
 
@@ -96,12 +96,12 @@ namespace ShapeHandler.Helpers
                     node = new DecisionNode(guid, label, submissionNodes);
                     break;
                 case NodeType.DataInput:
-                    var dataInputNodes = new List<HtmlNode>();
-                    foreach (var dataInputNode in jsonObject["DataInputNodes"])
+                    List<HtmlNode> dataInputNodes = new List<HtmlNode>();
+                    foreach (JToken dataInputNode in jsonObject["DataInputNodes"])
                     {
-                        var e = JsonConvert.DeserializeObject<IHtmlElement>(dataInputNode["Element"].ToString(), new HtmlElementSerializer());
-                        var diId = dataInputNode["Id"]?.ToString();
-                        var diLabel = dataInputNode["Label"]?.ToString();
+                        IHtmlElement e = JsonConvert.DeserializeObject<IHtmlElement>(dataInputNode["Element"].ToString(), new HtmlElementSerializer());
+                        string diId = dataInputNode["Id"]?.ToString();
+                        string diLabel = dataInputNode["Label"]?.ToString();
                         NodeType.TryParse(dataInputNode["Type"]?.ToString(), out NodeType diType);
                         Guid.TryParse(diId, out Guid diGuid);
 
@@ -124,7 +124,7 @@ namespace ShapeHandler.Helpers
                 case NodeType.Select:
                 case NodeType.Anchor:
                 case NodeType.Image:
-                    var element = JsonConvert.DeserializeObject<IHtmlElement>(jsonObject["Element"].ToString(), new HtmlElementSerializer());
+                    IHtmlElement element = JsonConvert.DeserializeObject<IHtmlElement>(jsonObject["Element"].ToString(), new HtmlElementSerializer());
                     node = new HtmlNode(guid, label, element);
                     break;
                 default:
