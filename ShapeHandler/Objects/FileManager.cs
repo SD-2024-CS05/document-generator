@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ShapeHandler.Objects
 {
@@ -18,7 +14,8 @@ namespace ShapeHandler.Objects
                 if (!File.Exists(Path.Combine(dir, fileName)))
                 {
                     dir = Path.Combine(dir, "bin", fileName);
-                } else
+                }
+                else
                 {
                     dir = Path.Combine(dir, fileName);
                 }

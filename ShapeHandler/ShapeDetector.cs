@@ -1,14 +1,12 @@
-﻿using Visio = Microsoft.Office.Interop.Visio;
-using Microsoft.Office.Interop.Visio;
+﻿using Microsoft.Office.Interop.Visio;
+using ShapeHandler.Database;
+using ShapeHandler.Database.Decision;
+using ShapeHandler.Database.StartEnd;
 using ShapeHandler.Objects;
 using ShapeHandler.ShapeTransformation;
 using System;
-using ShapeHandler.Database;
 using System.Windows.Forms;
-using ShapeHandler.Database.Input;
-using ShapeHandler.Database.StartEnd;
-using ShapeHandler.Database.Decision;
-using Microsoft.Extensions.Azure;
+using Visio = Microsoft.Office.Interop.Visio;
 
 namespace ShapeHandler
 {

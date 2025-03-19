@@ -1,12 +1,11 @@
-﻿using System;
+﻿using AngleSharp.Html.Dom;
+using Neo4j.Driver;
+using Newtonsoft.Json;
+using ShapeHandler.Objects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AngleSharp.Html.Dom;
-using Neo4j.Driver;
-using Neo4jClient.Transactions;
-using Newtonsoft.Json;
-using ShapeHandler.Objects;
 
 namespace ShapeHandler.Database
 {

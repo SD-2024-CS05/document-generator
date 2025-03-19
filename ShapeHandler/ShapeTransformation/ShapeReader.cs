@@ -1,22 +1,13 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Newtonsoft.Json;
-using System.Text.RegularExpressions;
-using System.Xml.Linq;
-using AngleSharp;
-using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
 using AngleSharp.Text;
 using Microsoft.Office.Interop.Visio;
-using ShapeHandler.Objects;
-using Newtonsoft.Json.Linq;
-using Neo4jClient.Cypher;
-using Visio = Microsoft.Office.Interop.Visio;
-using System.Runtime.InteropServices;
-using System.Linq.Expressions;
+using Newtonsoft.Json;
 using ShapeHandler.Helpers;
+using ShapeHandler.Objects;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using Visio = Microsoft.Office.Interop.Visio;
 
 namespace ShapeHandler.ShapeTransformation
 {

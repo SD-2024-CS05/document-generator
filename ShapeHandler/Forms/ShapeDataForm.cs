@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
-using AngleSharp;
+﻿using AngleSharp;
 using AngleSharp.Html.Dom;
 using AngleSharp.Html.Parser;
-using Microsoft.Office.Interop.Visio;
 using Newtonsoft.Json;
 using ShapeHandler.Database.Input;
 using ShapeHandler.Helpers;
 using ShapeHandler.Objects;
+using System;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace ShapeHandler.Database
 {
