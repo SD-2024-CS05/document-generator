@@ -73,8 +73,9 @@ namespace ShapeHandler.Helpers
             string type = obj["Type"].Value<string>();
             string submissionId = obj["SubmissionId"]?.Value<string>();
             string url = obj["URL"]?.Value<string>();
-
             JToken conditions = obj["Conditions"];
+            ConnectionType conType = (ConnectionType)Enum.Parse(typeof(ConnectionType), type);
+
             Conditions condition = null;
 
             if (conditions != null)
@@ -98,7 +99,17 @@ namespace ShapeHandler.Helpers
                     innerConditions = innerConditions["InnerConditions"];
                 }
             }
-            return obj;
+
+            Connection connection = new Connection
+            {
+                Label = label,
+                Type = conType,
+                SubmissionId = submissionId,
+                URL = url,
+                Conditions = condition
+            };
+
+            return connection;
         }
         public override bool CanConvert(Type objectType)
         {
