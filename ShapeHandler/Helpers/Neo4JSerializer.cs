@@ -50,11 +50,26 @@ namespace ShapeHandler.Database
                 if (connection.Conditions != null)
                 {
                     // turn the Conditions object into a serialized JSON string
-                    obj.Add("Conditions", JToken.FromObject(connection.Conditions, serializer).ToString());
+                    obj.Add("Conditions", CreateConditionToken(connection.Conditions, serializer));
                 }
             }
 
             obj.WriteTo(writer);
+        }
+
+        string CreateConditionToken(Conditions conditions, JsonSerializer serializer)
+        {
+            JObject obj = new JObject
+            {
+                { "NodeIds", JToken.FromObject(conditions.NodeIds) },
+                { "Operator", conditions.Operator.ToString().ToUpper() }
+            };
+            if (conditions.InnerConditions != null)
+            {
+                obj.Add("InnerConditions", CreateConditionToken(conditions.InnerConditions, serializer));
+            }
+
+            return obj.ToString();
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)

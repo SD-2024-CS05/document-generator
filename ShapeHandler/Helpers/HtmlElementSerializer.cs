@@ -1,4 +1,5 @@
-﻿using AngleSharp.Html.Dom;
+﻿using AngleSharp.Dom;
+using AngleSharp.Html.Dom;
 using AngleSharp.Html.Parser;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -31,21 +32,33 @@ namespace ShapeHandler.Helpers
                 HtmlParser parser = new HtmlParser();
                 IHtmlElement element = parser.ParseFragment(html, null).First() as IHtmlElement;
 
-                Dictionary<string, Type> tagMappings = new Dictionary<string, Type>
-                {
-                    { "input", typeof(IHtmlInputElement) },
-                    { "select", typeof(IHtmlSelectElement) },
-                    { "a", typeof(IHtmlAnchorElement) },
-                    { "img", typeof(IHtmlImageElement) },
-                    { "button", typeof(IHtmlButtonElement) }
-                };
-
-                foreach (KeyValuePair<string, Type> tagMapping in tagMappings)
-                {
-                    AngleSharp.Dom.IHtmlCollection<AngleSharp.Dom.IElement> elements = element.GetElementsByTagName(tagMapping.Key);
-                    if (elements.Any())
+                Dictionary<string, Func<IHtmlElement, IHtmlElement>> tagMappings = new Dictionary<string, Func<IHtmlElement, IHtmlElement>>
                     {
-                        return elements.FirstOrDefault();
+                        { "input", e => e.FindChild<IHtmlInputElement>() },
+                        { "select", e => e.FindChild<IHtmlSelectElement>() },
+                        { "a", e => e.FindChild<IHtmlAnchorElement>() },
+                        { "img", e => e.FindChild<IHtmlImageElement>() },
+                        { "button", e => e.FindChild<IHtmlButtonElement>() }
+                    };
+
+                var tag = element.TagName.ToLower();
+
+                if (tagMappings.ContainsKey(tag))
+                {
+                    element = tagMappings[tag](element);
+                }
+                else
+                {
+                    var children = element.Children;
+
+                    element = children.FirstOrDefault(child =>
+                        child.TagName.ToLower() == "body") as IHtmlElement;
+
+                    element = element.Children.FirstOrDefault() as IHtmlElement;
+
+                    if (element == null)
+                    {
+                        throw new JsonSerializationException("Unable to deserialize the html element");
                     }
                 }
 

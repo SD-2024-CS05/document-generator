@@ -9,6 +9,14 @@ namespace ShapeHandler.Tests.Helpers
     [TestClass]
     public class ConnectionSerializerTests
     {
+        private ConnectionSerializer _serializer;
+
+        [TestInitialize]
+        public void Setup()
+        {
+            _serializer = new ConnectionSerializer();
+        }
+
         [TestMethod]
         public void WriteJson_ShouldSerializeConnectionCorrectly()
         {
@@ -34,7 +42,7 @@ namespace ShapeHandler.Tests.Helpers
             var expectedJson = "{\"Label\":\"Test Connection\",\"Type\":\"GOES_TO\",\"SubmissionId\":\"12345\",\"URL\":\"http://example.com\",\"Conditions\":{\"NodeIds\":[\"Node1\",\"Node2\"],\"Operator\":\"OR\",\"InnerConditions\":{\"NodeIds\":[\"Node3\"],\"Operator\":\"AND\"}}}";
 
             // Act
-            var json = JsonConvert.SerializeObject(connection, new ConnectionSerializer());
+            var json = JsonConvert.SerializeObject(connection, _serializer);
 
             // Assert
             Assert.AreEqual(expectedJson, json);
@@ -47,7 +55,7 @@ namespace ShapeHandler.Tests.Helpers
             var json = "{\"Label\":\"Test Connection\",\"Type\":\"GOES_TO\",\"SubmissionId\":\"12345\",\"URL\":\"http://example.com\",\"Conditions\":{\"NodeIds\":[\"Node1\",\"Node2\"],\"Operator\":\"AND\",\"InnerConditions\":{\"NodeIds\":[\"Node3\"],\"Operator\":\"OR\"}}}";
 
             // Act
-            var connection = JsonConvert.DeserializeObject<Connection>(json, new ConnectionSerializer());
+            var connection = JsonConvert.DeserializeObject<Connection>(json, _serializer);
 
             // Assert
             Assert.IsNotNull(connection);
@@ -62,7 +70,6 @@ namespace ShapeHandler.Tests.Helpers
             Assert.AreEqual(1, connection.Conditions.InnerConditions.NodeIds.Count);
             Assert.AreEqual(LogicalOperator.OR, connection.Conditions.InnerConditions.Operator);
         }
-
 
         [TestMethod]
         public void WriteJson_ShouldSerializeConnectionCorrectlyDeepConditions()
@@ -94,7 +101,7 @@ namespace ShapeHandler.Tests.Helpers
             var expectedJson = "{\"Label\":\"Test Connection\",\"Type\":\"GOES_TO\",\"SubmissionId\":\"12345\",\"URL\":\"http://example.com\",\"Conditions\":{\"NodeIds\":[\"Node1\",\"Node2\"],\"Operator\":\"OR\",\"InnerConditions\":{\"NodeIds\":[\"Node3\"],\"Operator\":\"AND\",\"InnerConditions\":{\"NodeIds\":[\"Node4\"],\"Operator\":\"OR\"}}}}";
 
             // Act
-            var json = JsonConvert.SerializeObject(connection, new ConnectionSerializer());
+            var json = JsonConvert.SerializeObject(connection, _serializer);
             Assert.AreEqual(expectedJson, json);
         }
 
@@ -103,7 +110,8 @@ namespace ShapeHandler.Tests.Helpers
         {
             // Arrange
             var json = "{\"Label\":\"Test Connection\",\"Type\":\"GOES_TO\",\"SubmissionId\":\"12345\",\"URL\":\"http://example.com\",\"Conditions\":{\"NodeIds\":[\"Node1\",\"Node2\"],\"Operator\":\"OR\",\"InnerConditions\":{\"NodeIds\":[\"Node3\"],\"Operator\":\"AND\",\"InnerConditions\":{\"NodeIds\":[\"Node4\"],\"Operator\":\"OR\"}}}}";
-            var connection = new Connection {
+            var connection = new Connection
+            {
                 Label = "Test Connection",
                 Type = ConnectionType.GOES_TO,
                 SubmissionId = "12345",
@@ -126,7 +134,7 @@ namespace ShapeHandler.Tests.Helpers
             };
 
             // Act
-            var deserializedConnection = JsonConvert.DeserializeObject<Connection>(json, new ConnectionSerializer());
+            var deserializedConnection = JsonConvert.DeserializeObject<Connection>(json, _serializer);
 
             // Assert
             Assert.IsNotNull(deserializedConnection);

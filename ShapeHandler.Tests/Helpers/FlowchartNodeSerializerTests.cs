@@ -12,17 +12,25 @@ namespace ShapeHandler.Tests.Helpers
     [TestClass]
     public class FlowchartNodeSerializerTests
     {
+        private FlowchartNodeSerializer _flowchartNodeSerializer;
+        private JsonSerializerSettings _serializerSettings;
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            _flowchartNodeSerializer = new FlowchartNodeSerializer();
+            _serializerSettings = new JsonSerializerSettings();
+            _serializerSettings.Converters.Add(_flowchartNodeSerializer);
+        }
+
         [TestMethod]
         public void WriteJson_ShouldSerializeStartEndNode()
         {
             // Arrange
             var node = new StartEndNode(Guid.NewGuid(), "Start Node", true);
-            var flowchartNodeSerializer = new FlowchartNodeSerializer();
-            var serializerSettings = new JsonSerializerSettings();
-            serializerSettings.Converters.Add(flowchartNodeSerializer);
 
             // Act
-            var json = JsonConvert.SerializeObject(node, serializerSettings);
+            var json = JsonConvert.SerializeObject(node, _serializerSettings);
 
             // Assert
             Assert.IsTrue(json.Contains("\"isStart\":true"));
@@ -35,12 +43,9 @@ namespace ShapeHandler.Tests.Helpers
             // Arrange
             var mockElement = new Mock<IHtmlElement>();
             var node = new HtmlNode(Guid.NewGuid(), "Html Node", mockElement.Object);
-            var flowchartNodeSerializer = new FlowchartNodeSerializer();
-            var serializerSettings = new JsonSerializerSettings();
-            serializerSettings.Converters.Add(flowchartNodeSerializer);
 
             // Act
-            var json = JsonConvert.SerializeObject(node, serializerSettings);
+            var json = JsonConvert.SerializeObject(node, _serializerSettings);
 
             // Assert
             Assert.IsTrue(json.Contains("\"Type\":\"HtmlElement\""));
@@ -52,12 +57,9 @@ namespace ShapeHandler.Tests.Helpers
         {
             // Arrange
             var json = "{\"Id\":\"" + Guid.NewGuid() + "\",\"Type\":\"StartEnd\",\"isStart\":true,\"Label\":\"Start Node\"}";
-            var flowchartNodeSerializer = new FlowchartNodeSerializer();
-            var serializerSettings = new JsonSerializerSettings();
-            serializerSettings.Converters.Add(flowchartNodeSerializer);
 
             // Act
-            var node = JsonConvert.DeserializeObject<FlowchartNode>(json, serializerSettings) as StartEndNode;
+            var node = JsonConvert.DeserializeObject<FlowchartNode>(json, _serializerSettings) as StartEndNode;
 
             // Assert
             Assert.IsNotNull(node);
@@ -69,13 +71,10 @@ namespace ShapeHandler.Tests.Helpers
         public void ReadJson_ShouldDeserializeHtmlNode()
         {
             // Arrange
-            var json = "{\"Id\":\"" + Guid.NewGuid() + "\",\"Type\":\"HtmlElement\",\"Label\":\"Html Node\",\"Element\":{}}";
-            var flowchartNodeSerializer = new FlowchartNodeSerializer();
-            var serializerSettings = new JsonSerializerSettings();
-            serializerSettings.Converters.Add(flowchartNodeSerializer);
+            var json = "{\"Id\":\"" + Guid.NewGuid() + "\",\"Type\":\"HtmlElement\",\"Label\":\"Html Node\",\"Element\":{\"OuterHtml\":\"null\"}}";
 
             // Act
-            var node = JsonConvert.DeserializeObject<FlowchartNode>(json, serializerSettings) as HtmlNode;
+            var node = JsonConvert.DeserializeObject<FlowchartNode>(json, _serializerSettings) as HtmlNode;
 
             // Assert
             Assert.IsNotNull(node);
@@ -85,11 +84,8 @@ namespace ShapeHandler.Tests.Helpers
         [TestMethod]
         public void CanConvert_ShouldReturnTrueForFlowchartNode()
         {
-            // Arrange
-            var flowchartNodeSerializer = new FlowchartNodeSerializer();
-
             // Act
-            var canConvert = flowchartNodeSerializer.CanConvert(typeof(FlowchartNode));
+            var canConvert = _flowchartNodeSerializer.CanConvert(typeof(FlowchartNode));
 
             // Assert
             Assert.IsTrue(canConvert);
@@ -101,12 +97,9 @@ namespace ShapeHandler.Tests.Helpers
         {
             // Arrange
             var json = "{\"Id\":\"" + Guid.NewGuid() + "\",\"Type\":\"Unknown\",\"Label\":\"Unknown Node\"}";
-            var flowchartNodeSerializer = new FlowchartNodeSerializer();
-            var serializerSettings = new JsonSerializerSettings();
-            serializerSettings.Converters.Add(flowchartNodeSerializer);
 
             // Act
-            JsonConvert.DeserializeObject<FlowchartNode>(json, serializerSettings);
+            JsonConvert.DeserializeObject<FlowchartNode>(json, _serializerSettings);
 
             // Assert
             // Exception expected
