@@ -52,13 +52,4 @@ namespace ShapeHandler.Objects
             return builder.ToString();
         }
     }
-    public enum LogicalOperator
-    {
-        AND,
-        OR,
-        NOT,
-        XOR,
-        NOR,
-        NAND
-    }
 }

@@ -7,6 +7,8 @@ namespace ShapeHandler.Objects
 
         public bool IsStart { get; set; } = false;
 
+        public StartEndNode() : base(null, NodeType.StartEnd) { }
+
         public StartEndNode(string label) : base(label, NodeType.StartEnd) { }
 
         public StartEndNode(string label, bool isStart) : base(label, NodeType.StartEnd)

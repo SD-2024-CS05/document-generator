@@ -343,41 +343,21 @@
     <Compile Include="Helpers\FlowchartNodeSerializerTests.cs" />
     <Compile Include="Helpers\HtmlElementSerializerTests.cs" />
     <Compile Include="Helpers\Neo4JSerializerTests.cs" />
-    <Compile Include="Objects\Graph\ConditionTTest.ConstructorTest.g.cs">
-      <DependentUpon>ConditionTTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Objects\Graph\ConditionTTest.cs" />
-    <Compile Include="Objects\Graph\ConnectionTest.ConstructorTest.g.cs">
-      <DependentUpon>ConnectionTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Objects\Graph\ConnectionTest.cs" />
-    <Compile Include="Objects\Graph\DecisionNodeTest.ConstructorTest.g.cs">
-      <DependentUpon>DecisionNodeTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Objects\Graph\DecisionNodeTest.cs" />
-    <Compile Include="Objects\Graph\HtmlGraphTest.AddNodeTest.g.cs">
-      <DependentUpon>HtmlGraphTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Objects\Graph\HtmlGraphTest.ConstructorTest.g.cs">
-      <DependentUpon>HtmlGraphTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Objects\Graph\HtmlGraphTest.cs" />
-    <Compile Include="Objects\Graph\HtmlNodeTest.ConstructorTest.g.cs">
-      <DependentUpon>HtmlNodeTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Objects\Graph\HtmlNodeTest.cs" />
+    <Compile Include="Helpers\VisioShapeDataHelperTests.cs" />
     <Compile Include="Identity\KeyVaultManagerTests.cs" />
-    <Compile Include="Objects\Graph\PageNodeTest.ConstructorTest.g.cs">
-      <DependentUpon>PageNodeTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Objects\Graph\PageNodeTest.cs" />
+    <Compile Include="Objects\Graph\ConditionsTests.cs" />
+    <Compile Include="Objects\Graph\ConnectionTests.cs" />
+    <Compile Include="Objects\Graph\DataInputNodeTests.cs" />
+    <Compile Include="Objects\Graph\DecisionNodeTests.cs" />
+    <Compile Include="Objects\Graph\FlowchartNodeTests.cs" />
+    <Compile Include="Objects\Graph\HtmlGraphTests.cs" />
+    <Compile Include="Objects\Graph\HtmlNodeTests.cs" />
+    <Compile Include="Objects\Graph\PageNodeTests.cs" />
+    <Compile Include="Objects\Graph\ProcessNodeTests.cs" />
+    <Compile Include="Objects\Graph\StartEndNodeTests.cs" />
+    <Compile Include="Objects\FileManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\PexAssemblyInfo.cs" />
-    <Compile Include="Objects\Graph\StartEndNodeTest.Constructor.g.cs">
-      <DependentUpon>StartEndNodeTest.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Objects\Graph\StartEndNodeTest.cs" />
-    <Compile Include="ShapeTransformation\ShapeReaderTests.cs" />
     <Compile Include="Visio\ShapeDetectorTests.cs" />
   </ItemGroup>
   <ItemGroup>

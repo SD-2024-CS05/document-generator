@@ -8,6 +8,11 @@ namespace ShapeHandler.Objects
     {
         public IHtmlElement Element { get; set; }
 
+        public HtmlNode(string label, NodeType type = NodeType.HtmlElement) : base(label, type)
+        {
+
+        }
+
         public HtmlNode(string label, IHtmlElement element, NodeType type = NodeType.HtmlElement) : base(label, type)
         {
             if (element == null)

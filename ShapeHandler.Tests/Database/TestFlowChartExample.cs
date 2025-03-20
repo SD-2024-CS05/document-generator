@@ -11,7 +11,7 @@ namespace ShapeHandler.Tests.Database
 {
     [TestClass()]
 #if GITHUB_ACTIONS
-    [Ignore]
+    [Ignore("Ignoring because in automated action, these tests write to a database")]
 #endif
     public class TestFlowChartExample
     {
@@ -363,7 +363,7 @@ namespace ShapeHandler.Tests.Database
         }
 
         [TestMethod()]
-        [Ignore]
+        [Ignore("This test is deprecated as it creates a graph that is no longer in use")]
         [Obsolete("This test is deprecated as it creates a graph that is no longer in use")]
         public void WriteTestFlowchartToFile2()
         {
