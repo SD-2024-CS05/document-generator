@@ -52,7 +52,7 @@ namespace ShapeHandler.Tests.Objects.Graph
             var decisionNode = new DecisionNode(guid, label, submissionNodes);
 
             // Assert
-            Assert.AreEqual(guid, decisionNode.Id);
+            Assert.AreEqual(guid.ToString(), decisionNode.Id);
             Assert.AreEqual(label, decisionNode.Label);
             Assert.AreEqual(NodeType.Decision, decisionNode.Type);
             Assert.AreEqual(submissionNodes, decisionNode.SubmissionNodes);

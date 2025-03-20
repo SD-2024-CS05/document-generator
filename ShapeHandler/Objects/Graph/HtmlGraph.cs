@@ -74,7 +74,7 @@ namespace ShapeHandler.Objects
                         {
                             AddNode(dataInputNode);
                         }
-                        AddConnection(dataInputNode, diNode, new Connection(dataInputNode.Element.Id ?? dataInputNode.Id, ConnectionType.INPUT_FOR));
+                        AddConnection(dataInputNode, diNode, new Connection(dataInputNode?.Element?.Id ?? dataInputNode.Id, ConnectionType.INPUT_FOR));
                     }
                     break;
                 case DecisionNode deNode:
@@ -84,7 +84,7 @@ namespace ShapeHandler.Objects
                         {
                             AddNode(submissionNode);
                         }
-                        AddConnection(submissionNode, deNode, new Connection(submissionNode.Element.Id ?? submissionNode.Id, ConnectionType.SUBMITS));
+                        AddConnection(submissionNode, deNode, new Connection(submissionNode?.Element?.Id ?? submissionNode.Id, ConnectionType.SUBMITS));
                     }
                     break;
                 default:

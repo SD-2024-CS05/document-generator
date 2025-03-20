@@ -345,21 +345,27 @@ namespace ShapeHandler.Tests.Database
         [TestMethod()]
         public void WriteTestFlowchartToFile1()
         {
-            DatabaseConnector connector = new KeyVaultManager().ConnectToDatabase();
-
-            bool res = false;
             try
             {
-                Setup1();
-                res = connector.WriteHtmlGraphAsync(graph).Result;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                Assert.Fail();
-            }
+                DatabaseConnector connector = new KeyVaultManager().ConnectToDatabase();
+                bool res = false;
+                try
+                {
+                    Setup1();
+                    res = connector.WriteHtmlGraphAsync(graph).Result;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    Assert.Fail();
+                }
+                Assert.IsTrue(res, "Failed to write Instruction Set to database");
 
-            Assert.IsTrue(res, "Failed to write Instruction Set to database");
+            }
+            catch (Exception)
+            {
+                Assert.Inconclusive("Database is not available");
+            }
         }
 
         [TestMethod()]

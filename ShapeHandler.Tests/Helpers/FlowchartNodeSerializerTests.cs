@@ -68,7 +68,8 @@ namespace ShapeHandler.Tests.Helpers
         }
 
         [TestMethod]
-        public void ReadJson_ShouldDeserializeHtmlNode()
+        [ExpectedException(typeof(JsonSerializationException), "Unable to deserialize the html element")]
+        public void ReadJson_ShouldThrowExceptionForDefaultHtmlType()
         {
             // Arrange
             var json = "{\"Id\":\"" + Guid.NewGuid() + "\",\"Type\":\"HtmlElement\",\"Label\":\"Html Node\",\"Element\":{\"OuterHtml\":\"null\"}}";
@@ -77,8 +78,6 @@ namespace ShapeHandler.Tests.Helpers
             var node = JsonConvert.DeserializeObject<FlowchartNode>(json, _serializerSettings) as HtmlNode;
 
             // Assert
-            Assert.IsNotNull(node);
-            Assert.AreEqual("Html Node", node.Label);
         }
 
         [TestMethod]

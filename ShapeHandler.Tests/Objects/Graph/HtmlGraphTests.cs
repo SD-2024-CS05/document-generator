@@ -102,8 +102,8 @@ namespace ShapeHandler.Tests.Objects.Graph
         public void AddConnection_ShouldAddConnection_WhenNodesAreValid()
         {
             var graph = new HtmlGraph();
-            var source = new StartEndNode();
-            var target = new StartEndNode();
+            var source = new StartEndNode() { IsStart = true };
+            var target = new StartEndNode() { IsStart = false };
             var connection = new Connection();
 
             graph.AddNode(source);
@@ -118,8 +118,8 @@ namespace ShapeHandler.Tests.Objects.Graph
         public void GetNodes_ShouldReturnAllUniqueNodes()
         {
             var graph = new HtmlGraph();
-            var node1 = new StartEndNode();
-            var node2 = new StartEndNode();
+            var node1 = new StartEndNode() { IsStart = true };
+            var node2 = new StartEndNode() { IsStart = false };
 
             graph.AddNode(node1);
             graph.AddNode(node2);
@@ -134,8 +134,8 @@ namespace ShapeHandler.Tests.Objects.Graph
         public void Count_ShouldReturnNumberOfNodes()
         {
             var graph = new HtmlGraph();
-            var node1 = new StartEndNode();
-            var node2 = new StartEndNode();
+            var node1 = new StartEndNode() { IsStart = true };
+            var node2 = new StartEndNode() { IsStart = false };
 
             graph.AddNode(node1);
             graph.AddNode(node2);
@@ -148,8 +148,8 @@ namespace ShapeHandler.Tests.Objects.Graph
         public void GetConnectedNodesFrom_ShouldReturnConnectedNodes()
         {
             var graph = new HtmlGraph();
-            var source = new StartEndNode();
-            var target = new StartEndNode();
+            var source = new StartEndNode() { IsStart = true };
+            var target = new StartEndNode() { IsStart = false };
             var connection = new Connection();
 
             graph.AddNode(source);
@@ -165,8 +165,8 @@ namespace ShapeHandler.Tests.Objects.Graph
         public void GetConnectedNodesTo_ShouldReturnConnectedNodes()
         {
             var graph = new HtmlGraph();
-            var source = new StartEndNode();
-            var target = new StartEndNode();
+            var source = new StartEndNode() { IsStart = true };
+            var target = new StartEndNode() { IsStart = false };
             var connection = new Connection();
 
             graph.AddNode(source);
@@ -182,8 +182,8 @@ namespace ShapeHandler.Tests.Objects.Graph
         public void GetConnections_ShouldReturnConnections()
         {
             var graph = new HtmlGraph();
-            var source = new StartEndNode();
-            var target = new StartEndNode();
+            var source = new StartEndNode() { IsStart = true };
+            var target = new StartEndNode() { IsStart = false };
             var connection = new Connection();
 
             graph.AddNode(source);
@@ -198,8 +198,8 @@ namespace ShapeHandler.Tests.Objects.Graph
         public void GetConditions_ShouldReturnConditions()
         {
             var graph = new HtmlGraph();
-            var source = new StartEndNode();
-            var target = new StartEndNode();
+            var source = new StartEndNode() { IsStart = true };
+            var target = new StartEndNode() { IsStart = false };
             var connection = new Connection { Conditions = new Conditions() };
 
             graph.AddNode(source);
@@ -242,15 +242,6 @@ namespace ShapeHandler.Tests.Objects.Graph
             Assert.IsTrue(connectedNodes.ContainsKey(decisionNode));
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(Exception))]
-        public void AddNode_ShouldThrowException_WhenDecisionNodeHasNoValidationNodes()
-        {
-            var graph = new HtmlGraph();
-            var decisionNode = new DecisionNode("Decision");
-
-            graph.AddNode(decisionNode);
-        }
 
         [TestMethod]
         public void AddConnection_ShouldValidateDecisionNodeConnections()

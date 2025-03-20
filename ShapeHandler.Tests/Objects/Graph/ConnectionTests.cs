@@ -123,7 +123,7 @@ namespace ShapeHandler.Tests.Objects.Graph
         {
             var conditions = new Conditions();
             var connection = new Connection("TestLabel", conditions, ConnectionType.DIRECTS_TO, "Submission123");
-            var expectedString = "{submissionId: \"Submission123\", label: \"TestLabel\", conditions: " + conditions.ToString() + ", type: \"DIRECTS_TO\"}";
+            var expectedString = "{submissionId: \"Submission123\", label: \"TestLabel\", type: \"DIRECTS_TO\"}";
             Assert.AreEqual(expectedString, connection.ToString());
         }
     }

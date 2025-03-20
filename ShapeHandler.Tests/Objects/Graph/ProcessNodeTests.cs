@@ -46,7 +46,7 @@ namespace ShapeHandler.Tests.Objects.Graph
             ProcessNode node = new ProcessNode(guid, label);
 
             // Assert
-            Assert.AreEqual(guid, node.Id);
+            Assert.AreEqual(guid.ToString(), node.Id);
             Assert.AreEqual(label, node.Label);
             Assert.AreEqual(NodeType.UserProcess, node.Type);
         }
@@ -62,7 +62,7 @@ namespace ShapeHandler.Tests.Objects.Graph
             ProcessNode node = new ProcessNode(guid, label, true);
 
             // Assert
-            Assert.AreEqual(guid, node.Id);
+            Assert.AreEqual(guid.ToString(), node.Id);
             Assert.AreEqual(label, node.Label);
             Assert.AreEqual(NodeType.BackgroundProcess, node.Type);
         }

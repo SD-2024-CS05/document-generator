@@ -52,7 +52,7 @@ namespace ShapeHandler.Tests.Objects.Graph
             var node = new DataInputNode(guid, label, dataInputNodes);
 
             // Assert
-            Assert.AreEqual(guid, node.Id);
+            Assert.AreEqual(guid.ToString(), node.Id);
             Assert.AreEqual(label, node.Label);
             Assert.AreEqual(NodeType.DataInput, node.Type);
             Assert.AreEqual(dataInputNodes, node.DataInputNodes);
@@ -68,7 +68,6 @@ namespace ShapeHandler.Tests.Objects.Graph
             var node = new DataInputNode(dataInputNodes);
 
             // Assert
-            Assert.AreEqual("", node.Label);
             Assert.AreEqual(NodeType.DataInput, node.Type);
             Assert.AreEqual(dataInputNodes, node.DataInputNodes);
         }

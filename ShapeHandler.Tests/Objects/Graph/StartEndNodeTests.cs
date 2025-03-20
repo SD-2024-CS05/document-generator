@@ -65,7 +65,7 @@ namespace ShapeHandler.Tests.Objects.Graph
 
             // Assert
             Assert.IsNotNull(node);
-            Assert.AreEqual(guid, node.Id);
+            Assert.AreEqual(guid.ToString(), node.Id);
             Assert.AreEqual(label, node.Label);
             Assert.AreEqual(isStart, node.IsStart);
             Assert.AreEqual(NodeType.StartEnd, node.Type);

@@ -32,7 +32,7 @@ namespace ShapeHandler.Tests.Objects.Graph
             var pageNode = new PageNode(guid, label);
 
             // Assert
-            Assert.AreEqual(guid, pageNode.Guid);
+            Assert.AreEqual(guid.ToString(), pageNode.Id);
             Assert.AreEqual(label, pageNode.Label);
             Assert.AreEqual(NodeType.Page, pageNode.Type);
         }

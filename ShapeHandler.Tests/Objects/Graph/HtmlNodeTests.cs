@@ -88,9 +88,6 @@ namespace ShapeHandler.Tests.Objects.Graph
             mockElement.Setup(e => e.Id).Returns("testId");
             mockElement.Setup(e => e.TagName).Returns("div");
 
-            var mockNamedNodeMap = new Mock<AngleSharp.Dom.INamedNodeMap>();
-            mockElement.Setup(e => e.Attributes).Returns(mockNamedNodeMap.Object);
-
             var node = new HtmlNode(label, mockElement.Object);
 
             // Act
