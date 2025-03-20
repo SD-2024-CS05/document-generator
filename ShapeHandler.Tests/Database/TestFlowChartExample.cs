@@ -6,7 +6,6 @@ using ShapeHandler.Identity;
 using ShapeHandler.Objects;
 using System;
 using System.Collections.Generic;
-using ShapeHandler.Tests.Helpers;
 
 namespace ShapeHandler.Tests.Database
 {
