@@ -74,7 +74,13 @@ namespace ShapeHandler.Helpers
             string submissionId = obj["SubmissionId"]?.Value<string>();
             string url = obj["URL"]?.Value<string>();
             JToken conditions = obj["Conditions"];
-            ConnectionType conType = (ConnectionType)Enum.Parse(typeof(ConnectionType), type);
+
+            bool success = ConnectionType.TryParse(type, true, out ConnectionType conType);
+
+            if (!success)
+            {
+                throw new Exception("Unknown connection type");
+            }
 
             Conditions condition = null;
 
@@ -83,19 +89,20 @@ namespace ShapeHandler.Helpers
                 System.Collections.Generic.List<string> nodeIds = conditions["NodeIds"].Values<string>().ToList();
                 string op = conditions["Operator"].Value<string>();
 
-                LogicalOperator logicOp = (LogicalOperator)Enum.Parse(typeof(LogicalOperator), op);
+                condition = CreateCondition(nodeIds, op);
 
-                condition = new Conditions(logicOp, nodeIds);
                 JToken innerConditions = conditions["InnerConditions"];
+                Conditions currentCondition = condition;
 
                 while (innerConditions != null)
                 {
                     System.Collections.Generic.List<string> innerNodeIds = innerConditions["NodeIds"].Values<string>().ToList();
                     string innerOp = innerConditions["Operator"].Value<string>();
 
-                    LogicalOperator innerLogicOp = (LogicalOperator)Enum.Parse(typeof(LogicalOperator), innerOp);
+                    Conditions newCondition = CreateCondition(innerNodeIds, innerOp);
+                    currentCondition.InnerConditions = newCondition;
+                    currentCondition = newCondition;
 
-                    condition.InnerConditions = new Conditions(innerLogicOp, innerNodeIds);
                     innerConditions = innerConditions["InnerConditions"];
                 }
             }
@@ -114,6 +121,18 @@ namespace ShapeHandler.Helpers
         public override bool CanConvert(Type objectType)
         {
             return objectType == typeof(Connection);
+        }
+
+        private Conditions CreateCondition(System.Collections.Generic.List<string> nodeIds, string op)
+        {
+            bool success = Enum.TryParse<LogicalOperator>(op, true, out LogicalOperator logicOp);
+
+            if (!success)
+            {
+                throw new Exception("Unknown logical operator");
+            }
+
+            return new Conditions(logicOp, nodeIds);
         }
     }
 }

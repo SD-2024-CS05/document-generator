@@ -61,6 +61,7 @@ namespace ShapeHandler.Helpers
             }
             writer.WriteEndObject();
         }
+
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             JObject jsonObject = JObject.Load(reader);
@@ -70,10 +71,17 @@ namespace ShapeHandler.Helpers
             string label = jsonObject["Label"]?.ToString();
             string url = jsonObject["URL"]?.ToString();
 
-            NodeType.TryParse(type, true, out NodeType nodeType);
-
             FlowchartNode node = null;
-            Guid.TryParse(id, out Guid guid);
+
+            if (!Guid.TryParse(id, out Guid guid))
+            {
+                throw new Exception("Invalid guid");
+            }
+
+            if (!NodeType.TryParse(type, out NodeType nodeType))
+            {
+                throw new Exception("Unknown node type");
+            }
 
             switch (nodeType)
             {
@@ -83,15 +91,9 @@ namespace ShapeHandler.Helpers
                     break;
                 case NodeType.Decision:
                     List<HtmlNode> submissionNodes = new List<HtmlNode>();
-                    foreach (JToken submissionNode in jsonObject["SubmissionNodes"])
+                    foreach (JToken submissionHtmlNode in jsonObject["SubmissionNodes"])
                     {
-                        IHtmlElement e = JsonConvert.DeserializeObject<IHtmlElement>(submissionNode["Element"].ToString(), new HtmlElementSerializer());
-                        string subId = submissionNode["Id"]?.ToString();
-                        string subLabel = submissionNode["Label"]?.ToString();
-                        NodeType.TryParse(submissionNode["Type"]?.ToString(), out NodeType subType);
-                        Guid.TryParse(subId, out Guid subGuid);
-
-                        submissionNodes.Add(new HtmlNode(subGuid, subLabel, e, subType));
+                        submissionNodes.Add(ParseHtmlNode(submissionHtmlNode));
                     }
                     node = new DecisionNode(guid, label, submissionNodes);
                     break;
@@ -99,13 +101,7 @@ namespace ShapeHandler.Helpers
                     List<HtmlNode> dataInputNodes = new List<HtmlNode>();
                     foreach (JToken dataInputNode in jsonObject["DataInputNodes"])
                     {
-                        IHtmlElement e = JsonConvert.DeserializeObject<IHtmlElement>(dataInputNode["Element"].ToString(), new HtmlElementSerializer());
-                        string diId = dataInputNode["Id"]?.ToString();
-                        string diLabel = dataInputNode["Label"]?.ToString();
-                        NodeType.TryParse(dataInputNode["Type"]?.ToString(), out NodeType diType);
-                        Guid.TryParse(diId, out Guid diGuid);
-
-                        dataInputNodes.Add(new HtmlNode(diGuid, diLabel, e, diType));
+                        dataInputNodes.Add(ParseHtmlNode(dataInputNode));
                     }
                     node = new DataInputNode(guid, label, dataInputNodes);
                     break;
@@ -138,6 +134,19 @@ namespace ShapeHandler.Helpers
             }
 
             return node;
+        }
+
+        private HtmlNode ParseHtmlNode(JToken token)
+        {
+            IHtmlElement e = JsonConvert.DeserializeObject<IHtmlElement>(token["Element"].ToString(), new HtmlElementSerializer());
+            string nodeId = token["Id"]?.ToString();
+            string nodeLabel = token["Label"]?.ToString();
+            if (!NodeType.TryParse(token["Type"]?.ToString(), out NodeType nodeType))
+            {
+                throw new Exception("Unknown node type");
+            }
+            Guid.TryParse(nodeId, out Guid nodeGuid);
+            return new HtmlNode(nodeGuid, nodeLabel, e, nodeType);
         }
 
         public override bool CanConvert(Type objectType)
