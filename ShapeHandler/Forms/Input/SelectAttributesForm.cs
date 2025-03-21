@@ -11,6 +11,7 @@ using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
 using AngleSharp;
 using Microsoft.Office.Interop.Visio;
+using ShapeHandler.Forms;
 
 namespace ShapeHandler.Database.Input
 {
@@ -26,8 +27,10 @@ namespace ShapeHandler.Database.Input
             BrowsingContext context = new BrowsingContext(Configuration.Default);
             IDocument document = context.OpenNewAsync().Result;
             _document = document;
-
             iHtmlSelectElementBindingSource.Add(_document.CreateElement<IHtmlSelectElement>());
+
+            SelectDataGridView.CellContentClick += new DataGridViewCellEventHandler(SelectElementRowAddClassesClicked);
+            OptionDataGridView.CellContentClick += new DataGridViewCellEventHandler(OptionElementRowAddClassesClicked);
         }
 
         private void SelectAttributesForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -48,6 +51,16 @@ namespace ShapeHandler.Database.Input
                     selectElement.Id = selectRow.Cells["IdColumn"]?.Value?.ToString();
                 }
 
+                // get the classes for the select element
+                var selectClasses = selectRow.Cells["SelectClassesColumn"]?.Value?.ToString();
+                if (!string.IsNullOrEmpty(selectClasses))
+                {
+                    foreach (var selectClass in selectClasses.Split(','))
+                    {
+                        selectElement.ClassList.Add(selectClass);
+                    }
+                }
+
                 // get options for select element
                 var selectOptions = iHtmlOptionElementBindingSource.List.Cast<IHtmlOptionElement>().ToList();
 
@@ -57,6 +70,15 @@ namespace ShapeHandler.Database.Input
                     if (optionRow != null)
                     {
                         selectOption.Id = optionRow.Cells["OptionIdColumn"]?.Value?.ToString();
+
+                        var optionClasses = optionRow.Cells["OptionClassesColumn"]?.Value?.ToString();
+                        if (!string.IsNullOrEmpty(optionClasses))
+                        {
+                            foreach (var optionClass in optionClasses.Split(','))
+                            {
+                                selectOption.ClassList.Add(optionClass);
+                            }
+                        }
 
                         // parents are not bound, so there is a column called SelectIdColumn that contains the id of the parent select element
                         var parentSelectId = optionRow.Cells["SelectIdColumn"]?.Value?.ToString();
@@ -82,6 +104,37 @@ namespace ShapeHandler.Database.Input
                 UpdateShapeData();
             }
             this.Close();
+        }
+
+        private void SelectElementRowAddClassesClicked(object sender, EventArgs e)
+        {
+            if (SelectDataGridView.CurrentCell.ColumnIndex == SelectClassesColumn.Index)
+            {
+                // open the class list form
+                var classListForm = new ClassListForm();
+                classListForm.ShowDialog();
+
+                if (classListForm.Classes.Count > 0)
+                {
+                    var classes = string.Join(",", classListForm.Classes);
+                    SelectDataGridView.CurrentCell.Value = classes;
+                }
+            }
+        }
+
+        private void OptionElementRowAddClassesClicked(object sender, EventArgs e)
+        {
+            if (OptionDataGridView.CurrentCell.ColumnIndex == OptionClassesColumn.Index)
+            {
+                // open the class list form
+                var classListForm = new ClassListForm();
+                classListForm.ShowDialog();
+                if (classListForm.Classes.Count > 0)
+                {
+                    var classes = string.Join(",", classListForm.Classes);
+                    OptionDataGridView.CurrentCell.Value = classes;
+                }
+            }
         }
 
         private void AddSelectButton_Click(object sender, EventArgs e)
@@ -111,8 +164,12 @@ namespace ShapeHandler.Database.Input
                 // update the combobox list items with all of the select ids
                 var selectIds = SelectDataGridView.Rows.Cast<DataGridViewRow>().Select(r => r.Cells[SelectIdColumn.Index].Value?.ToString()).Distinct().ToList();
                 var selectColumn = (DataGridViewComboBoxColumn)OptionDataGridView.Columns["SelectIdColumn"];
-                selectColumn.Items.Clear();
-                selectColumn.Items.AddRange(selectIds.ToArray());
+
+                if (selectColumn != null && selectColumn.Items != null)
+                {
+                    selectColumn.Items.Clear();
+                    selectColumn.Items.AddRange(selectIds.ToArray());
+                }
             }
         }
 
