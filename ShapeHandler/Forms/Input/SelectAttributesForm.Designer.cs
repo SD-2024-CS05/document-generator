@@ -212,6 +212,7 @@
             // 
             // SelectClassesColumn
             // 
+            this.SelectClassesColumn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.SelectClassesColumn.HeaderText = "Add Classes";
             this.SelectClassesColumn.MinimumWidth = 8;
             this.SelectClassesColumn.Name = "SelectClassesColumn";
@@ -319,6 +320,7 @@
             // 
             // OptionClassesColumn
             // 
+            this.OptionClassesColumn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.OptionClassesColumn.HeaderText = "Add Classes";
             this.OptionClassesColumn.MinimumWidth = 8;
             this.OptionClassesColumn.Name = "OptionClassesColumn";
