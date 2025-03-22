@@ -424,6 +424,12 @@
   -->
   <ItemGroup>
     <Compile Include="Database\DatabaseConnector.cs" />
+    <Compile Include="Forms\ClassListForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ClassListForm.Designer.cs">
+      <DependentUpon>ClassListForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\DecisionControlsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -518,6 +524,9 @@
     <Content Include="Resources\logo.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Forms\ClassListForm.resx">
+      <DependentUpon>ClassListForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\DecisionControlsForm.resx">
       <DependentUpon>DecisionControlsForm.cs</DependentUpon>
     </EmbeddedResource>

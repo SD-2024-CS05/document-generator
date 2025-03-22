@@ -33,26 +33,27 @@
             this.cancelButton = new System.Windows.Forms.Button();
             this.saveButton = new System.Windows.Forms.Button();
             this.ImageDataGridView = new System.Windows.Forms.DataGridView();
+            this.iHtmlImageElementBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.RemoveButton = new System.Windows.Forms.Button();
+            this.AddButton = new System.Windows.Forms.Button();
             this.IdColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ImageClassesColumn = new System.Windows.Forms.DataGridViewButtonColumn();
             this.alternativeTextDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sourceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.crossOriginDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.useMapDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.isMapDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.isCompletedDataGridViewCheckBoxColumn = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.iHtmlImageElementBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.RemoveButton = new System.Windows.Forms.Button();
-            this.AddButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.ImageDataGridView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.iHtmlImageElementBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(32, 367);
-            this.cancelButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.cancelButton.Location = new System.Drawing.Point(18, 237);
+            this.cancelButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(200, 55);
+            this.cancelButton.Size = new System.Drawing.Size(112, 35);
             this.cancelButton.TabIndex = 11;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
@@ -60,10 +61,10 @@
             // 
             // saveButton
             // 
-            this.saveButton.Location = new System.Drawing.Point(861, 367);
-            this.saveButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.saveButton.Location = new System.Drawing.Point(484, 237);
+            this.saveButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(200, 55);
+            this.saveButton.Size = new System.Drawing.Size(112, 35);
             this.saveButton.TabIndex = 12;
             this.saveButton.Text = "Save";
             this.saveButton.UseVisualStyleBackColor = true;
@@ -75,6 +76,7 @@
             this.ImageDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.ImageDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.IdColumn,
+            this.ImageClassesColumn,
             this.alternativeTextDataGridViewTextBoxColumn,
             this.sourceDataGridViewTextBoxColumn,
             this.crossOriginDataGridViewTextBoxColumn,
@@ -82,12 +84,38 @@
             this.isMapDataGridViewCheckBoxColumn,
             this.isCompletedDataGridViewCheckBoxColumn});
             this.ImageDataGridView.DataSource = this.iHtmlImageElementBindingSource;
-            this.ImageDataGridView.Location = new System.Drawing.Point(32, 29);
-            this.ImageDataGridView.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.ImageDataGridView.Location = new System.Drawing.Point(18, 19);
+            this.ImageDataGridView.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.ImageDataGridView.Name = "ImageDataGridView";
             this.ImageDataGridView.RowHeadersWidth = 102;
-            this.ImageDataGridView.Size = new System.Drawing.Size(1029, 324);
+            this.ImageDataGridView.Size = new System.Drawing.Size(579, 209);
             this.ImageDataGridView.TabIndex = 13;
+            // 
+            // iHtmlImageElementBindingSource
+            // 
+            this.iHtmlImageElementBindingSource.DataSource = typeof(AngleSharp.Html.Dom.IHtmlImageElement);
+            // 
+            // RemoveButton
+            // 
+            this.RemoveButton.Location = new System.Drawing.Point(140, 237);
+            this.RemoveButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.RemoveButton.Name = "RemoveButton";
+            this.RemoveButton.Size = new System.Drawing.Size(112, 35);
+            this.RemoveButton.TabIndex = 14;
+            this.RemoveButton.Text = "Remove";
+            this.RemoveButton.UseVisualStyleBackColor = true;
+            this.RemoveButton.Click += new System.EventHandler(this.RemoveButton_Click);
+            // 
+            // AddButton
+            // 
+            this.AddButton.Location = new System.Drawing.Point(363, 237);
+            this.AddButton.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.AddButton.Name = "AddButton";
+            this.AddButton.Size = new System.Drawing.Size(112, 35);
+            this.AddButton.TabIndex = 15;
+            this.AddButton.Text = "Add";
+            this.AddButton.UseVisualStyleBackColor = true;
+            this.AddButton.Click += new System.EventHandler(this.AddButton_Click);
             // 
             // IdColumn
             // 
@@ -95,6 +123,14 @@
             this.IdColumn.MinimumWidth = 12;
             this.IdColumn.Name = "IdColumn";
             this.IdColumn.Width = 250;
+            // 
+            // ImageClassesColumn
+            // 
+            this.ImageClassesColumn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.ImageClassesColumn.HeaderText = "Add Classes";
+            this.ImageClassesColumn.MinimumWidth = 8;
+            this.ImageClassesColumn.Name = "ImageClassesColumn";
+            this.ImageClassesColumn.Width = 150;
             // 
             // alternativeTextDataGridViewTextBoxColumn
             // 
@@ -145,44 +181,18 @@
             this.isCompletedDataGridViewCheckBoxColumn.ReadOnly = true;
             this.isCompletedDataGridViewCheckBoxColumn.Width = 250;
             // 
-            // iHtmlImageElementBindingSource
-            // 
-            this.iHtmlImageElementBindingSource.DataSource = typeof(AngleSharp.Html.Dom.IHtmlImageElement);
-            // 
-            // RemoveButton
-            // 
-            this.RemoveButton.Location = new System.Drawing.Point(248, 367);
-            this.RemoveButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
-            this.RemoveButton.Name = "RemoveButton";
-            this.RemoveButton.Size = new System.Drawing.Size(200, 55);
-            this.RemoveButton.TabIndex = 14;
-            this.RemoveButton.Text = "Remove";
-            this.RemoveButton.UseVisualStyleBackColor = true;
-            this.RemoveButton.Click += new System.EventHandler(this.RemoveButton_Click);
-            // 
-            // AddButton
-            // 
-            this.AddButton.Location = new System.Drawing.Point(645, 367);
-            this.AddButton.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
-            this.AddButton.Name = "AddButton";
-            this.AddButton.Size = new System.Drawing.Size(200, 55);
-            this.AddButton.TabIndex = 15;
-            this.AddButton.Text = "Add";
-            this.AddButton.UseVisualStyleBackColor = true;
-            this.AddButton.Click += new System.EventHandler(this.AddButton_Click);
-            // 
             // ImageAttributesForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1101, 451);
+            this.ClientSize = new System.Drawing.Size(619, 291);
             this.Controls.Add(this.AddButton);
             this.Controls.Add(this.RemoveButton);
             this.Controls.Add(this.ImageDataGridView);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.cancelButton);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2, 1, 2, 1);
             this.Name = "ImageAttributesForm";
             this.Text = "Attributes";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ImageAttributesForm_FormClosing);
@@ -200,6 +210,7 @@
         private System.Windows.Forms.Button RemoveButton;
         private System.Windows.Forms.Button AddButton;
         private System.Windows.Forms.DataGridViewTextBoxColumn IdColumn;
+        private System.Windows.Forms.DataGridViewButtonColumn ImageClassesColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn alternativeTextDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn sourceDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn crossOriginDataGridViewTextBoxColumn;

@@ -1,10 +1,11 @@
-﻿using AngleSharp;
+﻿using System;
+using System.Windows.Forms;
 using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
-using System;
+using AngleSharp;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Forms;
+using ShapeHandler.Forms;
 
 namespace ShapeHandler.Database.Input
 {
@@ -20,6 +21,8 @@ namespace ShapeHandler.Database.Input
             _document = document;
 
             iHtmlButtonElementBindingSource.Add(_document.CreateElement<IHtmlButtonElement>());
+
+            ButtonDataGridView.CellContentClick += new DataGridViewCellEventHandler(AddClasses);
         }
 
         private void ButtonAttributesForm_Closing(object sender, FormClosingEventArgs e)
@@ -28,16 +31,39 @@ namespace ShapeHandler.Database.Input
 
         private void UpdateShapeData()
         {
-            List<IHtmlButtonElement> buttonElements = iHtmlButtonElementBindingSource.List.Cast<IHtmlButtonElement>().ToList();
-            foreach (IHtmlButtonElement buttonElement in buttonElements)
+            var buttonElements = iHtmlButtonElementBindingSource.List.Cast<IHtmlButtonElement>().ToList();
+            foreach (var buttonElement in buttonElements)
             {
-                DataGridViewRow row = ButtonDataGridView.Rows.Cast<DataGridViewRow>().FirstOrDefault(r => r.DataBoundItem == buttonElement);
+                var row = ButtonDataGridView.Rows.Cast<DataGridViewRow>().FirstOrDefault(r => r.DataBoundItem == buttonElement);
                 if (row != null)
                 {
                     buttonElement.Id = row.Cells["IdColumn"]?.Value?.ToString();
+
+                    var classes = row.Cells["ButtonClassesColumn"]?.Value?.ToString();
+                    if (!string.IsNullOrEmpty(classes))
+                    {
+                        foreach (var className in classes.Split(','))
+                        {
+                            buttonElement.ClassList.Add(className);
+                        }
+                    }
                 }
             }
             Elements = buttonElements;
+        }
+
+        private void AddClasses(object sender, DataGridViewCellEventArgs e)
+        {
+            if (ButtonDataGridView.CurrentCell.ColumnIndex == ButtonClassesColumn.Index)
+            {
+                var classListForm = new ClassListForm();
+                classListForm.ShowDialog();
+                if (classListForm.Classes.Count > 0)
+                {
+                    var classes = string.Join(",", classListForm.Classes);
+                    ButtonDataGridView.CurrentCell.Value = classes;
+                }
+            }
         }
 
         private void SaveButton_Click(object sender, EventArgs e)
