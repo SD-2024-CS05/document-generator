@@ -11,6 +11,7 @@ using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
 using AngleSharp;
 using Microsoft.Office.Interop.Visio;
+using ShapeHandler.Forms;
 
 namespace ShapeHandler.Database.Input
 {
@@ -28,6 +29,8 @@ namespace ShapeHandler.Database.Input
             _document = document;
 
             iHtmlAnchorElementBindingSource.Add(_document.CreateElement<IHtmlAnchorElement>());
+
+            AnchorDataGridView.CellContentClick += new DataGridViewCellEventHandler(AddClasses);
         }
 
         private void AnchorAttributesForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -46,9 +49,32 @@ namespace ShapeHandler.Database.Input
                 if (row != null)
                 {
                     anchorElement.Id = row.Cells["IdColumn"]?.Value?.ToString();
+
+                    var classes = row.Cells["AnchorClassesColumn"]?.Value?.ToString();
+                    if (!string.IsNullOrEmpty(classes))
+                    {
+                        foreach (var className in classes.Split(','))
+                        {
+                            anchorElement.ClassList.Add(className);
+                        }
+                    }
                 }
             }
             Elements = anchorElements;
+        }
+
+        private void AddClasses(object sender, DataGridViewCellEventArgs e)
+        {
+            if (AnchorDataGridView.CurrentCell.ColumnIndex == AnchorClassesColumn.Index)
+            {
+                var classListForm = new ClassListForm();
+                classListForm.ShowDialog();
+                if (classListForm.Classes.Count > 0)
+                {
+                    var classes = string.Join(",", classListForm.Classes);
+                    AnchorDataGridView.CurrentCell.Value = classes;
+                }
+            }
         }
 
         private void cancelButton_Click(object sender, EventArgs e)

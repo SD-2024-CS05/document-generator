@@ -11,6 +11,7 @@ using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
 using AngleSharp;
 using Microsoft.Office.Interop.Visio;
+using ShapeHandler.Forms;
 
 namespace ShapeHandler.Database.Input
 {
@@ -28,6 +29,8 @@ namespace ShapeHandler.Database.Input
             _document = document;
 
             iHtmlImageElementBindingSource.Add(_document.CreateElement<IHtmlImageElement>());
+
+            ImageDataGridView.CellContentClick += new DataGridViewCellEventHandler(ImageAddClasses);
         }
 
         private void ImageAttributesForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -47,9 +50,33 @@ namespace ShapeHandler.Database.Input
                 if (row != null)
                 {
                     imageElement.Id = row.Cells["IdColumn"]?.Value?.ToString();
+
+                    // get the classes for the image element
+                    var classes = row.Cells["ImageClassesColumn"]?.Value?.ToString();
+                    if (!string.IsNullOrEmpty(classes))
+                    {
+                        foreach (var className in classes.Split(','))
+                        {
+                            imageElement.ClassList.Add(className);
+                        }
+                    }
                 }
             }
             Elements = imageElements;
+        }
+
+        private void ImageAddClasses(object sender, EventArgs e)
+        {
+            if (ImageDataGridView.CurrentCell.ColumnIndex == ImageClassesColumn.Index)
+            {
+                var form = new ClassListForm();
+                form.ShowDialog();
+                if (form.Classes.Count > 0)
+                {
+                    var classes = string.Join(",", form.Classes);
+                    ImageDataGridView.CurrentCell.Value = classes;
+                }
+            }
         }
 
         private void cancelButton_Click(object sender, EventArgs e)
