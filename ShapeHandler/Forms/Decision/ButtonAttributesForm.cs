@@ -1,11 +1,11 @@
-﻿using System;
-using System.Windows.Forms;
+﻿using AngleSharp;
 using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
-using AngleSharp;
+using ShapeHandler.Forms;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using ShapeHandler.Forms;
+using System.Windows.Forms;
 
 namespace ShapeHandler.Database.Input
 {
@@ -31,18 +31,18 @@ namespace ShapeHandler.Database.Input
 
         private void UpdateShapeData()
         {
-            var buttonElements = iHtmlButtonElementBindingSource.List.Cast<IHtmlButtonElement>().ToList();
-            foreach (var buttonElement in buttonElements)
+            List<IHtmlButtonElement> buttonElements = iHtmlButtonElementBindingSource.List.Cast<IHtmlButtonElement>().ToList();
+            foreach (IHtmlButtonElement buttonElement in buttonElements)
             {
-                var row = ButtonDataGridView.Rows.Cast<DataGridViewRow>().FirstOrDefault(r => r.DataBoundItem == buttonElement);
+                DataGridViewRow row = ButtonDataGridView.Rows.Cast<DataGridViewRow>().FirstOrDefault(r => r.DataBoundItem == buttonElement);
                 if (row != null)
                 {
                     buttonElement.Id = row.Cells["IdColumn"]?.Value?.ToString();
 
-                    var classes = row.Cells["ButtonClassesColumn"]?.Value?.ToString();
+                    string classes = row.Cells["ButtonClassesColumn"]?.Value?.ToString();
                     if (!string.IsNullOrEmpty(classes))
                     {
-                        foreach (var className in classes.Split(','))
+                        foreach (string className in classes.Split(','))
                         {
                             buttonElement.ClassList.Add(className);
                         }
@@ -56,11 +56,11 @@ namespace ShapeHandler.Database.Input
         {
             if (ButtonDataGridView.CurrentCell.ColumnIndex == ButtonClassesColumn.Index)
             {
-                var classListForm = new ClassListForm();
+                ClassListForm classListForm = new ClassListForm();
                 classListForm.ShowDialog();
                 if (classListForm.Classes.Count > 0)
                 {
-                    var classes = string.Join(",", classListForm.Classes);
+                    string classes = string.Join(",", classListForm.Classes);
                     ButtonDataGridView.CurrentCell.Value = classes;
                 }
             }

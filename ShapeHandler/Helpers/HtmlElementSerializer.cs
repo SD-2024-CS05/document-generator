@@ -41,7 +41,7 @@ namespace ShapeHandler.Helpers
                         { "button", e => e.FindChild<IHtmlButtonElement>() }
                     };
 
-                var tag = element.TagName.ToLower();
+                string tag = element.TagName.ToLower();
 
                 if (tagMappings.ContainsKey(tag))
                 {
@@ -49,7 +49,7 @@ namespace ShapeHandler.Helpers
                 }
                 else
                 {
-                    var children = element.Children;
+                    IHtmlCollection<IElement> children = element.Children;
 
                     element = children.FirstOrDefault(child =>
                         child.TagName.ToLower() == "body") as IHtmlElement;
