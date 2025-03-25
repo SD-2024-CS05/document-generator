@@ -111,7 +111,7 @@ jobs:
        path: |
          **/bin/Release
          **/obj/Release
-         **/ShapeHandler/publish
+         **/publish
          **/*.targets
          **/*.sln
          **/*.csproj
@@ -168,7 +168,7 @@ jobs:
        with:
         files: ./test-results/**/*.trx
 
- Deploy-ClickOnce:
+ Create-ClickOnce:
    if: startsWith(github.ref, 'refs/tags/')
    runs-on: windows-latest
    needs: build
@@ -185,16 +185,16 @@ jobs:
 
      - name: Create zip of ClickOnce artifacts
        run: |
-         cd ShapeHandler/publish/
-         powershell Compress-Archive -Path * -DestinationPath clickonce-publish.zip
+         cd ShapeHandler/ShapeHandler/publish/
+         powershell Compress-Archive -Path * -DestinationPath ../../clickonce-publish.zip
 
      - name: Upload ClickOnce artifacts
        uses: actions/upload-artifact@v4
        with:
          name: clickonce-publish
-         path: ShapeHandler/publish/clickonce-publish.zip
+         path: ShapeHandler/clickonce-publish.zip
 
- Deploy-Windows-Installer:
+ Create-Windows-Installer:
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: windows-latest
     needs: build
@@ -279,10 +279,10 @@ jobs:
           name: windows-installer
           path: ${{ env.BUILD_DIR }}/windows-installer.zip
 
- Create-Release:
+ Deploy-Release:
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: windows-latest
-    needs: [Deploy-ClickOnce, Deploy-Windows-Installer]
+    needs: [Create-ClickOnce, Create-Windows-Installer]
     permissions:
       contents: write
 
