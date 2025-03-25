@@ -104,12 +104,6 @@ jobs:
            '/p:Configuration=Release /p:GITHUB_ACTIONS=true /t:Publish /p:PublishDir=ShapeHandler/publish/' ||
            '/p:Configuration=Release /p:GITHUB_ACTIONS=true'}}
 
-   - name: Move publish directory
-     if: startsWith(github.ref, 'refs/tags/')
-     run: |
-        mkdir publish
-        move ShapeHandler/publish/* publish/
-
    - name: Upload Build Artifact
      uses: actions/upload-artifact@v4
      with:
@@ -117,7 +111,7 @@ jobs:
        path: |
          **/bin/Release
          **/obj/Release
-         publish
+         **/ShapeHandler/publish
          **/*.targets
          **/*.sln
          **/*.csproj
