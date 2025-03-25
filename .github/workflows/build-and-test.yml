@@ -185,14 +185,14 @@ jobs:
 
      - name: Create zip of ClickOnce artifacts
        run: |
-         cd ShapeHandler/publish/
+         cd build/ShapeHandler/publish/
          powershell Compress-Archive -Path * -DestinationPath clickonce-publish.zip
 
      - name: Upload ClickOnce artifacts
        uses: actions/upload-artifact@v4
        with:
          name: clickonce-publish
-         path: ShapeHandler/publish/clickonce-publish.zip
+         path: build/ShapeHandler/publish/clickonce-publish.zip
 
  Create-Windows-Installer:
     if: startsWith(github.ref, 'refs/tags/')
