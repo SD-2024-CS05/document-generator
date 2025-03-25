@@ -653,6 +653,7 @@
     <Optimize>true</Optimize>
     <DefineConstants>TRACE;VSTO40;UseOfficeInterop</DefineConstants>
     <OutputPath>bin\Release\</OutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
