@@ -111,6 +111,7 @@ jobs:
        path: |
          **/bin/Release
          **/obj/Release
+         **/publish
          **/*.targets
          **/*.sln
          **/*.csproj
@@ -171,10 +172,6 @@ jobs:
    if: startsWith(github.ref, 'refs/tags/')
    runs-on: windows-latest
    needs: build
-   permissions:
-    contents: write
-   outputs:
-     upload_url: ${{ steps.create_release.outputs.upload_url }}
 
    steps:
      - name: Checkout repository
@@ -197,39 +194,13 @@ jobs:
          name: clickonce-publish
          path: ShapeHandler/publish/clickonce-publish.zip
 
-     - name: Create GitHub Release
-       id: create_release
-       uses: actions/create-release@v1
-       env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-       with:
-         tag_name: ${{ github.ref }}-Installers
-         release_name: Release ${{ github.ref }} - Installers
-         draft: false
-         prerelease: false
-     
-     - name: Set upload URL
-       id: set_upload_url
-       run: echo "::set-output name=upload_url::${{ steps.create_release.outputs.upload_url }}"
-
-     - name: Upload ClickOnce Release Asset
-       uses: actions/upload-release-asset@v1
-       env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-       with:
-         upload_url: ${{ steps.create_release.outputs.upload_url }}
-         asset_path: ShapeHandler/publish/clickonce-publish.zip
-         asset_name: clickonce-publish.zip
-         asset_content_type: application/zip
-
  Deploy-Windows-Installer:
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: windows-latest
-    needs: Deploy-ClickOnce
-    permissions:
-      contents: write
+    needs: build
     env:
        BUILD_DIR: ${{ github.workspace }}/ShapeHandlerSetup/Release
+       SOLUTION_FILE: ShapeHandler.sln
 
     steps:
       - name: Checkout repository
@@ -308,12 +279,53 @@ jobs:
           name: windows-installer
           path: ${{ env.BUILD_DIR }}/windows-installer.zip
 
+ Create-Release:
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: windows-latest
+    needs: [Deploy-ClickOnce, Deploy-Windows-Installer]
+    permissions:
+      contents: write
+
+    steps:
+      - name: Download ClickOnce artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: clickonce-publish
+          path: ./artifacts
+
+      - name: Download Windows Installer artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: windows-installer
+          path: ./artifacts
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}-Installers
+          release_name: Release ${{ github.ref }} - Installers
+          draft: false
+          prerelease: false
+
+      - name: Upload ClickOnce Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./artifacts/clickonce-publish.zip
+          asset_name: clickonce-publish.zip
+          asset_content_type: application/zip
+
       - name: Upload Windows Installer Release Asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ needs.Deploy-ClickOnce.outputs.upload_url }}
-          asset_path: ${{ env.BUILD_DIR }}/windows-installer.zip
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./artifacts/windows-installer.zip
           asset_name: windows-installer.zip
           asset_content_type: application/zip
