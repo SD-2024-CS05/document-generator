@@ -17,7 +17,7 @@ namespace ShapeHandler.Tests
     public class ShapeDetectorTests
     {
         [TestMethod()]
-        [Ignore]
+        //[Ignore]
         [DataRow("TestFlowDiagram.vsdx")]
         public void CreateGraphTest(string visioFileName)
         {
@@ -37,13 +37,35 @@ namespace ShapeHandler.Tests
             // Act
             var result = ShapeDetector.CreateGraphFromFlowchart(mockVisioApp.Object);
 
-            // Assert
+            //Assert
             Assert.IsNotNull(result);
         }
 
         private static void SetupVisioFile(Application application, string visioPath)
         {
             application.Documents.Add(visioPath);
+        }
+
+        [TestMethod()]
+        //[Ignore()]
+        public void CreateShapeTest()
+        {
+            // Arrange
+            var mockVisioApp = new Mock<Application>();
+            var mockDocuments = new Mock<Documents>();
+            var mockDocument = new Mock<Document>();
+
+            mockVisioApp.Setup(app => app.Documents).Returns(mockDocuments.Object);
+            mockDocuments.Setup(docs => docs.Add(It.IsAny<string>())).Returns(mockDocument.Object);
+            string visioPath = "C:\\Users\\j4tra\\Downloads\\Test.vsdx";
+
+            SetupVisioFile(mockVisioApp.Object, visioPath);
+
+            // Act
+            var result = ShapeDetector.CreateGraphFromFlowchart(mockVisioApp.Object);
+
+            //Assert
+            Assert.IsNotNull(result);
         }
     }
 }
