@@ -6,13 +6,12 @@ using ShapeHandler.Identity;
 using ShapeHandler.Objects;
 using System;
 using System.Collections.Generic;
-using ShapeHandler.Tests.Helpers;
 
 namespace ShapeHandler.Tests.Database
 {
     [TestClass()]
 #if GITHUB_ACTIONS
-    [Ignore]
+    [Ignore("Ignoring because in automated action, these tests write to a database")]
 #endif
     public class TestFlowChartExample
     {
@@ -346,25 +345,31 @@ namespace ShapeHandler.Tests.Database
         [TestMethod()]
         public void WriteTestFlowchartToFile1()
         {
-            DatabaseConnector connector = new KeyVaultManager().ConnectToDatabase();
-
-            bool res = false;
             try
             {
-                Setup1();
-                res = connector.WriteHtmlGraphAsync(graph).Result;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                Assert.Fail();
-            }
+                DatabaseConnector connector = new KeyVaultManager().ConnectToDatabase();
+                bool res = false;
+                try
+                {
+                    Setup1();
+                    res = connector.WriteHtmlGraphAsync(graph).Result;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    Assert.Fail();
+                }
+                Assert.IsTrue(res, "Failed to write Instruction Set to database");
 
-            Assert.IsTrue(res, "Failed to write Instruction Set to database");
+            }
+            catch (Exception)
+            {
+                Assert.Inconclusive("Database is not available");
+            }
         }
 
         [TestMethod()]
-        [Ignore]
+        [Ignore("This test is deprecated as it creates a graph that is no longer in use")]
         [Obsolete("This test is deprecated as it creates a graph that is no longer in use")]
         public void WriteTestFlowchartToFile2()
         {

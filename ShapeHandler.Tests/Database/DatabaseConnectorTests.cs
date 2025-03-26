@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace ShapeHandler.Database.Tests
 {
-    [TestClass()]
+    [TestClass]
     public class DatabaseConnectorTests
     {
         private Mock<IDriver> _mockDriver;

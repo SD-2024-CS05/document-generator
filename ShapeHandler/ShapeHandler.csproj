@@ -38,7 +38,7 @@
     <PublishUrl>publish\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.1.0.3</ApplicationVersion>
+    <ApplicationVersion>1.2.0.2</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>false</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -424,67 +424,74 @@
   -->
   <ItemGroup>
     <Compile Include="Database\DatabaseConnector.cs" />
-    <Compile Include="Database\DecisionControlsForm.cs">
+    <Compile Include="Forms\ClassListForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Database\DecisionControlsForm.Designer.cs">
+    <Compile Include="Forms\ClassListForm.Designer.cs">
+      <DependentUpon>ClassListForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DecisionControlsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\DecisionControlsForm.Designer.cs">
       <DependentUpon>DecisionControlsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Database\Decision\ConditionsForm.cs">
+    <Compile Include="Forms\Decision\ConditionsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Database\Decision\ConditionsForm.Designer.cs">
+    <Compile Include="Forms\Decision\ConditionsForm.Designer.cs">
       <DependentUpon>ConditionsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Database\Decision\ConnectionForm.cs">
+    <Compile Include="Forms\Decision\ConnectionForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Database\Decision\ConnectionForm.Designer.cs">
+    <Compile Include="Forms\Decision\ConnectionForm.Designer.cs">
       <DependentUpon>ConnectionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Database\Input\SelectAttributesForm.cs">
+    <Compile Include="Forms\Input\SelectAttributesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Database\Input\SelectAttributesForm.Designer.cs">
+    <Compile Include="Forms\Input\SelectAttributesForm.Designer.cs">
       <DependentUpon>SelectAttributesForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Database\Input\AnchorAttributesForm.cs">
+    <Compile Include="Forms\Input\AnchorAttributesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Database\Input\AnchorAttributesForm.Designer.cs">
+    <Compile Include="Forms\Input\AnchorAttributesForm.Designer.cs">
       <DependentUpon>AnchorAttributesForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Database\Decision\ButtonAttributesForm.cs">
+    <Compile Include="Forms\Decision\ButtonAttributesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Database\Decision\ButtonAttributesForm.Designer.cs">
+    <Compile Include="Forms\Decision\ButtonAttributesForm.Designer.cs">
       <DependentUpon>ButtonAttributesForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Database\Input\InputAttributesForm.cs">
+    <Compile Include="Forms\Input\InputAttributesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Database\Input\InputAttributesForm.Designer.cs">
+    <Compile Include="Forms\Input\InputAttributesForm.Designer.cs">
       <DependentUpon>InputAttributesForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Database\Input\ImageAttributesForm.cs">
+    <Compile Include="Forms\Input\ImageAttributesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Database\Input\ImageAttributesForm.Designer.cs">
+    <Compile Include="Forms\Input\ImageAttributesForm.Designer.cs">
       <DependentUpon>ImageAttributesForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Database\ShapeDataForm.cs">
+    <Compile Include="Forms\ShapeDataForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Database\ShapeDataForm.Designer.cs">
+    <Compile Include="Forms\ShapeDataForm.Designer.cs">
       <DependentUpon>ShapeDataForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Database\StartEnd\StartEndForm.cs">
+    <Compile Include="Forms\StartEnd\StartEndForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Database\StartEnd\StartEndForm.Designer.cs">
+    <Compile Include="Forms\StartEnd\StartEndForm.Designer.cs">
       <DependentUpon>StartEndForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ConnectionSerializer.cs" />
+    <Compile Include="Helpers\FlowchartNodeSerializer.cs" />
     <Compile Include="Helpers\HtmlElementSerializer.cs" />
     <Compile Include="Helpers\Neo4JSerializer.cs" />
     <Compile Include="Identity\KeyVaultManager.cs" />
@@ -493,10 +500,12 @@
     <Compile Include="Objects\Graph\Connection.cs" />
     <Compile Include="Objects\Graph\DataInputNode.cs" />
     <Compile Include="Objects\Graph\DecisionNode.cs" />
+    <Compile Include="Objects\Graph\Enums\ConnectionType.cs" />
+    <Compile Include="Objects\Graph\Enums\LogicalOperator.cs" />
     <Compile Include="Objects\Graph\FlowchartNode.cs" />
     <Compile Include="Objects\Graph\HtmlGraph.cs" />
     <Compile Include="Objects\Graph\HtmlNode.cs" />
-    <Compile Include="Objects\Graph\NodeType.cs" />
+    <Compile Include="Objects\Graph\Enums\NodeType.cs" />
     <Compile Include="Objects\Graph\PageNode.cs" />
     <Compile Include="Objects\Graph\ProcessNode.cs" />
     <Compile Include="Objects\Graph\StartEndNode.cs" />
@@ -515,34 +524,37 @@
     <Content Include="Resources\logo.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <EmbeddedResource Include="Database\DecisionControlsForm.resx">
+    <EmbeddedResource Include="Forms\ClassListForm.resx">
+      <DependentUpon>ClassListForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\DecisionControlsForm.resx">
       <DependentUpon>DecisionControlsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Database\Decision\ConditionsForm.resx">
+    <EmbeddedResource Include="Forms\Decision\ConditionsForm.resx">
       <DependentUpon>ConditionsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Database\Decision\ConnectionForm.resx">
+    <EmbeddedResource Include="Forms\Decision\ConnectionForm.resx">
       <DependentUpon>ConnectionForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Database\Input\SelectAttributesForm.resx">
+    <EmbeddedResource Include="Forms\Input\SelectAttributesForm.resx">
       <DependentUpon>SelectAttributesForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Database\Input\AnchorAttributesForm.resx">
+    <EmbeddedResource Include="Forms\Input\AnchorAttributesForm.resx">
       <DependentUpon>AnchorAttributesForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Database\Decision\ButtonAttributesForm.resx">
+    <EmbeddedResource Include="Forms\Decision\ButtonAttributesForm.resx">
       <DependentUpon>ButtonAttributesForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Database\Input\InputAttributesForm.resx">
+    <EmbeddedResource Include="Forms\Input\InputAttributesForm.resx">
       <DependentUpon>InputAttributesForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Database\Input\ImageAttributesForm.resx">
+    <EmbeddedResource Include="Forms\Input\ImageAttributesForm.resx">
       <DependentUpon>ImageAttributesForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Database\ShapeDataForm.resx">
+    <EmbeddedResource Include="Forms\ShapeDataForm.resx">
       <DependentUpon>ShapeDataForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Database\StartEnd\StartEndForm.resx">
+    <EmbeddedResource Include="Forms\StartEnd\StartEndForm.resx">
       <DependentUpon>StartEndForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -596,9 +608,6 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="ILLink\ILLink.Descriptors.LibraryBuild.xml" />
-  </ItemGroup>
   <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
@@ -639,6 +648,12 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>logo.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE;VSTO40;UseOfficeInterop</DefineConstants>
+    <OutputPath>bin\Release\</OutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

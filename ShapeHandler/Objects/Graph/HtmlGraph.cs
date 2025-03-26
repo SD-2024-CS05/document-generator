@@ -68,23 +68,23 @@ namespace ShapeHandler.Objects
                     break;
                 case DataInputNode diNode:
                     // check if diValidatingNodes exist, if not add them, and then add connections
-                    foreach (var dataInputNode in diNode.DataInputNodes)
+                    foreach (HtmlNode dataInputNode in diNode.DataInputNodes)
                     {
                         if (!OutEdges.ContainsKey(dataInputNode))
                         {
                             AddNode(dataInputNode);
                         }
-                        AddConnection(dataInputNode, diNode, new Connection(dataInputNode.Element.Id ?? dataInputNode.Id, ConnectionType.INPUT_FOR));
+                        AddConnection(dataInputNode, diNode, new Connection(dataInputNode?.Element?.Id ?? dataInputNode.Id, ConnectionType.INPUT_FOR));
                     }
                     break;
                 case DecisionNode deNode:
-                    foreach (var submissionNode in deNode.SubmissionNodes)
+                    foreach (HtmlNode submissionNode in deNode.SubmissionNodes)
                     {
                         if (!OutEdges.ContainsKey(submissionNode))
                         {
                             AddNode(submissionNode);
                         }
-                        AddConnection(submissionNode, deNode, new Connection(submissionNode.Element.Id ?? submissionNode.Id, ConnectionType.SUBMITS));
+                        AddConnection(submissionNode, deNode, new Connection(submissionNode?.Element?.Id ?? submissionNode.Id, ConnectionType.SUBMITS));
                     }
                     break;
                 default:
@@ -141,18 +141,18 @@ namespace ShapeHandler.Objects
 
         private void ValidateDecisionNodeConnection(DecisionNode decisionNode, Connection connection)
         {
-            var diValidatingNodes = InEdges[decisionNode] // Get all nodes connected to the decision node
+            List<DataInputNode> diValidatingNodes = InEdges[decisionNode] // Get all nodes connected to the decision node
                 .Where(x => x.Key is DataInputNode && x.Value.Any(c => c.Type == ConnectionType.VALIDATES))
                 .Select(x => x.Key as DataInputNode)
                 .ToList();
 
-            var diConnectedNodes = InEdges[decisionNode] // Get all nodes connected to the decision node
+            List<DataInputNode> diConnectedNodes = InEdges[decisionNode] // Get all nodes connected to the decision node
                 .Where(x => x.Key is DataInputNode && x.Value.Any(c => c.Type == ConnectionType.GOES_TO))
                 .Select(x => x.Key as DataInputNode)
                 .ToList();
 
             // for any nodes in GOES_TO that aren't in VALIDATES, add a VALIDATES connection
-            foreach (var diNode in diConnectedNodes)
+            foreach (DataInputNode diNode in diConnectedNodes)
             {
                 if (!diValidatingNodes.Contains(diNode))
                 {
@@ -161,7 +161,7 @@ namespace ShapeHandler.Objects
                 }
             }
 
-            var connectedSubNodes = InEdges[decisionNode]
+            List<HtmlNode> connectedSubNodes = InEdges[decisionNode]
                 .Where(x => x.Key is HtmlNode && x.Value.Any(c => c.Type == ConnectionType.SUBMITS))
                 .Select(x => x.Key as HtmlNode)
                 .ToList();
@@ -171,13 +171,13 @@ namespace ShapeHandler.Objects
                 throw new Exception($"No Validation nodes found for Decision Node: {decisionNode.Id}");
             }
 
-            var condition = connection.Conditions;
-            var dataInputNodeIds = diValidatingNodes.SelectMany(x => x.DataInputNodes.Select(y => y.Id)).ToHashSet();
-            var submissionIds = connectedSubNodes.Select(x => x.Id).ToHashSet();
+            Conditions condition = connection.Conditions;
+            HashSet<string> dataInputNodeIds = diValidatingNodes.SelectMany(x => x.DataInputNodes.Select(y => y.Id)).ToHashSet();
+            HashSet<string> submissionIds = connectedSubNodes.Select(x => x.Id).ToHashSet();
 
             while (condition != null)
             {
-                var ConditionWithoutNodeId = condition.NodeIds.Any() && !condition.NodeIds.All(x => dataInputNodeIds.Contains(x) || submissionIds.Contains(x));
+                bool ConditionWithoutNodeId = condition.NodeIds.Any() && !condition.NodeIds.All(x => dataInputNodeIds.Contains(x) || submissionIds.Contains(x));
                 if (ConditionWithoutNodeId)
                 {
                     throw new Exception($"Condition node ids do not match data input node ids or submission ids for decision node id: {decisionNode.Id}");
@@ -205,7 +205,7 @@ namespace ShapeHandler.Objects
         /// <returns>int</returns>
         public int Count()
         {
-            return this.GetNodes().Count;
+            return GetNodes().Count;
         }
 
         /// <summary>

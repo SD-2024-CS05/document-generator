@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ShapeHandler.Identity.Tests
 {
-    [TestClass()]
+    [TestClass]
     public class KeyVaultManagerTests
     {
         [TestMethod()]

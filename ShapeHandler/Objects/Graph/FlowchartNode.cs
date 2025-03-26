@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ShapeHandler.Objects
 {
@@ -28,6 +23,28 @@ namespace ShapeHandler.Objects
             Type = type;
         }
 
+        protected FlowchartNode(Guid id, string label, NodeType type)
+        {
+            if (id == Guid.Empty)
+            {
+                Id = Guid.NewGuid().ToString();
+            }
+            else
+            {
+                Id = id.ToString();
+            }
+
+            if (label == null || label == "")
+            {
+                Label = Id;
+            }
+            else
+            {
+                Label = label;
+            }
+            Type = type;
+        }
+
         public override string ToString()
         {
             return "{id: \"" + Id + "\", type: \"" + Type.ToString().ToUpper() + "\"}";
@@ -35,7 +52,7 @@ namespace ShapeHandler.Objects
 
         public override bool Equals(object obj)
         {
-            if (obj == null || GetType() != obj.GetType())
+            if (obj == null || !(obj is FlowchartNode))
             {
                 return false;
             }

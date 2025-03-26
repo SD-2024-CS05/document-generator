@@ -1,9 +1,6 @@
-﻿using AngleSharp.Html.Dom;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ShapeHandler.Objects
 {
@@ -21,7 +18,12 @@ namespace ShapeHandler.Objects
             DataInputNodes = dataInputNodes;
         }
 
-        public DataInputNode(List<HtmlNode> dataInputNodes): base("", NodeType.DataInput)
+        public DataInputNode(Guid guid, string label, List<HtmlNode> dataInputNodes, NodeType type = NodeType.DataInput) : base(guid, label, type)
+        {
+            DataInputNodes = dataInputNodes;
+        }
+
+        public DataInputNode(List<HtmlNode> dataInputNodes) : base("", NodeType.DataInput)
         {
             DataInputNodes = dataInputNodes;
         }
@@ -55,7 +57,7 @@ namespace ShapeHandler.Objects
             builder.Append($"type: \"{Type.ToString().ToUpper()}\", ");
             builder.Append($"label: \"{Label}\", ");
             builder.Append($"dataInputNodes: [");
-            foreach (var node in DataInputNodes)
+            foreach (HtmlNode node in DataInputNodes)
             {
                 builder.Append($"{node}, ");
             }
