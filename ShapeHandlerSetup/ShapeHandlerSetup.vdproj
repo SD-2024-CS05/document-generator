@@ -381,6 +381,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_4DB65FE9EA6F45E2B03C3CD3D562549E"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_4E75AC617F15CDE0149A78A79252DA77"
         "OwnerKey" = "8:_568AF79E12E4A8A8D86B985F42DDA69C"
         "MsmSig" = "8:_UNDEFINED"
@@ -993,6 +999,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_ADAA90AD3A9D4A81874420218DD4DD3B"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_AF1B5F224371494A2EC656D60954024E"
         "OwnerKey" = "8:_AC0E38A9E25744EFA0BAFA972B16FC03"
         "MsmSig" = "8:_UNDEFINED"
@@ -1031,12 +1043,6 @@
         {
         "MsmKey" = "8:_B47156ACAC4F3B27C67EED9B61B3C844"
         "OwnerKey" = "8:_AC0E38A9E25744EFA0BAFA972B16FC03"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_B4CF58EFFD2D4CE18BF8398D7AB1FD2A"
-        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1205,12 +1211,6 @@
         {
         "MsmKey" = "8:_D449BD439EC9E1613157B3DA7FC187BC"
         "OwnerKey" = "8:_AC0E38A9E25744EFA0BAFA972B16FC03"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_D6C624CC8C8B4EC4A4847941EEF8F523"
-        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -3983,6 +3983,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4DB65FE9EA6F45E2B03C3CD3D562549E"
+            {
+            "SourcePath" = "8:..\\ShapeHandler\\bin\\Setup\\ShapeHandler.dll.manifest"
+            "TargetName" = "8:ShapeHandler.dll.manifest"
+            "Tag" = "8:"
+            "Folder" = "8:_153666EB416242929427CDE166C642F3"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4E75AC617F15CDE0149A78A79252DA77"
             {
             "AssemblyRegister" = "3:1"
@@ -5956,6 +5976,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_ADAA90AD3A9D4A81874420218DD4DD3B"
+            {
+            "SourcePath" = "8:..\\ShapeHandler\\bin\\Setup\\ShapeHandler.vsto"
+            "TargetName" = "8:ShapeHandler.vsto"
+            "Tag" = "8:"
+            "Folder" = "8:_153666EB416242929427CDE166C642F3"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_AF1B5F224371494A2EC656D60954024E"
             {
             "AssemblyRegister" = "3:1"
@@ -6140,26 +6180,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B4CF58EFFD2D4CE18BF8398D7AB1FD2A"
-            {
-            "SourcePath" = "8:..\\ShapeHandler\\bin\\Release\\ShapeHandler.dll.manifest"
-            "TargetName" = "8:ShapeHandler.dll.manifest"
-            "Tag" = "8:"
-            "Folder" = "8:_153666EB416242929427CDE166C642F3"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B5DA1F738C12431E5ADE2340381A3C72"
@@ -6904,26 +6924,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D6C624CC8C8B4EC4A4847941EEF8F523"
-            {
-            "SourcePath" = "8:..\\ShapeHandler\\bin\\Release\\ShapeHandler.vsto"
-            "TargetName" = "8:ShapeHandler.vsto"
-            "Tag" = "8:"
-            "Folder" = "8:_153666EB416242929427CDE166C642F3"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D76436CEEBAE1DC276066A7F2B2E4059"
@@ -8624,7 +8624,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_AC0E38A9E25744EFA0BAFA972B16FC03"
             {
-            "SourcePath" = "8:..\\ShapeHandler\\obj\\Release\\ShapeHandler.dll"
+            "SourcePath" = "8:..\\ShapeHandler\\obj\\Setup\\ShapeHandler.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_153666EB416242929427CDE166C642F3"
