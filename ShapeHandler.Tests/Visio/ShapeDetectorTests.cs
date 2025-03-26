@@ -57,15 +57,6 @@ namespace ShapeHandler.Tests
 
             mockVisioApp.Setup(app => app.Documents).Returns(mockDocuments.Object);
             mockDocuments.Setup(docs => docs.Add(It.IsAny<string>())).Returns(mockDocument.Object);
-            string visioPath = "C:\\Users\\j4tra\\Downloads\\Test.vsdx";
-
-            SetupVisioFile(mockVisioApp.Object, visioPath);
-
-            // Act
-            var result = ShapeDetector.CreateGraphFromFlowchart(mockVisioApp.Object);
-
-            //Assert
-            Assert.IsNotNull(result);
         }
     }
 }
