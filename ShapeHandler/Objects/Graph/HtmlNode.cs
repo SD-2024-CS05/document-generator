@@ -1,17 +1,18 @@
-﻿using AngleSharp.Dom;
-using AngleSharp.Html.Dom;
-using AngleSharp.Io;
+﻿using AngleSharp.Html.Dom;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ShapeHandler.Objects
 {
     public class HtmlNode : FlowchartNode
     {
         public IHtmlElement Element { get; set; }
+
+        public HtmlNode(string label, NodeType type = NodeType.HtmlElement) : base(label, type)
+        {
+
+        }
 
         public HtmlNode(string label, IHtmlElement element, NodeType type = NodeType.HtmlElement) : base(label, type)
         {
@@ -43,8 +44,12 @@ namespace ShapeHandler.Objects
                 return false;
             }
 
-            // make sure that the id is the same that is all that's needed
-            return Element.Id == otherNode.Element.Id;
+            if (Element != null && otherNode.Element != null)
+            {
+                return Element.Id == otherNode.Element.Id;
+            }
+
+            return Id == otherNode.Id;
         }
 
         public override int GetHashCode()
@@ -60,17 +65,24 @@ namespace ShapeHandler.Objects
             builder.Append($"id: \"{Id}\", ");
             builder.Append($"type: \"{Type.ToString().ToUpper()}\", ");
             builder.Append($"label: \"{Label}\", ");
-            builder.Append(
-                $"element: {{ ");
-            builder.Append(
-                $"id: \"{Element.Id}\", ");
-            builder.Append($"tag: \"{Element.TagName}\", ");
-            builder.Append($"attributes: {{");
-            foreach (var attribute in Element.Attributes)
+            if (Element != null)
             {
-                builder.Append($"{attribute.Name}: \"{attribute.Value}\", ");
+                builder.Append(
+                    $"element: {{ ");
+                builder.Append(
+                    $"id: \"{Element.Id}\", ");
+                builder.Append($"tag: \"{Element.TagName}\", ");
+
+                if (Element.Attributes != null && Element.Attributes.Any())
+                {
+                    builder.Append($"attributes: {{");
+                    foreach (AngleSharp.Dom.IAttr attribute in Element.Attributes)
+                    {
+                        builder.Append($"{attribute.Name}: \"{attribute.Value}\", ");
+                    }
+                    builder.Append($"}}");
+                }
             }
-            builder.Append($"}}");
             builder.Append($"}}");
 
             return builder.ToString();

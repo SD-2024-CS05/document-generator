@@ -18,10 +18,10 @@ namespace ShapeHandler.Identity
 
         public KeyVaultManager()
         {
-            var appPath = FileManager.GetFilePath("appsettings.json");
+            string appPath = FileManager.GetFilePath("appsettings.json");
             appPath = Path.GetDirectoryName(appPath);
 
-            var builder = new ConfigurationBuilder()
+            IConfigurationBuilder builder = new ConfigurationBuilder()
                 .SetBasePath(appPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 
@@ -65,7 +65,7 @@ namespace ShapeHandler.Identity
             {
                 try
                 {
-                    var secretResponse = await client.GetSecretAsync(secretName);
+                    Response<KeyVaultSecret> secretResponse = await client.GetSecretAsync(secretName);
                     return secretResponse.Value.Value;
                 }
                 catch (RequestFailedException e)

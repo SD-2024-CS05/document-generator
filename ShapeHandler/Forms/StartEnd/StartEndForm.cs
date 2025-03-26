@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ShapeHandler.Database.StartEnd
@@ -22,12 +15,12 @@ namespace ShapeHandler.Database.StartEnd
         private void SaveButton_Click(object sender, EventArgs e)
         {
             URL = UrlTextBox.Text;
-            this.Close();
+            Close();
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
     }
 }

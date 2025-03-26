@@ -2,13 +2,7 @@
 using ShapeHandler.Helpers;
 using ShapeHandler.Objects;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ShapeHandler.Database.Decision
@@ -35,7 +29,7 @@ namespace ShapeHandler.Database.Decision
 
         private void FillSubmissionItems()
         {
-            foreach (var node in _decisionNode.SubmissionNodes)
+            foreach (HtmlNode node in _decisionNode.SubmissionNodes)
             {
                 if (!string.IsNullOrEmpty(node.Element.Id))
                 {
@@ -61,14 +55,14 @@ namespace ShapeHandler.Database.Decision
             UpdateUrl();
 
             // serialize connection
-            var connectionJson = JsonConvert.SerializeObject(Connection, new ConnectionSerializer());
+            string connectionJson = JsonConvert.SerializeObject(Connection, new ConnectionSerializer());
             VisioShapeDataHelper.AddShapeData(_shapeId, connectionJson, "Connection");
         }
 
         private void UpdateSubmissionId()
         {
-            var selectedSubmission = SubmissionComboBox.SelectedItem as string;
-            var selectedNode = _decisionNode.SubmissionNodes.FirstOrDefault(x =>
+            string selectedSubmission = SubmissionComboBox.SelectedItem as string;
+            HtmlNode selectedNode = _decisionNode.SubmissionNodes.FirstOrDefault(x =>
             x.Element.Id == selectedSubmission ||
             x.Element.OuterHtml == selectedSubmission);
 
@@ -85,18 +79,18 @@ namespace ShapeHandler.Database.Decision
 
         private void CancelButton_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
             UpdateShapeData();
-            this.Close();
+            Close();
         }
         private void AddConditionButton_Click(object sender, EventArgs e)
         {
-            var htmlElements = _dataInputNode.DataInputNodes;
-            var conditionForm = new ConditionsForm(htmlElements);
+            System.Collections.Generic.List<HtmlNode> htmlElements = _dataInputNode.DataInputNodes;
+            ConditionsForm conditionForm = new ConditionsForm(htmlElements);
             conditionForm.ShowDialog();
 
             if (Connection == null)

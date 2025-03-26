@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using AngleSharp.Html.Dom;
+﻿using AngleSharp.Html.Dom;
 using AngleSharp.Html.Parser;
-using AngleSharp;
 using Newtonsoft.Json;
 using ShapeHandler.Database.Input;
 using ShapeHandler.Helpers;
 using ShapeHandler.Objects;
-using AngleSharp.Dom;
-using System.Xml.Linq;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace ShapeHandler.Database
 {
@@ -33,7 +26,7 @@ namespace ShapeHandler.Database
             List<ListViewItem> elements = ControlListView.Items.Cast<ListViewItem>().ToList();
             int buttonNum = 0;
             string label = "<UNKNOWN>";
-            foreach (var element in elements)
+            foreach (ListViewItem element in elements)
             {
                 string html = element.SubItems[1].Text;
                 string group = element.Group.Name;
@@ -84,9 +77,9 @@ namespace ShapeHandler.Database
 
                     if (buttonAttributesForm.Elements.Any())
                     {
-                        foreach (var element in buttonAttributesForm.Elements)
+                        foreach (IHtmlButtonElement element in buttonAttributesForm.Elements)
                         {
-                            ListViewItem item = new ListViewItem(new[] {element.Id, element.OuterHtml});
+                            ListViewItem item = new ListViewItem(new[] { element.Id, element.OuterHtml });
                             item.Group = ControlListView.Groups["ButtonGroup"];
                             // There can only be two button controls per decision node
                             if (item.Group.Items.Count <= 2)

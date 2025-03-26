@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using AngleSharp;
 using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
-using AngleSharp;
-using Microsoft.Office.Interop.Visio;
 using ShapeHandler.Forms;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace ShapeHandler.Database.Input
 {
@@ -41,21 +36,21 @@ namespace ShapeHandler.Database.Input
         private void UpdateShapeData()
         {
             // get all the image elements
-            var imageElements = iHtmlImageElementBindingSource.List.Cast<IHtmlImageElement>().ToList();
+            List<IHtmlImageElement> imageElements = iHtmlImageElementBindingSource.List.Cast<IHtmlImageElement>().ToList();
 
             // id isn't bound so need to grab it from the datagridview
-            foreach (var imageElement in imageElements)
+            foreach (IHtmlImageElement imageElement in imageElements)
             {
-                var row = ImageDataGridView.Rows.Cast<DataGridViewRow>().FirstOrDefault(r => r.DataBoundItem == imageElement);
+                DataGridViewRow row = ImageDataGridView.Rows.Cast<DataGridViewRow>().FirstOrDefault(r => r.DataBoundItem == imageElement);
                 if (row != null)
                 {
                     imageElement.Id = row.Cells["IdColumn"]?.Value?.ToString();
 
                     // get the classes for the image element
-                    var classes = row.Cells["ImageClassesColumn"]?.Value?.ToString();
+                    string classes = row.Cells["ImageClassesColumn"]?.Value?.ToString();
                     if (!string.IsNullOrEmpty(classes))
                     {
-                        foreach (var className in classes.Split(','))
+                        foreach (string className in classes.Split(','))
                         {
                             imageElement.ClassList.Add(className);
                         }
@@ -69,11 +64,11 @@ namespace ShapeHandler.Database.Input
         {
             if (ImageDataGridView.CurrentCell.ColumnIndex == ImageClassesColumn.Index)
             {
-                var form = new ClassListForm();
+                ClassListForm form = new ClassListForm();
                 form.ShowDialog();
                 if (form.Classes.Count > 0)
                 {
-                    var classes = string.Join(",", form.Classes);
+                    string classes = string.Join(",", form.Classes);
                     ImageDataGridView.CurrentCell.Value = classes;
                 }
             }
@@ -81,7 +76,7 @@ namespace ShapeHandler.Database.Input
 
         private void cancelButton_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void saveButton_Click(object sender, EventArgs e)
@@ -90,7 +85,7 @@ namespace ShapeHandler.Database.Input
             {
                 UpdateShapeData();
             }
-            this.Close();
+            Close();
         }
 
         private void AddButton_Click(object sender, EventArgs e)

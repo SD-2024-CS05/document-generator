@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
-using AngleSharp;
+﻿using AngleSharp;
 using AngleSharp.Html.Dom;
 using AngleSharp.Html.Parser;
-using Microsoft.Office.Interop.Visio;
 using Newtonsoft.Json;
 using ShapeHandler.Database.Input;
 using ShapeHandler.Helpers;
 using ShapeHandler.Objects;
+using System;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace ShapeHandler.Database
 {
@@ -34,26 +31,26 @@ namespace ShapeHandler.Database
 
         private void UpdateShapeData()
         {
-            var browsing = new BrowsingContext(Configuration.Default);
-            var document = browsing.OpenNewAsync().Result;
+            BrowsingContext browsing = new BrowsingContext(Configuration.Default);
+            AngleSharp.Dom.IDocument document = browsing.OpenNewAsync().Result;
 
             // get all elements, converting them from the html
-            var elements = ControlListView.Items.Cast<ListViewItem>().ToList();
+            System.Collections.Generic.List<ListViewItem> elements = ControlListView.Items.Cast<ListViewItem>().ToList();
 
-            var inputNum = 0;
-            var anchorNum = 0;
-            var imageNum = 0;
-            var selectNum = 0;
-            var label = "<UNKNOWN>";
+            int inputNum = 0;
+            int anchorNum = 0;
+            int imageNum = 0;
+            int selectNum = 0;
+            string label = "<UNKNOWN>";
 
-            foreach (var element in elements)
+            foreach (ListViewItem element in elements)
             {
                 // get the html column
-                var html = element.SubItems[1].Text;
-                var group = element.Group.Name;
+                string html = element.SubItems[1].Text;
+                string group = element.Group.Name;
 
-                var parser = new HtmlParser();
-                var parsedElement = parser.ParseFragment(html, null).First() as IHtmlElement;
+                HtmlParser parser = new HtmlParser();
+                IHtmlElement parsedElement = parser.ParseFragment(html, null).First() as IHtmlElement;
 
                 switch (group)
                 {
@@ -77,19 +74,19 @@ namespace ShapeHandler.Database
                         break;
                 }
 
-                var output = JsonConvert.SerializeObject(parsedElement, new HtmlElementSerializer());
+                string output = JsonConvert.SerializeObject(parsedElement, new HtmlElementSerializer());
                 VisioShapeDataHelper.AddShapeData(_shapeID, output, label);
             }
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
         private void SaveButton_Click(object sender, EventArgs e)
         {
             UpdateShapeData();
-            this.Close();
+            Close();
         }
 
         private void AddControlButton_Click(object sender, EventArgs e)
@@ -107,59 +104,59 @@ namespace ShapeHandler.Database
 
         private void AddControlComboBox_SelectionChangeCommitted(object sender, EventArgs e)
         {
-            var selectedItem = AddControlComboBox.SelectedItem.ToString();
+            string selectedItem = AddControlComboBox.SelectedItem.ToString();
 
             switch (selectedItem)
             {
                 case "<input>":
-                    var inputForm = new InputAttributesForm();
+                    InputAttributesForm inputForm = new InputAttributesForm();
                     inputForm.ShowDialog();
 
                     if (inputForm.Elements.Any())
                     {
-                        foreach (var element in inputForm.Elements)
+                        foreach (IHtmlInputElement element in inputForm.Elements)
                         {
-                            var item = new ListViewItem(new[] { element.Id, element.OuterHtml });
+                            ListViewItem item = new ListViewItem(new[] { element.Id, element.OuterHtml });
                             item.Group = ControlListView.Groups["InputGroup"];
                             ControlListView.Items.Add(item);
                         }
                     }
                     break;
                 case "<a>":
-                    var anchorForm = new AnchorAttributesForm();
+                    AnchorAttributesForm anchorForm = new AnchorAttributesForm();
                     anchorForm.ShowDialog();
 
                     if (anchorForm.Elements.Any())
                     {
-                        foreach (var element in anchorForm.Elements)
+                        foreach (IHtmlAnchorElement element in anchorForm.Elements)
                         {
-                            var item = new ListViewItem(new[] { element.Id, element.OuterHtml });
+                            ListViewItem item = new ListViewItem(new[] { element.Id, element.OuterHtml });
                             item.Group = ControlListView.Groups["AnchorGroup"];
                             ControlListView.Items.Add(item);
                         }
                     }
                     break;
                 case "<img>":
-                    var imageForm = new ImageAttributesForm();
+                    ImageAttributesForm imageForm = new ImageAttributesForm();
                     imageForm.ShowDialog();
                     if (imageForm.Elements.Any())
                     {
-                        foreach (var element in imageForm.Elements)
+                        foreach (IHtmlImageElement element in imageForm.Elements)
                         {
-                            var item = new ListViewItem(new[] { element.Id, element.OuterHtml });
+                            ListViewItem item = new ListViewItem(new[] { element.Id, element.OuterHtml });
                             item.Group = ControlListView.Groups["ImageGroup"];
                             ControlListView.Items.Add(item);
                         }
                     }
                     break;
                 case "<select>":
-                    var selectForm = new SelectAttributesForm();
+                    SelectAttributesForm selectForm = new SelectAttributesForm();
                     selectForm.ShowDialog();
                     if (selectForm.Elements.Any())
                     {
-                        foreach (var element in selectForm.Elements)
+                        foreach (IHtmlSelectElement element in selectForm.Elements)
                         {
-                            var item = new ListViewItem(new[] { element.Id, element.OuterHtml });
+                            ListViewItem item = new ListViewItem(new[] { element.Id, element.OuterHtml });
                             item.Group = ControlListView.Groups["SelectGroup"];
                             ControlListView.Items.Add(item);
                         }

@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using AngleSharp;
 using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
-using AngleSharp;
-using Microsoft.Office.Interop.Visio;
 using ShapeHandler.Forms;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace ShapeHandler.Database.Input
 {
@@ -40,20 +35,20 @@ namespace ShapeHandler.Database.Input
         private void UpdateShapeData()
         {
             // get all the image elements
-            var anchorElements = iHtmlAnchorElementBindingSource.List.Cast<IHtmlAnchorElement>().ToList();
+            List<IHtmlAnchorElement> anchorElements = iHtmlAnchorElementBindingSource.List.Cast<IHtmlAnchorElement>().ToList();
 
             // id isn't bound so need to grab it from the datagridview
-            foreach (var anchorElement in anchorElements)
+            foreach (IHtmlAnchorElement anchorElement in anchorElements)
             {
-                var row = AnchorDataGridView.Rows.Cast<DataGridViewRow>().FirstOrDefault(r => r.DataBoundItem == anchorElement);
+                DataGridViewRow row = AnchorDataGridView.Rows.Cast<DataGridViewRow>().FirstOrDefault(r => r.DataBoundItem == anchorElement);
                 if (row != null)
                 {
                     anchorElement.Id = row.Cells["IdColumn"]?.Value?.ToString();
 
-                    var classes = row.Cells["AnchorClassesColumn"]?.Value?.ToString();
+                    string classes = row.Cells["AnchorClassesColumn"]?.Value?.ToString();
                     if (!string.IsNullOrEmpty(classes))
                     {
-                        foreach (var className in classes.Split(','))
+                        foreach (string className in classes.Split(','))
                         {
                             anchorElement.ClassList.Add(className);
                         }
@@ -67,11 +62,11 @@ namespace ShapeHandler.Database.Input
         {
             if (AnchorDataGridView.CurrentCell.ColumnIndex == AnchorClassesColumn.Index)
             {
-                var classListForm = new ClassListForm();
+                ClassListForm classListForm = new ClassListForm();
                 classListForm.ShowDialog();
                 if (classListForm.Classes.Count > 0)
                 {
-                    var classes = string.Join(",", classListForm.Classes);
+                    string classes = string.Join(",", classListForm.Classes);
                     AnchorDataGridView.CurrentCell.Value = classes;
                 }
             }
@@ -79,7 +74,7 @@ namespace ShapeHandler.Database.Input
 
         private void cancelButton_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void saveButton_Click(object sender, EventArgs e)
@@ -88,7 +83,7 @@ namespace ShapeHandler.Database.Input
             {
                 UpdateShapeData();
             }
-            this.Close();
+            Close();
         }
 
         private void AddButton_Click(object sender, EventArgs e)

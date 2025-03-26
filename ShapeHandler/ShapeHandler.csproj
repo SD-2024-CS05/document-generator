@@ -38,7 +38,7 @@
     <PublishUrl>publish\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>1.1.0.6</ApplicationVersion>
+    <ApplicationVersion>1.2.0.2</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>false</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -500,10 +500,12 @@
     <Compile Include="Objects\Graph\Connection.cs" />
     <Compile Include="Objects\Graph\DataInputNode.cs" />
     <Compile Include="Objects\Graph\DecisionNode.cs" />
+    <Compile Include="Objects\Graph\Enums\ConnectionType.cs" />
+    <Compile Include="Objects\Graph\Enums\LogicalOperator.cs" />
     <Compile Include="Objects\Graph\FlowchartNode.cs" />
     <Compile Include="Objects\Graph\HtmlGraph.cs" />
     <Compile Include="Objects\Graph\HtmlNode.cs" />
-    <Compile Include="Objects\Graph\NodeType.cs" />
+    <Compile Include="Objects\Graph\Enums\NodeType.cs" />
     <Compile Include="Objects\Graph\PageNode.cs" />
     <Compile Include="Objects\Graph\ProcessNode.cs" />
     <Compile Include="Objects\Graph\StartEndNode.cs" />
@@ -646,6 +648,12 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>logo.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <Optimize>true</Optimize>
+    <DefineConstants>TRACE;VSTO40;UseOfficeInterop</DefineConstants>
+    <OutputPath>bin\Release\</OutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

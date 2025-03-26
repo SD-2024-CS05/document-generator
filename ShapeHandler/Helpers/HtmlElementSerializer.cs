@@ -1,14 +1,11 @@
 ﻿using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
 using AngleSharp.Html.Parser;
-using Microsoft.Extensions.Primitives;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ShapeHandler.Helpers
 {
@@ -30,26 +27,38 @@ namespace ShapeHandler.Helpers
         {
             try
             {
-                var obj = JObject.Load(reader);
-                var html = obj["OuterHtml"].Value<string>();
-                var parser = new HtmlParser();
-                var element = parser.ParseFragment(html, null).First() as IHtmlElement;
+                JObject obj = JObject.Load(reader);
+                string html = obj["OuterHtml"].Value<string>();
+                HtmlParser parser = new HtmlParser();
+                IHtmlElement element = parser.ParseFragment(html, null).First() as IHtmlElement;
 
-                var tagMappings = new Dictionary<string, Type>
-                {
-                    { "input", typeof(IHtmlInputElement) },
-                    { "select", typeof(IHtmlSelectElement) },
-                    { "a", typeof(IHtmlAnchorElement) },
-                    { "img", typeof(IHtmlImageElement) },
-                    { "button", typeof(IHtmlButtonElement) }
-                };
-
-                foreach (var tagMapping in tagMappings)
-                {
-                    var elements = element.GetElementsByTagName(tagMapping.Key);
-                    if (elements.Any())
+                Dictionary<string, Func<IHtmlElement, IHtmlElement>> tagMappings = new Dictionary<string, Func<IHtmlElement, IHtmlElement>>
                     {
-                        return elements.FirstOrDefault();
+                        { "input", e => e.FindChild<IHtmlInputElement>() },
+                        { "select", e => e.FindChild<IHtmlSelectElement>() },
+                        { "a", e => e.FindChild<IHtmlAnchorElement>() },
+                        { "img", e => e.FindChild<IHtmlImageElement>() },
+                        { "button", e => e.FindChild<IHtmlButtonElement>() }
+                    };
+
+                string tag = element.TagName.ToLower();
+
+                if (tagMappings.ContainsKey(tag))
+                {
+                    element = tagMappings[tag](element);
+                }
+                else
+                {
+                    IHtmlCollection<IElement> children = element.Children;
+
+                    element = children.FirstOrDefault(child =>
+                        child.TagName.ToLower() == "body") as IHtmlElement;
+
+                    element = element.Children.FirstOrDefault() as IHtmlElement;
+
+                    if (element == null)
+                    {
+                        throw new JsonSerializationException("Unable to deserialize the html element");
                     }
                 }
 

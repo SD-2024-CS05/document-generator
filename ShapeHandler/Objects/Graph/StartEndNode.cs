@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ShapeHandler.Objects
 {
@@ -10,6 +6,8 @@ namespace ShapeHandler.Objects
     {
 
         public bool IsStart { get; set; } = false;
+
+        public StartEndNode() : base(null, NodeType.StartEnd) { }
 
         public StartEndNode(string label) : base(label, NodeType.StartEnd) { }
 
