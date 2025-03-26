@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace ShapeHandler.Objects
 {
@@ -105,19 +103,5 @@ namespace ShapeHandler.Objects
             builder.Append($"}}");
             return builder.ToString();
         }
-    }
-
-    public enum ConnectionType
-    {
-        DIRECTS_TO,
-        GOES_TO,
-        INPUT_FOR,
-        VALIDATES,
-        SUBMITS,
-        RESETS,
-        CLICKS,
-        HOVERS_OVER,
-        DRAGS,
-        DROPS
     }
 }

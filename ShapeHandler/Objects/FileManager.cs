@@ -1,29 +1,28 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ShapeHandler.Objects
 {
     public static class FileManager
     {
-        public static string GetFilePath(string fileName)
+        public static string GetFilePath(string fileName, string holdingDir = "")
         {
             try
             {
-                var dir = AppDomain.CurrentDomain.BaseDirectory;
+                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                string filePath = Path.Combine(baseDir, fileName);
 
-                if (!File.Exists(Path.Combine(dir, fileName)))
+                if (!File.Exists(filePath) && !string.IsNullOrEmpty(holdingDir))
                 {
-                    dir = Path.Combine(dir, "bin", fileName);
-                } else
-                {
-                    dir = Path.Combine(dir, fileName);
+                    filePath = Path.Combine(baseDir, holdingDir, fileName);
                 }
 
-                return dir;
+                if (!File.Exists(filePath))
+                {
+                    filePath = Path.Combine(baseDir, "bin", fileName);
+                }
+
+                return filePath;
             }
             catch (Exception e)
             {

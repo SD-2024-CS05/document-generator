@@ -1,6 +1,4 @@
-﻿using System;
-using System.CodeDom;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 
 namespace ShapeHandler.Objects
@@ -53,14 +51,5 @@ namespace ShapeHandler.Objects
             builder.Append("}");
             return builder.ToString();
         }
-    }
-    public enum LogicalOperator
-    {
-        AND,
-        OR,
-        NOT,
-        XOR,
-        NOR,
-        NAND
     }
 }

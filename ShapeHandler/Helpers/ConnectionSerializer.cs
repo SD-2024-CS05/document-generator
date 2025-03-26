@@ -2,10 +2,7 @@
 using Newtonsoft.Json.Linq;
 using ShapeHandler.Objects;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ShapeHandler.Helpers
 {
@@ -36,13 +33,13 @@ namespace ShapeHandler.Helpers
                     writer.WriteStartObject();
 
                     // need to write all inner conditions
-                    var conditions = connection.Conditions;
+                    Conditions conditions = connection.Conditions;
 
                     while (conditions != null)
                     {
                         writer.WritePropertyName("NodeIds");
                         writer.WriteStartArray();
-                        foreach (var nodeId in conditions.NodeIds)
+                        foreach (string nodeId in conditions.NodeIds)
                         {
                             writer.WriteValue(nodeId);
                         }
@@ -71,41 +68,71 @@ namespace ShapeHandler.Helpers
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
             // read the json object
-            var obj = JObject.Load(reader);
-            var label = obj["Label"].Value<string>();
-            var type = obj["Type"].Value<string>();
-            var submissionId = obj["SubmissionId"]?.Value<string>();
-            var url = obj["URL"]?.Value<string>();
+            JObject obj = JObject.Load(reader);
+            string label = obj["Label"].Value<string>();
+            string type = obj["Type"].Value<string>();
+            string submissionId = obj["SubmissionId"]?.Value<string>();
+            string url = obj["URL"]?.Value<string>();
+            JToken conditions = obj["Conditions"];
 
-            var conditions = obj["Conditions"];
+            bool success = ConnectionType.TryParse(type, true, out ConnectionType conType);
+
+            if (!success)
+            {
+                throw new Exception("Unknown connection type");
+            }
+
             Conditions condition = null;
 
             if (conditions != null)
             {
-                var nodeIds = conditions["NodeIds"].Values<string>().ToList();
-                var op = conditions["Operator"].Value<string>();
+                System.Collections.Generic.List<string> nodeIds = conditions["NodeIds"].Values<string>().ToList();
+                string op = conditions["Operator"].Value<string>();
 
-                var logicOp = (LogicalOperator)Enum.Parse(typeof(LogicalOperator), op);
+                condition = CreateCondition(nodeIds, op);
 
-                condition = new Conditions(logicOp, nodeIds);
-                var innerConditions = conditions["InnerConditions"];
+                JToken innerConditions = conditions["InnerConditions"];
+                Conditions currentCondition = condition;
 
                 while (innerConditions != null)
                 {
-                    var innerNodeIds = innerConditions["NodeIds"].Values<string>().ToList();
-                    var innerOp = innerConditions["Operator"].Value<string>();
+                    System.Collections.Generic.List<string> innerNodeIds = innerConditions["NodeIds"].Values<string>().ToList();
+                    string innerOp = innerConditions["Operator"].Value<string>();
 
-                    var innerLogicOp = (LogicalOperator)Enum.Parse(typeof(LogicalOperator), innerOp);
+                    Conditions newCondition = CreateCondition(innerNodeIds, innerOp);
+                    currentCondition.InnerConditions = newCondition;
+                    currentCondition = newCondition;
 
-                    condition.InnerConditions = new Conditions(innerLogicOp, innerNodeIds);
                     innerConditions = innerConditions["InnerConditions"];
                 }
             }
-            return obj;
+
+            Connection connection = new Connection
+            {
+                Label = label,
+                Type = conType,
+                SubmissionId = submissionId,
+                URL = url,
+                Conditions = condition
+            };
+
+            return connection;
         }
         public override bool CanConvert(Type objectType)
         {
             return objectType == typeof(Connection);
+        }
+
+        private Conditions CreateCondition(System.Collections.Generic.List<string> nodeIds, string op)
+        {
+            bool success = Enum.TryParse<LogicalOperator>(op, true, out LogicalOperator logicOp);
+
+            if (!success)
+            {
+                throw new Exception("Unknown logical operator");
+            }
+
+            return new Conditions(logicOp, nodeIds);
         }
     }
 }
