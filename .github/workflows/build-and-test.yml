@@ -60,9 +60,12 @@ jobs:
        path: |
          **/bin/Release
          **/obj/Release
+         **/bin/Setup
+         **/obj/Setup
+         **/publish
+         **/*.targets
          **/*.sln
          **/*.csproj
-         **/*.targets
        key: ${{ runner.os }}-build-${{ hashFiles('**/*.csproj') }}
        restore-keys: |
          ${{ runner.os }}-build-${{ hashFiles('**/*.csproj') }}
