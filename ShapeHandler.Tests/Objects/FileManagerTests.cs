@@ -52,5 +52,18 @@ namespace ShapeHandler.Tests.Objects
             // Assert
             Assert.IsNull(result);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
+        public void GetFilePath_ExceptionThrown_ThrowsArgumentNullException()
+        {
+            // Arrange
+            string fileName = null;
+
+            // Act
+            FileManager.GetFilePath(fileName);
+
+            // Assert is handled by ExpectedException
+        }
     }
 }
