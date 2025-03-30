@@ -271,7 +271,7 @@ jobs:
 
       - name: Build Windows Installer
         run: |
-          devenv.com ${{ github.workspace }}/ShapeHandlerSetup/ShapeHandlerSetup.vdproj /build "Setup|Any CPU"
+          devenv.com ${{ github.workspace }}/ShapeHandlerSetup/ShapeHandlerSetup.vdproj /build "Release|Any CPU"
 
       - name: Create zip of Windows Installer artifacts
         run: |
