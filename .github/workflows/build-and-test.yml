@@ -202,7 +202,6 @@ jobs:
  Create-Windows-Installer:
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: windows-latest
-    needs: build
     env:
        BUILD_DIR: ${{ github.workspace }}/ShapeHandlerSetup/Setup
        SOLUTION_FILE: ShapeHandler.sln
