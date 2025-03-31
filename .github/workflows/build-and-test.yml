@@ -214,9 +214,9 @@ jobs:
         uses: actions/cache@v4
         with:
          path: ~/.nuget/packages
-         key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+         key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/*.vdproj') }}
          restore-keys: |
-            ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+            ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/*.vdproj') }}
 
       - name: Restore NuGet packages
         run: nuget restore ${{ env.SOLUTION_FILE }}
