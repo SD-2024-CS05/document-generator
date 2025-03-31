@@ -41,21 +41,8 @@ namespace ShapeHandler.Tests.Objects
         }
 
         [TestMethod]
-        public void GetFilePath_ExceptionThrown_ReturnsNull()
-        {
-            // Arrange
-            string fileName = null;
-
-            // Act
-            string result = FileManager.GetFilePath(fileName);
-
-            // Assert
-            Assert.IsNull(result);
-        }
-
-        [TestMethod]
         [ExpectedException(typeof(Exception))]
-        public void GetFilePath_ExceptionThrown_ThrowsArgumentNullException()
+        public void GetFilePath_ExceptionThrown_ThrowsException()
         {
             // Arrange
             string fileName = null;
