@@ -18,7 +18,16 @@ namespace ShapeHandler.Identity
 
         public KeyVaultManager()
         {
-            string appPath = FileManager.GetFilePath("appsettings.json");
+            string appPath;
+            try
+            {
+                appPath = FileManager.GetFilePath("appsettings.json");
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException("Failed to get the file path for appsettings.json", ex);
+            }
+
             appPath = Path.GetDirectoryName(appPath);
 
             IConfigurationBuilder builder = new ConfigurationBuilder()

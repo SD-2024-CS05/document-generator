@@ -26,8 +26,7 @@ namespace ShapeHandler.Objects
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
-                return null;
+                throw new Exception("Could not find the file: " + fileName, e);
             }
         }
     }
