@@ -66,9 +66,12 @@ namespace ShapeHandler
             this.tab1 = this.Factory.CreateRibbonTab();
             this.group1 = this.Factory.CreateRibbonGroup();
             this.TestGenerationButton = this.Factory.CreateRibbonButton();
+            this.group2 = this.Factory.CreateRibbonGroup();
+            this.editNodeButton = this.Factory.CreateRibbonButton();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.tab1.SuspendLayout();
             this.group1.SuspendLayout();
+            this.group2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tab1
@@ -76,6 +79,7 @@ namespace ShapeHandler
             this.tab1.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
             this.tab1.ControlId.OfficeId = "TabData";
             this.tab1.Groups.Add(this.group1);
+            this.tab1.Groups.Add(this.group2);
             this.tab1.Label = "TabData";
             this.tab1.Name = "tab1";
             // 
@@ -95,6 +99,21 @@ namespace ShapeHandler
             this.TestGenerationButton.ShowImage = true;
             this.TestGenerationButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.HandleTestGenerationClick);
             // 
+            // group2
+            // 
+            this.group2.Items.Add(this.editNodeButton);
+            this.group2.Label = "Node Controls";
+            this.group2.Name = "group2";
+            // 
+            // editNodeButton
+            // 
+            this.editNodeButton.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.editNodeButton.Image = ((System.Drawing.Image)(resources.GetObject("editNodeButton.Image")));
+            this.editNodeButton.Label = "Edit";
+            this.editNodeButton.Name = "editNodeButton";
+            this.editNodeButton.ShowImage = true;
+            this.editNodeButton.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.EditNodeControl_Click);
+            // 
             // imageList1
             // 
             this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
@@ -111,6 +130,8 @@ namespace ShapeHandler
             this.tab1.PerformLayout();
             this.group1.ResumeLayout(false);
             this.group1.PerformLayout();
+            this.group2.ResumeLayout(false);
+            this.group2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -121,6 +142,8 @@ namespace ShapeHandler
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton TestGenerationButton;
         private System.Windows.Forms.ImageList imageList1;
+        internal RibbonGroup group2;
+        internal RibbonButton editNodeButton;
     }
 
 
