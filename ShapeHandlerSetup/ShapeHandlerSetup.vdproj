@@ -363,12 +363,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_4990E1326A784112B561E026616F220C"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_49BD6C72B2F94B253C53F1F5F961408C"
         "OwnerKey" = "8:_AC0E38A9E25744EFA0BAFA972B16FC03"
         "MsmSig" = "8:_UNDEFINED"
@@ -737,6 +731,12 @@
         {
         "MsmKey" = "8:_7A35B4F923A22EC5A2D5734D53BCAFB9"
         "OwnerKey" = "8:_A865D0D60E91D1EBE48DE0671FEF5990"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_7CC8556E668E4B538633BA861C3AC9E8"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -2688,7 +2688,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
@@ -3835,7 +3835,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
@@ -3899,26 +3899,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4990E1326A784112B561E026616F220C"
-            {
-            "SourcePath" = "8:..\\ShapeHandler\\appsettings.json"
-            "TargetName" = "8:appsettings.json"
-            "Tag" = "8:"
-            "Folder" = "8:_153666EB416242929427CDE166C642F3"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_49BD6C72B2F94B253C53F1F5F961408C"
@@ -4010,7 +3990,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
@@ -4931,6 +4911,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7CC8556E668E4B538633BA861C3AC9E8"
+            {
+            "SourcePath" = "8:..\\ShapeHandler\\appsettings.json"
+            "TargetName" = "8:appsettings.json"
+            "Tag" = "8:"
+            "Folder" = "8:_153666EB416242929427CDE166C642F3"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_816BDCC48EC9DCE036C78F534BD6BB04"
@@ -5879,7 +5879,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
@@ -5941,7 +5941,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
@@ -8029,7 +8029,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:ShapeHandlerSetup"
         "ProductCode" = "8:{BEA19580-4A38-4A54-A955-4D35BEBC7307}"
-        "PackageCode" = "8:{C7521E31-CBBA-4D42-A0E7-EDF7C11457B7}"
+        "PackageCode" = "8:{86B411DA-7F87-433F-99F4-BEBDBA316E25}"
         "UpgradeCode" = "8:{5845675D-6CA7-4BD1-AD05-339299D1D049}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
