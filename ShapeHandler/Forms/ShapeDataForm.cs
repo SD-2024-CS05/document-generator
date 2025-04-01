@@ -1,11 +1,16 @@
 ﻿using AngleSharp;
 using AngleSharp.Html.Dom;
 using AngleSharp.Html.Parser;
+using DnsClient.Internal;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using ShapeHandler.Database.Input;
 using ShapeHandler.Helpers;
 using ShapeHandler.Objects;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -23,6 +28,67 @@ namespace ShapeHandler.Database
 
         private void ShapeDataForm_Load(object sender, EventArgs e)
         {
+            if (VisioShapeDataHelper.CheckIfRowsExist(_shapeID)) // Excludes node type row
+            {
+                HtmlParser parser = new HtmlParser();
+                Dictionary<string, object> controls = VisioShapeDataHelper.GetShapeData(_shapeID);
+                List<IHtmlElement> inputs = controls.Where(x => x.Key.Contains("input"))
+                    .Select(x => JsonConvert.DeserializeObject<JObject>(x.Value.ToString())["OuterHtml"].ToString())
+                    .Select(html => (IHtmlElement)parser.ParseFragment(html, null).First())
+                    .Select(element => (IHtmlInputElement)element.GetElementsByTagName("input").First())
+                    .ToList<IHtmlElement>();
+                List<IHtmlElement> anchors = controls.Where(x => x.Key.Contains("a"))
+                    .Select(x => JsonConvert.DeserializeObject<JObject>(x.Value.ToString())["OuterHtml"].ToString())
+                    .Select(html => (IHtmlElement)parser.ParseFragment(html, null).First())
+                    .Select(element => (IHtmlAnchorElement)element.GetElementsByTagName("a").First())
+                    .ToList<IHtmlElement>();
+                List<IHtmlElement> images = controls.Where(x => x.Key.Contains("img"))
+                    .Select(x => JsonConvert.DeserializeObject<JObject>(x.Value.ToString())["OuterHtml"].ToString())
+                    .Select(html => (IHtmlElement)parser.ParseFragment(html, null).First())
+                    .Select(element => (IHtmlImageElement)element.GetElementsByTagName("img").First())
+                    .ToList<IHtmlElement>();
+                List<IHtmlElement> selects = controls.Where(x => x.Key.Contains("select"))
+                    .Select(x => JsonConvert.DeserializeObject<JObject>(x.Value.ToString())["OuterHtml"].ToString())
+                    .Select(html => (IHtmlElement)parser.ParseFragment(html, null).First())
+                    .Select(element => (IHtmlSelectElement)element.GetElementsByTagName("select").First())
+                    .ToList<IHtmlElement>();
+                if (inputs.Any())
+                {
+                    foreach (IHtmlInputElement element in inputs.Cast<IHtmlInputElement>())
+                    {
+                        ListViewItem item = new ListViewItem(new[] { element.Id, element.OuterHtml });
+                        item.Group = ControlListView.Groups["InputGroup"];
+                        ControlListView.Items.Add(item);
+                    }
+                }
+                if (anchors.Any())
+                {
+                    foreach (IHtmlAnchorElement element in anchors.Cast<IHtmlAnchorElement>())
+                    {
+                        ListViewItem item = new ListViewItem(new[] { element.Id, element.OuterHtml });
+                        item.Group = ControlListView.Groups["AnchorGroup"];
+                        ControlListView.Items.Add(item);
+                    }
+                }
+                if (images.Any())
+                {
+                    foreach (IHtmlImageElement element in images.Cast<IHtmlImageElement>())
+                    {
+                        ListViewItem item = new ListViewItem(new[] { element.Id, element.OuterHtml });
+                        item.Group = ControlListView.Groups["ImageGroup"];
+                        ControlListView.Items.Add(item);
+                    }
+                }
+                if (selects.Any())
+                {
+                    foreach (IHtmlSelectElement element in selects.Cast<IHtmlSelectElement>())
+                    {
+                        ListViewItem item = new ListViewItem(new[] { element.Id, element.OuterHtml });
+                        item.Group = ControlListView.Groups["SelectGroup"];
+                        ControlListView.Items.Add(item);
+                    }
+                }
+            }
         }
 
         private void ShapeDataForm_FormClosed(object sender, FormClosedEventArgs e)
