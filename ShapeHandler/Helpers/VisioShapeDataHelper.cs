@@ -163,7 +163,7 @@ namespace ShapeHandler.Objects
         public static bool CheckIfRowsExist(int shapeId)
         {
             _activeShape = Globals.ShapeDetector.Application.ActivePage.Shapes[shapeId];
-            return _activeShape.get_RowCount((short)Visio.VisSectionIndices.visSectionProp) > 1;
+            return _activeShape.get_RowCount((short)Visio.VisSectionIndices.visSectionProp) != 0;
         }
 
         private static void SetShapeData(Visio.VisCellIndices cellIndex, string value)
