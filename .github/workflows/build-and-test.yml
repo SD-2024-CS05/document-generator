@@ -13,6 +13,7 @@ on:
      - main
      - staging
      - dev
+   types: [opened, synchronize, reopened, ready_for_review]
  workflow_dispatch:
   inputs:
     build: 
@@ -66,6 +67,7 @@ jobs:
          **/*.targets
          **/*.sln
          **/*.csproj
+
        key: ${{ runner.os }}-build-${{ hashFiles('**/*.csproj', '**/*.targets', '**/*.sln') }}
        restore-keys: |
          ${{ runner.os }}-build-${{ hashFiles('**/*.csproj', '**/*.targets', '**/*.sln') }}
@@ -202,9 +204,8 @@ jobs:
  Create-Windows-Installer:
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: windows-latest
-    needs: build
     env:
-       BUILD_DIR: ${{ github.workspace }}/ShapeHandlerSetup/Setup
+       BUILD_DIR: ${{ github.workspace }}/ShapeHandlerSetup/Release
        SOLUTION_FILE: ShapeHandler.sln
 
     steps:
@@ -215,9 +216,9 @@ jobs:
         uses: actions/cache@v4
         with:
          path: ~/.nuget/packages
-         key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+         key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/*.vdproj') }}
          restore-keys: |
-            ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+            ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/*.vdproj') }}
 
       - name: Restore NuGet packages
         run: nuget restore ${{ env.SOLUTION_FILE }}
@@ -271,7 +272,7 @@ jobs:
 
       - name: Build Windows Installer
         run: |
-          devenv.com ${{ github.workspace }}/ShapeHandlerSetup/ShapeHandlerSetup.vdproj /build "Setup|Any CPU"
+          devenv.com ${{ github.workspace }}/ShapeHandlerSetup/ShapeHandlerSetup.vdproj /build "Release|Any CPU"
 
       - name: Create zip of Windows Installer artifacts
         run: |
