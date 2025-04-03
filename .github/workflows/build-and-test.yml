@@ -50,9 +50,9 @@ jobs:
      uses: actions/cache@v4
      with:
        path: ~/.nuget/packages
-       key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+       key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/*.targets', '**/*.sln') }}
        restore-keys: |
-         ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+         ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/*.targets', '**/*.sln') }}
 
    - name: Cache build outputs
      uses: actions/cache@v4
@@ -60,12 +60,15 @@ jobs:
        path: |
          **/bin/Release
          **/obj/Release
+         **/bin/Setup
+         **/obj/Setup
+         **/publish
+         **/*.targets
          **/*.sln
          **/*.csproj
-         **/*.targets
-       key: ${{ runner.os }}-build-${{ hashFiles('**/*.csproj') }}
+       key: ${{ runner.os }}-build-${{ hashFiles('**/*.csproj', '**/*.targets', '**/*.sln') }}
        restore-keys: |
-         ${{ runner.os }}-build-${{ hashFiles('**/*.csproj') }}
+         ${{ runner.os }}-build-${{ hashFiles('**/*.csproj', '**/*.targets', '**/*.sln') }}
 
    - name: Restore NuGet packages
      run: nuget restore ${{ env.SOLUTION_FILE }}
