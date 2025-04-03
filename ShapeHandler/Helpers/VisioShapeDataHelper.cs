@@ -173,7 +173,7 @@ namespace ShapeHandler.Objects
         /// <param name="shapeId">Shape ID</param>
         /// <param name="desiredLabel">Label of row</param>
         /// <param name="value">New value</param>
-        public static void UpdateShapeData(int shapeId, string desiredLabel, string value)
+        public static void UpdateRow(int shapeId, string desiredLabel, string value)
         {
             _activeShape = Globals.ShapeDetector.Application.ActivePage.Shapes[shapeId];
             int rowCount = _activeShape.get_RowCount((short)Visio.VisSectionIndices.visSectionProp);
