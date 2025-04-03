@@ -29,16 +29,16 @@ namespace ShapeHandler
                     ShapeDataForm shapeDataForm = new ShapeDataForm(shape.ID);
                     shapeDataForm.ShowDialog();
                     break;
-                //case NodeType.StartEnd:
-                //    HandleStartEndNode(shape);
-                //    break;
+                case NodeType.StartEnd:
+                    string url = VisioShapeDataHelper.GetShapeData(shape.ID)["URL"].ToString();
+                    StartEndForm startEndForm = new StartEndForm(url);
+                    startEndForm.ShowDialog();
+                    VisioShapeDataHelper.UpdateShapeData(shape.ID, "URL", startEndForm.URL);
+                    break;
                 case NodeType.Decision:
                     DecisionControlsForm decisionControlsForm = new DecisionControlsForm(shape.ID);
                     decisionControlsForm.ShowDialog();
                     break;
-                //case NodeType.Connection:
-                //    HandleConnectionNode(shape);
-                //    break;
                 case NodeType.UserProcess:
                     break;
                 case NodeType.BackgroundProcess:
