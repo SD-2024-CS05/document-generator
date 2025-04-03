@@ -561,12 +561,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_5B4300B5A61B449C970D53EC9A60FBBF"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_5C6D66B300BF3223DFF5F71DD9C55E06"
         "OwnerKey" = "8:_AC0E38A9E25744EFA0BAFA972B16FC03"
         "MsmSig" = "8:_UNDEFINED"
@@ -1017,6 +1011,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_B1A46E3D13814CB8A90BE9DF9C38B163"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_B2E7EE46C9FAE46DA89DFDEA5A0EDF4D"
         "OwnerKey" = "8:_AC0E38A9E25744EFA0BAFA972B16FC03"
         "MsmSig" = "8:_UNDEFINED"
@@ -1097,12 +1097,6 @@
         {
         "MsmKey" = "8:_C3C566B843797CA35C54A8A5AB0A0B0C"
         "OwnerKey" = "8:_AC0E38A9E25744EFA0BAFA972B16FC03"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_C6228FE4F1F54B9AA06AA3055B313BD3"
-        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1403,6 +1397,12 @@
         {
         "MsmKey" = "8:_F0168A579DA2D4B19AA2EE5C74689AEC"
         "OwnerKey" = "8:_AC0E38A9E25744EFA0BAFA972B16FC03"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F0D9FC220DF448D9B2FAF6CAFBAF555D"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -2688,7 +2688,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:TRUE"
+            "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
@@ -4240,26 +4240,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_5B4300B5A61B449C970D53EC9A60FBBF"
-            {
-            "SourcePath" = "8:..\\ShapeHandler\\bin\\Release\\ShapeHandler.dll.manifest"
-            "TargetName" = "8:ShapeHandler.dll.manifest"
-            "Tag" = "8:"
-            "Folder" = "8:_153666EB416242929427CDE166C642F3"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_5C6D66B300BF3223DFF5F71DD9C55E06"
@@ -6069,6 +6049,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B1A46E3D13814CB8A90BE9DF9C38B163"
+            {
+            "SourcePath" = "8:..\\ShapeHandler\\bin\\Setup\\ShapeHandler.dll.manifest"
+            "TargetName" = "8:ShapeHandler.dll.manifest"
+            "Tag" = "8:"
+            "Folder" = "8:_153666EB416242929427CDE166C642F3"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B2E7EE46C9FAE46DA89DFDEA5A0EDF4D"
             {
             "AssemblyRegister" = "3:1"
@@ -6408,26 +6408,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C6228FE4F1F54B9AA06AA3055B313BD3"
-            {
-            "SourcePath" = "8:..\\ShapeHandler\\bin\\Release\\ShapeHandler.vsto"
-            "TargetName" = "8:ShapeHandler.vsto"
-            "Tag" = "8:"
-            "Folder" = "8:_153666EB416242929427CDE166C642F3"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C6F0EA97664E141BB6326D32591FC66C"
@@ -7701,6 +7681,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F0D9FC220DF448D9B2FAF6CAFBAF555D"
+            {
+            "SourcePath" = "8:..\\ShapeHandler\\bin\\Setup\\ShapeHandler.vsto"
+            "TargetName" = "8:ShapeHandler.vsto"
+            "Tag" = "8:"
+            "Folder" = "8:_153666EB416242929427CDE166C642F3"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F1A97FC047A3F0CE556A73F550BAF4AC"
             {
             "AssemblyRegister" = "3:1"
@@ -8029,7 +8029,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:ShapeHandlerSetup"
         "ProductCode" = "8:{BEA19580-4A38-4A54-A955-4D35BEBC7307}"
-        "PackageCode" = "8:{86B411DA-7F87-433F-99F4-BEBDBA316E25}"
+        "PackageCode" = "8:{7C967902-7D67-40B4-9133-14DEEBEA5785}"
         "UpgradeCode" = "8:{5845675D-6CA7-4BD1-AD05-339299D1D049}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -8624,7 +8624,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_AC0E38A9E25744EFA0BAFA972B16FC03"
             {
-            "SourcePath" = "8:..\\ShapeHandler\\obj\\Release\\ShapeHandler.dll"
+            "SourcePath" = "8:..\\ShapeHandler\\obj\\Setup\\ShapeHandler.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_153666EB416242929427CDE166C642F3"
