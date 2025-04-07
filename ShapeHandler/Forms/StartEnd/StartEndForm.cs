@@ -11,6 +11,11 @@ namespace ShapeHandler.Database.StartEnd
         {
             InitializeComponent();
         }
+        public StartEndForm(string url)
+        {
+            InitializeComponent();
+            UrlTextBox.Text = url;
+        }
 
         private void SaveButton_Click(object sender, EventArgs e)
         {

@@ -1,13 +1,20 @@
 ﻿using AngleSharp;
+using AngleSharp.Dom;
 using AngleSharp.Html.Dom;
 using AngleSharp.Html.Parser;
+using DnsClient.Internal;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using ShapeHandler.Database.Input;
 using ShapeHandler.Helpers;
 using ShapeHandler.Objects;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Windows.Forms;
+using System.Xml.Linq;
 
 namespace ShapeHandler.Database
 {
@@ -23,6 +30,46 @@ namespace ShapeHandler.Database
 
         private void ShapeDataForm_Load(object sender, EventArgs e)
         {
+            List<IHtmlElement> elements = VisioShapeDataHelper.GetHtmlElements(_shapeID);
+            if (elements.Any())
+            {
+                if (elements.OfType<IHtmlInputElement>().Any())
+                {
+                    foreach (IHtmlInputElement element in elements.OfType<IHtmlInputElement>())
+                    {
+                        ListViewItem item = new ListViewItem(new[] { element.Id, element.OuterHtml });
+                        item.Group = ControlListView.Groups["InputGroup"];
+                        ControlListView.Items.Add(item);
+                    }
+                }
+                if (elements.OfType<IHtmlAnchorElement>().Any())
+                {
+                    foreach (IHtmlAnchorElement element in elements.OfType<IHtmlAnchorElement>())
+                    {
+                        ListViewItem item = new ListViewItem(new[] { element.Id, element.OuterHtml });
+                        item.Group = ControlListView.Groups["AnchorGroup"];
+                        ControlListView.Items.Add(item);
+                    }
+                }
+                if (elements.OfType<IHtmlImageElement>().Any())
+                {
+                    foreach (IHtmlImageElement element in elements.OfType<IHtmlImageElement>())
+                    {
+                        ListViewItem item = new ListViewItem(new[] { element.Id, element.OuterHtml });
+                        item.Group = ControlListView.Groups["ImageGroup"];
+                        ControlListView.Items.Add(item);
+                    }
+                }
+                if (elements.OfType<IHtmlSelectElement>().Any())
+                {
+                    foreach (IHtmlSelectElement element in elements.OfType<IHtmlSelectElement>())
+                    {
+                        ListViewItem item = new ListViewItem(new[] { element.Id, element.OuterHtml });
+                        item.Group = ControlListView.Groups["SelectGroup"];
+                        ControlListView.Items.Add(item);
+                    }
+                }
+            }
         }
 
         private void ShapeDataForm_FormClosed(object sender, FormClosedEventArgs e)
