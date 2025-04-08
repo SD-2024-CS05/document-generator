@@ -363,12 +363,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_4990E1326A784112B561E026616F220C"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_49BD6C72B2F94B253C53F1F5F961408C"
         "OwnerKey" = "8:_AC0E38A9E25744EFA0BAFA972B16FC03"
         "MsmSig" = "8:_UNDEFINED"
@@ -377,12 +371,6 @@
         {
         "MsmKey" = "8:_49F336C8AE3F9799E40909AECA0B91C8"
         "OwnerKey" = "8:_AC0E38A9E25744EFA0BAFA972B16FC03"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_4DB65FE9EA6F45E2B03C3CD3D562549E"
-        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -741,6 +729,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_7CC8556E668E4B538633BA861C3AC9E8"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_816BDCC48EC9DCE036C78F534BD6BB04"
         "OwnerKey" = "8:_AC0E38A9E25744EFA0BAFA972B16FC03"
         "MsmSig" = "8:_UNDEFINED"
@@ -999,12 +993,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_ADAA90AD3A9D4A81874420218DD4DD3B"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_AF1B5F224371494A2EC656D60954024E"
         "OwnerKey" = "8:_AC0E38A9E25744EFA0BAFA972B16FC03"
         "MsmSig" = "8:_UNDEFINED"
@@ -1019,6 +1007,12 @@
         {
         "MsmKey" = "8:_B0C7BBACAD96EADE7385E0B3A84936A6"
         "OwnerKey" = "8:_AC0E38A9E25744EFA0BAFA972B16FC03"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_B1A46E3D13814CB8A90BE9DF9C38B163"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1403,6 +1397,12 @@
         {
         "MsmKey" = "8:_F0168A579DA2D4B19AA2EE5C74689AEC"
         "OwnerKey" = "8:_AC0E38A9E25744EFA0BAFA972B16FC03"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F0D9FC220DF448D9B2FAF6CAFBAF555D"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -3835,7 +3835,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
@@ -3901,26 +3901,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4990E1326A784112B561E026616F220C"
-            {
-            "SourcePath" = "8:..\\ShapeHandler\\appsettings.json"
-            "TargetName" = "8:appsettings.json"
-            "Tag" = "8:"
-            "Folder" = "8:_153666EB416242929427CDE166C642F3"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_49BD6C72B2F94B253C53F1F5F961408C"
             {
             "AssemblyRegister" = "3:1"
@@ -3983,26 +3963,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_4DB65FE9EA6F45E2B03C3CD3D562549E"
-            {
-            "SourcePath" = "8:..\\ShapeHandler\\bin\\Setup\\ShapeHandler.dll.manifest"
-            "TargetName" = "8:ShapeHandler.dll.manifest"
-            "Tag" = "8:"
-            "Folder" = "8:_153666EB416242929427CDE166C642F3"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_4E75AC617F15CDE0149A78A79252DA77"
             {
             "AssemblyRegister" = "3:1"
@@ -4030,7 +3990,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
@@ -4931,6 +4891,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7CC8556E668E4B538633BA861C3AC9E8"
+            {
+            "SourcePath" = "8:..\\ShapeHandler\\appsettings.json"
+            "TargetName" = "8:appsettings.json"
+            "Tag" = "8:"
+            "Folder" = "8:_153666EB416242929427CDE166C642F3"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_816BDCC48EC9DCE036C78F534BD6BB04"
@@ -5879,7 +5859,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
@@ -5941,7 +5921,7 @@
             "SharedLegacy" = "11:FALSE"
             "PackageAs" = "3:1"
             "Register" = "3:1"
-            "Exclude" = "11:FALSE"
+            "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
@@ -5974,26 +5954,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_ADAA90AD3A9D4A81874420218DD4DD3B"
-            {
-            "SourcePath" = "8:..\\ShapeHandler\\bin\\Setup\\ShapeHandler.vsto"
-            "TargetName" = "8:ShapeHandler.vsto"
-            "Tag" = "8:"
-            "Folder" = "8:_153666EB416242929427CDE166C642F3"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_AF1B5F224371494A2EC656D60954024E"
@@ -6087,6 +6047,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B1A46E3D13814CB8A90BE9DF9C38B163"
+            {
+            "SourcePath" = "8:..\\ShapeHandler\\bin\\Setup\\ShapeHandler.dll.manifest"
+            "TargetName" = "8:ShapeHandler.dll.manifest"
+            "Tag" = "8:"
+            "Folder" = "8:_153666EB416242929427CDE166C642F3"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_B2E7EE46C9FAE46DA89DFDEA5A0EDF4D"
@@ -7701,6 +7681,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F0D9FC220DF448D9B2FAF6CAFBAF555D"
+            {
+            "SourcePath" = "8:..\\ShapeHandler\\bin\\Setup\\ShapeHandler.vsto"
+            "TargetName" = "8:ShapeHandler.vsto"
+            "Tag" = "8:"
+            "Folder" = "8:_153666EB416242929427CDE166C642F3"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_F1A97FC047A3F0CE556A73F550BAF4AC"
             {
             "AssemblyRegister" = "3:1"
@@ -8029,7 +8029,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:ShapeHandlerSetup"
         "ProductCode" = "8:{BEA19580-4A38-4A54-A955-4D35BEBC7307}"
-        "PackageCode" = "8:{D8A4A9F0-1DC4-4546-A2A7-721C16F7682A}"
+        "PackageCode" = "8:{7C967902-7D67-40B4-9133-14DEEBEA5785}"
         "UpgradeCode" = "8:{5845675D-6CA7-4BD1-AD05-339299D1D049}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

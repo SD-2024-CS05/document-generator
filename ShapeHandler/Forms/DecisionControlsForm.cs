@@ -1,4 +1,5 @@
-﻿using AngleSharp.Html.Dom;
+﻿using AngleSharp.Dom;
+using AngleSharp.Html.Dom;
 using AngleSharp.Html.Parser;
 using Newtonsoft.Json;
 using ShapeHandler.Database.Input;
@@ -96,6 +97,20 @@ namespace ShapeHandler.Database
                     break;
                 default:
                     break;
+            }
+        }
+
+        private void DecisionControlsForm_Load(object sender, EventArgs e)
+        {
+            List<IHtmlElement> elements = VisioShapeDataHelper.GetHtmlElements(_shapeID);
+            if (elements.Any())
+            {
+                foreach (IHtmlButtonElement element in elements.OfType<IHtmlButtonElement>())
+                {
+                    ListViewItem item = new ListViewItem(new[] { element.Id, element.OuterHtml });
+                    item.Group = ControlListView.Groups["ButtonGroup"];
+                    ControlListView.Items.Add(item);
+                }   
             }
         }
     }

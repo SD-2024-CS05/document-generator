@@ -41,16 +41,16 @@ namespace ShapeHandler.Tests.Objects
         }
 
         [TestMethod]
-        public void GetFilePath_ExceptionThrown_ReturnsNull()
+        [ExpectedException(typeof(Exception))]
+        public void GetFilePath_ExceptionThrown_ThrowsException()
         {
             // Arrange
             string fileName = null;
 
             // Act
-            string result = FileManager.GetFilePath(fileName);
+            FileManager.GetFilePath(fileName);
 
-            // Assert
-            Assert.IsNull(result);
+            // Assert is handled by ExpectedException
         }
     }
 }

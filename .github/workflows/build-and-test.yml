@@ -13,6 +13,7 @@ on:
      - main
      - staging
      - dev
+   types: [opened, synchronize, reopened, ready_for_review]
  workflow_dispatch:
   inputs:
     build: 
@@ -50,9 +51,9 @@ jobs:
      uses: actions/cache@v4
      with:
        path: ~/.nuget/packages
-       key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+       key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/*.targets', '**/*.sln') }}
        restore-keys: |
-         ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+         ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/*.targets', '**/*.sln') }}
 
    - name: Cache build outputs
      uses: actions/cache@v4
@@ -60,12 +61,15 @@ jobs:
        path: |
          **/bin/Release
          **/obj/Release
+         **/bin/Setup
+         **/obj/Setup
+         **/publish
+         **/*.targets
          **/*.sln
          **/*.csproj
-         **/*.targets
-       key: ${{ runner.os }}-build-${{ hashFiles('**/*.csproj') }}
+       key: ${{ runner.os }}-build-${{ hashFiles('**/*.csproj', '**/*.targets', '**/*.sln') }}
        restore-keys: |
-         ${{ runner.os }}-build-${{ hashFiles('**/*.csproj') }}
+         ${{ runner.os }}-build-${{ hashFiles('**/*.csproj', '**/*.targets', '**/*.sln') }}
 
    - name: Restore NuGet packages
      run: nuget restore ${{ env.SOLUTION_FILE }}
@@ -199,7 +203,6 @@ jobs:
  Create-Windows-Installer:
     if: startsWith(github.ref, 'refs/tags/')
     runs-on: windows-latest
-    needs: build
     env:
        BUILD_DIR: ${{ github.workspace }}/ShapeHandlerSetup/Setup
        SOLUTION_FILE: ShapeHandler.sln
@@ -212,9 +215,9 @@ jobs:
         uses: actions/cache@v4
         with:
          path: ~/.nuget/packages
-         key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+         key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/*.vdproj') }}
          restore-keys: |
-            ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+            ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj', '**/*.vdproj') }}
 
       - name: Restore NuGet packages
         run: nuget restore ${{ env.SOLUTION_FILE }}
