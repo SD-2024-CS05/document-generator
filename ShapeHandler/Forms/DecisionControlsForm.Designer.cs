@@ -127,6 +127,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "DecisionControlsForm";
             this.Text = "Controls";
+            this.Load += new System.EventHandler(this.DecisionControlsForm_Load);
             this.ResumeLayout(false);
 
         }

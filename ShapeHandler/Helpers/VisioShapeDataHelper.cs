@@ -1,5 +1,6 @@
 ﻿using AngleSharp.Html.Dom;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using ShapeHandler.Helpers;
 using System;
 using System.Collections.Generic;
@@ -164,6 +165,33 @@ namespace ShapeHandler.Objects
         {
             _activeShape = Globals.ShapeDetector.Application.ActivePage.Shapes[shapeId];
             return _activeShape.get_RowCount((short)Visio.VisSectionIndices.visSectionProp) != 0;
+        }
+
+        /// <summary>
+        /// Updates a row's value in shape data cells
+        /// </summary>
+        /// <param name="shapeId">Shape ID</param>
+        /// <param name="desiredLabel">Label of row</param>
+        /// <param name="value">New value</param>
+        public static void UpdateRow(int shapeId, string desiredLabel, string value)
+        {
+            _activeShape = Globals.ShapeDetector.Application.ActivePage.Shapes[shapeId];
+            int rowCount = _activeShape.get_RowCount((short)Visio.VisSectionIndices.visSectionProp);
+            for (int i = 0; i < rowCount; i++)
+            {
+                string label = _activeShape.get_CellsSRC(
+                    (short)Visio.VisSectionIndices.visSectionProp,
+                    (short)i,
+                    (short)Visio.VisCellIndices.visCustPropsLabel).ResultStrU["Value"];
+                if (label == desiredLabel)
+                {
+                    _activeShape.get_CellsSRC(
+                        (short)Visio.VisSectionIndices.visSectionProp,
+                        (short)i,
+                        (short)Visio.VisCellIndices.visCustPropsValue
+                    ).FormulaU = FormatVal(value);
+                }   
+            }
         }
 
         private static void SetShapeData(Visio.VisCellIndices cellIndex, string value)
