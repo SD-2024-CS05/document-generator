@@ -1,4 +1,5 @@
-﻿using Microsoft.Office.Interop.Visio;
+﻿using AngleSharp.Html.Dom;
+using Microsoft.Office.Interop.Visio;
 using ShapeHandler.Database;
 using ShapeHandler.Database.Decision;
 using ShapeHandler.Database.StartEnd;
@@ -55,6 +56,7 @@ namespace ShapeHandler
                 {
                     ShapeReader.LoadNodeMappingFromDocument(_activeDocument);
                     _activeDocument.ShapeAdded += new Visio.EDocument_ShapeAddedEventHandler(ActiveDocument_ShapeAdded);
+                    _activeDocument.BeforeSelectionDelete += new Visio.EDocument_BeforeSelectionDeleteEventHandler(ActiveDocument_BeforeSelectionDelete);
                 }
                 catch (Exception e)
                 {
@@ -95,6 +97,18 @@ namespace ShapeHandler
                 default:
                     break;
             }
+        }
+
+        private void ActiveDocument_BeforeSelectionDelete(Visio.Selection selection)
+        {
+
+            //NodeType shapeType = VisioShapeDataHelper.GetNodeType(shape.ID);
+
+            //if (shapeType == NodeType.StartEnd && ){
+            _hasStartNode = false;
+            _hasEndNode = false;
+            //}
+
         }
 
         private void HandleStartEndNode(Visio.IVShape shape)
