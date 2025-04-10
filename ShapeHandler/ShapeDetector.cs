@@ -101,9 +101,10 @@ namespace ShapeHandler
 
         private void ActiveDocument_BeforeSelectionDelete(Visio.Selection selection)
         {
-            if (selection != null && selection.Count == 1)
+            var i = 0;
+            
+            foreach (Shape shape in selection)
             {
-                Shape shape = selection.PrimaryItem;
                 NodeType shapeType = VisioShapeDataHelper.GetNodeType(shape.ID);
                 
                 if (shapeType == NodeType.StartEnd)
@@ -111,7 +112,7 @@ namespace ShapeHandler
                     try
                     {
                         // throws "KeyNotFound" exception when adding 3 start/end nodes and deletes the last one
-                        string isStart = VisioShapeDataHelper.GetShapeData(shape.ID)["IsStart"].ToString(); 
+                        string isStart = VisioShapeDataHelper.GetShapeData(shape.ID)["IsStart"].ToString();
                         if (isStart == "True")
                         {
                             _hasStartNode = false;
@@ -123,10 +124,13 @@ namespace ShapeHandler
                             MessageBox.Show("End node deleted");
                         }
                     }
-                    catch (Exception) {
+                    catch (Exception)
+                    {
 
                     }
                 }
+                
+                i++;
             }
         }
 
