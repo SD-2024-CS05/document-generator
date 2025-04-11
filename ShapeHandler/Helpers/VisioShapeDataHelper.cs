@@ -44,6 +44,62 @@ namespace ShapeHandler.Objects
         }
 
         /// <summary>
+        /// Clears all shape data from the specified shape.
+        /// </summary>
+        /// <param name="shapeId">The ID of the shape.</param>
+        public static void ClearShapeData(int shapeId)
+        {
+            _activeShape = Globals.ShapeDetector.Application.ActivePage.Shapes.get_ItemFromID(shapeId);
+            int rowCount = _activeShape.get_RowCount((short)Visio.VisSectionIndices.visSectionProp);
+            for (int i = rowCount - 1; i > 0; i--) // Start from the last row and move upwards (because deleting rows shifts the indices)
+            {
+#if DEBUG
+                System.Diagnostics.Debug.WriteLine($"Deleting row {i} from shape {shapeId}");
+                // write the value of the row
+                string label = _activeShape.get_CellsSRC(
+                    (short)Visio.VisSectionIndices.visSectionProp,
+                    (short)i,
+                    (short)Visio.VisCellIndices.visCustPropsLabel).ResultStrU["Value"];
+                string value = _activeShape.get_CellsSRC(
+                    (short)Visio.VisSectionIndices.visSectionProp,
+                    (short)i,
+                    (short)Visio.VisCellIndices.visCustPropsValue).ResultStrU["Value"];
+                System.Diagnostics.Debug.WriteLine($"Row {i} label: {label}");
+#endif
+                _activeShape.DeleteRow((short)Visio.VisSectionIndices.visSectionProp, (short)i);
+
+#if DEBUG
+                System.Diagnostics.Debug.WriteLine($"Deleted row {i} from shape {shapeId}");
+                // check if the row was deleted
+                int newRowCount = _activeShape.get_RowCount((short)Visio.VisSectionIndices.visSectionProp);
+                System.Diagnostics.Debug.WriteLine($"New row count: {newRowCount}");
+#endif
+            }
+        }
+
+        /// <summary>
+        /// Removes shape data from the specified shape.
+        /// </summary>
+        /// <param name="shapeId">The ID of the shape</param>
+        /// <param name="label">The label for the shape data</param>
+        public static void RemoveShapeData(int shapeId, string label)
+        {
+            _activeShape = Globals.ShapeDetector.Application.ActivePage.Shapes.get_ItemFromID(shapeId);
+            int rowCount = _activeShape.get_RowCount((short)Visio.VisSectionIndices.visSectionProp);
+            for (int i = 0; i < rowCount; i++)
+            {
+                string currentLabel = _activeShape.get_CellsSRC(
+                    (short)Visio.VisSectionIndices.visSectionProp,
+                    (short)i,
+                    (short)Visio.VisCellIndices.visCustPropsLabel).ResultStrU["Value"];
+                if (currentLabel == label)
+                {
+                    _activeShape.DeleteRow((short)Visio.VisSectionIndices.visSectionProp, (short)i);
+                }
+            }
+        }
+
+        /// <summary>
         /// Retrieves the shape data for the specified shape.
         /// </summary>
         /// <param name="shapeId">The ID of the shape.</param>
@@ -190,7 +246,7 @@ namespace ShapeHandler.Objects
                         (short)i,
                         (short)Visio.VisCellIndices.visCustPropsValue
                     ).FormulaU = FormatVal(value);
-                }   
+                }
             }
         }
 

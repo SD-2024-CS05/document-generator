@@ -407,7 +407,7 @@ namespace ShapeHandler.ShapeTransformation
             switch (type)
             {
                 case Objects.NodeType.StartEnd:
-                    node = CreateStartEndNode(shapeData);
+                    node = CreateStartEndNode(shape);
                     break;
                 case Objects.NodeType.Decision:
                     node = CreateDecisionNode(shape, htmlElements);
@@ -437,14 +437,14 @@ namespace ShapeHandler.ShapeTransformation
         /// <summary>
         /// Creates a StartEndNode from the given shape data.
         /// </summary>
-        /// <param name="shapeData">The shape data dictionary.</param>
+        /// <param name="shape">The Visio Shape</param>
         /// <returns>A StartEndNode object.</returns>
-        private static StartEndNode CreateStartEndNode(Dictionary<string, object> shapeData)
+        private static StartEndNode CreateStartEndNode(Shape shape)
         {
+            Dictionary<string, object> shapeData = VisioShapeDataHelper.GetShapeData(shape.ID);
             bool isStart = shapeData["IsStart"].ToString().ToBoolean();
             string url = shapeData["URL"]?.ToString();
-            string label = isStart ? "Start" : "End";
-            return new StartEndNode(label, isStart) { URL = url };
+            return new StartEndNode(shape.Text, isStart) { URL = url };
         }
 
         /// <summary>

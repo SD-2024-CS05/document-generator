@@ -78,11 +78,10 @@ namespace ShapeHandler.Database
 
         private void UpdateShapeData()
         {
-            BrowsingContext browsing = new BrowsingContext(Configuration.Default);
-            AngleSharp.Dom.IDocument document = browsing.OpenNewAsync().Result;
+            VisioShapeDataHelper.ClearShapeData(_shapeID);
 
-            // get all elements, converting them from the html
-            System.Collections.Generic.List<ListViewItem> elements = ControlListView.Items.Cast<ListViewItem>().ToList();
+            BrowsingContext browsing = new BrowsingContext(Configuration.Default);
+            List<ListViewItem> elements = ControlListView.Items.Cast<ListViewItem>().ToList();
 
             int inputNum = 0;
             int anchorNum = 0;
