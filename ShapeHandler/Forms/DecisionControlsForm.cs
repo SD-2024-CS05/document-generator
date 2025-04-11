@@ -24,6 +24,7 @@ namespace ShapeHandler.Database
 
         private void UpdateShapeData()
         {
+            VisioShapeDataHelper.ClearShapeData(_shapeID);
             List<ListViewItem> elements = ControlListView.Items.Cast<ListViewItem>().ToList();
             int buttonNum = 0;
             int anchorNum = 0;
