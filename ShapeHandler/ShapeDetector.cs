@@ -1,4 +1,5 @@
-﻿using Microsoft.Office.Interop.Visio;
+﻿using AngleSharp.Html.Dom;
+using Microsoft.Office.Interop.Visio;
 using ShapeHandler.Database;
 using ShapeHandler.Database.Decision;
 using ShapeHandler.Database.StartEnd;
@@ -55,6 +56,7 @@ namespace ShapeHandler
                 {
                     ShapeReader.LoadNodeMappingFromDocument(_activeDocument);
                     _activeDocument.ShapeAdded += new Visio.EDocument_ShapeAddedEventHandler(ActiveDocument_ShapeAdded);
+                    _activeDocument.BeforeSelectionDelete += new Visio.EDocument_BeforeSelectionDeleteEventHandler(ActiveDocument_BeforeSelectionDelete);
                 }
                 catch (Exception e)
                 {
@@ -94,6 +96,41 @@ namespace ShapeHandler
                     break;
                 default:
                     break;
+            }
+        }
+
+        private void ActiveDocument_BeforeSelectionDelete(Visio.Selection selection)
+        {
+            var i = 0;
+            
+            foreach (Shape shape in selection)
+            {
+                NodeType shapeType = VisioShapeDataHelper.GetNodeType(shape.ID);
+                
+                if (shapeType == NodeType.StartEnd)
+                {
+                    try
+                    {
+                        // throws "KeyNotFound" exception when adding 3 start/end nodes and deletes the last one
+                        string isStart = VisioShapeDataHelper.GetShapeData(shape.ID)["IsStart"].ToString();
+                        if (isStart == "True")
+                        {
+                            _hasStartNode = false;
+                            MessageBox.Show("Start node deleted");
+                        }
+                        else if (isStart == "False")
+                        {
+                            _hasEndNode = false;
+                            MessageBox.Show("End node deleted");
+                        }
+                    }
+                    catch (Exception)
+                    {
+
+                    }
+                }
+                
+                i++;
             }
         }
 
