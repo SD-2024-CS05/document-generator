@@ -24,8 +24,10 @@ namespace ShapeHandler.Database
 
         private void UpdateShapeData()
         {
+            VisioShapeDataHelper.ClearShapeData(_shapeID);
             List<ListViewItem> elements = ControlListView.Items.Cast<ListViewItem>().ToList();
             int buttonNum = 0;
+            int anchorNum = 0;
             string label = "<UNKNOWN>";
             foreach (ListViewItem element in elements)
             {
@@ -38,6 +40,10 @@ namespace ShapeHandler.Database
                     case "ButtonGroup":
                         parsedElement = parsedElement.GetElementsByTagName("button").First() as IHtmlButtonElement;
                         label = $"button {++buttonNum}";
+                        break;
+                    case "AnchorGroup":
+                        parsedElement = parsedElement.GetElementsByTagName("a").First() as IHtmlAnchorElement;
+                        label = $"anchor {++anchorNum}";
                         break;
                     default:
                         break;
@@ -95,6 +101,19 @@ namespace ShapeHandler.Database
                         }
                     }
                     break;
+                case "<a>":
+                    AnchorAttributesForm anchorAttributesForm = new AnchorAttributesForm();
+                    anchorAttributesForm.ShowDialog();
+                    if (anchorAttributesForm.Elements.Any())
+                    {
+                        foreach (IHtmlAnchorElement element in anchorAttributesForm.Elements)
+                        {
+                            ListViewItem item = new ListViewItem(new[] { element.Id, element.OuterHtml });
+                            item.Group = ControlListView.Groups["AnchorGroup"];
+                            ControlListView.Items.Add(item);
+                        }
+                    }
+                    break;
                 default:
                     break;
             }
@@ -110,7 +129,14 @@ namespace ShapeHandler.Database
                     ListViewItem item = new ListViewItem(new[] { element.Id, element.OuterHtml });
                     item.Group = ControlListView.Groups["ButtonGroup"];
                     ControlListView.Items.Add(item);
-                }   
+                }
+
+                foreach (IHtmlAnchorElement element in elements.OfType<IHtmlAnchorElement>())
+                {
+                    ListViewItem item = new ListViewItem(new[] { element.Id, element.OuterHtml });
+                    item.Group = ControlListView.Groups["AnchorGroup"];
+                    ControlListView.Items.Add(item);
+                }
             }
         }
     }
